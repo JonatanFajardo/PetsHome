@@ -16,7 +16,13 @@ namespace PetsHome.Common.Entities
         /// Identificador único de la tabla Entradas.
         /// </summary>
         public int ent_Id { get; set; }
+        /// <summary>
+        /// Información descriptiva de la entrada.
+        /// </summary>
         public string ent_Descripcion { get; set; }
+        /// <summary>
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbRefugios
+        /// </summary>
         public int refg_Id { get; set; }
         public DateTime ent_Fecha { get; set; }
         /// <summary>
