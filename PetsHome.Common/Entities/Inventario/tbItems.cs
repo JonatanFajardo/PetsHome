@@ -16,9 +16,21 @@ namespace PetsHome.Common.Entities
         /// Identificador único de la tabla Items.
         /// </summary>
         public int itm_Id { get; set; }
+        /// <summary>
+        /// Codigo que identifica al producto.
+        /// </summary>
         public string itm_Codigo { get; set; }
+        /// <summary>
+        /// Nombre del producto.
+        /// </summary>
         public string itm_Descripcion { get; set; }
+        /// <summary>
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbCategorias.
+        /// </summary>
         public int cat_Id { get; set; }
+        /// <summary>
+        /// Precio unitario del producto.
+        /// </summary>
         public decimal itm_Precio { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.

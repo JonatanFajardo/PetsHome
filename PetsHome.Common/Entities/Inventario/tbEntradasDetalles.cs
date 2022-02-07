@@ -8,13 +8,19 @@ namespace PetsHome.Common.Entities
     public partial class tbEntradasDetalles
     {
         /// <summary>
-        /// Identificador único de la tabla Entradas Detalles.
+        /// Identificador único de la tabla tbEntradasDetalles.
         /// </summary>
         public int entdet_Id { get; set; }
+        /// <summary>
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbEntradas
+        /// </summary>
         public int ent_Id { get; set; }
+        /// <summary>
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbItems
+        /// </summary>
         public int itm_Id { get; set; }
         /// <summary>
-        /// Cantidad de productos que estan entrando
+        /// Suma del numero de producto ingresado.
         /// </summary>
         public int entdet_Cantidad { get; set; }
         /// <summary>

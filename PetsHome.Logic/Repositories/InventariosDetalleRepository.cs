@@ -33,29 +33,27 @@ namespace PetsHome.Logic.Repositories
         }
 
 
-        public async Task<Boolean> AddAsync(tbInventarios entity)
+        public async Task<Boolean> AddAsync(tbInventariosDetalles entity)
         {
-            entity.inv_UsuarioCrea = 1;
+            entity.invdet_UsuarioCrea = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_InventarioDetalles_Insert]";
             var parameter = new DynamicParameters();
-            parameter.Add("@inv_Id", entity.inv_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@invdet_Existencia", entity.invdet_Existencia, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@invdet_Stock", entity.invdet_Stock, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@inv_Id", entity.inv_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@invdet_Cantidad", entity.invdet_Cantidad, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@invdet_UsuarioCrea", entity.invdet_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbInventarios entity)
+        public async Task<Boolean> EditAsync(tbInventariosDetalles entity)
         {
             entity.invdet_UsuarioCrea = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_InventarioDetalles_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@invdet_Id", entity.invdet_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@inv_Id", entity.inv_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@invdet_Existencia", entity.invdet_Existencia, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@invdet_Stock", entity.invdet_Stock, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@inv_Id", entity.inv_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@invdet_Cantidad", entity.invdet_Cantidad, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@invdet_UsuarioCrea", entity.invdet_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
