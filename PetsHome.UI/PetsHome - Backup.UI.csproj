@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\plugins\datatables.net-autofill-bs4\js\autoFill.bootstrap4.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-autofill\js\dataTables.autoFill.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-bs4\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons-bs4\js\buttons.bootstrap4.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons\js\buttons.colVis.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons\js\buttons.flash.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons\js\buttons.html5.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons\js\buttons.print.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons\js\dataTables.buttons.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-buttons\swf\flashExport.swf" />
+    <None Include="wwwroot\plugins\datatables.net-keytable-bs4\js\keyTable.bootstrap4.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-keytable\js\dataTables.keyTable.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-responsive\js\dataTables.responsive.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-select-bs4\js\select.bootstrap4.min.js" />
+    <None Include="wwwroot\plugins\datatables.net-select\js\dataTables.select.min.js" />
+    <None Include="wwwroot\plugins\datatables.net\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\plugins\jszip\jszip.min.js" />
+    <None Include="wwwroot\plugins\pdfmake\build\pdfmake.min.js" />
+    <None Include="wwwroot\plugins\pdfmake\build\vfs_fonts.js" />
+    <None Include="wwwroot\plugins\pdfmake\webpack-standardfonts.config.js" />
+    <None Include="wwwroot\plugins\toastr\toastr.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PetsHome.Business\PetsHome.Business.csproj" />
+    <ProjectReference Include="..\PetsHome.DataAccess\PetsHome.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Razas\" />
+  </ItemGroup>
+
+</Project>

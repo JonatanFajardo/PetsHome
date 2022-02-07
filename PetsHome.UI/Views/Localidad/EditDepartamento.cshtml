@@ -1,0 +1,49 @@
+﻿@model DepartamentoViewModel
+@{
+    ViewData["Title"] = "EditDepartamento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    @if (Model.EditarDepartamento.depto_Id == 0)
+    {
+        <div class="col-md-12">
+            <partial name="Departamento" model="@Model.EditarDepartamento">
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12">
+            <partial name="Departamento" model="@Model.EditarDepartamento">
+                <div class="card mt-3">
+                    <partial name="Municipio" model="@Model.EditarMunicipio">
+                </div>
+        </div>
+    }
+</div>
+@section Scripts{
+    <script src="~/js/app/catalogos/municipios.js"></script>
+    <script src="~/js/app/catalogos/list-municipios.js"></script>
+    <script>
+            appConfig.Municipios.configureTable({ listUrl: "@Url.Action("ListMunicipios")",id: @Model.EditarDepartamento.depto_Id });
+    </script>
+    <script>
+            appConfig.Catalogs.configure({
+                displayName: "municipio",
+                getUrl: "@Url.Action("GetMunicipio")"
+            });
+    </script>
+    <script>
+        function valideKey(evt) {
+            var code = (evt.which) ? evt.which : evt.keyCode;
+
+            if (code == 8) {
+                return true;
+            } else if (code >= 48 && code <= 57) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,130 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PetsHome</title>
+    <meta content="template" name="description" />
+
+
+    <link href="~/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <!-- App favicon -->
+    <link href="~/plugins/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/scss/icons.min.css" rel="stylesheet" />
+    <link href="~/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/scss/app.css" rel="stylesheet" />
+
+    @*lada*@
+    <link href="~/plugins/ladda/ladda-themeless.css" rel="stylesheet" />
+
+    @* alertas *@
+    <link href="~/plugins/toastr/toastr.css" rel="stylesheet" />
+
+    <!-- App Css-->
+    @RenderSection("styles", required: false)
+
+    @*<link href="~/css/app-rtl.min.css" id="app-rtl" rel="stylesheet" type="text/css" />
+        <link href="~/css/app.min.css" id="app-light" rel="stylesheet" type="text/css" />*@
+
+</head>
+
+<body class="mm-active active mm-show">
+    <!-- Loader -->
+    @*<div id="preloader">
+            <div id="status">
+                <div class="spinner-chase">
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                </div>
+            </div>
+        </div>*@
+
+    <!-- Begin page -->
+    <div id="page-wrapper">
+        <!-- Top Bar Start -->
+        @Html.Partial("~/Views/Shared/_topbar.cshtml")
+        <!-- Top Bar End-->
+        <!-- Left Sidebar -->
+        @Html.Partial("~/Views/Shared/_sidebar.cshtml")
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            @RenderBody()
+
+            @Html.Partial("~/Views/Shared/_footer.cshtml")
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- Right Sidebar -->
+    @*@Html.Partial("~/Views/Shared/_right_sidebar.cshtml")*@
+
+    <!-- /Right-bar -->
+    <!-- Right bar overlay-->
+    @*<div class="rightbar-overlay"></div>*@
+
+    <!-- JAVASCRIPT -->
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/metismenu.min.js"></script>
+    <script src="~/js/waves.js"></script>
+    <script src="~/js/feather.min.js"></script>
+    <script src="~/js/jquery.slimscroll.min.js"></script>
+    <script src="~/apexcharts/apexcharts.min.js"></script>
+    @* alerta *@
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+
+    @* Validaciones *@
+    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/plugins/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    @* Datatable *@
+    <script src="~/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+
+    <script src="~/plugins/datatables.net/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables.net/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables.net/js/buttons.bootstrap4.min.js"></script>
+    @*<script src="~/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>*@
+
+    <script src="~/plugins/datatables.net/jszip/jszip.min.js"></script>
+    <script src="~/plugins/datatables.net/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/plugins/datatables.net/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables.net/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables.net/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables.net/js/buttons.colVis.min.js"></script>
+
+    <script src="~/js/main.js"></script>
+    <script src="~/js/pages/authentication.init.js?@DateTime.Now.Ticks"></script>
+
+    @*lada*@
+    <script src="~/plugins/ladda/spin.min.js"></script>
+    <script src="~/plugins/ladda/ladda.min.js"></script>
+
+    <script src="~/js/components/datatable/datatable.init.js"></script>
+    <script src="~/js/components/datatable/datatable.catalogs.init.js"></script>
+    <script src="~/js/components/catalogs.js"></script>
+
+
+    @Html.ShowAlert();
+    @RenderSection("scripts", required: false)
+
+    @*<script src="~/js/app.js?@DateTime.Now.Ticks"></script>*@
+
+</body>
+</html>

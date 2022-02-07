@@ -1,0 +1,22 @@
+﻿[
+  {
+    "outputFile": "wwwroot/scss/app.css",
+    "inputFile": "wwwroot/scss/app.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/icons.css",
+    "inputFile": "wwwroot/scss/icons.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap.css",
+    "inputFile": "wwwroot/scss/bootstrap.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/app-material.css",
+    "inputFile": "wwwroot/scss/app-material.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/components/_tables.css",
+    "inputFile": "wwwroot/scss/components/_tables.scss"
+  }
+]

@@ -1,0 +1,136 @@
+﻿@model PetsHome.Business.Models.RazaViewModel
+
+@{
+    ViewData["Title"] = "Raza";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    @* Listado *@
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12"><h3>Listado de Razas</h3></div>
+                <div class="col-md-2">
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-striped dt-responsive nowrap" id="datatable">
+                <thead class="text-center bg-primary text-white">
+                    <tr>
+                        <th>Fila</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Add" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="raza_Id" id="item-id" value="@ViewBag.raza_Id" />
+                @*<input type="hidden" asp-for="estado" id="estado" />*@
+
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="raza_Descripcion" class="control-label required"></label>
+                                <input asp-for="raza_Descripcion" class="form-control" maxlength="50" id="Descripcion" />
+                                <span class="text-danger" id="messageError"></span>
+                            </div>
+                        </div>
+                        @*<div class="row" id="IdContenedor">
+                            <div class="col-md-6">
+                            <label class="control-label">Estado</label><br />
+                            <label class="switch">
+                            <input type="checkbox" id="btnSwitchEstado" asp-for="priod_Estado">
+                            <span class="slider round" id="mensajebloqueado"></span>
+                            </label>
+                            <input class="form-control" type="text" id="nuevoestado" hidden />
+                            <input class="form-control" type="text" id="nuevoId" hidden />
+                            </div>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="raza_Id" id="delete-item-id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+@section Scripts {
+    <script src="~/js/pages/raza.js"></script>
+    <script>
+        Raza.datatableCatalogs({listUrl: "@Url.Action("List")" });
+    </script>
+
+    <script>
+        Catalogs.configure({
+            displayName: "raza",
+            getUrl: "@Url.Action("Find")"
+            //urlGetData
+            //urlSetData
+        });
+    </script>
+}
+

@@ -1,0 +1,50 @@
+﻿@model EditarDepartamento
+    <!-- Card-->   
+    <div class="card">
+        <div class="card-header">
+            @if (Model.depto_Id == 0)
+            {
+                <h3>Agregar departamento</h3>
+            }
+            else
+            {
+                <h3>Editar departamento</h3>
+            }
+        </div>
+
+        <div class="card-body">
+            <form asp-controller="Localidad" asp-action="Editar" class="col-md-10" autocomplete="off">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="depto_Id" type="hidden" />
+                        <label class="control-label required">Código</label>
+                        <input class="form-control" asp-for="depto_Codigo" />
+                        <span class="text-danger" asp-validation-for="depto_Codigo"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label required">Departamento</label>
+                        <input class="form-control" asp-for="depto_Descripcion" type="text" maxlength="100" />
+                        <span class="text-danger" asp-validation-for="depto_Descripcion"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <a style="background-color:gray;color:white" asp-controller="Localidad" asp-action="Editar" class="btn btn-secondary">Edit</a>
+                        <a style="background-color:gray;color:white" asp-controller="Localidad" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        @if (Model.depto_Id == 0)
+                        {
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                            <button type="submit">Wuardar</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar cambios</button>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
