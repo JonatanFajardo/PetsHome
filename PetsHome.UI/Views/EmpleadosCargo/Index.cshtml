@@ -1,0 +1,75 @@
+﻿@model EmpleadoCargoViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Agregar Cargos de los Empleados</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="Empleado" method="post" autocomplete="ON">
+                <!-- Campo Id -->
+                <input type="hidden" asp-for="cag_Id" id="cag_Id" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!-- Campo Descripcion -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Descripción</label>
+                        <input class="form-control" asp-for="cag_Descripcion" id="cag_Descripcion" type="text" />
+                        <span class="text-danger" asp-validation-for="cag_Descripcion"></span>
+                    </div>
+                </div>
+                <!-- Campo Salario -->
+                <div class="form-group col-md-6">
+                    <label class="control-label required">Salario</label>
+                    <input class="form-control" asp-for="cag_Salario" id="cag_Salario" type="text" />
+                    <span class="text-danger" asp-validation-for="cag_Salario"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* Listado *@
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12"><h3>Listado de Empleados</h3></div>
+                <div class="col-md-2">
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-striped dt-responsive nowrap " id="datatable">
+                <thead class="text-center bg-primary text-white">
+                    <tr>
+                        <th>Fila</th>
+                        <th>Descripción</th>
+                        <th>Salario</th>
+                        <th>EsActivo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages/empleado-cargo.js"></script>
+    <script>
+        EmpleadoCargo.datatableCatalogs({listUrl: "@Url.Action("List")" });
+    </script>
+
+    <script>
+        Catalogs.configure({
+            displayName: "cargo de empleado",
+            getUrl: "@Url.Action("Find")"
+        });
+    </script>
+}

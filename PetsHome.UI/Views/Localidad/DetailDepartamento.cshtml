@@ -1,0 +1,156 @@
+﻿@model DepartamentoViewModel
+@{
+    ViewData["Title"] = "DetailDepartamento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+
+        @* === Información departamentos === *@
+        <div class="card ribbon-box">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ribbon ribbon-primary float-left"><h4>Información de departamentos</h4></div>
+                    </div>
+                </div>
+                <div class="ribbon-content">
+                    <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                        <form class="col-md-10" method="post">
+                            <dl class="dl-horizontal">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.EditarDepartamento.depto_Codigo)
+                                        </dt>
+
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.EditarDepartamento.depto_Codigo)
+                                        </dd>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.EditarDepartamento.depto_Descripcion)
+                                        </dt>
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.EditarDepartamento.depto_Descripcion)
+                                        </dd>
+                                    </div>
+                                </div>
+                            </dl>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* === Auditoria departamentos === *@
+        <div class="card ribbon-box mt-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ribbon ribbon-primary float-left"><h4>Auditoría de departamentos</h4></div>
+                    </div>
+                </div>
+                <div class="ribbon-content">
+                    <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info">
+                        <thead>
+                            <tr>
+                                <th>Acción</th>
+                                <th>Usuario</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Creado</td>
+                                <td>@Html.DisplayFor(model => model.EditarDepartamento.UsuarioCreacion)</td>
+                                <td>@Html.DisplayFor(model => model.EditarDepartamento.depto_FechaCrea)</td>
+                            </tr>
+                            @if (Model.EditarDepartamento.depto_UsuarioModifica == null)
+                            {
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>Modificado</td>
+                                    <td>@Html.DisplayFor(model => model.EditarDepartamento.UsuarioModificacion)</td>
+                                    <td>@Html.DisplayFor(model => model.EditarDepartamento.depto_FechaModifica)</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @* === Información municipios === *@
+        <div class="card ribbon-box mt-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ribbon ribbon-primary float-left"><h4>Información de municipios</h4></div>
+                    </div>
+                </div>
+                <div class="ribbon-content">
+                    <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="municipio-detalle">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Usuario creación</th>
+                                <th>Fecha creación</th>
+                                <th>Usuario modificación</th>
+                                <th>Fecha modificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ListadoMunicipios)
+                                {
+                                    @if (item.mpio_UsuarioModifica == null)
+                                    {
+                                        <tr>
+                                            <td>@item.mpio_Codigo</td>
+                                            <td>@item.mpio_Descripcion</td>
+                                            <td>@item.UsuarioCreacion</td>
+                                            <td>@item.mpio_FechaCrea</td>
+                                            <td>N/A</td>
+                                            <td>N/A</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>@item.mpio_Codigo</td>
+                                            <td>@item.mpio_Descripcion</td>
+                                            <td>@item.UsuarioCreacion</td>
+                                            <td>@item.mpio_FechaCrea</td>
+                                            <td>@item.UsuarioModificacion</td>
+                                            <td>@item.mpio_FechaModifica</td>
+                                        </tr>
+                                    }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12" id="m-footer">
+                        <a style="background-color:gray;color:white" asp-controller="Departamentos" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        <a type="submit" class="btn btn-primary" href="/Departamentos/EditDepartamento/@Model.EditarDepartamento.depto_Id"><i class="fa fa-edit"></i> Editar</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/app/catalogos/list-municipiosdetails.js"></script>
+  
+
+}

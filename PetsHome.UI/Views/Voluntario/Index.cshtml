@@ -1,0 +1,57 @@
+﻿@model VoluntarioViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Agregar Voluntarios</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="Voluntario" method="post" autocomplete="ON">
+                <!-- Campo Id -->
+                <input type="hidden" asp-for="vol_Id" id="vol_Id" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!-- Campo HorasTrabajadas -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Horas Trabajadas</label>
+                        <input class="form-control" asp-for="vol_HorasTrabajadas" id="vol_HorasTrabajadas" type="text" />
+                        <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
+                    </div>
+                    <!-- Campo Id -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Persona</label>
+                        <select class="form-control" asp-for="per_Id" id="per_Id">
+                            <option value="" selected>Seleccionar</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="per_Id"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!-- Campo Recurrente -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Recurrencia</label>
+                        <input class="form-control" asp-for="vol_Recurrente" id="vol_Recurrente" type="text" />
+                        <span class="text-danger" asp-validation-for="vol_Recurrente"></span>
+                    </div>
+                </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/components/datatable/datatable.init.js"></script>
+
+    <script src="~/js/pages/voluntarios.js"></script>
+    <script>
+        voluntarios.datatable({listUrl: "@Url.Action("List")" });
+
+    </script>
+
+}

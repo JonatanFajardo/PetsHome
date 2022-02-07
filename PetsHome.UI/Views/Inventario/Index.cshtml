@@ -1,0 +1,74 @@
+﻿@model InventarioViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Agregar Inventarios</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="Inventario" method="post" autocomplete="ON">
+                <!-- Campo Id -->
+                <input type="hidden" asp-for="inv_Id" id="inv_Id" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!-- Campo Fecha -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Fecha</label>
+                        <input class="form-control" asp-for="inv_Fecha" id="inv_Fecha" type="text" />
+                        <span class="text-danger" asp-validation-for="inv_Fecha"></span>
+                    </div>
+                    <!-- Campo Id -->
+                    <!--<div class="form-group col-md-6">
+                        <label class="control-label required"></label>
+                        <select class="form-control" asp-for="refg_Id" id="refg_Id">
+                            <option value="" selected>Seleccionar</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="refg_Id"></span>
+                    </div>-->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* Listado *@
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12"><h3>Listado de Inventarios</h3></div>
+                <div class="col-md-2">
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-striped dt-responsive nowrap " id="datatable">
+                <thead class="text-center bg-primary text-white">
+                    <tr>
+                        <th>Fila</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/components/datatable/datatable.init.js"></script>
+
+    <script src="~/js/pages/inventarios.js"></script>
+    <script>
+        inventarios.datatableCatalogs({listUrl: "@Url.Action("List")" });
+
+    </script>
+
+}

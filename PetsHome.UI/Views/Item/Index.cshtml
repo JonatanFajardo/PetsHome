@@ -1,0 +1,74 @@
+﻿@model ItemViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Agregar Items</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="Item" method="post" autocomplete="ON">
+                <!-- Campo Id -->
+                <input type="hidden" asp-for="itm_Id" id="itm_Id" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!-- Campo Codigo -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Codigo</label>
+                        <input class="form-control" asp-for="itm_Codigo" id="itm_Codigo" type="text" />
+                        <span class="text-danger" asp-validation-for="itm_Codigo"></span>
+                    </div>
+                    <!-- Campo Descripcion -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Descripción</label>
+                        <input class="form-control" asp-for="itm_Descripcion" id="itm_Descripcion" type="text" />
+                        <span class="text-danger" asp-validation-for="itm_Descripcion"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!-- Campo Id -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Categoria</label>
+                        <select class="form-control" asp-for="cat_Id" id="cat_Id">
+                            <option value="" selected>Seleccionar</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="cat_Id"></span>
+                    </div>
+                    <!-- Campo Precio -->
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Precio</label>
+                        <input class="form-control" asp-for="itm_Precio" id="itm_Precio" type="text" />
+                        <span class="text-danger" asp-validation-for="itm_Precio"></span>
+                    </div>
+                    <!--Fila-->
+                    <div class="form-row">
+                        <!-- Campo Stock -->
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Stock</label>
+                            <input class="form-control" asp-for="itm_Stock" id="itm_Stock" type="text" />
+                            <span class="text-danger" asp-validation-for="itm_Stock"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/components/datatable/datatable.init.js"></script>
+
+    <script src="~/js/pages/items.js"></script>
+    <script>
+        items.datatable({listUrl: "@Url.Action("List")" });
+
+    </script>
+
+}
