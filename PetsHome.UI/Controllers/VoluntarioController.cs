@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class VoluntarioController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly VoluntarioService _VoluntarioService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

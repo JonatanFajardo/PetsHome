@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class RefugioController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly RefugioService _RefugioService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

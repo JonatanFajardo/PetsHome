@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class HistorialMedicoController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly HistorialMedicoService _HistorialMedicoService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

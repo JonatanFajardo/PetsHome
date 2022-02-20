@@ -11,7 +11,6 @@ namespace PetsHome.UI.Controllers
     public class CategoriaController : BaseController
     {
         private readonly CategoriaService _CategoriaService;
-        private readonly IMapper _mapper;
 
         public IActionResult Index()
         {

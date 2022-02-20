@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class AdopcionController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly AdopcionService _AdopcionService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

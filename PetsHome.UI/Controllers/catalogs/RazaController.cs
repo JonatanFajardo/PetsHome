@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class RazaController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly RazaService _razaService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
