@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -13,64 +14,67 @@ namespace PetsHome.Business.Services
     {
 
         private readonly VoluntarioRepository _voluntarioRepository;
+        private readonly ILogger<VoluntarioService> _logger;
         private readonly IMapper _mapper;
-        public VoluntarioService(VoluntarioRepository voluntarioRepository, IMapper mapper)
+        public VoluntarioService(VoluntarioRepository voluntarioRepository, ILogger<VoluntarioService> logger, IMapper mapper)
         {
             _voluntarioRepository = voluntarioRepository;
+            _logger = logger;
             _mapper = mapper;
         }
-        public async Task<List<PR_Refugio_Voluntarios_ListResult>> ListAsync()
+        public async Task<List<VoluntarioViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Voluntarios_ListResult> mappedResult = await _voluntarioRepository.ListAsync();
                 return _mapper.Map<List<VoluntarioViewModel>>(mappedResult.ToList());
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
-        public async Task<PR_Refugio_Voluntarios_FindResult> FindAsync(int id)
+        public async Task<VoluntarioViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_Voluntarios_FindResult mappedResult = await _voluntarioRepository.FindAsync(id);
                 return _mapper.Map<VoluntarioViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
-        public async Task<PR_Refugio_Voluntarios_DetailResult> DetailAsync(int id)
+        public async Task<VoluntarioViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Voluntarios_DetailResult mappedResult = await _voluntarioRepository.DetailAsync(id);
                 return _mapper.Map<VoluntarioViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<Boolean> AddAsync(VoluntarioViewModel model)
         {
             try
             {
-                tbVoluntarios mappedResult = await _voluntarioRepository.AddAsync(mappedResult);
-                return await _mapper.Map<tbVoluntarios>(model);
+                tbVoluntarios mappedResult = _mapper.Map<tbVoluntarios>(model); 
+                return await _voluntarioRepository.AddAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
+            
         public async Task<Boolean> UpdateAsync(VoluntarioViewModel model)
         {
             try
@@ -78,10 +82,10 @@ namespace PetsHome.Business.Services
                 tbVoluntarios mappedResult = _mapper.Map<tbVoluntarios>(model);
                 return await _voluntarioRepository.EditAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
         public async Task<Boolean> RemoveAsync(int id)
@@ -91,10 +95,10 @@ namespace PetsHome.Business.Services
                 Boolean mappedResult = await _voluntarioRepository.RemoveAsync(id);
                 return mappedResult;
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
     }

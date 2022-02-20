@@ -10,7 +10,8 @@ namespace PetsHome.Common.Entities
         public int medic_Id { get; set; }
         public string masc_Nombre { get; set; }
         public bool medic_Esterilizacion { get; set; }
-        public string medic_Comportamiento { get; set; }
+        public int com_Id { get; set; }
+        public string com_Descripcion { get; set; }
         public string medic_SaludCuidado { get; set; }
         public string medic_InformacionAdicional { get; set; }
         public int medic_UsuarioCrea { get; set; }

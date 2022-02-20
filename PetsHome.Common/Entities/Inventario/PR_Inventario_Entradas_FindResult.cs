@@ -8,7 +8,13 @@ namespace PetsHome.Common.Entities
     public partial class PR_Inventario_Entradas_FindResult
     {
         public int ent_Id { get; set; }
+        public string ent_Descripcion { get; set; }
+        public int refg_Id { get; set; }
         public string refg_Nombre { get; set; }
         public DateTime ent_Fecha { get; set; }
+        public int? ent_UsuarioCrea { get; set; }
+        public DateTime ent_FechaCrea { get; set; }
+        public int? ent_UsuarioModifica { get; set; }
+        public DateTime? ent_FechaModifica { get; set; }
     }
 }

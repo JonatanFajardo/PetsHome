@@ -47,6 +47,18 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? medic_FechaModifica { get; set; }
 
+        //Indica si el formulario se esta editando.
+        public Boolean isEdit
+        {
+            get
+            {
+                if (this.medic_Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
         #region Dropdown
 
         #endregion Dropdown

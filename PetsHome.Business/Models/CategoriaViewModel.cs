@@ -29,5 +29,17 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? cat_FechaModifica { get; set; }
 
+        //Indica si el formulario se esta editando.
+        public Boolean isEdit
+        {
+            get
+            {
+                if (this.cat_Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
     }
 }

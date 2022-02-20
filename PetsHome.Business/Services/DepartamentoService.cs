@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -13,10 +14,12 @@ namespace PetsHome.Business.Services
     public class DepartamentoService
     {
         private readonly DepartamentoRepository _departamentoRepository;
+        private readonly ILogger<DepartamentoService> _logger;
         private readonly IMapper _mapper;
-        public DepartamentoService(DepartamentoRepository departamentoRepository, IMapper mapper)
+        public DepartamentoService(DepartamentoRepository departamentoRepository, ILogger<DepartamentoService> logger, IMapper mapper)
         {
             _departamentoRepository = departamentoRepository;
+            _logger = logger;
             _mapper = mapper;
         }
         public async Task<List<DepartamentoViewModel>> ListAsync()
@@ -26,10 +29,10 @@ namespace PetsHome.Business.Services
                 IEnumerable<PR_General_Departamentos_ListResult> mappedResult = await _departamentoRepository.ListAsync();
                 return _mapper.Map<List<DepartamentoViewModel>>(mappedResult.ToList());
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<DepartamentoViewModel> FindAsync(int id)
@@ -39,10 +42,10 @@ namespace PetsHome.Business.Services
                 PR_General_Departamentos_FindResult mappedResult = await _departamentoRepository.FindAsync(id);
                 return _mapper.Map<DepartamentoViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<DepartamentoViewModel> DetailAsync(int id)
@@ -52,10 +55,10 @@ namespace PetsHome.Business.Services
                 PR_General_Departamentos_DetailResult mappedResult = await _departamentoRepository.DetailAsync(id);
                 return _mapper.Map<DepartamentoViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<Boolean> AddAsync(DepartamentoViewModel model)
@@ -65,12 +68,13 @@ namespace PetsHome.Business.Services
                 tbDepartamentos mappedResult = _mapper.Map<tbDepartamentos>(model);
                 return await _departamentoRepository.AddAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
+            
         public async Task<Boolean> UpdateAsync(DepartamentoViewModel model)
         {
             try
@@ -78,10 +82,10 @@ namespace PetsHome.Business.Services
                 tbDepartamentos mappedResult = _mapper.Map<tbDepartamentos>(model);
                 return await _departamentoRepository.EditAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
         public async Task<Boolean> RemoveAsync(int id)
@@ -91,10 +95,10 @@ namespace PetsHome.Business.Services
                 Boolean mappedResult = await _departamentoRepository.RemoveAsync(id);
                 return mappedResult;
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
     }

@@ -21,9 +21,12 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public string ent_Descripcion { get; set; }
         /// <summary>
-        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbRefugios
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbRefugios.
         /// </summary>
         public int refg_Id { get; set; }
+        /// <summary>
+        /// Indica si el registro está desactivado permanentemente.
+        /// </summary>
         public DateTime ent_Fecha { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.

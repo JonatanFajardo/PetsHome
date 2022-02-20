@@ -54,6 +54,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[Refugio].[tbComportamientos]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[Refugio].[tbEmpleados]",
          "ObjectType": 0
       },
@@ -106,6 +110,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[Seguridad].[tbRegistroEventos]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[Seguridad].[tbUsuarios]",
          "ObjectType": 0
       },
@@ -123,6 +131,10 @@
       },
       {
          "Name": "[General].[PR_General_Departamentos_List]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[General].[PR_General_Municipios_Detail]",
          "ObjectType": 1
       },
       {
@@ -186,18 +198,6 @@
          "ObjectType": 1
       },
       {
-         "Name": "[Inventario].[PR_Inventario_InventariosDetalles_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_InventariosDetalles_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_InventariosDetalles_List]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[Inventario].[PR_Inventario_Items_Detail]",
          "ObjectType": 1
       },
@@ -250,6 +250,18 @@
          "ObjectType": 1
       },
       {
+         "Name": "[Refugio].[PR_Refugio_Eventos_Detail]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Refugio].[PR_Refugio_Eventos_Find]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Refugio].[PR_Refugio_Eventos_List]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[Refugio].[PR_Refugio_HistorialMedico_Detail]",
          "ObjectType": 1
       },
@@ -279,6 +291,10 @@
       },
       {
          "Name": "[Refugio].[PR_Refugio_Procedencias_Detail]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Refugio].[PR_Refugio_Procedencias_Find]",
          "ObjectType": 1
       },
       {
@@ -356,6 +372,18 @@
       {
          "Name": "[Refugio].[PR_Refugio_Voluntarios_List]",
          "ObjectType": 1
+      },
+      {
+         "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Find]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Select]",
+         "ObjectType": 1
       }
    ],
    "UiHint": "JOHN-EB\\SQLEXPRESS.PetsHome_V1.6",
@@ -364,6 +392,7 @@
    "UseDbContextSplitting": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
+   "UseHierarchyId": false,
    "UseInflector": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,

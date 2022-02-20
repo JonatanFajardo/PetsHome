@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -11,11 +12,13 @@ namespace PetsHome.Business.Services
 {
     public class RazaService
     {
+        private readonly ILogger<RazaService> _logger;
         private readonly IMapper _mapper;
         private readonly RazaRepository _razaRepository;
-        public RazaService(RazaRepository razaRepository, IMapper mapper)
+        public RazaService(RazaRepository razaRepository, ILogger<RazaService> logger, IMapper mapper)
         {
             _razaRepository = razaRepository;
+            _logger = logger;
             _mapper = mapper;
         }
         public async Task<List<RazaViewModel>> ListAsync()
@@ -25,10 +28,10 @@ namespace PetsHome.Business.Services
                 IEnumerable<PR_Refugio_Razas_ListResult> mappedResult = await _razaRepository.ListAsync();
                 return _mapper.Map<List<RazaViewModel>>(mappedResult.ToList());
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<RazaViewModel> FindAsync(int id)
@@ -38,10 +41,10 @@ namespace PetsHome.Business.Services
                 PR_Refugio_Razas_FindResult mappedResult = await _razaRepository.FindAsync(id);
                 return _mapper.Map<RazaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<RazaViewModel> DetailAsync(int id)
@@ -51,10 +54,10 @@ namespace PetsHome.Business.Services
                 PR_Refugio_Razas_DetailResult mappedResult = await _razaRepository.DetailAsync(id);
                 return _mapper.Map<RazaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<Boolean> AddAsync(RazaViewModel model)
@@ -64,12 +67,13 @@ namespace PetsHome.Business.Services
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
                 return await _razaRepository.AddAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
+            
         public async Task<Boolean> UpdateAsync(RazaViewModel model)
         {
             try
@@ -77,10 +81,10 @@ namespace PetsHome.Business.Services
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
                 return await _razaRepository.EditAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
         public async Task<Boolean> RemoveAsync(int id)
@@ -89,10 +93,10 @@ namespace PetsHome.Business.Services
             {
                 return await _razaRepository.RemoveAsync(id);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
     }

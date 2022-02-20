@@ -56,7 +56,7 @@ namespace PetsHome.Logic.Repositories
 
         public tbRazas Validation(string priod_Descripcion)
         {
-            const string query = @"[Refugio].[UDP_Refugio_tbRazas_ValidacionUnique]";
+            const string query = @"[Refugio].[UDP_Refugio_Razas_ValidacionUnique]";
             var parameters = new DynamicParameters();
             parameters.Add("@raza_Descripcion", priod_Descripcion, DbType.String, ParameterDirection.Input);
             using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
@@ -68,7 +68,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[General].[PR_General_Razas_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

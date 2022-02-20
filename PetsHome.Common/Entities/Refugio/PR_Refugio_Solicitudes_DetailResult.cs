@@ -15,9 +15,9 @@ namespace PetsHome.Common.Entities
         public string sol_Correo { get; set; }
         public DateTime sol_Fecha { get; set; }
         public string masc_Nombre { get; set; }
-        public int sol_UsuarioCrea { get; set; }
+        public string UsuarioCreacion { get; set; }
         public DateTime sol_FechaCrea { get; set; }
-        public int? sol_UsuarioModifica { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? sol_FechaModifica { get; set; }
     }
 }

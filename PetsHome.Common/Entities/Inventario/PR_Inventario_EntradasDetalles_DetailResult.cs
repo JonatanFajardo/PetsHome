@@ -8,14 +8,15 @@ namespace PetsHome.Common.Entities
     public partial class PR_Inventario_EntradasDetalles_DetailResult
     {
         public int entdet_Id { get; set; }
+        public int ent_Id { get; set; }
+        public string ent_Descripcion { get; set; }
+        public int itm_Id { get; set; }
         public string itm_Descripcion { get; set; }
-        public string itm_Codigo { get; set; }
-        public string cat_Descripcion { get; set; }
-        public decimal itm_Precio { get; set; }
         public int entdet_Cantidad { get; set; }
-        public int entdet_UsuarioCrea { get; set; }
+        public bool entdet_EsEliminado { get; set; }
+        public string UsuarioCreacion { get; set; }
         public DateTime entdet_FechaCrea { get; set; }
-        public int? entdet_UsuarioModifica { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? entdet_FechaModifica { get; set; }
     }
 }

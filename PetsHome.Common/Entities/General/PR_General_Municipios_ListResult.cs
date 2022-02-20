@@ -10,11 +10,5 @@ namespace PetsHome.Common.Entities
         public int mpio_Id { get; set; }
         public string mpio_Codigo { get; set; }
         public string mpio_Descripcion { get; set; }
-        public string codigoDepartamento { get; set; }
-        public string codigoMunicipio { get; set; }
-        public int mpio_UsuarioCrea { get; set; }
-        public DateTime mpio_FechaCrea { get; set; }
-        public int? mpio_UsuarioModifica { get; set; }
-        public DateTime? mpio_FechaModifica { get; set; }
     }
 }

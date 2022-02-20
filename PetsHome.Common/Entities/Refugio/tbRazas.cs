@@ -20,12 +20,12 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
-        public bool? raza_EsEliminado { get; set; }
-        public int? raza_UsuarioCrea { get; set; }
+        public bool raza_EsEliminado { get; set; }
+        public int raza_UsuarioCrea { get; set; }
         /// <summary>
         /// Registra la fecha en que se creó el registro.
         /// </summary>
-        public DateTime? raza_FechaCrea { get; set; }
+        public DateTime raza_FechaCrea { get; set; }
         /// <summary>
         /// Indica el identificador del último usuario que modificó el registro.
         /// </summary>

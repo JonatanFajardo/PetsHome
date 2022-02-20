@@ -13,8 +13,9 @@ namespace PetsHome.Logic.Repositories
     {
         public async Task<IEnumerable<PR_Inventario_EntradasDetalles_ListResult>> ListAsync()
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_List]";
-            return await DbApp.Select<PR_Inventario_EntradasDetalles_ListResult>(sqlQuery);
+            // const string sqlQuery = "[General].[PR_General_Departamentos_List]";
+            // return await DbApp.Select<PR_Inventario_EntradasDetalles_ListResult>(sqlQuery);
+            throw new NotImplementedException();
         }
 
         public async Task<Boolean> AddAsync(tbEntradasDetalles entity)
@@ -29,10 +30,11 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
-            var parameter = new DynamicParameters();
-            parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            // const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            // var parameter = new DynamicParameters();
+            // parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
+            // return await DbApp.Delete(sqlQuery, parameter);
+            throw new NotImplementedException();
         }
     }
 }

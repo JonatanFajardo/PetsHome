@@ -9,9 +9,9 @@ namespace PetsHome.Common.Entities
     {
         public int raza_Id { get; set; }
         public string raza_Descripcion { get; set; }
-        public int? raza_UsuarioCrea { get; set; }
-        public DateTime? raza_FechaCrea { get; set; }
-        public int? raza_UsuarioModifica { get; set; }
+        public string UsuarioCreacion { get; set; }
+        public DateTime raza_FechaCrea { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? raza_FechaModifica { get; set; }
     }
 }

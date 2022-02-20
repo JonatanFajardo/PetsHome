@@ -12,11 +12,11 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public int entdet_Id { get; set; }
         /// <summary>
-        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbEntradas
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbEntradas.
         /// </summary>
         public int ent_Id { get; set; }
         /// <summary>
-        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbItems
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbItems.
         /// </summary>
         public int itm_Id { get; set; }
         /// <summary>

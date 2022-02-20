@@ -27,7 +27,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica el tipo de comportamiento tiene la mascota con las personas.
         /// </summary>
-        public string medic_Comportamiento { get; set; }
+        public int com_Id { get; set; }
         /// <summary>
         /// Indica el nivel de salud en la que se encuentra.
         /// </summary>
@@ -57,6 +57,7 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public DateTime? medic_FechaModifica { get; set; }
 
+        public virtual tbComportamientos com { get; set; }
         public virtual tbMascotas masc { get; set; }
         public virtual tbUsuarios medic_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbHistorialMedico_tbVacunas> tbHistorialMedico_tbVacunas { get; set; }

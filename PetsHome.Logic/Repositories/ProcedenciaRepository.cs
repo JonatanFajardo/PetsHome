@@ -33,7 +33,6 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Refugio_Procedencias_DetailResult>(sqlQuery, parameter);
         }
 
-
         public async Task<Boolean> AddAsync(tbProcedencias entity)
         {
             entity.proc_UsuarioCrea = 1;
@@ -46,18 +45,18 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbProcedencias entity)
         {
-            entity.proc_UsuarioCrea = 1;
+            entity.proc_UsuarioModifica = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_Procedencias_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@proc_Id", entity.proc_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@proc_Descripcion", entity.proc_Descripcion, DbType.String, ParameterDirection.Input);
-            parameter.Add("@proc_UsuarioCrea", entity.proc_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@proc_UsuarioModifica", entity.proc_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_Procedencias_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@proc_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

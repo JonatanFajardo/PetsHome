@@ -107,17 +107,32 @@ namespace PetsHome.Business.Models
 
         public string pathMascotaImage { get; set; }
 
+        //Indica si el formulario se esta editando.
+        public Boolean isEdit
+        {
+            get
+            {
+                if (this.masc_Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
         #region Dropdown
 
         public SelectList razaList { get; set; }
         public SelectList sexoList { get; set; }
         public SelectList refugioList { get; set; }
         public SelectList procedenciaList { get; set; }
-
-        public void LoadDropDownList(IEnumerable<PR_Refugio_Raza_DropdownResult> razaDropdownResults,
+        //public void LoadDropDownList(IEnumerable<PR_Refugio_Raza_DropdownResult> razaDropdownResults,
+        //                               IEnumerable<Dropdown> dropdownlists,
+        //                               IEnumerable<PR_Refugio_Refugio_DropdownResult> refugioDropdownResults,
+        //                               IEnumerable<PR_Refugio_Procedencia_DropdownResult> procedenciaDropdownResults)
+        public void LoadDropDownList(IEnumerable<RazaViewModel> razaDropdownResults,
                                         IEnumerable<Dropdown> dropdownlists,
-                                        IEnumerable<PR_Refugio_Refugio_DropdownResult> refugioDropdownResults,
-                                        IEnumerable<PR_Refugio_Procedencia_DropdownResult> procedenciaDropdownResults)
+                                        IEnumerable<RefugioViewModel> refugioDropdownResults,
+                                        IEnumerable<ProcedenciaViewModel> procedenciaDropdownResults)
         {
             razaList = new SelectList(razaDropdownResults, "raza_Id", "raza_Descripcion");
             sexoList = new SelectList(dropdownlists, "Value", "Text");

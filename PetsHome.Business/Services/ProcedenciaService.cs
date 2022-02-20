@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -12,10 +13,12 @@ namespace PetsHome.Business.Services
     public class ProcedenciaService
     {
         private readonly ProcedenciaRepository _procedenciaRepository;
+        private readonly ILogger<ProcedenciaService> _logger;
         private readonly IMapper _mapper;
-        public ProcedenciaService(ProcedenciaRepository procedenciaRepository, IMapper mapper)
+        public ProcedenciaService(ProcedenciaRepository procedenciaRepository, ILogger<ProcedenciaService> logger, IMapper mapper)
         {
             _procedenciaRepository = procedenciaRepository;
+            _logger = logger;
             _mapper = mapper;
         }
         public async Task<List<ProcedenciaViewModel>> ListAsync()
@@ -25,10 +28,10 @@ namespace PetsHome.Business.Services
                 IEnumerable<PR_Refugio_Procedencias_ListResult> mappedResult = await _procedenciaRepository.ListAsync();
                 return _mapper.Map<List<ProcedenciaViewModel>>(mappedResult.ToList());
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<ProcedenciaViewModel> FindAsync(int id)
@@ -38,10 +41,10 @@ namespace PetsHome.Business.Services
                 PR_Refugio_Procedencias_FindResult mappedResult = await _procedenciaRepository.FindAsync(id);
                 return _mapper.Map<ProcedenciaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<ProcedenciaViewModel> DetailAsync(int id)
@@ -51,10 +54,10 @@ namespace PetsHome.Business.Services
                 PR_Refugio_Procedencias_DetailResult mappedResult = await _procedenciaRepository.DetailAsync(id);
                 return _mapper.Map<ProcedenciaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<Boolean> AddAsync(ProcedenciaViewModel model)
@@ -64,12 +67,13 @@ namespace PetsHome.Business.Services
                 tbProcedencias mappedResult = _mapper.Map<tbProcedencias>(model);
                 return await _procedenciaRepository.AddAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
+            
         public async Task<Boolean> UpdateAsync(ProcedenciaViewModel model)
         {
             try
@@ -77,10 +81,10 @@ namespace PetsHome.Business.Services
                 tbProcedencias mappedResult = _mapper.Map<tbProcedencias>(model);
                 return await _procedenciaRepository.EditAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
         public async Task<Boolean> RemoveAsync(int id)
@@ -90,10 +94,10 @@ namespace PetsHome.Business.Services
                 Boolean mappedResult = await _procedenciaRepository.RemoveAsync(id);
                 return mappedResult;
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
     }

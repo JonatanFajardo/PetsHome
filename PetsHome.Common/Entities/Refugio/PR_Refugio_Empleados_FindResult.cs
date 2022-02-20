@@ -9,7 +9,7 @@ namespace PetsHome.Common.Entities
     {
         public int emp_Id { get; set; }
         public string emp_Codigo { get; set; }
-        public string emp_Nombres { get; set; }
+        public string Nombres { get; set; }
         public string per_Identidad { get; set; }
         public DateTime per_FechaNacimiento { get; set; }
         public string per_Domicilio { get; set; }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -12,49 +13,51 @@ namespace PetsHome.Business.Services
     public class VacunaService
     {
         private readonly VacunaRepository _vacunaRepository;
+        private readonly ILogger<VacunaService> _logger;
         private readonly IMapper _mapper;
-        public VacunaService(VacunaRepository vacunaRepository, IMapper mapper)
+        public VacunaService(VacunaRepository vacunaRepository, ILogger<VacunaService> logger, IMapper mapper)
         {
             _vacunaRepository = vacunaRepository;
+            _logger = logger;
             _mapper = mapper;
         }
-        public async Task<List<PR_Refugio_Vacunas_ListResult>> ListAsync()
+        public async Task<List<VacunaViewModel>> ListAsync()
         {
             try
             {
-                IEnumerable<List> mappedResult = await _vacunaRepository.ListAsync();
+                IEnumerable<PR_Refugio_Vacunas_ListResult> mappedResult = await _vacunaRepository.ListAsync();
                 return _mapper.Map<List<VacunaViewModel>>(mappedResult.ToList());
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
-        public async Task<PR_Refugio_Vacunas_FindResult> FindAsync(int id)
+        public async Task<VacunaViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_Vacunas_FindResult mappedResult = await _vacunaRepository.FindAsync(id);
                 return _mapper.Map<VacunaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
-        public async Task<PR_Refugio_Vacunas_DetailResult> DetailAsync(int id)
+        public async Task<VacunaViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Vacunas_DetailResult mappedResult = await _vacunaRepository.DetailAsync(id);
                 return _mapper.Map<VacunaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<Boolean> AddAsync(VacunaViewModel model)
@@ -64,12 +67,13 @@ namespace PetsHome.Business.Services
                 tbVacunas mappedResult = _mapper.Map<tbVacunas>(model);
                 return await _vacunaRepository.AddAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
+            
         public async Task<Boolean> UpdateAsync(VacunaViewModel model)
         {
             try
@@ -77,10 +81,10 @@ namespace PetsHome.Business.Services
                 tbVacunas mappedResult = _mapper.Map<tbVacunas>(model);
                 return await _vacunaRepository.EditAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
         public async Task<Boolean> RemoveAsync(int id)
@@ -90,10 +94,10 @@ namespace PetsHome.Business.Services
                 Boolean mappedResult = await _vacunaRepository.RemoveAsync(id);
                 return mappedResult;
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
     }

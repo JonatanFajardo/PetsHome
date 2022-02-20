@@ -46,7 +46,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbEntradas entity)
         {
-            entity.ent_UsuarioCrea = 1;
+            entity.ent_UsuarioModifica = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_Entradas_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@ent_Id", entity.ent_Id, DbType.Int32, ParameterDirection.Input);
@@ -59,7 +59,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_Entradas_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@ent_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

@@ -33,7 +33,7 @@ namespace PetsHome.Business
             services.AddScoped<MascotaRepository>();
             services.AddScoped<ProcedenciaRepository>();
             services.AddScoped<RazaRepository>();
-            services.AddScoped<SolicitudeRepository>();
+            services.AddScoped<SolicitudRepository>();
             services.AddScoped<VacunaRepository>();
             services.AddScoped<VoluntarioRepository>();
             //services.AddScoped<UsuariosRepository>();

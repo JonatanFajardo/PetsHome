@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -69,9 +70,9 @@ namespace PetsHome.UI.Controllers
         //[SessionManager("")]
         public async Task<IActionResult> Add(ProcedenciaViewModel model)
         {
-            if (model.proc_Id == 0)
+            if (!model.isEdit)
             {
-                bool createdItem = await _procedenciaService.AddAsync(model);
+                Boolean createdItem = await _procedenciaService.AddAsync(model);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -85,7 +86,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                bool updatedItem = await _procedenciaService.UpdateAsync(model);
+                Boolean updatedItem = await _procedenciaService.UpdateAsync(model);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
@@ -100,11 +101,11 @@ namespace PetsHome.UI.Controllers
 
         }
 
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(int proc_Id)
         {
             if (ModelState.IsValid)
             {
-                bool deletedItem = await _procedenciaService.RemoveAsync(id);
+                Boolean deletedItem = await _procedenciaService.RemoveAsync(proc_Id);
                 if (!deletedItem)
                 {
                     ShowAlert("Eliminado", AlertMessageType.Success);

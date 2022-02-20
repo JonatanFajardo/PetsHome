@@ -30,10 +30,17 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? raza_FechaModifica { get; set; }
 
-
-
-
-
+        //Indica si el formulario se esta editando.
+        public Boolean isEdit
+        {
+            get
+            {
+                if (this.raza_Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
     }
 
     public class EspaciosAttribute : ValidationAttribute

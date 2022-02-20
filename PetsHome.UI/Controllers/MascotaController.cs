@@ -90,10 +90,10 @@ namespace PetsHome.UI.Controllers
             var mascota = _mapper.Map<tbMascotas>(model);
             model.masc_Imagen = await model.ImageFile.GetBytesAsync();
 
-            if (model.masc_Id == 0)
+            if (!model.isEdit)
             {
 
-                bool createdItem = await _mascotaService.AddAsync(model);
+                Boolean createdItem = await _mascotaService.AddAsync(model);
                 Boolean validation = Validation.IsInsert(createdItem, ModelState.IsValid);
                 if (!validation)
                 {
@@ -109,7 +109,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                bool updatedItem = await _mascotaService.UpdateAsync(model);
+                Boolean updatedItem = await _mascotaService.UpdateAsync(model);
                 Boolean validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
                 if (!validation)
                 {
@@ -127,7 +127,7 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Remove(int masc_Id)
         {
-            bool deletedItem = await _mascotaService.RemoveAsync(masc_Id);
+            Boolean deletedItem = await _mascotaService.RemoveAsync(masc_Id);
             if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -69,9 +70,9 @@ namespace PetsHome.UI.Controllers
         //[SessionManager("")]
         public async Task<IActionResult> Add(EmpleadoCargoViewModel model)
         {
-            if (model.cag_Id == 0)
+            if (!model.isEdit)
             {
-                bool createdItem = await _empleadosCargoService.AddAsync(model);
+                Boolean createdItem = await _empleadosCargoService.AddAsync(model);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -85,7 +86,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                bool updatedItem = await _empleadosCargoService.UpdateAsync(model);
+                Boolean updatedItem = await _empleadosCargoService.UpdateAsync(model);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
@@ -100,11 +101,11 @@ namespace PetsHome.UI.Controllers
 
         }
 
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(int emp_id)
         {
             if (ModelState.IsValid)
             {
-                bool deletedItem = await _empleadosCargoService.RemoveAsync(id);
+                Boolean deletedItem = await _empleadosCargoService.RemoveAsync(emp_id);
                 if (!deletedItem)
                 {
                     ShowAlert("Eliminado", AlertMessageType.Success);

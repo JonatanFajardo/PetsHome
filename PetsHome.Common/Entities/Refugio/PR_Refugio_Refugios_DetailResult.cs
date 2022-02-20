@@ -17,9 +17,9 @@ namespace PetsHome.Common.Entities
         public int mpio_Id { get; set; }
         public string refg_InformacionAdicional { get; set; }
         public string EsActivo { get; set; }
-        public int refg_UsuarioCrea { get; set; }
+        public string UsuarioCreacion { get; set; }
         public DateTime refg_FechaCrea { get; set; }
-        public int? refg_UsuarioModifica { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? refg_FechaModifica { get; set; }
     }
 }

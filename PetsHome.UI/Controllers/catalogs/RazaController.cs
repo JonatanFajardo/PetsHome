@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -76,10 +77,10 @@ namespace PetsHome.UI.Controllers
         {
             //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
-            if (model.raza_Id == 0)
+            if (!model.isEdit)
             {
 
-                bool createdItem = await _razaService.AddAsync(model);
+                Boolean createdItem = await _razaService.AddAsync(model);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -93,7 +94,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                bool updatedItem = await _razaService.UpdateAsync(model);
+                Boolean updatedItem = await _razaService.UpdateAsync(model);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
@@ -111,7 +112,7 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Remove(int raza_Id)
         {
-            bool deletedItem = await _razaService.RemoveAsync(raza_Id);
+            Boolean deletedItem = await _razaService.RemoveAsync(raza_Id);
             if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);

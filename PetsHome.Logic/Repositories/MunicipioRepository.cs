@@ -40,13 +40,14 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Select<PR_General_Municipios_FindResult>(sqlQuery, parameter);
         }
-        //public async Task<PR_General_Municipios_DetailResult> DetailAsync(int id)
-        //{
-        //    const string sqlQuery = "[General].[PR_General_Municipios_Detail]";
-        //    var parameter = new DynamicParameters();
-        //    parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
-        //    return await DbApp.Detail<PR_General_Municipios_DetailResult>(sqlQuery, parameter);
-        //}
+        
+        public async Task<PR_General_Municipios_DetailResult> DetailAsync(int id)
+        {
+            const string sqlQuery = "[General].[PR_General_Municipios_Detail]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Detail<PR_General_Municipios_DetailResult>(sqlQuery, parameter);
+        }
 
         public async Task<Boolean> EditAsync(tbMunicipios entity)
         {
@@ -73,14 +74,16 @@ namespace PetsHome.Logic.Repositories
 
         public IEnumerable<tbPersonas> ValidationPersonas(int mpio_Id)
         {
-            const string query = @"[General].[PR_General_tbMunicipios_DependencyPersonas]";
-            var parameters = new DynamicParameters();
-            parameters.Add("@mpio_Id", mpio_Id, DbType.Int32, ParameterDirection.Input);
-            using (var db = new SqlConnection(InstaHelpDbContext.ConnectionString))
-            {
-                var result = db.Query<tbPersonas>(query, parameters, commandType: CommandType.StoredProcedure).ToList();
-                return result;
-            }
+            //const string query = @"[General].[PR_General_tbMunicipios_DependencyPersonas]";
+            //var parameters = new DynamicParameters();
+            //parameters.Add("@mpio_Id", mpio_Id, DbType.Int32, ParameterDirection.Input);
+            //using (var db = new SqlConnection(InstaHelpDbContext.ConnectionString))
+            //{
+            //    var result = db.Query<tbPersonas>(query, parameters, commandType: CommandType.StoredProcedure).ToList();
+            //    return result;
+            //}
+            throw new NotImplementedException();
         }
+
     }
 }
