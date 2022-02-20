@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public RazaController(RazaService razaService,
-                              IMapper mapper
+        public RazaController(RazaService razaService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _razaService = razaService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 

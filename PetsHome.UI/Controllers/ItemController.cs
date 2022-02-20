@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public ItemController(ItemService ItemService,
-                              IMapper mapper
+        public ItemController(ItemService ItemService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _ItemService = ItemService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 
