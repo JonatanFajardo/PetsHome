@@ -20,7 +20,6 @@ namespace PetsHome.UI.Controllers
             IOptions<MascotaViewModel> options)
         {
             _mascotaService = mascotaService;
-            _mapper = mapper;
             _pathFile = options;
 
         }
@@ -69,10 +68,8 @@ namespace PetsHome.UI.Controllers
             if (id != 0)
             {
                 var itemSearched = await _mascotaService.FindAsync(id);
-
-                var model = _mapper.Map<MascotaViewModel>(itemSearched);
-                var dropdown = Dropdown(model);
-                string imgBase64Data = model.masc_Imagen.GetImage();
+                var dropdown = Dropdown(itemSearched);
+                string imgBase64Data = itemSearched.masc_Imagen.GetImage();
                 ViewBag.ImageFile = string.Format("data:image/png;base64,{0}", imgBase64Data);
                 return View("Create", dropdown);
             }
@@ -86,7 +83,6 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(MascotaViewModel model)
         {
-            var mascota = _mapper.Map<tbMascotas>(model);
             model.masc_Imagen = await model.ImageFile.GetBytesAsync();
 
             if (!model.isEdit)

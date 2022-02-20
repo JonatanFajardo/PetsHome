@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public EventoController(EventoService EventoService,
-                              IMapper mapper
+        public EventoController(EventoService EventoService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _EventoService = EventoService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 

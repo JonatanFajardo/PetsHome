@@ -21,7 +21,6 @@ namespace PetsHome.UI.Controllers
                                 IMapper mapper)
         {
             _empleadosCargoService = empleadosCargoService;
-            _mapper = mapper;
         }
 
         public async Task<IActionResult> List()

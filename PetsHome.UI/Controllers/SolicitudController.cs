@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public SolicitudController(SolicitudService SolicitudService,
-                              IMapper mapper
+        public SolicitudController(SolicitudService SolicitudService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _SolicitudService = SolicitudService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 

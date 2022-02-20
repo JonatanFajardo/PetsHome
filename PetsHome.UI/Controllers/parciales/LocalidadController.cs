@@ -24,7 +24,6 @@ namespace PetsHome.UI.Controllers
         {
             _MunicipioService = MunicipioService;
             _departamentoService = departamentoService;
-            _mapper = mapper;
 
             //_httpContextAccessor = httpContextAccessor;
         }

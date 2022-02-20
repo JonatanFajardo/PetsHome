@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public RefugioController(RefugioService RefugioService,
-                              IMapper mapper
+        public RefugioController(RefugioService RefugioService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _RefugioService = RefugioService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 

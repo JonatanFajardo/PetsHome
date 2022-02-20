@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public AdopcionController(AdopcionService AdopcionService,
-                              IMapper mapper
+        public AdopcionController(AdopcionService AdopcionService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _AdopcionService = AdopcionService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 

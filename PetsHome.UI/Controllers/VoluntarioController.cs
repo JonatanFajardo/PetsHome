@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public VoluntarioController(VoluntarioService VoluntarioService,
-                              IMapper mapper
+        public VoluntarioController(VoluntarioService VoluntarioService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _VoluntarioService = VoluntarioService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 
