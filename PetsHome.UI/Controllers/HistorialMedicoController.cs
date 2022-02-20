@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public HistorialMedicoController(HistorialMedicoService HistorialMedicoService,
-                              IMapper mapper
+        public HistorialMedicoController(HistorialMedicoService HistorialMedicoService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _HistorialMedicoService = HistorialMedicoService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 

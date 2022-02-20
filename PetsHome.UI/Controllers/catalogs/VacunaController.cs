@@ -21,7 +21,6 @@ namespace PetsHome.UI.Controllers
                                 IMapper mapper)
         {
             _vacunaService = vacunaService;
-            _mapper = mapper;
         }
 
         public async Task<IActionResult> List()

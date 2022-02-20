@@ -18,13 +18,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public EmpleadoController(EmpleadoService EmpleadoService,
-                              IMapper mapper
+        public EmpleadoController(EmpleadoService EmpleadoService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _EmpleadoService = EmpleadoService;
-            _mapper = mapper;
             //  _httpContextAccessor = httpContextAccessor;
         }
 
