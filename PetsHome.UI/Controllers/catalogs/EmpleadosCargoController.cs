@@ -11,7 +11,6 @@ namespace PetsHome.UI.Controllers
     public class EmpleadosCargoController : BaseController
     {
         private readonly EmpleadosCargoService _empleadosCargoService;
-        private readonly IMapper _mapper;
 
         public IActionResult Index()
         {

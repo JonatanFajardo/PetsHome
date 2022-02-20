@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class SolicitudController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly SolicitudService _SolicitudService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class EventoController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly EventoService _EventoService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

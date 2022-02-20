@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
 {
     public class EmpleadoController : BaseController
     {
-        private readonly IMapper _mapper;
         private readonly EmpleadoService _EmpleadoService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 

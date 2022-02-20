@@ -11,7 +11,6 @@ namespace PetsHome.UI.Controllers
     public class VacunaController : BaseController
     {
         private readonly VacunaService _vacunaService;
-        private readonly IMapper _mapper;
 
         public IActionResult Index()
         {

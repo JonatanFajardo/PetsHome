@@ -11,7 +11,6 @@ namespace PetsHome.UI.Controllers
     public class ProcedenciaController : BaseController
     {
         private readonly ProcedenciaService _procedenciaService;
-        private readonly IMapper _mapper;
 
         public IActionResult Index()
         {

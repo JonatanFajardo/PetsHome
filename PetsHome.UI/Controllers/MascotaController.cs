@@ -15,7 +15,6 @@ namespace PetsHome.UI.Controllers
     public class MascotaController : BaseController
     {
         private readonly MascotaService _mascotaService;
-        private readonly IMapper _mapper;
         private readonly IOptions<MascotaViewModel> _pathFile;
         public MascotaController(MascotaService mascotaService, IMapper mapper,
             IOptions<MascotaViewModel> options)

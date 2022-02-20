@@ -13,7 +13,6 @@ namespace PetsHome.UI.Controllers
 
         private readonly MunicipioService _MunicipioService;
         private readonly DepartamentoService _departamentoService;
-        private readonly IMapper _mapper;
 
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
