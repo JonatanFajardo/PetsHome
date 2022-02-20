@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Business.Models
 {
@@ -14,6 +15,16 @@ namespace PetsHome.Business.Models
         [StringLength(50)]
         public string sub_Nombre { get; set; }
 
-
+        //Indica si el formulario se esta editando.
+        public Boolean isEdit
+        {
+            get
+            {
+                if (this.sub_Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
     }
 }

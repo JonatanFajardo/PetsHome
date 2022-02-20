@@ -21,9 +21,9 @@ namespace PetsHome.Common.Entities
         public string cag_Descripcion { get; set; }
         public string refg_Nombre { get; set; }
         public string EsActivo { get; set; }
-        public int per_UsuarioCrea { get; set; }
+        public string UsuarioCreacion { get; set; }
         public DateTime per_FechaCrea { get; set; }
-        public int? per_UsuarioModifica { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? per_FechaModifica { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@medic_Esterilizacion", entity.medic_Esterilizacion, DbType.Boolean, ParameterDirection.Input);
-            parameter.Add("@medic_Comportamiento", entity.medic_Comportamiento, DbType.String, ParameterDirection.Input);
+            parameter.Add("@medic_Comportamiento", entity.medic_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@medic_SaludCuidado", entity.medic_SaludCuidado, DbType.String, ParameterDirection.Input);
             parameter.Add("@medic_InformacionAdicional", entity.medic_InformacionAdicional, DbType.String, ParameterDirection.Input);
             parameter.Add("@medic_UsuarioCrea", entity.medic_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
@@ -49,22 +49,22 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbHistorialMedico entity)
         {
-            entity.medic_UsuarioCrea = 1;
+            entity.medic_UsuarioModifica = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@medic_Id", entity.medic_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@medic_Esterilizacion", entity.medic_Esterilizacion, DbType.Boolean, ParameterDirection.Input);
-            parameter.Add("@medic_Comportamiento", entity.medic_Comportamiento, DbType.String, ParameterDirection.Input);
+            parameter.Add("@medic_Comportamiento", entity.medic_Id, DbType.String, ParameterDirection.Input);
             parameter.Add("@medic_SaludCuidado", entity.medic_SaludCuidado, DbType.String, ParameterDirection.Input);
             parameter.Add("@medic_InformacionAdicional", entity.medic_InformacionAdicional, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_UsuarioCrea", entity.medic_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@medic_UsuarioModifica", entity.medic_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

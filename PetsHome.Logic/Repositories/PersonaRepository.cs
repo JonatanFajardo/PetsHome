@@ -49,7 +49,7 @@
 
         //public async Task<Boolean> EditAsync(tbPersonas entity)
         //{
-        //    entity.per_UsuarioCrea = 1;
+        //    entity.per_UsuarioModifica = 1;
         //    const string sqlQuery = "[General].[PR_General_Personas_Update]";
         //    var parameter = new DynamicParameters();
         //    parameter.Add("@per_Id", entity.per_Id, DbType.Int32, ParameterDirection.Input);
@@ -62,7 +62,7 @@
         //    parameter.Add("@per_Domicilio", entity.per_Domicilio, DbType.String, ParameterDirection.Input);
         //    parameter.Add("@per_Telefono", entity.per_Telefono, DbType.String, ParameterDirection.Input);
         //    parameter.Add("@per_Correo", entity.per_Correo, DbType.String, ParameterDirection.Input);
-        //    parameter.Add("@per_UsuarioCrea", entity.per_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+        //    parameter.Add("@per_UsuarioModifica", entity.per_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
         //    return await DbApp.Update(sqlQuery, parameter);
         //}
 

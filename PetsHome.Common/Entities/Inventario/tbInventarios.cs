@@ -17,10 +17,13 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public int inv_Id { get; set; }
         /// <summary>
-        /// Información relevante que se desee agregar
+        /// Información relevante que se desee agregar.
         /// </summary>
         public string inv_Descripcion { get; set; }
         public DateTime inv_Fecha { get; set; }
+        /// <summary>
+        /// Este es el ID del departamento que hace referencia al primary key de la tabla tbRefugios.
+        /// </summary>
         public int refg_Id { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
@@ -29,7 +32,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica el identificador del usuario que creó el registro.
         /// </summary>
-        public int? inv_UsuarioCrea { get; set; }
+        public int inv_UsuarioCrea { get; set; }
         /// <summary>
         /// Registra la fecha en que se creó el registro.
         /// </summary>

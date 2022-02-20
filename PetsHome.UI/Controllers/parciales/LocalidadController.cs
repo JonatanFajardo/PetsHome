@@ -54,11 +54,11 @@ namespace PetsHome.UI.Controllers
         ////{
         ////    string message = "";
         ////    var mapModel = _mapper.Map<tbDepartamentos>(model);
-        ////    Boolean validation = Validation.IsInsert(model.EditarDepartamento.depto_Id, ModelState.IsValid);
+        ////    Booleanean validation = Validation.IsInsert(model.EditarDepartamento.depto_Id, ModelState.IsValid);
         ////    //var id = _httpContextAccessor.HttpContext.Session.GetInt32("idUsuario");
         ////    if (!validation)
         ////    {
-        ////        bool result = await _departamentoService.AddAsync(mapModel);
+        ////        Boolean result = await _departamentoService.AddAsync(mapModel);
         ////        if (!result)
         ////        {
         ////            ShowAlert("Registro ingresado correctamente.", AlertMessageType.Success);
@@ -72,7 +72,7 @@ namespace PetsHome.UI.Controllers
         ////    }
         ////    else
         ////    {
-        ////        bool result = await _departamentoService.Edit(mapModel);
+        ////        Boolean result = await _departamentoService.Edit(mapModel);
         ////        if (!result)
         ////        {
         ////            ShowAlert("No se pudo realizar la acción.", AlertMessageType.Success);
@@ -95,7 +95,7 @@ namespace PetsHome.UI.Controllers
         ////public async Task<IActionResult> EditDepartamento(int id)
         ////{
         ////    DepartamentoViewModel model = new DepartamentoViewModel();
-        ////    //Boolean validation = validation.Controller();
+        ////    //Booleanean validation = validation.Controller();
         ////    if (ModelState.IsValid)
         ////    {
         ////        if (id == 0)

@@ -16,9 +16,9 @@ namespace PetsHome.Common.Entities
         public string per_Telefono { get; set; }
         public string per_Correo { get; set; }
         public int? vol_Recurrente { get; set; }
-        public int vol_UsuarioCrea { get; set; }
+        public string UsuarioCreacion { get; set; }
         public DateTime vol_FechaCrea { get; set; }
-        public int? vol_UsuarioModifica { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? vol_FechaModifica { get; set; }
     }
 }

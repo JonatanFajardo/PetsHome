@@ -53,7 +53,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbRefugios entity)
         {
-            entity.refg_UsuarioCrea = 1;
+            entity.refg_UsuarioModifica = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_Refugios_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
@@ -65,13 +65,13 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@refg_InformacionAdicional", entity.refg_InformacionAdicional, DbType.String, ParameterDirection.Input);
             parameter.Add("@depto_Id", entity.depto_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@refg_UsuarioCrea", entity.refg_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@refg_UsuarioModifica", entity.refg_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[General].[PR_General_Refugios_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@refg", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

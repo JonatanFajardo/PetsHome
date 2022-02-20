@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
+using System;
 
 namespace PetsHome.UI.Controllers
 {
@@ -20,11 +21,11 @@ namespace PetsHome.UI.Controllers
             TempData.Put("ShowAlert", message);
         }
 
-        public JsonResult AjaxResult(dynamic model, bool success)
+        public JsonResult AjaxResult(dynamic model, Boolean success)
         {
             return Json(new { item = model, success = success });
         }
-        public JsonResult AjaxResult(bool success)
+        public JsonResult AjaxResult(Boolean success)
         {
             return Json(new { success = success });
         }

@@ -11,5 +11,7 @@ namespace PetsHome.Common.Entities
         public string mpio_Codigo { get; set; }
         public string mpio_Descripcion { get; set; }
         public int depto_Id { get; set; }
+        public string codigoDept { get; set; }
+        public string codigo { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace PetsHome.Common.Entities
             tbHistorialMedico = new HashSet<tbHistorialMedico>();
             tbInventarios = new HashSet<tbInventarios>();
             tbInventariosDetalles = new HashSet<tbInventariosDetalles>();
+            tbItems = new HashSet<tbItems>();
             tbMascotas = new HashSet<tbMascotas>();
             tbMunicipios = new HashSet<tbMunicipios>();
             tbPersonas = new HashSet<tbPersonas>();
@@ -53,6 +54,7 @@ namespace PetsHome.Common.Entities
         public virtual ICollection<tbHistorialMedico> tbHistorialMedico { get; set; }
         public virtual ICollection<tbInventarios> tbInventarios { get; set; }
         public virtual ICollection<tbInventariosDetalles> tbInventariosDetalles { get; set; }
+        public virtual ICollection<tbItems> tbItems { get; set; }
         public virtual ICollection<tbMascotas> tbMascotas { get; set; }
         public virtual ICollection<tbMunicipios> tbMunicipios { get; set; }
         public virtual ICollection<tbPersonas> tbPersonas { get; set; }

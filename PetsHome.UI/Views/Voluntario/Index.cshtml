@@ -46,12 +46,15 @@
 
 
 @section Scripts {
-    <script src="~/js/components/datatable/datatable.init.js"></script>
-
     <script src="~/js/pages/voluntarios.js"></script>
     <script>
         voluntarios.datatable({listUrl: "@Url.Action("List")" });
-
     </script>
 
+    <script>
+        Catalogs.configure({
+            displayName: "voluntario",
+            getUrl: "@Url.Action("Find")"
+        });
+    </script>
 }

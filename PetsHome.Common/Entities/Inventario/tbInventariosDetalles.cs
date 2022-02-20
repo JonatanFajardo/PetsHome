@@ -11,9 +11,10 @@ namespace PetsHome.Common.Entities
         /// Identificador único de la tabla Inventarios Detalles.
         /// </summary>
         public int invdet_Id { get; set; }
-        public int? itm_Id { get; set; }
         public int inv_Id { get; set; }
-        public int? invdet_Cantidad { get; set; }
+        public int itm_Id { get; set; }
+        public int invdet_Existencia { get; set; }
+        public int invdet_Stock { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
@@ -37,5 +38,6 @@ namespace PetsHome.Common.Entities
 
         public virtual tbInventarios inv { get; set; }
         public virtual tbUsuarios invdet_UsuarioCreaNavigation { get; set; }
+        public virtual tbItems itm { get; set; }
     }
 }

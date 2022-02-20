@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -12,10 +13,12 @@ namespace PetsHome.Business.Services
     public class MascotaService
     {
         private readonly MascotaRepository _mascotaRepository;
+        private readonly ILogger<MascotaService> _logger;
         private readonly IMapper _mapper;
-        public MascotaService(MascotaRepository mascotaRepository, IMapper mapper)
+        public MascotaService(MascotaRepository mascotaRepository, ILogger<MascotaService> logger, IMapper mapper)
         {
             _mascotaRepository = mascotaRepository;
+            _logger = logger;
             _mapper = mapper;
         }
         public async Task<List<MascotaViewModel>> ListAsync()
@@ -25,10 +28,10 @@ namespace PetsHome.Business.Services
                 IEnumerable<PR_Refugio_Mascotas_ListResult> mappedResult = await _mascotaRepository.ListAsync();
                 return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<MascotaViewModel> FindAsync(int id)
@@ -38,10 +41,10 @@ namespace PetsHome.Business.Services
                 PR_Refugio_Mascotas_FindResult mappedResult = await _mascotaRepository.FindAsync(id);
                 return _mapper.Map<MascotaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<MascotaViewModel> DetailAsync(int id)
@@ -51,36 +54,37 @@ namespace PetsHome.Business.Services
                 PR_Refugio_Mascotas_DetailResult mappedResult = await _mascotaRepository.DetailAsync(id);
                 return _mapper.Map<MascotaViewModel>(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
         public async Task<Boolean> AddAsync(MascotaViewModel model)
         {
             try
             {
-                tbMascotas mappedResult = await _mascotaRepository.AddAsync(mappedResult);
-                return await _mapper.Map<tbMascotas>(mappedResult);
+                tbMascotas mappedResult = _mapper.Map<tbMascotas>(model); 
+                return await _mascotaRepository.AddAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
+            
         public async Task<Boolean> UpdateAsync(MascotaViewModel model)
         {
             try
             {
-                tbMascotas mappedResult = await _mascotaRepository.EditAsync(mappedResult);
-                return await _mapper.Map<tbMascotas>(mappedResult);
+                tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
+                return await _mascotaRepository.EditAsync(mappedResult);
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
         public async Task<Boolean> RemoveAsync(int id)
@@ -90,29 +94,29 @@ namespace PetsHome.Business.Services
                 Boolean mappedResult = await _mascotaRepository.RemoveAsync(id);
                 return mappedResult;
             }
-            catch (System.Exception)
+            catch (Exception error)
             {
-
-                throw;
+                _logger.LogError(error, error.Message);
+                return true;
             }
         }
 
         public IEnumerable<RazaViewModel> RazaDropdown()
         {
             IEnumerable<PR_Refugio_Raza_DropdownResult> mappedResult = _mascotaRepository.RazaDropdown();
-            return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
+            return _mapper.Map<List<RazaViewModel>>(mappedResult.ToList());
         }
 
-        public IEnumerable<RazaViewModel> RefugioDropdown()
+        public IEnumerable<RefugioViewModel> RefugioDropdown()
         {
             IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _mascotaRepository.RefugioDropdown();
-            return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
+            return _mapper.Map<List<RefugioViewModel>>(mappedResult.ToList());
         }
 
-        public IEnumerable<RazaViewModel> ProcedenciaDropdown()
+        public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
         {
             IEnumerable<PR_Refugio_Procedencia_DropdownResult> mappedResult = _mascotaRepository.ProcedenciaDropdown();
-            return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
+            return _mapper.Map<List<ProcedenciaViewModel>>(mappedResult.ToList());
         }
 
 

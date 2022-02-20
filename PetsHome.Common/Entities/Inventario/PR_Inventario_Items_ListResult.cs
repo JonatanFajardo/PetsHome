@@ -10,7 +10,6 @@ namespace PetsHome.Common.Entities
         public int itm_Id { get; set; }
         public string itm_Codigo { get; set; }
         public string itm_Descripcion { get; set; }
-        public string cat_Descripcion { get; set; }
-        public decimal itm_Precio { get; set; }
+        public string itm_Precio { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace PetsHome.Common.Entities
         public int vac_Id { get; set; }
         public string vac_Descripcion { get; set; }
         public string EsActivo { get; set; }
-        public int vac_UsuarioCrea { get; set; }
+        public string UsuarioCreacion { get; set; }
         public DateTime vac_FechaCrea { get; set; }
-        public int? vac_UsuarioModifica { get; set; }
+        public string UsuarioModificacion { get; set; }
         public DateTime? vac_FechaModifica { get; set; }
     }
 }

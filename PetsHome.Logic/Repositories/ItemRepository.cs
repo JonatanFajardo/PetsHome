@@ -47,7 +47,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbItems entity)
         {
-            entity.itm_UsuarioCrea = 1;
+            entity.itm_UsuarioModifica = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
@@ -55,13 +55,13 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@itm_Descripcion", entity.itm_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@cat_Id", entity.cat_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@itm_Precio", entity.itm_Precio, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@itm_UsuarioCrea", entity.itm_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@itm_UsuarioModifica", entity.itm_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[General].[PR_General_Items_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@itm_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

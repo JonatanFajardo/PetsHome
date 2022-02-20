@@ -10,10 +10,8 @@ namespace PetsHome.Common.Entities
         public int depto_Id { get; set; }
         public string depto_Codigo { get; set; }
         public string depto_Descripcion { get; set; }
-        public int depto_UsuarioCrea { get; set; }
         public string UsuarioCreacion { get; set; }
         public DateTime depto_FechaCrea { get; set; }
-        public int? depto_UsuarioModifica { get; set; }
         public string UsuarioModificacion { get; set; }
         public DateTime? depto_FechaModifica { get; set; }
     }

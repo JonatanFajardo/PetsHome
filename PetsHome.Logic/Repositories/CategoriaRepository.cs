@@ -43,19 +43,19 @@ namespace PetsHome.Logic.Repositories
         }
         public async Task<Boolean> EditAsync(tbCategorias entity)
         {
-            entity.cat_UsuarioCrea = 1;
+            entity.cat_UsuarioModifica = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@cat_Id", entity.cat_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cat_Descripcion", entity.cat_Descripcion, DbType.String, ParameterDirection.Input);
-            parameter.Add("@cat_UsuarioCrea", entity.cat_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cat_UsuarioModifica", entity.cat_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Delete]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@cat_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

@@ -25,7 +25,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbDepartamentos entity)
         {
-            entity.depto_UsuarioCrea = 1;
+            entity.depto_UsuarioModifica = 1;
             const string sqlQuery = "[General].[PR_General_Departamentos_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@depto_Id", entity.depto_Id, DbType.Int32, ParameterDirection.Input);
@@ -74,22 +74,20 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Select<PR_General_Departamentos_FindResult>(sqlQuery, parameter);
         }
 
-        //public async Task<PR_General_Departamentos_DetailResult> DetailAsync(int id)
-        //{
-        //    const string sqlQuery = "[General].[PR_General_Departamentos]";
-        //    var parameter = new DynamicParameters();
-        //    parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
-        //    return await DbApp.Detail<PR_General_Departamentos_DetailResult>(sqlQuery, parameter);
-        //}
-
-
         public async Task<PR_General_Departamentos_DetailResult> DetailAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Departamentos_Detail]";
+            const string sqlQuery = "[General].[PR_General_Departamentos]";
             var parameter = new DynamicParameters();
             parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Detail<PR_General_Departamentos_DetailResult>(sqlQuery, parameter);
         }
 
+        //public async Task<PR_General_Departamentos_DetailResult> DetailAsync(int id)
+        //{
+        //    const string sqlQuery = "[General].[PR_General_Departamentos_Detail]";
+        //    var parameter = new DynamicParameters();
+        //    parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
+        //    return await DbApp.Detail<PR_General_Departamentos_DetailResult>(sqlQuery, parameter);
+        //}
     }
 }

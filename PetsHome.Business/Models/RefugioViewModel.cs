@@ -64,6 +64,18 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? refg_FechaModifica { get; set; }
 
+        //Indica si el formulario se esta editando.
+        public Boolean isEdit
+        {
+            get
+            {
+                if (this.refg_Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
         #region Dropdown
         public SelectList departamentoList { get; set; }
         public SelectList municipioList { get; set; }

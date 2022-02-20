@@ -48,7 +48,6 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@masc_Edad", entity.masc_Edad, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Sexo", entity.masc_Sexo, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Peso", entity.masc_Peso, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@masc_Talla", entity.masc_Talla, DbType.Double, ParameterDirection.Input);
             parameter.Add("@masc_Color", entity.masc_Color, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Historia", entity.masc_Historia, DbType.String, ParameterDirection.Input);
             parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
@@ -69,7 +68,6 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@masc_Edad", entity.masc_Edad, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Sexo", entity.masc_Sexo, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Peso", entity.masc_Peso, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@masc_Talla", entity.masc_Talla, DbType.Double, ParameterDirection.Input);
             parameter.Add("@masc_Color", entity.masc_Color, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Historia", entity.masc_Historia, DbType.String, ParameterDirection.Input);
             parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
