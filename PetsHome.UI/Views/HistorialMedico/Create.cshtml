@@ -4,5 +4,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de historial medico</h3>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="medic_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Mascota-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Mascota</label>
+                        <input class="form-control" asp-for="masc_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="masc_Id"></span>
+                    </div>
+                    <!--Campo Esterilizacion-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Esterilizacion</label>
+                        <input class="form-control" asp-for="medic_Esterilizacion" type="text" />
+                        <span class="text-danger" asp-validation-for="medic_Esterilizacion"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Comportamiento-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Id</label>
+                        <input class="form-control" asp-for="com_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="com_Id"></span>
+                    </div>
+                    <!--Campo Salud Cuidado-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Salud Cuidado</label>
+                        <input class="form-control" asp-for="medic_SaludCuidado" type="text" />
+                        <span class="text-danger" asp-validation-for="medic_SaludCuidado"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Informacion Adicional-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Informacion Adicional</label>
+                        <input class="form-control" asp-for="medic_InformacionAdicional" type="text" />
+                        <span class="text-danger" asp-validation-for="medic_InformacionAdicional"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
 

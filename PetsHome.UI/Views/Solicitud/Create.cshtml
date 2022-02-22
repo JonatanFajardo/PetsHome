@@ -4,5 +4,77 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de solicitud</h3>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="sol_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Identidad-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Identidad</label>
+                        <input class="form-control" asp-for="sol_Identidad" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Identidad"></span>
+                    </div>
+                    <!--Campo Nombres-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Nombres</label>
+                        <input class="form-control" asp-for="sol_Nombres" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Nombres"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Apellidos-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Apellidos</label>
+                        <input class="form-control" asp-for="sol_Apellidos" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Apellidos"></span>
+                    </div>
+                    <!--Campo Telefono-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Telefono</label>
+                        <input class="form-control" asp-for="sol_Telefono" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Telefono"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Correo-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Correo</label>
+                        <input class="form-control" asp-for="sol_Correo" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Correo"></span>
+                    </div>
+                    <!--Campo Fecha-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Fecha</label>
+                        <input class="form-control" asp-for="sol_Fecha" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Fecha"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Mascota-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Mascota</label>
+                        <input class="form-control" asp-for="masc_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="masc_Id"></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
 

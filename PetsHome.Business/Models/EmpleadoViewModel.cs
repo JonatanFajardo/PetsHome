@@ -8,45 +8,20 @@ namespace PetsHome.Business.Models
     public partial class EmpleadoViewModel
     {
         [Key]
-        [Display(Name = "Id")]
         public int emp_Id { get; set; }
-
-        [Display(Name = "Codigo empleado")]
+        [Display(Name = "Codigo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(7)]
         public string emp_Codigo { get; set; }
-
-        [Display(Name = "Id")]
+        [Display(Name = "Persona")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int per_Id { get; set; }
-
-        [Display(Name = "Nombres")]
+        [Display(Name = "Refugio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public string per_Nombres { get; set; }
-
-        [Display(Name = "Apellidos")]
+        public int refg_Id { get; set; }
+        [Display(Name = "Cargo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public string per_Apellidos { get; set; }
-
-        [Display(Name = "Id")] //*
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int? refg_Id { get; set; }
-
-        [Display(Name = "Refugio")] //*
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public string Refugio { get; set; }
-
-        [Display(Name = "Id")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int? cag_Id { get; set; }
-
-        [Display(Name = "Categoria")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public string Categoria { get; set; }
-
-        [Display(Name = "Es Activo")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public bool? esActivo { get; set; }
+        public int cag_Id { get; set; }
+        public bool? emp_EsActivo { get; set; }
 
         public int emp_UsuarioCrea { get; set; }
 

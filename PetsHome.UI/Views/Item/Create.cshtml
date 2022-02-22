@@ -4,5 +4,53 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de item</h3>
+        </div>
 
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="itm_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Codigo-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Codigo</label>
+                        <input class="form-control" asp-for="itm_Codigo" type="text" />
+                        <span class="text-danger" asp-validation-for="itm_Codigo"></span>
+                    </div>
+                    <!--Campo Descripcion-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Descripcion</label>
+                        <input class="form-control" asp-for="itm_Descripcion" type="text" />
+                        <span class="text-danger" asp-validation-for="itm_Descripcion"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Categoria-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Categoria</label>
+                        <input class="form-control" asp-for="cat_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="cat_Id"></span>
+                    </div>
+                    <!--Campo Precio-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Precio</label>
+                        <input class="form-control" asp-for="itm_Precio" type="text" />
+                        <span class="text-danger" asp-validation-for="itm_Precio"></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
+END 

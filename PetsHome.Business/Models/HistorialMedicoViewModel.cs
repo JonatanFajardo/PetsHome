@@ -20,7 +20,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Comportamiento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(255)]
-        public string medic_Comportamiento { get; set; }
+        public int com_Id { get; set; }
 
         [Display(Name = "Salud Cuidado")]
         [Required(ErrorMessage = "El campo {0} es requerido")]

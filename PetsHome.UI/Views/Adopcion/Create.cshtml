@@ -1,0 +1,41 @@
+﻿@model AdopcionViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de mascotas</h3>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="adop_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Solicitud-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Solicitud</label>
+                        <input class="form-control" asp-for="sol_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="sol_Id"></span>
+                    </div>
+                    <!--Campo EsAprobado-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">EsAprobado</label>
+                        <input class="form-control" asp-for="adop_EsAprobado" type="text" />
+                        <span class="text-danger" asp-validation-for="adop_EsAprobado"></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
+END

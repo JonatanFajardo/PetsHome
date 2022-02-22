@@ -1,109 +1,64 @@
-﻿
+﻿    @model EmpleadoViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*
 <div class="container">
-
     <div class="card">
         <div class="card-header">
-            <h3>Registro de empleados</h3>
+            <h3>Registro de empleado</h3>
         </div>
+
         <div class="card-body">
             <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="emp_Id" type="hidden" />
                 <!--Fila-->
                 <div class="form-row">
-                    <!--Campo Codigo -->
-                    <div class="form-row col-md-6">
+                    <!--Campo Codigo-->
+                    <div class="form-group col-md-6">
                         <label class="control-label">Codigo</label>
                         <input class="form-control" asp-for="emp_Codigo" type="text" />
                         <span class="text-danger" asp-validation-for="emp_Codigo"></span>
                     </div>
-                    <!--Campo Refugio -->
-                    <div class="form-row col-md-6">
+                    <!--Campo Persona-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Persona</label>
+                        <input class="form-control" asp-for="per_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="per_Id"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Refugio-->
+                    <div class="form-group col-md-6">
                         <label class="control-label">Refugio</label>
                         <input class="form-control" asp-for="refg_Id" type="text" />
                         <span class="text-danger" asp-validation-for="refg_Id"></span>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Cargo -->
-                    <div class="form-row col-md-6">
+                    <!--Campo Cargo-->
+                    <div class="form-group col-md-6">
                         <label class="control-label">Cargo</label>
                         <input class="form-control" asp-for="cag_Id" type="text" />
                         <span class="text-danger" asp-validation-for="cag_Id"></span>
                     </div>
-                    <!--Campo Identidad -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">Identidad</label>
-                        <input class="form-control" asp-for="per_Identidad" type="text" />
-                        <span class="text-danger" asp-validation-for="per_Identidad"></span>
-                    </div>
                 </div>
                 <!--Fila-->
                 <div class="form-row">
-                    <!--Campo PrimerNombre -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">PrimerNombre</label>
-                        <input class="form-control" asp-for="per_PrimerNombre" type="text" />
-                        <span class="text-danger" asp-validation-for="per_PrimerNombre"></span>
-                    </div>
-                    <!--Campo SegundoNombre -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">SegundoNombre</label>
-                        <input class="form-control" asp-for="per_SegundoNombre" type="text" />
-                        <span class="text-danger" asp-validation-for="per_SegundoNombre"></span>
+                    <!--Campo EsActivo-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">EsActivo</label>
+                        <input class="form-control" asp-for="emp_EsActivo" type="text" />
+                        <span class="text-danger" asp-validation-for="emp_EsActivo"></span>
                     </div>
                 </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo ApellidoPaterno -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">ApellidoPaterno</label>
-                        <input class="form-control" asp-for="per_ApellidoPaterno" type="text" />
-                        <span class="text-danger" asp-validation-for="per_ApellidoPaterno"></span>
-                    </div>
-                    <!--Campo ApellidoMaterno -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">ApellidoMaterno</label>
-                        <input class="form-control" asp-for="per_ApellidoMaterno" type="text" />
-                        <span class="text-danger" asp-validation-for="per_ApellidoMaterno"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo FechaNacimiento -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">FechaNacimiento</label>
-                        <input class="form-control" asp-for="per_FechaNacimiento" type="text" />
-                        <span class="text-danger" asp-validation-for="per_FechaNacimiento"></span>
-                    </div>
-                    <!--Campo CorreoElectronico -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">CorreoElectronico</label>
-                        <input class="form-control" asp-for="per_CorreoElectronico" type="text" />
-                        <span class="text-danger" asp-validation-for="per_CorreoElectronico"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Direccion -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">Direccion</label>
-                        <input class="form-control" asp-for="per_Direccion" type="text" />
-                        <span class="text-danger" asp-validation-for="per_Direccion"></span>
-                    </div>
-                    <!--Campo Telefono -->
-                    <div class="form-row col-md-6">
-                        <label class="control-label">Telefono</label>
-                        <input class="form-control" asp-for="per_Telefono" type="text" />
-                        <span class="text-danger" asp-validation-for="per_Telefono"></span>
-                    </div>
-                </div>
+
             </form>
         </div>
-    </div>        
-</div>*@
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
