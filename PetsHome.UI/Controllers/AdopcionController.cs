@@ -17,8 +17,11 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
-
-        public AdopcionController(AdopcionService AdopcionService
+        public IActionResult Create()
+        {
+            return View();
+        }
+            public AdopcionController(AdopcionService AdopcionService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {

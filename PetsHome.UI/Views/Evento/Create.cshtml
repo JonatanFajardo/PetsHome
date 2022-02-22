@@ -1,8 +1,64 @@
-﻿@model EventoViewModel
+﻿    @model EventoViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de evento</h3>
+        </div>
 
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="eve_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Descripcion-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Descripcion</label>
+                        <input class="form-control" asp-for="eve_Descripcion" type="text" />
+                        <span class="text-danger" asp-validation-for="eve_Descripcion"></span>
+                    </div>
+                    <!--Campo Refugio-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Refugio</label>
+                        <input class="form-control" asp-for="refg_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_Id"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Hora Inicio-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Hora Inicio</label>
+                        <input class="form-control" asp-for="eve_HoraInicio" type="text" />
+                        <span class="text-danger" asp-validation-for="eve_HoraInicio"></span>
+                    </div>
+                    <!--Campo Hora Final-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Hora Final</label>
+                        <input class="form-control" asp-for="eve_HoraFinal" type="text" />
+                        <span class="text-danger" asp-validation-for="eve_HoraFinal"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Fecha-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Fecha</label>
+                        <input class="form-control" asp-for="eve_Fecha" type="text" />
+                        <span class="text-danger" asp-validation-for="eve_Fecha"></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}

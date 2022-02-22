@@ -1,8 +1,49 @@
-﻿
+﻿@model VoluntarioViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de voluntario</h3>
+        </div>
 
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="vol_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Horas Trabajadas-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Horas Trabajadas</label>
+                        <input class="form-control" asp-for="vol_HorasTrabajadas" type="text" />
+                        <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
+                    </div>
+                    <!--Campo Persona-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Persona</label>
+                        <input class="form-control" asp-for="per_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="per_Id"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Recurrente-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Recurrente</label>
+                        <input class="form-control" asp-for="vol_Recurrente" type="text" />
+                        <span class="text-danger" asp-validation-for="vol_Recurrente"></span>
+                    </div>
+                </div>
 
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
