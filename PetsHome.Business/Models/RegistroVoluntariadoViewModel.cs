@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Business.Models
 {
 
-    public partial class EventoViewModel
+    public partial class RegistroVoluntariadoViewModel
     {
         [Key]
         [Display(Name = "Id evento")]

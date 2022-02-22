@@ -1,8 +1,94 @@
-﻿
+﻿@model RefugioViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de refugio</h3>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+                <input class="form-control" asp-for="refg_Id" type="hidden" />
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Nombre-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Nombre</label>
+                        <input class="form-control" asp-for="refg_Nombre" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_Nombre"></span>
+                    </div>
+                    <!--Campo Ubicacion-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Ubicacion</label>
+                        <input class="form-control" asp-for="refg_Ubicacion" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_Ubicacion"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo RTN-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">RTN</label>
+                        <input class="form-control" asp-for="refg_RTN" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_RTN"></span>
+                    </div>
+                    <!--Campo Telefono-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Telefono</label>
+                        <input class="form-control" asp-for="refg_Telefono" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_Telefono"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Correo-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Correo</label>
+                        <input class="form-control" asp-for="refg_Correo" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_Correo"></span>
+                    </div>
+                    <!--Campo Información Adicional-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Información Adicional</label>
+                        <input class="form-control" asp-for="refg_InformacionAdicional" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_InformacionAdicional"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Departamento-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Departamento</label>
+                        <input class="form-control" asp-for="depto_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="depto_Id"></span>
+                    </div>
+                    <!--Campo Municipio-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Municipio</label>
+                        <input class="form-control" asp-for="mpio_Id" type="text" />
+                        <span class="text-danger" asp-validation-for="mpio_Id"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo EsActivo-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Departamento</label>
+                        <input class="form-control" asp-for="refg_EsActivo" type="text" />
+                        <span class="text-danger" asp-validation-for="refg_EsActivo"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/load-dropdownlist.js"></script>
+<script src="~/js/Extensions/image-Extension.js"></script>
+}
 

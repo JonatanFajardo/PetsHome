@@ -48,6 +48,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(500)]
         public string refg_InformacionAdicional { get; set; }
+        public bool? refg_EsActivo { get; set; }
 
         public int refg_UsuarioCrea { get; set; }
 
