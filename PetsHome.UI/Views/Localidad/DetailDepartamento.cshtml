@@ -22,19 +22,19 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.EditarDepartamento.depto_Codigo)
+                                            @Html.DisplayNameFor(model => model.depto_Codigo)
                                         </dt>
 
                                         <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.EditarDepartamento.depto_Codigo)
+                                            @Html.DisplayFor(model => model.depto_Codigo)
                                         </dd>
                                     </div>
                                     <div class="col-md-6">
                                         <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.EditarDepartamento.depto_Descripcion)
+                                            @Html.DisplayNameFor(model => model.depto_Descripcion)
                                         </dt>
                                         <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.EditarDepartamento.depto_Descripcion)
+                                            @Html.DisplayFor(model => model.depto_Descripcion)
                                         </dd>
                                     </div>
                                 </div>
@@ -65,18 +65,18 @@
                         <tbody>
                             <tr>
                                 <td>Creado</td>
-                                <td>@Html.DisplayFor(model => model.EditarDepartamento.UsuarioCreacion)</td>
-                                <td>@Html.DisplayFor(model => model.EditarDepartamento.depto_FechaCrea)</td>
+                                <td>@Html.DisplayFor(model => model.UsuarioCreacion)</td>
+                                <td>@Html.DisplayFor(model => model.depto_FechaCrea)</td>
                             </tr>
-                            @if (Model.EditarDepartamento.depto_UsuarioModifica == null)
+                            @if (Model.depto_UsuarioModifica == null)
                             {
                             }
                             else
                             {
                                 <tr>
                                     <td>Modificado</td>
-                                    <td>@Html.DisplayFor(model => model.EditarDepartamento.UsuarioModificacion)</td>
-                                    <td>@Html.DisplayFor(model => model.EditarDepartamento.depto_FechaModifica)</td>
+                                    <td>@Html.DisplayFor(model => model.UsuarioModificacion)</td>
+                                    <td>@Html.DisplayFor(model => model.depto_FechaModifica)</td>
                                 </tr>
                             }
 
@@ -140,7 +140,7 @@
                 <div class="row">
                     <div class="col-md-12" id="m-footer">
                         <a style="background-color:gray;color:white" asp-controller="Departamentos" asp-action="Index" class="btn btn-secondary">Cancelar</a>
-                        <a type="submit" class="btn btn-primary" href="/Departamentos/EditDepartamento/@Model.EditarDepartamento.depto_Id"><i class="fa fa-edit"></i> Editar</a>
+                        <a type="submit" class="btn btn-primary" href="/Departamentos/EditDepartamento/@Model.depto_Id"><i class="fa fa-edit"></i> Editar</a>
                     </div>
                 </div>
 

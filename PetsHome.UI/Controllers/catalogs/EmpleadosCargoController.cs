@@ -101,24 +101,18 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Remove(int emp_id)
         {
-            if (ModelState.IsValid)
+            Boolean deletedItem = await _empleadosCargoService.RemoveAsync(emp_id);
+            if (!deletedItem)
             {
-                Boolean deletedItem = await _empleadosCargoService.RemoveAsync(emp_id);
-                if (!deletedItem)
-                {
-                    ShowAlert("Eliminado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
+                ShowAlert("Eliminado", AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
             else
             {
-                return View("Index");
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
             }
+        
         }
     }
 }

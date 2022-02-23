@@ -1,97 +1,82 @@
 ﻿@model RefugioViewModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Refugios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4>Agregar Refugios</h4>
+@* Listado *@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-12"><h3>Listado de refugios</h3></div>
         </div>
-        <div class="card-body">
-            <form asp-action="Add" asp-controller="Refugio" method="post" autocomplete="ON">
-                <!-- Campo Id -->
-                <input type="hidden" asp-for="refg_Id" id="refg_Id" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo Nombre -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Nombre</label>
-                        <input class="form-control" asp-for="refg_Nombre" id="refg_Nombre" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_Nombre"></span>
-                    </div>
-                    <!-- Campo Ubicacion -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Ubicacion</label>
-                        <input class="form-control" asp-for="refg_Ubicacion" id="refg_Ubicacion" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_Ubicacion"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo RTN -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">RTN</label>
-                        <input class="form-control" asp-for="refg_RTN" id="refg_RTN" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_RTN"></span>
-                    </div>
-                    <!-- Campo Telefono -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Telefono</label>
-                        <input class="form-control" asp-for="refg_Telefono" id="refg_Telefono" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_Telefono"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo Correo -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Correo</label>
-                        <input class="form-control" asp-for="refg_Correo" id="refg_Correo" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_Correo"></span>
-                    </div>
-                    <!-- Campo InformacionAdicional -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Informacion Adicional</label>
-                        <input class="form-control" asp-for="refg_InformacionAdicional" id="refg_InformacionAdicional" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_InformacionAdicional"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo Departamento -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Departamento</label>
-                        <select class="form-control" asp-for="depto_Id" asp-items="Model.departamentoList" id="depto_Id">
-                            <option value="" selected>Seleccionar</option>
-                        </select>
-                        <span class="text-danger" asp-validation-for="depto_Id"></span>
-                    </div>
-                    <!-- Campo Municipio -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Municipio</label>
-                        <select class="form-control" asp-for="mpio_Id" asp-items="Model.municipioList" id="mpio_Id">
-                            <option value="" selected>Seleccionar</option>
-                        </select>
-                        <span class="text-danger" asp-validation-for="mpio_Id"></span>
-                    </div>
-                </div>
+    </div>
 
+    <div class="card-body">
+        <table class="table table-striped dt-responsive nowrap" id="datatable">
+            <thead class="text-center bg-primary text-white">
+                <tr>
+                    <th>Refugio</th>
+                    <th>Nombre</th>
+                    <th>Ubicacion</th>
+                    <th>RTN</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    <th>Informacion Adicional</th>
+                    <th>EsActivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="refg_Id" id="delete-item-id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-danger" />
+                </div>
             </form>
         </div>
     </div>
 </div>
-
-
+<!-- Fin Modal -->
 @section Scripts {
-    <script src="~/js/components/datatable/datatable.init.js"></script>
+<script src="~/js/pages/refugio.js"></script>
+<script>
+    Refugio.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
 
-    <script src="~/js/pages/Refugios.js"></script>
-    <script>
-        raza.datatable({listUrl: "@Url.Action("List")" });
-
-    </script>
-
+</script>
 }

@@ -13,17 +13,22 @@ namespace PetsHome.UI.Controllers
         private readonly SolicitudService _SolicitudService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        
         public SolicitudController(SolicitudService SolicitudService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _SolicitudService = SolicitudService;
             //  _httpContextAccessor = httpContextAccessor;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Create()
+        {
+            return View();
         }
 
         public async Task<IActionResult> List()

@@ -13,10 +13,6 @@ namespace PetsHome.UI.Controllers
         private readonly ItemService _ItemService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         public ItemController(ItemService ItemService
         //                      IHttpContextAccessor httpContextAccessor
@@ -26,6 +22,15 @@ namespace PetsHome.UI.Controllers
             //  _httpContextAccessor = httpContextAccessor;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
         public async Task<IActionResult> List()
         {
             var itemListing = await _ItemService.ListAsync();

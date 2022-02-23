@@ -1,60 +1,82 @@
 ﻿@model VoluntarioViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Voluntarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4>Agregar Voluntarios</h4>
+@* Listado *@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-12"><h3>Listado de voluntarios</h3></div>
         </div>
-        <div class="card-body">
-            <form asp-action="Add" asp-controller="Voluntario" method="post" autocomplete="ON">
-                <!-- Campo Id -->
-                <input type="hidden" asp-for="vol_Id" id="vol_Id" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo HorasTrabajadas -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Horas Trabajadas</label>
-                        <input class="form-control" asp-for="vol_HorasTrabajadas" id="vol_HorasTrabajadas" type="text" />
-                        <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
-                    </div>
-                    <!-- Campo Id -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Persona</label>
-                        <select class="form-control" asp-for="per_Id" id="per_Id">
-                            <option value="" selected>Seleccionar</option>
-                        </select>
-                        <span class="text-danger" asp-validation-for="per_Id"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo Recurrente -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Recurrencia</label>
-                        <input class="form-control" asp-for="vol_Recurrente" id="vol_Recurrente" type="text" />
-                        <span class="text-danger" asp-validation-for="vol_Recurrente"></span>
-                    </div>
-                </div>
-                </form>
-        </div>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-striped dt-responsive nowrap" id="datatable">
+            <thead class="text-center bg-primary text-white">
+                <tr>
+                    <th>Id</th>
+                    <th>Horas Trabajadas</th>
+                    <th>Nombres</th>
+                    <th>Identidad</th>
+                    <th>FechaNacimiento</th>
+                    <th>Domicilio</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Recurrente</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+
     </div>
 </div>
 
-
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="vol_Id" id="delete-item-id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
 @section Scripts {
-    <script src="~/js/pages/voluntarios.js"></script>
-    <script>
-        voluntarios.datatable({listUrl: "@Url.Action("List")" });
-    </script>
+<script src="~/js/pages/voluntario.js"></script>
+<script>
+    Voluntario.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
 
-    <script>
-        Catalogs.configure({
-            displayName: "voluntario",
-            getUrl: "@Url.Action("Find")"
-        });
-    </script>
+</script>
 }
+

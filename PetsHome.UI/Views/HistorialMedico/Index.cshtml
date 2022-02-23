@@ -1,74 +1,78 @@
 ﻿@model HistorialMedicoViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "HistorialMedico";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4>Agregar Historial Medico</h4>
+@* Listado *@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-12"><h3>Listado de historialmedico</h3></div>
         </div>
-        <div class="card-body">
-            <form asp-action="Add" asp-controller="HistorialMedico" method="post" autocomplete="ON">
-                <!-- Campo Id -->
-                <input type="hidden" asp-for="medic_Id" id="medic_Id" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo Id -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Mascota</label>
-                        <select class="form-control" asp-for="masc_Id" id="masc_Id">
-                            <option value="" selected>Seleccionar</option>
-                        </select>
-                        <span class="text-danger" asp-validation-for="masc_Id"></span>
-                    </div>
-                    <!-- Campo Esterilizacion -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Esterilización</label>
-                        <input class="form-control" asp-for="medic_Esterilizacion" id="medic_Esterilizacion" type="text" />
-                        <span class="text-danger" asp-validation-for="medic_Esterilizacion"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo Comportamiento -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Comportamiento</label>
-                        <input class="form-control" asp-for="medic_Comportamiento" id="medic_Comportamiento" type="text" />
-                        <span class="text-danger" asp-validation-for="medic_Comportamiento"></span>
-                    </div>
-                    <!-- Campo SaludCuidado -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Salud Cuidado</label>
-                        <input class="form-control" asp-for="medic_SaludCuidado" id="medic_SaludCuidado" type="text" />
-                        <span class="text-danger" asp-validation-for="medic_SaludCuidado"></span>
-                    </div>
+    </div>
 
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!-- Campo InformacionAdicional -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Información Adicional</label>
-                        <input class="form-control" asp-for="medic_InformacionAdicional" id="medic_InformacionAdicional" type="text" />
-                        <span class="text-danger" asp-validation-for="medic_InformacionAdicional"></span>
+    <div class="card-body">
+        <table class="table table-striped dt-responsive nowrap" id="datatable">
+            <thead class="text-center bg-primary text-white">
+                <tr>
+                    <th>Id</th>
+                    <th>mascota</th>
+                    <th>Esterilizacion</th>
+                    <th>comportamiento</th>
+                    <th>Salud Cuidado</th>
+                    <th>Informacion Adicional</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="medic_Id" id="delete-item-id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-danger" />
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
+<!-- Fin Modal -->
 @section Scripts {
-    <script src="~/js/components/datatable/datatable.init.js"></script>
+<script src="~/js/pages/historialmedico.js"></script>
+<script>
+    HistorialMedico.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
 
-    <script src="~/js/pages/Historial-Medico.js"></script>
-    <script>
-        HistorialMedico.datatable({listUrl: "@Url.Action("List")" });
-
-    </script>
-
+</script>
 }
