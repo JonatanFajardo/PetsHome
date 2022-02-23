@@ -1,15 +1,14 @@
 ﻿@model EmpleadoViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Empleados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 @* Listado *@
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <div class="col-md-12"><h3>Listado de Empleados</h3></div>
+            <div class="col-md-12"><h3>Listado de empleados</h3></div>
         </div>
     </div>
 
@@ -19,14 +18,20 @@
                 <tr>
                     <th>Id</th>
                     <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Cargo</th>
-                    <th>Refugio</th>
-                    <th>Estado</th>
+                    <th>Nombres</th>
+                    <th>Identidad</th>
+                    <th>FechaNacimiento</th>
+                    <th>Domicilio</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Descripcion</th>
+                    <th>refugio</th>
+                    <th>EsActivo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
         </table>
+
     </div>
 </div>
 
@@ -68,7 +73,7 @@
 @section Scripts {
     <script src="~/js/pages/empleado.js"></script>
     <script>
-        Empleado.datatable({ 
+        Empleado.datatable({
             urlList: "@Url.Action("List")",
             urlDetail: "@Url.Action("Detail")",
             urlInsert: "@Url.Action("Create")",
@@ -77,5 +82,3 @@
 
     </script>
 }
-
-

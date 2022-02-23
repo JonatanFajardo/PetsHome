@@ -13,12 +13,7 @@ namespace PetsHome.UI.Controllers
         private readonly VoluntarioService _VoluntarioService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public VoluntarioController(VoluntarioService VoluntarioService
+      public VoluntarioController(VoluntarioService VoluntarioService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
@@ -26,6 +21,15 @@ namespace PetsHome.UI.Controllers
             //  _httpContextAccessor = httpContextAccessor;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
         public async Task<IActionResult> List()
         {
             var itemListing = await _VoluntarioService.ListAsync();

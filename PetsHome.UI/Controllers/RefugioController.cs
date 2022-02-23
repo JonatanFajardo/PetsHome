@@ -17,7 +17,11 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
-
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
         public RefugioController(RefugioService RefugioService
         //                      IHttpContextAccessor httpContextAccessor
             )

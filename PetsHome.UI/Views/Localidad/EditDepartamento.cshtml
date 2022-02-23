@@ -5,18 +5,18 @@
 }
 
 <div class="row">
-    @if (Model.EditarDepartamento.depto_Id == 0)
+    @if (Model.depto_Id == 0)
     {
         <div class="col-md-12">
-            <partial name="Departamento" model="@Model.EditarDepartamento">
+            <partial name="Departamento" model="@Model">
         </div>
     }
     else
     {
         <div class="col-md-12">
-            <partial name="Departamento" model="@Model.EditarDepartamento">
+            <partial name="Departamento" model="@Model">
                 <div class="card mt-3">
-                    <partial name="Municipio" model="@Model.EditarMunicipio">
+                    <partial name="Municipio" model="@Model.ListadoMunicipios">
                 </div>
         </div>
     }
@@ -25,7 +25,7 @@
     <script src="~/js/app/catalogos/municipios.js"></script>
     <script src="~/js/app/catalogos/list-municipios.js"></script>
     <script>
-            appConfig.Municipios.configureTable({ listUrl: "@Url.Action("ListMunicipios")",id: @Model.EditarDepartamento.depto_Id });
+            appConfig.Municipios.configureTable({ listUrl: "@Url.Action("ListMunicipios")",id: @Model.depto_Id });
     </script>
     <script>
             appConfig.Catalogs.configure({

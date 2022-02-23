@@ -6,7 +6,7 @@ namespace PetsHome.Business.Models
     {
         [Key]
         [Display(Name = "Id inventario detalle")]
-        public int invDet_Id { get; set; }
+        public int invdet_Id { get; set; }
 
         [Display(Name = "Id inventario")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -18,19 +18,19 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Existencia")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int? invDet_Existencia { get; set; }
+        public int? invdet_Existencia { get; set; }
 
         [Display(Name = "Entradas")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int? invDet_Entradas { get; set; }
+        public int? invdet_Entradas { get; set; }
 
         [Display(Name = "Salidas")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int? invDet_Salidas { get; set; }
+        public int? invdet_Salidas { get; set; }
 
         [Display(Name = "")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int? invDet_Stock { get; set; }
+        public int? invdet_Stock { get; set; }
 
         public int invdet_UsuarioCrea { get; set; }
 
@@ -53,7 +53,7 @@ namespace PetsHome.Business.Models
         {
             get
             {
-                if (this.invDet_Id == 0)
+                if (this.invdet_Id == 0)
                     return false;
                 else
                     return true;

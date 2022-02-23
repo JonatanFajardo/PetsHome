@@ -1,65 +1,75 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@model DepartamentoViewModel
+@{
+    ViewData["Title"] = "Departamentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
-} 
-<!-- Card-->
+}
+
+@* Listado *@
 <div class="card">
     <div class="card-header">
-        <div class="row space-between">
-            <div class="col-md-9"><h3>Listado de departamentos</h3></div>
-            <div class="col-md-3"><a class="btn btn-primary mdi mdi-plus-circle-outline float-right" asp-controller="Localidad" asp-action="EditDepartamento">  Nuevo</a></div>
+        <div class="row">
+            <div class="col-md-12"><h3>Listado de departamentos</h3></div>
         </div>
     </div>
+
     <div class="card-body">
-        <table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="datatable">
-            <thead>
+        <table class="table table-striped dt-responsive nowrap" id="datatable">
+            <thead class="text-center bg-primary text-white">
                 <tr>
                     <th>Id</th>
-                    <th>Código</th>
-                    <th>Departamento</th>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-
         </table>
+
     </div>
 </div>
 
 <!-- Modal Delete-->
-<div class="modal" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar departamento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal" autocomplete="off">
-                    <p>
-                        ¿Está seguro que desea eliminar este registro?
-                    </p>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="depto_Id" id="delete-item-id">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
-                            <input type="hidden" id="txtIdDelete">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btnDelete"><i class="mdi mdi-delete"></i> Aceptar</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-danger" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<!-- Fin Modal -->
+@section Scripts {
+<script src="~/js/pages/departamento.js"></script>
+<script>
+    Departamento.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
 
-<!-- scripts -->
-@section Scripts{
-    <script src="~/js/app/catalogos/departamentos.js"></script>
-    <script src="~/js/app/catalogos/list-departamento.js"></script>
-    <script>
-        appConfig.Departamentos.configureTable({ listUrl: "@Url.Action("ListDepartamentos")" });
-    </script>
+</script>
 }
