@@ -6,20 +6,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PetsHome.Business.Models
 {
+    //public class DepartamentoViewModel
+    //{
+    //    public EditarDepartamento EditarDepartamento { get; set; }
+    //    public MunicipioViewModel EditarMunicipio { get; set; }
+    //    public DepartamentoViewModel()
+    //    {
+    //        EditarDepartamento = new EditarDepartamento();
+    //        EditarMunicipio = new MunicipioViewModel();
+    //    }
+    //}
+
+
     public class DepartamentoViewModel
-    {
-        public EditarDepartamento EditarDepartamento { get; set; }
-        public MunicipioViewModel EditarMunicipio { get; set; }
-        public DepartamentoViewModel()
-        {
-            EditarDepartamento = new EditarDepartamento();
-            EditarMunicipio = new MunicipioViewModel();
-        }
-        public List<MunicipioViewModel> ListadoMunicipios { get; set; }
-    }
-
-
-    public class EditarDepartamento
     {
         [Key]
         [Display(Name = "Id Departamentos")]
@@ -49,6 +48,9 @@ namespace PetsHome.Business.Models
         public string UsuarioModificacion { get; set; }
         [Display(Name = "Fecha modificación")]
         public DateTime? depto_FechaModifica { get; set; }
+
+        public List<MunicipioViewModel> ListadoMunicipios { get; set; }
+
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
