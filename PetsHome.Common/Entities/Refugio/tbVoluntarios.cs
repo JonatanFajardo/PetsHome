@@ -18,7 +18,7 @@ namespace PetsHome.Common.Entities
         public int vol_Id { get; set; }
         public int vol_HorasTrabajadas { get; set; }
         public int per_Id { get; set; }
-        public int? vol_Recurrente { get; set; }
+        public bool? vol_Recurrente { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>

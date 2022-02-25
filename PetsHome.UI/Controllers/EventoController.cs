@@ -75,40 +75,31 @@ namespace PetsHome.UI.Controllers
         }
 
         //[SessionManager("")]
-        public async Task<JsonResult> Add(EventoViewModel model)
+        public async Task<IActionResult> Add(EventoViewModel model)
         {
             //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {
-
                 Boolean createdItem = await _EventoService.AddAsync(model);
-                if (!createdItem)
-                {
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    return AjaxResult(true);
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                }
+                if (createdItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
             else
             {
                 Boolean updatedItem = await _EventoService.UpdateAsync(model);
-                if (!updatedItem)
-                {
-                    ShowAlert("Modificado", AlertMessageType.Success);
-                    return AjaxResult(true);
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                    //return RedirectToAction("Index");
-                }
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
+
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
 
         }
 

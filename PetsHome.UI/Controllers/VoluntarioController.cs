@@ -74,41 +74,31 @@ namespace PetsHome.UI.Controllers
         }
 
         //[SessionManager("")]
-        public async Task<JsonResult> Add(VoluntarioViewModel model)
+        public async Task<IActionResult> Add(VoluntarioViewModel model)
         {
             //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {
-
                 Boolean createdItem = await _VoluntarioService.AddAsync(model);
-                if (!createdItem)
-                {
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    return AjaxResult(true);
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                }
+                if (createdItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
             else
             {
                 Boolean updatedItem = await _VoluntarioService.UpdateAsync(model);
-                if (!updatedItem)
-                {
-                    ShowAlert("Modificado", AlertMessageType.Success);
-                    return AjaxResult(true);
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                    //return RedirectToAction("Index");
-                }
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
 
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
         public async Task<IActionResult> Remove(int vol_Id)

@@ -18,16 +18,78 @@
                     <!--Campo Codigo-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Codigo</label>
-                        <input class="form-control" asp-for="emp_Codigo" type="text" />
+                        <input class="form-control" asp-for="emp_Codigo" type="number" />
                         <span class="text-danger" asp-validation-for="emp_Codigo"></span>
                     </div>
-                    <!--Campo Persona-->
+                    <!--Campo Identidad-->
                     <div class="form-group col-md-6">
-                        <label class="control-label">Persona</label>
-                        <input class="form-control" asp-for="per_Id" type="text" />
-                        <span class="text-danger" asp-validation-for="per_Id"></span>
+                        <label class="control-label">Identidad</label>
+                        <input class="form-control" asp-for="per.per_Identidad" type="number" />
+                        <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
                     </div>
                 </div>
+
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Primer Nombre-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Primer Nombre</label>
+                        <input class="form-control" asp-for="per.per_PrimerNombre" type="text" />
+                        <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
+                    </div>
+                    <!--Campo Segundo Nombre-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Segundo Nombre</label>
+                        <input class="form-control" asp-for="per.per_SegundoNombre" type="text" />
+                        <span class="text-danger" asp-validation-for="per.per_SegundoNombre"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Apellido Paterno-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Apellido Paterno</label>
+                        <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" />
+                        <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
+                    </div>
+                    <!--Campo Apellido Materno-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Apellido Materno</label>
+                        <input class="form-control" asp-for="per.per_ApellidoMaterno" type="text" />
+                        <span class="text-danger" asp-validation-for="per.per_ApellidoMaterno"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Fecha Nacimiento-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Fecha Nacimiento</label>
+                        <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
+                        <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
+                    </div>
+                    <!--Campo Correo Domicilio-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Dirección</label>
+                        <input class="form-control" asp-for="per.per_Domicilio" type="text" />
+                        <span class="text-danger" asp-validation-for="per.per_Domicilio"></span>
+                    </div>
+                </div>
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Teléfono-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Teléfono</label>
+                        <input class="form-control" asp-for="per.per_Telefono" type="number"  />
+                        <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
+                    </div>
+                    <!--Campo Correo Electronico-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Correo Electronico</label>
+                        <input class="form-control" asp-for="per.per_Correo" type="email" />
+                        <span class="text-danger" asp-validation-for="per.per_Correo"></span>
+                    </div>
+                </div>
+
                 <!--Fila-->
                 <div class="form-row">
                     <!--Campo Refugio-->
@@ -45,11 +107,30 @@
                 </div>
                 <!--Fila-->
                 <div class="form-row">
-                    <!--Campo EsActivo-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">EsActivo</label>
-                        <input class="form-control" asp-for="emp_EsActivo" type="text" />
-                        <span class="text-danger" asp-validation-for="emp_EsActivo"></span>
+                    <@*!--Campo EsActivo-->
+                                                    <div class="form-group col-md-6">
+                                                <label class="control-label">EsActivo</label>
+                                                <input class="form-control" asp-for="emp_EsActivo" type="text" />
+                                                <span class="text-danger" asp-validation-for="emp_EsActivo"></span>
+                                                    </div>*@
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-2">
+                        <label>
+                             <input type="checkbox" asp-for="emp_EsActivo" >
+                             Estado
+                        </label>
+                        <label>
+                            @*@Html.CheckBox("emp_EsActivo", true)
+                                Estado*@
+                        </label>
+                    </div>
+
+
+                    <div class="col-3 ">
+                            <a class="btn mr-2 btn btn-secondary" asp-action="Index">Cancelar</a>
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+
                     </div>
                 </div>
             </form>

@@ -1,5 +1,4 @@
-﻿
-@model InventarioViewModel
+﻿@model InventarioViewModel
 @{
     ViewData["Title"] = "Inventarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -18,9 +17,9 @@
             <thead class="text-center bg-primary text-white">
                 <tr>
                     <th>Id</th>
-			<th>Descripcion</th>
-			<th>refugio</th>
-			<th>Fecha</th>
+                    <th>Descripcion</th>
+                    <th>refugio</th>
+                    <th>Fecha</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -56,23 +55,22 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <input type="submit" class="btn btn-danger"/>
+                    <input type="submit" class="btn btn-danger"   />
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- Fin Modal -->
-
 @section Scripts {
-    <script src="~/js/pages/inventario.js"></script>
-    <script>
-        Inventario.datatable({
-            urlList: "@Url.Action("List")",
-            urlDetail: "@Url.Action("Detail")",
-            urlInsert: "@Url.Action("Create")",
-            urlUpdate: "@Url.Action("Find")"
-        });
+<script src="~/js/pages/inventario.js"></script>
+<script>
+    Inventario.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
 
-    </script>
+</script>
 }

@@ -11,10 +11,6 @@ namespace PetsHome.Common.Entities
         public int vol_HorasTrabajadas { get; set; }
         public string Nombres { get; set; }
         public string per_Identidad { get; set; }
-        public DateTime per_FechaNacimiento { get; set; }
-        public string per_Domicilio { get; set; }
-        public string per_Telefono { get; set; }
-        public string per_Correo { get; set; }
-        public int? vol_Recurrente { get; set; }
+        public bool? vol_Recurrente { get; set; }
     }
 }

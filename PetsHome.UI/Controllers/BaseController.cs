@@ -21,6 +21,18 @@ namespace PetsHome.UI.Controllers
             TempData.Put("ShowAlert", message);
         }
 
+        protected IActionResult ShowAlert(string text, AlertMessageType type, dynamic model)
+        {
+            var message = new AlertMessageExtensions
+            {
+                Text = text,
+                Type = type
+            };
+            TempData.Put("ShowAlert", message);
+            return View("Create", model);
+        }
+
+
         public JsonResult AjaxResult(dynamic model, Boolean success)
         {
             return Json(new { item = model, success = success });

@@ -74,41 +74,31 @@ namespace PetsHome.UI.Controllers
         }
 
         //[SessionManager("")]
-        public async Task<JsonResult> Add(HistorialMedicoViewModel model)
+        public async Task<IActionResult> Add(HistorialMedicoViewModel model)
         {
             //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {
-
                 Boolean createdItem = await _HistorialMedicoService.AddAsync(model);
-                if (!createdItem)
-                {
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    return AjaxResult(true);
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                }
+                if (createdItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
             else
             {
                 Boolean updatedItem = await _HistorialMedicoService.UpdateAsync(model);
-                if (!updatedItem)
-                {
-                    ShowAlert("Modificado", AlertMessageType.Success);
-                    return AjaxResult(true);
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                    //return RedirectToAction("Index");
-                }
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
+                return RedirectToAction("Index");
             }
 
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
         public async Task<IActionResult> Remove(int medic_Id)

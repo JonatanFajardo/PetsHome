@@ -15,7 +15,7 @@ namespace PetsHome.Business.Extensions
                 return new HtmlString("");
             }
 
-            string alert;
+
             // var type = message.CssClass;
 
             //switch (type)
@@ -36,7 +36,7 @@ namespace PetsHome.Business.Extensions
             //        break;
             //}
 
-            alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
+            string alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
             return new HtmlString(alert);
         }
     }

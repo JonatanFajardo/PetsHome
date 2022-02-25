@@ -9,32 +9,45 @@ namespace PetsHome.Business.Models
     {
         [Key]
         public int emp_Id { get; set; }
+
         [Display(Name = "Codigo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string emp_Codigo { get; set; }
+        
         [Display(Name = "Persona")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int per_Id { get; set; }
+
+        public PersonaViewModel per { get; set; }
+
         [Display(Name = "Refugio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int refg_Id { get; set; }
+
         [Display(Name = "Cargo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int cag_Id { get; set; }
-        public bool? emp_EsActivo { get; set; }
+
+        public bool emp_EsActivo { get; set; }
 
         public int emp_UsuarioCrea { get; set; }
 
-        [Display(Name = "Usuario creación")]
-        public string? emp_NombreUsuarioCrea { get; set; }
         public DateTime emp_FechaCrea { get; set; }
         public int? emp_UsuarioModifica { get; set; }
 
-        [Display(Name = "Usuario modificación")]
-        public string? emp_NombreUsuarioModifica { get; set; }
-
         [Display(Name = "Fecha modificación")]
         public DateTime? emp_FechaModifica { get; set; }
+
+        // Propiedades Extras
+        public string emp_Nombres { get; set; }
+        public string cag_Descripcion { get; set; }
+        public string refg_Nombre { get; set; }
+        //public string emp_EsActivo { get; set; }
+
+        [Display(Name = "Usuario modificación")]
+        public string? emp_NombreUsuarioModifica { get; set; }
+        [Display(Name = "Usuario creación")]
+        public string? emp_NombreUsuarioCrea { get; set; }
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
