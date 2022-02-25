@@ -7,15 +7,14 @@ var EntradasDetalle = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                {FieldName: "entdet_Id"},
-                {FieldName: "ent_Id"},
-                {FieldName: "itm_Id"},
-                {FieldName: "entdet_Cantidad"},
-                {FieldName: "entdet_EsEliminado"},
-                {FieldName: "entdet_UsuarioCrea"},
-                {FieldName: "entdet_FechaCrea"},
-                {FieldName: "entdet_UsuarioModifica"},
-                {FieldName: "entdet_FechaModifica"}
+                { FieldName: 'entdet_Id', Visibility: false },
+                { FieldName: 'ent_Id', Size: 200, Visibility: true },
+                { FieldName: 'itm_Id', Visibility: true },
+                { FieldName: 'entdet_Cantidad', Visibility: true },
+                { FieldName: 'UsuarioCreacion', Visibility: true },
+                { FieldName: 'ent_FechaCrea', Visibility: true },
+                { FieldName: 'UsuarioModificacion', Visibility: true },
+                { FieldName: 'ent_FechaModifica', Visibility: true }
             ];
             datatable.init(Direction, header);
         })

@@ -11,22 +11,33 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Identidad")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(13)]
+        [MaxLength(13, ErrorMessage = "Ingrese solamente 13 digitos")]
+        [MinLength(13, ErrorMessage = "El mínimo de dígitos es 13")]
         public string per_Identidad { get; set; }
 
-        [Display(Name = "Nombres")]
+        [Display(Name = "PrimerNombre")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
-        public string per_Nombres { get; set; }
+        public string per_PrimerNombre { get; set; }
 
-        [Display(Name = "Apellidos")]
+        [Display(Name = "SegundoNombre")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
-        public string per_Apellidos { get; set; }
+        public string per_SegundoNombre { get; set; }
+
+        [Display(Name = "ApellidoPaterno")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(50)]
+        public string per_ApellidoPaterno { get; set; }
+
+        [Display(Name = "Apellido Materno")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(50)]
+        public string per_ApellidoMaterno { get; set; }
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
         public DateTime? per_FechaNacimiento { get; set; }
 
         [Display(Name = "Domicilio")]
@@ -36,7 +47,8 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Teléfono")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(8)]
+        [StringLength(8, ErrorMessage = "Ingrese solamente 8 digitos")]
+        [MinLength(8, ErrorMessage = "El mínimo de dígitos es 8")]
         public string per_Telefono { get; set; }
 
         [Display(Name = "Correo")]
@@ -48,7 +60,10 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Usuario creación")]
         public string? per_NombreUsuarioCrea { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime per_FechaCrea { get; set; }
+
         public int? per_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modificación")]
@@ -56,6 +71,13 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Fecha modificación")]
         public DateTime? per_FechaModifica { get; set; }
+
+        // Propiedades Extras
+        //public string cag_Descripcion { get; set; }
+        
+        //public string per_Domicilio { get; set; }
+        //public string per_Telefono { get; set; }
+        //public string per_Correo { get; set; }
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
@@ -68,5 +90,10 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
+
+        //public class PersonasDetailViewModel
+        //{
+
+        //}
     }
 }

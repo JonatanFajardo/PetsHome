@@ -8,9 +8,9 @@ var Empleado = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'emp_Id', Visibility: false  },
+                { FieldName: 'emp_Id', Visibility: false },
                 { FieldName: 'emp_Codigo', Size: 200, Visibility: true },
-                { FieldName: 'emp_Nombre', Visibility: true  },
+                { FieldName: 'emp_Nombres', Visibility: true },
                 { FieldName: 'cag_Descripcion', Visibility: true },
                 { FieldName: 'refg_Nombre', Visibility: true },
                 { FieldName: 'emp_EsActivo', Visibility: true }

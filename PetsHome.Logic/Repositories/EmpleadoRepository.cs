@@ -40,18 +40,19 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Empleados_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@emp_Codigo", entity.emp_Codigo, DbType.String, ParameterDirection.Input);
-            parameter.Add("@refg_Id", entity.refg_Id, DbType.String, ParameterDirection.Input);
+            parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cag_Id", entity.cag_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@per_Identidad", entity.per.per_Identidad, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@emp_EsActivo", entity.emp_EsActivo, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@per_Identidad", entity.per.per_Identidad, DbType.String, ParameterDirection.Input);
             parameter.Add("@per_PrimerNombre", entity.per.per_PrimerNombre, DbType.String, ParameterDirection.Input);
-            parameter.Add("@per_SegundoNombre", entity.per.per_SegundoNombre, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_ApellidoPaterno", entity.per.per_ApellidoPaterno, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_ApellidoMaterno", entity.per.per_ApellidoMaterno, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_FechaNacimiento", entity.per.per_FechaNacimiento, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_CorreoElectronico", entity.per.per_Correo, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_Telefono", entity.per.per_Telefono, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_Direccion", entity.per.per_Domicilio, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_UsuarioRegistra", entity.per.per_UsuarioCrea, DbType.Double, ParameterDirection.Input);
+            parameter.Add("@per_SegundoNombre", entity.per.per_SegundoNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoPaterno", entity.per.per_ApellidoPaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoMaterno", entity.per.per_ApellidoMaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_FechaNacimiento", entity.per.per_FechaNacimiento, DbType.DateTime, ParameterDirection.Input);
+            parameter.Add("@per_Domicilio", entity.per.per_Domicilio, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Telefono", entity.per.per_Telefono, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Correo", entity.per.per_Correo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_UsuarioCrea", entity.per.per_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
@@ -61,20 +62,21 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Empleados_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@emp_Id", entity.emp_Id, DbType.String, ParameterDirection.Input);
-            parameter.Add("@refg_Id", entity.refg_Id, DbType.String, ParameterDirection.Input);
-            parameter.Add("@cag_Id", entity.cag_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@emp_EsActivo", entity.emp_EsActivo, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@per_Id", entity.per.per_Id, DbType.String, ParameterDirection.Input);
-            parameter.Add("@per_Identidad", entity.per.per_Identidad, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_PrimerNombre", entity.per.per_PrimerNombre, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_SegundoNombre", entity.per.per_SegundoNombre, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_ApellidoPaterno", entity.per.per_ApellidoPaterno, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_ApellidoMaterno", entity.per.per_ApellidoMaterno, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_FechaNacimiento", entity.per.per_FechaNacimiento, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_CorreoElectronico", entity.per.per_Correo, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_Direccion", entity.per.per_Domicilio, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_Telefono", entity.per.per_Telefono, DbType.Double, ParameterDirection.Input);
-            parameter.Add("@per_UsuarioModifica", entity.per.per_UsuarioModifica, DbType.Double, ParameterDirection.Input);
+            parameter.Add("@emp_Codigo", entity.emp_Codigo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Id", entity.per_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cag_Id", entity.cag_Id, DbType.String, ParameterDirection.Input);
+            parameter.Add("@emp_EsActivo", entity.emp_EsActivo, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@per_Identidad", entity.per.per_Identidad, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_PrimerNombre", entity.per.per_PrimerNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_SegundoNombre", entity.per.per_SegundoNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoPaterno", entity.per.per_ApellidoPaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoMaterno", entity.per.per_ApellidoMaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_FechaNacimiento", entity.per.per_FechaNacimiento, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Domicilio", entity.per.per_Domicilio, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Telefono", entity.per.per_Telefono, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Correo", entity.per.per_Correo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_UsuarioModifica", entity.per.per_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 

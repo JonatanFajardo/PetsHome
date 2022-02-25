@@ -11,8 +11,6 @@ namespace PetsHome.Common.Entities
         public string refg_Nombre { get; set; }
         public string refg_Ubicacion { get; set; }
         public string refg_RTN { get; set; }
-        public string refg_Telefono { get; set; }
-        public string refg_Correo { get; set; }
         public int depto_Id { get; set; }
         public int mpio_Id { get; set; }
         public string refg_InformacionAdicional { get; set; }

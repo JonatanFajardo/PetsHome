@@ -9,12 +9,7 @@ var Inventario = (function () {
             header = [
                 {FieldName: "inv_Id"},
                 {FieldName: "inv_Fecha"},
-                {FieldName: "refg_Id"},
-                {FieldName: "inv_EsEliminado"},
-                {FieldName: "inv_UsuarioCrea"},
-                {FieldName: "inv_FechaCrea"},
-                {FieldName: "inv_UsuarioModifica"},
-                {FieldName: "inv_FechaModifica"}
+                {FieldName: "refg_Id"}
             ];
             datatable.init(Direction, header);
         })

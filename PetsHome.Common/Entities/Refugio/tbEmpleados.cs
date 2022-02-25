@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace PetsHome.Common.Entities
 {
@@ -11,7 +10,6 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Identificador único de la tabla Empleados.
         /// </summary>
-        /// 
         public int emp_Id { get; set; }
         public string emp_Codigo { get; set; }
         public int per_Id { get; set; }

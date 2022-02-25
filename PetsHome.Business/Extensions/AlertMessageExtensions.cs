@@ -43,16 +43,9 @@
 
     public class AlertMessaje
     {
-        public static string Error { get; set; }
-        public static string SuccessSave { get; set; }
-        public static string SuccessEdit { get; set; }
-        public static string SuccessDelete { get; set; }
-        public AlertMessaje()
-        {
-            Error = "Parece haber ocurrido un problema.";
-            SuccessSave = "Registro guardado correctamente.";
-            SuccessEdit = "Registro editado correctamente.";
-            SuccessDelete = "Registro eliminado correctamente.";
-        }
+        public static string Error = "Parece haber ocurrido un problema.";
+        public static string SuccessSave = "Registro guardado correctamente.";
+        public static string SuccessEdit = "Registro editado correctamente.";
+        public static string SuccessDelete = "Registro eliminado correctamente.";
     }
 }
