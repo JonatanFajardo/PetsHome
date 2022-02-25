@@ -18,15 +18,10 @@
                 <tr>
                     <th>Id</th>
                     <th>Codigo</th>
-                    <th>Nombres</th>
-                    <th>Identidad</th>
-                    <th>FechaNacimiento</th>
-                    <th>Domicilio</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
-                    <th>Descripcion</th>
-                    <th>refugio</th>
-                    <th>EsActivo</th>
+                    <th>Nombrus</th>
+                    <th>Cargos</th>
+                    <th>Refugio</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -62,23 +57,22 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <input type="submit" class="btn btn-danger"/>
+                    <input type="submit" class="btn btn-danger" />
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- Fin Modal -->
-
 @section Scripts {
-    <script src="~/js/pages/empleado.js"></script>
-    <script>
-        Empleado.datatable({
-            urlList: "@Url.Action("List")",
-            urlDetail: "@Url.Action("Detail")",
-            urlInsert: "@Url.Action("Create")",
-            urlUpdate: "@Url.Action("Find")"
-        });
+<script src="~/js/pages/empleado.js"></script>
+<script>
+    Empleado.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
 
-    </script>
+</script>
 }
