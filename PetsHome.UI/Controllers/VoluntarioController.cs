@@ -13,9 +13,9 @@ namespace PetsHome.UI.Controllers
         private readonly VoluntarioService _VoluntarioService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
-      public VoluntarioController(VoluntarioService VoluntarioService
-        //                      IHttpContextAccessor httpContextAccessor
-            )
+        public VoluntarioController(VoluntarioService VoluntarioService
+              //                      IHttpContextAccessor httpContextAccessor
+              )
         {
             _VoluntarioService = VoluntarioService;
             //  _httpContextAccessor = httpContextAccessor;
@@ -29,7 +29,7 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
-        
+
         public async Task<IActionResult> List()
         {
             var itemListing = await _VoluntarioService.ListAsync();
@@ -49,8 +49,7 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _VoluntarioService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
-                //return Json(new { item = result, success = true });
+                return View("Create", itemSearched);
             }
             else
             {

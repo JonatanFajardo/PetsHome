@@ -14,12 +14,6 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string emp_Codigo { get; set; }
         
-        [Display(Name = "Persona")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int per_Id { get; set; }
-
-        public PersonaViewModel per { get; set; }
-
         [Display(Name = "Refugio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int refg_Id { get; set; }
@@ -38,16 +32,17 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? emp_FechaModifica { get; set; }
 
+
         // Propiedades Extras
         public string emp_Nombres { get; set; }
         public string cag_Descripcion { get; set; }
         public string refg_Nombre { get; set; }
-        //public string emp_EsActivo { get; set; }
+        public string esActivo { get; set; }
 
-        [Display(Name = "Usuario modificación")]
-        public string? emp_NombreUsuarioModifica { get; set; }
-        [Display(Name = "Usuario creación")]
-        public string? emp_NombreUsuarioCrea { get; set; }
+        //public string emp_EsActivo { get; set; }
+        public string per_Identidad { get; set; }
+        public virtual PersonaViewModel per { get; set; } = new PersonaViewModel();
+       
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
@@ -66,13 +61,12 @@ namespace PetsHome.Business.Models
         public SelectList empleadoCargoList { get; set; }
         public SelectList procedenciaList { get; set; }
 
-        public void LoadDropDownList(IEnumerable<PR_Refugio_Refugio_DropdownResult> refugioDropdownResults,
-                                        IEnumerable<PR_Refugio_EmpleadosCargos_DropdownResult> empleadoCargoDropdownResults,
-                                        IEnumerable<PR_Refugio_Procedencia_DropdownResult> procedenciaDropdownResults)
+         public void LoadDropDownList(IEnumerable<RefugioViewModel> refugioDropdownResults,
+                                        IEnumerable<EmpleadoCargoViewModel> empleadoCargoDropdownResults)
         {
             refugioList = new SelectList(refugioDropdownResults, "refg_Id", "refg_Nombre");
             empleadoCargoList = new SelectList(empleadoCargoDropdownResults, "cag_Id", "cag_Descripcion");
-            procedenciaList = new SelectList(procedenciaDropdownResults, "proc_Id", "proc_Descripcion");
+            
         }
         #endregion Dropdown
 

@@ -11,9 +11,7 @@ var Mascota = (function () {
                 { FieldName: 'masc_Fila', Size: 200, Visibility: true },
                 { FieldName: 'masc_Nombre', Visibility: true },
                 { FieldName: 'raza_Descripcion', Visibility: true },
-                { FieldName: 'refg_Nombre', Visibility: true },
-                { FieldName: 'masc_EsAdoptado', Visibility: true },
-                { FieldName: 'masc_EsReservado', Visibility: true }
+                { FieldName: 'refg_Nombre', Visibility: true }
             ];
             datatable.init(Direction, header);
         })

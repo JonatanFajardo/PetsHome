@@ -62,7 +62,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Mascotas_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@masc_Imagen", entity.masc_Imagen, DbType.String, ParameterDirection.Input);
+            parameter.Add("@masc_Imagen", entity.masc_Imagen, DbType.Binary, ParameterDirection.Input);
             parameter.Add("@masc_Nombre", entity.masc_Nombre, DbType.String, ParameterDirection.Input);
             parameter.Add("@raza_Id", entity.raza_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Edad", entity.masc_Edad, DbType.Int32, ParameterDirection.Input);

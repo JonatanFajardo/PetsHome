@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Business.Models
@@ -20,8 +21,8 @@ namespace PetsHome.Business.Models
         [StringLength(50)]
         public string per_PrimerNombre { get; set; }
 
-        [Display(Name = "SegundoNombre")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [Display(Name = "Segundo Nombre")]
+        //[Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string per_SegundoNombre { get; set; }
 
@@ -31,14 +32,15 @@ namespace PetsHome.Business.Models
         public string per_ApellidoPaterno { get; set; }
 
         [Display(Name = "Apellido Materno")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
+        //[Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string per_ApellidoMaterno { get; set; }
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [DataType(DataType.Date)]
-        public DateTime? per_FechaNacimiento { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime per_FechaNacimiento { get; set; }
 
         [Display(Name = "Domicilio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -73,6 +75,14 @@ namespace PetsHome.Business.Models
         public DateTime? per_FechaModifica { get; set; }
 
         // Propiedades Extras
+
+        [Display(Name = "Usuario modificación")]
+        public string? usuarioModifica { get; set; }
+        [Display(Name = "Usuario creación")]
+        public string? usuarioCrea { get; set; }
+
+        public SelectList refugio { get; set; }
+
         //public string cag_Descripcion { get; set; }
         
         //public string per_Domicilio { get; set; }

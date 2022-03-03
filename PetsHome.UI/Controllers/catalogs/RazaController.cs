@@ -70,7 +70,7 @@ namespace PetsHome.UI.Controllers
         }
 
         //[SessionManager("")]
-        public async Task<JsonResult> Add(RazaViewModel model)
+        public async Task<IActionResult> Add(RazaViewModel model)
         {
             //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
@@ -81,12 +81,13 @@ namespace PetsHome.UI.Controllers
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
-                    return AjaxResult(true);
+                    return RedirectToAction("Index");
                 }
                 else
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
+                    return RedirectToAction("Index");
+
                 }
             }
             else
@@ -95,7 +96,7 @@ namespace PetsHome.UI.Controllers
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
-                    return AjaxResult(true);
+                    return RedirectToAction("Index");
                 }
                 else
                 {

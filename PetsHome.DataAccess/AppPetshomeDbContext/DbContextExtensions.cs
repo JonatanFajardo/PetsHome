@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PetsHome.Common.AppPetshomeDbContext
+namespace PetsHome.DataAccess.AppPetshomeDbContext
 {
     public static class DbContextExtensions
     {
