@@ -11,8 +11,10 @@ namespace PetsHome.Common.Entities
         public int sol_Id { get; set; }
         public bool adop_EsAprobado { get; set; }
         public int adop_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime adop_FechaCrea { get; set; }
         public int? adop_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? adop_FechaModifica { get; set; }
     }
 }

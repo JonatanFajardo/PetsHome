@@ -36,26 +36,43 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> AddAsync(tbVoluntarios entity)
         {
-            entity.vol_UsuarioCrea = 1;
+            entity.per.per_UsuarioCrea = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_Voluntarios_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@vol_HorasTrabajadas", entity.vol_HorasTrabajadas, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@per_Id", entity.per_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vol_Recurrente", entity.vol_Recurrente, DbType.Boolean, ParameterDirection.Input);
-            parameter.Add("@vol_UsuarioCrea", entity.vol_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@per_Identidad", entity.per.per_Identidad, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_PrimerNombre", entity.per.per_PrimerNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_SegundoNombre", entity.per.per_SegundoNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoPaterno", entity.per.per_ApellidoPaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoMaterno", entity.per.per_ApellidoMaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_FechaNacimiento", entity.per.per_FechaNacimiento, DbType.Date, ParameterDirection.Input);
+            parameter.Add("@per_Domicilio", entity.per.per_Domicilio, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Telefono", entity.per.per_Telefono, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Correo", entity.per.per_Correo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_UsuarioCrea", entity.per.per_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
         public async Task<Boolean> EditAsync(tbVoluntarios entity)
         {
-            entity.vol_UsuarioModifica = 1;
+            entity.per.per_UsuarioModifica = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_Voluntarios_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@vol_Id", entity.vol_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vol_HorasTrabajadas", entity.vol_HorasTrabajadas, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@per_Id", entity.per_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@per_Id", entity.per.per_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vol_Recurrente", entity.vol_Recurrente, DbType.Boolean, ParameterDirection.Input);
-            parameter.Add("@vol_UsuarioModifica", entity.vol_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@per_Identidad", entity.per.per_Identidad, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_PrimerNombre", entity.per.per_PrimerNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_SegundoNombre", entity.per.per_SegundoNombre, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoPaterno", entity.per.per_ApellidoPaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_ApellidoMaterno", entity.per.per_ApellidoMaterno, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_FechaNacimiento", entity.per.per_FechaNacimiento, DbType.Date, ParameterDirection.Input);
+            parameter.Add("@per_Domicilio", entity.per.per_Domicilio, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Telefono", entity.per.per_Telefono, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_Correo", entity.per.per_Correo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@per_UsuarioModifica", entity.per.per_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 

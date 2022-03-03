@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -39,7 +41,7 @@ namespace PetsHome.Business.Services
             try
             {
                 PR_Refugio_Empleados_FindResult mappedResult = await _empleadoRepository.FindAsync(id);
-                return _mapper.Map<EmpleadoViewModel>(mappedResult);
+                return MappingCustom.Map(mappedResult);
             }
             catch (Exception error)
             {
@@ -87,6 +89,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try
@@ -98,6 +101,34 @@ namespace PetsHome.Business.Services
             {
                 _logger.LogError(error, error.Message);
                 return true;
+            }
+        }
+        
+        public IEnumerable<RefugioViewModel> RefugioDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _empleadoRepository.RefugioDropdown();
+                return _mapper.Map<IEnumerable<RefugioViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        public IEnumerable<EmpleadoCargoViewModel> EmpleadoCargoDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_EmpleadosCargos_DropdownResult> mappedResult = _empleadoRepository.EmpleadoCargoDropdown();
+                return _mapper.Map<IEnumerable<EmpleadoCargoViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
     }

@@ -42,7 +42,4 @@ namespace PetsHome.UI.Controllers
             return Json(new { success = success });
         }
     }
-
-
-
 }

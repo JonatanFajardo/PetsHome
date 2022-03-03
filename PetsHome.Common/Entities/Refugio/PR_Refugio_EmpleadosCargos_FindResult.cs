@@ -12,8 +12,10 @@ namespace PetsHome.Common.Entities
         public decimal? cag_Salario { get; set; }
         public bool cag_EsActivo { get; set; }
         public int cag_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime cag_FechaCrea { get; set; }
         public int? cag_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? cag_FechaModifica { get; set; }
     }
 }

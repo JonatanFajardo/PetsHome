@@ -55,7 +55,7 @@ namespace PetsHome.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Raza}/{action=Index}/{id?}");
+                    pattern: "{controller=Mascota}/{action=Index}/{id?}");
             });
         }
     }

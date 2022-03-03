@@ -10,8 +10,10 @@ namespace PetsHome.Common.Entities
         public int cat_Id { get; set; }
         public string cat_Descripcion { get; set; }
         public int cat_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime cat_FechaCrea { get; set; }
         public int? cat_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? cat_FechaModifica { get; set; }
     }
 }

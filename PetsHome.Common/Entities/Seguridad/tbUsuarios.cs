@@ -28,7 +28,6 @@ namespace PetsHome.Common.Entities
             tbRefugios = new HashSet<tbRefugios>();
             tbSolicitudes = new HashSet<tbSolicitudes>();
             tbVacunas = new HashSet<tbVacunas>();
-            tbVoluntarios = new HashSet<tbVoluntarios>();
         }
 
         public int usu_Id { get; set; }
@@ -63,6 +62,5 @@ namespace PetsHome.Common.Entities
         public virtual ICollection<tbRefugios> tbRefugios { get; set; }
         public virtual ICollection<tbSolicitudes> tbSolicitudes { get; set; }
         public virtual ICollection<tbVacunas> tbVacunas { get; set; }
-        public virtual ICollection<tbVoluntarios> tbVoluntarios { get; set; }
     }
 }

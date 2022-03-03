@@ -11,8 +11,10 @@ namespace PetsHome.Common.Entities
         public DateTime inv_Fecha { get; set; }
         public int refg_Id { get; set; }
         public int inv_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime inv_FechaCrea { get; set; }
         public int? inv_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? inv_FechaModifica { get; set; }
     }
 }

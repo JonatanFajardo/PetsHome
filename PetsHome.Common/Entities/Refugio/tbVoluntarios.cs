@@ -18,27 +18,9 @@ namespace PetsHome.Common.Entities
         public int vol_Id { get; set; }
         public int vol_HorasTrabajadas { get; set; }
         public int per_Id { get; set; }
-        public bool? vol_Recurrente { get; set; }
-        /// <summary>
-        /// Indica si el registro está desactivado permanentemente.
-        /// </summary>
-        public bool vol_EsEliminado { get; set; }
-        public int vol_UsuarioCrea { get; set; }
-        /// <summary>
-        /// Registra la fecha en que se creó el registro.
-        /// </summary>
-        public DateTime vol_FechaCrea { get; set; }
-        /// <summary>
-        /// Indica el identificador del último usuario que modificó el registro.
-        /// </summary>
-        public int? vol_UsuarioModifica { get; set; }
-        /// <summary>
-        /// Registra la última fecha en que se modificó el registro.
-        /// </summary>
-        public DateTime? vol_FechaModifica { get; set; }
+        public bool vol_Recurrente { get; set; }
 
         public virtual tbPersonas per { get; set; }
-        public virtual tbUsuarios vol_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbEventos_tbVoluntarios> tbEventos_tbVoluntarios { get; set; }
     }
 }

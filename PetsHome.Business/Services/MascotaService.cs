@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -64,7 +65,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                tbMascotas mappedResult = _mapper.Map<tbMascotas>(model); 
+                model.masc_Imagen = await model.ImageFile.GetBytesAsync();
+                tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
                 return await _mascotaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -73,11 +75,12 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(MascotaViewModel model)
         {
             try
             {
+                model.masc_Imagen = await model.ImageFile.GetBytesAsync();
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
                 return await _mascotaRepository.EditAsync(mappedResult);
             }
@@ -103,20 +106,44 @@ namespace PetsHome.Business.Services
 
         public IEnumerable<RazaViewModel> RazaDropdown()
         {
-            IEnumerable<PR_Refugio_Raza_DropdownResult> mappedResult = _mascotaRepository.RazaDropdown();
-            return _mapper.Map<List<RazaViewModel>>(mappedResult.ToList());
+            try
+            {
+                IEnumerable<PR_Refugio_Raza_DropdownResult> mappedResult = _mascotaRepository.RazaDropdown();
+                return _mapper.Map<List<RazaViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
         }
 
         public IEnumerable<RefugioViewModel> RefugioDropdown()
         {
-            IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _mascotaRepository.RefugioDropdown();
-            return _mapper.Map<List<RefugioViewModel>>(mappedResult.ToList());
+            try
+            {
+                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _mascotaRepository.RefugioDropdown();
+                return _mapper.Map<List<RefugioViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
         }
 
         public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
         {
-            IEnumerable<PR_Refugio_Procedencia_DropdownResult> mappedResult = _mascotaRepository.ProcedenciaDropdown();
-            return _mapper.Map<List<ProcedenciaViewModel>>(mappedResult.ToList());
+            try
+            {
+                IEnumerable<PR_Refugio_Procedencia_DropdownResult> mappedResult = _mascotaRepository.ProcedenciaDropdown();
+                return _mapper.Map<List<ProcedenciaViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
         }
 
 

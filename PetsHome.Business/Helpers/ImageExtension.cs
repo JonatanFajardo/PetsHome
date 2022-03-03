@@ -94,12 +94,15 @@ namespace PetsHome.Business.Helpers
         /// <returns></returns>
         public static async Task<byte[]> GetBytesAsync(this IFormFile formFile)
         {
-            if (formFile.Length < 1)
+            if (formFile != null)
             {
-                using (MemoryStream stream = new MemoryStream())
+                if (formFile.Length > 1)
                 {
-                    await formFile.CopyToAsync(stream);
-                    return stream.ToArray();
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        await formFile.CopyToAsync(stream);
+                        return stream.ToArray();
+                    }
                 }
             }
             return null;

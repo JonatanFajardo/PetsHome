@@ -12,32 +12,119 @@
 
         <div class="card-body">
             <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="vol_Id" type="hidden"/>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Horas Trabajadas-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Horas Trabajadas</label>
-                        <input class="form-control" asp-for="vol_HorasTrabajadas" type="text" />
-                        <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
-                    </div>
-                    <!--Campo Persona-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Persona</label>
-                        <input class="form-control" asp-for="per_Id" type="text" />
-                        <span class="text-danger" asp-validation-for="per_Id"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Recurrente-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Recurrente</label>
-                        <input class="form-control" asp-for="vol_Recurrente" type="text" />
-                        <span class="text-danger" asp-validation-for="vol_Recurrente"></span>
+                <input class="form-control" asp-for="vol_Id" type="hidden" />
+                <input class="form-control" asp-for="per.per_Id" type="hidden" />
+
+                <!--Datos Personales-->
+                <div class="card">
+                    <div class="card-body">
+                    <h5 class="card-title">Datos personales</h5>
+                        <!--Fila-->
+                        <div class="form-row">
+                            <!--Campo Primer Nombre-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Primer Nombre</label>
+                                <input class="form-control" asp-for="per.per_PrimerNombre" type="text" />
+                                <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
+                            </div>
+                            <!--Campo Segundo Nombre-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Segundo Nombre</label>
+                                <input class="form-control" asp-for="per.per_SegundoNombre" type="text" />
+                                <span class="text-danger" asp-validation-for="per.per_SegundoNombre"></span>
+                            </div>
+                        </div>
+                        <!--Fila-->
+                        <div class="form-row">
+                            <!--Campo Apellido Paterno-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Apellido Paterno</label>
+                                <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" />
+                                <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
+                            </div>
+                            <!--Campo Apellido Materno-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Apellido Materno</label>
+                                <input class="form-control" asp-for="per.per_ApellidoMaterno" type="text" />
+                                <span class="text-danger" asp-validation-for="per.per_ApellidoMaterno"></span>
+                            </div>
+                        </div>
+                        <!--Fila-->
+                        <div class="form-row">
+                            <!--Campo Identidad-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Identidad</label>
+                                <input class="form-control" asp-for="per.per_Identidad" type="number" />
+                                <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
+                            </div>
+                            <!--Campo Fecha Nacimiento-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Fecha Nacimiento</label>
+                                <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
+                                <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
+                            </div>
+                        </div>
+                        <!--Fila-->
+                        <div class="form-row">
+                            <!--Campo Correo Electronico-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Correo Electrónico</label>
+                                <input class="form-control" asp-for="per.per_Correo" type="email" />
+                                <span class="text-danger" asp-validation-for="per.per_Correo"></span>
+                            </div>
+                            <!--Campo Teléfono-->
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Teléfono</label>
+                                <input class="form-control" asp-for="per.per_Telefono" type="number" />
+                                <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
+                            </div>
+                        </div>
+                        <!--Fila-->
+                        <div class="form-row">
+                            <!--Campo Domicilio-->
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Domicilio</label>
+                                <textarea class="form-control" asp-for="per.per_Domicilio" rows="3"></textarea>
+                                <span class="text-danger" asp-validation-for="per.per_Domicilio"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                    <!--Titulo-->
+                        <div class="form-row justify-content-between">
+                            <h5 class="card-title">Datos de voluntario</h5>
+                            <!--Campo Recurrente-->
+                            <div class="col-2">
+                                <label class="float-right">
+                                    Recurrente
+                                    <input type="checkbox" asp-for="vol_Recurrente">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!--Fila-->
+                        <div class="form-row">
+                            <!--Campo Horas Trabajadas-->
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Horas Trabajadas</label>
+                                <input class="form-control" asp-for="vol_HorasTrabajadas" type="number" />
+                                <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
+                            </div>
+                        </div>
+                        <!--Fila-->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="float-right mt-4">
+                                    <a class="btn mr-2 btn btn-secondary " asp-action="Index">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

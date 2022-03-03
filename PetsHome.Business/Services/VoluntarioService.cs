@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -28,6 +29,7 @@ namespace PetsHome.Business.Services
             {
                 IEnumerable<PR_Refugio_Voluntarios_ListResult> mappedResult = await _voluntarioRepository.ListAsync();
                 return _mapper.Map<List<VoluntarioViewModel>>(mappedResult.ToList());
+                //return MappingCustom.Map(mappedResult).ToList();
             }
             catch (Exception error)
             {
@@ -40,7 +42,7 @@ namespace PetsHome.Business.Services
             try
             {
                 PR_Refugio_Voluntarios_FindResult mappedResult = await _voluntarioRepository.FindAsync(id);
-                return _mapper.Map<VoluntarioViewModel>(mappedResult);
+                return MappingCustom.Map(mappedResult);
             }
             catch (Exception error)
             {

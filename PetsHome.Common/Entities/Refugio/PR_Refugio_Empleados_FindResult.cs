@@ -9,18 +9,27 @@ namespace PetsHome.Common.Entities
     {
         public int emp_Id { get; set; }
         public string emp_Codigo { get; set; }
-        public string Nombres { get; set; }
+        public int per_Id { get; set; }
+        public string per_PrimerNombre { get; set; }
+        public string per_SegundoNombre { get; set; }
+        public string per_ApellidoPaterno { get; set; }
+        public string per_ApellidoMaterno { get; set; }
         public string per_Identidad { get; set; }
         public DateTime per_FechaNacimiento { get; set; }
         public string per_Domicilio { get; set; }
         public string per_Telefono { get; set; }
         public string per_Correo { get; set; }
+        public int cag_Id { get; set; }
         public string cag_Descripcion { get; set; }
+        public int refg_Id { get; set; }
         public string refg_Nombre { get; set; }
-        public string emp_EsActivo { get; set; }
+        public bool emp_EsActivo { get; set; }
+        public string esActivo { get; set; }
         public int per_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime per_FechaCrea { get; set; }
         public int? per_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? per_FechaModifica { get; set; }
     }
 }

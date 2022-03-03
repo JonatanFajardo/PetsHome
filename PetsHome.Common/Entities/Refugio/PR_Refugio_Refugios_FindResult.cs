@@ -18,8 +18,10 @@ namespace PetsHome.Common.Entities
         public string refg_InformacionAdicional { get; set; }
         public bool refg_EsActivo { get; set; }
         public int refg_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime refg_FechaCrea { get; set; }
         public int? refg_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? refg_FechaModifica { get; set; }
     }
 }

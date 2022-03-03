@@ -10,8 +10,10 @@ namespace PetsHome.Common.Entities
         public int proc_Id { get; set; }
         public string proc_Descripcion { get; set; }
         public int proc_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime proc_FechaCrea { get; set; }
         public int? proc_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? proc_FechaModifica { get; set; }
     }
 }
