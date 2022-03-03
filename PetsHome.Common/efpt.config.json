@@ -386,7 +386,7 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "JOHN-EB\\SQLEXPRESS.PetsHome_V1.6",
+   "UiHint": "JOHN-EB.PetsHome_V1.6",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": true,

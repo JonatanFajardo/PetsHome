@@ -16,10 +16,11 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? per_Id { get; set; }
 
-        [Display(Name = "Nombres")]
+        [Display(Name = "Recurrente")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(50)]
-        public int? vol_Recurrente { get; set; }
+        public bool vol_Recurrente { get; set; }
+
+        public string estado { get; set; }
 
         [Display(Name = "Apellidos")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -38,6 +39,10 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? vol_FechaModifica { get; set; }
 
+        // Propiedades Extras
+        public string vol_Nombres { get; set; }
+        public string per_Identidad { get; set; }
+        public virtual PersonaViewModel per { get; set; } = new PersonaViewModel();
         //Indica si el formulario se esta editando.
         public Boolean isEdit
         {

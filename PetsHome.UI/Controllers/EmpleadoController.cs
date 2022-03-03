@@ -4,6 +4,7 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -26,9 +27,11 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new EmpleadoViewModel();
+            var drop = Dropdown(model);
+            return View(drop);
         }
         public async Task<IActionResult> List()
         {
@@ -49,7 +52,8 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _EmpleadoService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
+                var dropdown = Dropdown(itemSearched);
+                return View("Create", dropdown);
                 //return Json(new { item = result, success = true });
             }
             else
@@ -116,5 +120,17 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public EmpleadoViewModel Dropdown(EmpleadoViewModel model)
+        {
+            //MascotaViewModel model = new MascotaViewModel();
+            model.LoadDropDownList(_EmpleadoService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
+            return model;
+        }
+        //public EmpleadoViewModel Dropdown()
+        //{
+        //    EmpleadoViewModel itemListing = _EmpleadoService.RefugioDropdown();
+        //    return itemListing;
+        //}
     }
 }

@@ -24,8 +24,10 @@ namespace PetsHome.Common.Entities
         public bool masc_EsAdoptado { get; set; }
         public bool masc_EsReservado { get; set; }
         public int masc_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime masc_FechaCrea { get; set; }
         public int? masc_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? masc_FechaModifica { get; set; }
     }
 }

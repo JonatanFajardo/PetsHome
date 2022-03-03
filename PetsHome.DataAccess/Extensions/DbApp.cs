@@ -57,6 +57,31 @@ namespace PetsHome.DataAccess.Extensions
             }
         }
 
+        public static IEnumerable<T> Dropdown<T>(string sqlQuery)
+        {
+            using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                try
+                {
+                    var result = database.Query<T>(sqlQuery, commandType: CommandType.StoredProcedure);
+                    if (result == null && result.Count() > 0)
+                    {
+                    }
+                    database.Close();
+                    database.Dispose();
+                    return result;
+                }
+                catch (Exception error)
+                {
+                    //answer.ErrorGeneral = error.Message;
+                    //answer.ErrorDetails = error.ToString();
+                    database.Close();
+                    database.Dispose();
+                    return null;
+                }
+            }
+        }
+
         public static async Task<bool> Update(string sqlQuery, DynamicParameters parameters)
         {
             bool resultSql = true;
@@ -67,8 +92,14 @@ namespace PetsHome.DataAccess.Extensions
                 //{
                 //try
                 //{
-                await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                if (result.Count() != 0)
+                {
+                    return true;
+                }
+
                 resultSql = false;
+
                 //transaction.Commit();
                 database.Close();
                 database.Dispose();

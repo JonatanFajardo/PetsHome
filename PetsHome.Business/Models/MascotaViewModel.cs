@@ -92,20 +92,23 @@ namespace PetsHome.Business.Models
 
         public int masc_UsuarioCrea { get; set; }
 
-        [Display(Name = "Usuario creación")]
-        public string? NombreUsuarioCrea { get; set; }
         public DateTime masc_masc_FechaCrea { get; set; }
         public int? masc_UsuarioModifica { get; set; }
-
-        [Display(Name = "Usuario modificación")]
-        public string? masc_NombreUsuarioModifica { get; set; }
 
         [Display(Name = "Fecha modificación")]
         public DateTime? masc_FechaModifica { get; set; }
 
+        // Propiedades Extras
+        [Display(Name = "Usuario creación")]
+        public string? NombreUsuarioCrea { get; set; }
+        [Display(Name = "Usuario modificación")]
+        public string? masc_NombreUsuarioModifica { get; set; }
+        public long? masc_Fila { get; set; }
         public IFormFile ImageFile { get; set; }
 
         public string pathMascotaImage { get; set; }
+
+
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit

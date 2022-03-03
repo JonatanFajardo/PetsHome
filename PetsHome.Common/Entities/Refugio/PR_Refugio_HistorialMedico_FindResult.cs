@@ -15,8 +15,10 @@ namespace PetsHome.Common.Entities
         public string medic_SaludCuidado { get; set; }
         public string medic_InformacionAdicional { get; set; }
         public int medic_UsuarioCrea { get; set; }
+        public string usuarioCrea { get; set; }
         public DateTime medic_FechaCrea { get; set; }
         public int? medic_UsuarioModifica { get; set; }
+        public string usuarioModifica { get; set; }
         public DateTime? medic_FechaModifica { get; set; }
     }
 }

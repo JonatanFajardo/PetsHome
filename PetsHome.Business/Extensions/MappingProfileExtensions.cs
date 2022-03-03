@@ -86,7 +86,31 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbCategorias, CategoriaViewModel>().ReverseMap();
             CreateMap<tbDepartamentos, DepartamentoViewModel>().ReverseMap();
             CreateMap<tbEmpleados, EmpleadoViewModel>().ReverseMap();
-            CreateMap<tbEmpleadosCargos, EmpleadoCargoViewModel>().ReverseMap();
+            //.ForMember(x => x.per, opt =>
+            //opt.MapFrom(x => x.Select(y => new tbPersonas
+            //{
+            //    PetId = y.PetId
+            //    PetName = y.PetName
+            //}))); 
+            //.ForMember(x => x, opt =>
+            //opt.MapFrom(y => new tbPersonas
+            //{
+            //    per_Id = y.per.per_Id,
+            //    per_Identidad = y.per.per_Identidad,
+            //    per_PrimerNombre = y.per.per_PrimerNombre,
+            //    per_SegundoNombre = y.per.per_SegundoNombre,
+            //    per_ApellidoPaterno = y.per.per_ApellidoPaterno,
+            //    per_ApellidoMaterno = y.per.per_ApellidoMaterno,
+            //    per_FechaNacimiento = y.per.per_FechaNacimiento,
+            //    per_Domicilio = y.per.per_Domicilio,
+            //    per_Telefono = y.per.per_Telefono,
+            //    per_Correo = y.per.per_Correo,
+            //    per_UsuarioCrea = y.per.per_UsuarioCrea,
+            //    per_FechaCrea = y.per.per_FechaCrea,
+            //    per_UsuarioModifica = y.per.per_UsuarioModifica,
+            //    per_FechaModifica = y.per.per_FechaModifica
+            //}));
+//            CreateMap<tbEmpleadosCargos, EmpleadoCargoViewModel>().ReverseMap();
             CreateMap<tbEntradas, EntradaViewModel>().ReverseMap();
             //CreateMap<tbEntradasDetalles, EntradasDetalleViewModel>().ReverseMap();
             CreateMap<tbEventos, EventoViewModel>().ReverseMap();

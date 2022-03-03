@@ -83,40 +83,32 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(MascotaViewModel model)
         {
-            model.masc_Imagen = await model.ImageFile.GetBytesAsync();
+            
 
             if (!model.isEdit)
             {
-
+                
                 Boolean createdItem = await _mascotaService.AddAsync(model);
                 Boolean validation = Validation.IsInsert(createdItem, ModelState.IsValid);
-                if (!validation)
-                {
+                if (createdItem)
+                    goto ErrorResult; 
                     ShowAlert("Insertado", AlertMessageType.Success);
                     //return View("Create");
                     return RedirectToAction("Create");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Create");
-                }
             }
             else
             {
                 Boolean updatedItem = await _mascotaService.UpdateAsync(model);
                 Boolean validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
-                if (!validation)
-                {
+                if (updatedItem)
+                    goto ErrorResult;
+
                     ShowAlert("Actualizado", AlertMessageType.Success);
                     return View("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return View("Index");
-                }
             }
+
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
 
         }
 
