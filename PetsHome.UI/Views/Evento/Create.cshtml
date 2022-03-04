@@ -1,4 +1,4 @@
-﻿    @model EventoViewModel
+﻿@model EventoViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,8 +24,9 @@
                     <!--Campo Refugio-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Refugio</label>
-                        <input class="form-control" asp-for="refg_Id" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_Id"></span>
+                        <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
                     </div>
                 </div>
                 <!--Fila-->
@@ -33,13 +34,13 @@
                     <!--Campo Hora Inicio-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Hora Inicio</label>
-                        <input class="form-control" asp-for="eve_HoraInicio" type="text" />
+                        <input class="form-control" asp-for="eve_HoraInicio" type="time" />
                         <span class="text-danger" asp-validation-for="eve_HoraInicio"></span>
                     </div>
                     <!--Campo Hora Final-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Hora Final</label>
-                        <input class="form-control" asp-for="eve_HoraFinal" type="text" />
+                        <input class="form-control" asp-for="eve_HoraFinal" type="time" />
                         <span class="text-danger" asp-validation-for="eve_HoraFinal"></span>
                     </div>
                 </div>
@@ -48,8 +49,15 @@
                     <!--Campo Fecha-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Fecha</label>
-                        <input class="form-control" asp-for="eve_Fecha" type="text" />
+                        <input class="form-control" asp-for="eve_Fecha" type="date" />
                         <span class="text-danger" asp-validation-for="eve_Fecha"></span>
+                    </div>
+                    <!--Botones de accion en el formulario-->
+                    <div class="form-group col-md-6">
+                        <div class="float-right mt-4">
+                            <a class="btn mr-2 btn btn-secondary " asp-action="Index">Cancelar</a>
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                        </div>
                     </div>
                 </div>
 

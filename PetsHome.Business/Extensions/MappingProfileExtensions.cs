@@ -20,6 +20,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_Categorias_DetailResult, CategoriaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Categorias_FindResult, CategoriaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Categorias_ListResult, CategoriaViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_Categorias_DropdownResult, CategoriaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Entradas_DetailResult, EntradaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Entradas_FindResult, EntradaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Entradas_ListResult, EntradaViewModel>().ReverseMap();
@@ -86,6 +87,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbCategorias, CategoriaViewModel>().ReverseMap();
             CreateMap<tbDepartamentos, DepartamentoViewModel>().ReverseMap();
             CreateMap<tbEmpleados, EmpleadoViewModel>().ReverseMap();
+            CreateMap<tbItems, ItemViewModel>().ReverseMap();
             //.ForMember(x => x.per, opt =>
             //opt.MapFrom(x => x.Select(y => new tbPersonas
             //{
@@ -110,7 +112,7 @@ namespace PetsHome.Business.Extensions
             //    per_UsuarioModifica = y.per.per_UsuarioModifica,
             //    per_FechaModifica = y.per.per_FechaModifica
             //}));
-//            CreateMap<tbEmpleadosCargos, EmpleadoCargoViewModel>().ReverseMap();
+            //            CreateMap<tbEmpleadosCargos, EmpleadoCargoViewModel>().ReverseMap();
             CreateMap<tbEntradas, EntradaViewModel>().ReverseMap();
             //CreateMap<tbEntradasDetalles, EntradasDetalleViewModel>().ReverseMap();
             CreateMap<tbEventos, EventoViewModel>().ReverseMap();

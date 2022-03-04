@@ -11,14 +11,17 @@ namespace PetsHome.UI.Controllers
     public class EventoController : BaseController
     {
         private readonly EventoService _EventoService;
+        private readonly RefugioService _RefugioService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public EventoController(EventoService EventoService
+        public EventoController(EventoService eventoService,
+                                RefugioService refugioService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
-            _EventoService = EventoService;
+            _EventoService = eventoService;
+            _RefugioService = refugioService;
             //  _httpContextAccessor = httpContextAccessor;
         }
 
@@ -29,7 +32,9 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var model = new EventoViewModel();
+            var drop = Dropdown(model);
+            return View(drop);
         }
         public async Task<IActionResult> List()
         {
@@ -50,7 +55,8 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _EventoService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
+                var dropdown = Dropdown(itemSearched);
+                return View("Create", dropdown);
                 //return Json(new { item = result, success = true });
             }
             else
@@ -116,6 +122,12 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
+        }
+
+        public EventoViewModel Dropdown(EventoViewModel model)
+        {
+            model.LoadDropDownList(_RefugioService.RefugioDropdown());
+            return model;
         }
     }
 }

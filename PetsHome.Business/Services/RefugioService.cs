@@ -100,5 +100,19 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        public IEnumerable<RefugioViewModel> RefugioDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _refugioRepository.RefugioDropdown();
+                return _mapper.Map<IEnumerable<RefugioViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }

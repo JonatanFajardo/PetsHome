@@ -7,6 +7,11 @@ namespace PetsHome.Common.Entities
 {
     public partial class tbMunicipios
     {
+        public tbMunicipios()
+        {
+            tbRefugios = new HashSet<tbRefugios>();
+        }
+
         /// <summary>
         /// Identificador único de la tabla Municipios.
         /// </summary>
@@ -40,5 +45,6 @@ namespace PetsHome.Common.Entities
 
         public virtual tbDepartamentos depto { get; set; }
         public virtual tbUsuarios mpio_UsuarioCreaNavigation { get; set; }
+        public virtual ICollection<tbRefugios> tbRefugios { get; set; }
     }
 }

@@ -14,11 +14,15 @@ namespace PetsHome.Business.Services
     public class MascotaService
     {
         private readonly MascotaRepository _mascotaRepository;
+        private readonly RefugioRepository _refugioRepository;
         private readonly ILogger<MascotaService> _logger;
         private readonly IMapper _mapper;
-        public MascotaService(MascotaRepository mascotaRepository, ILogger<MascotaService> logger, IMapper mapper)
+        public MascotaService(MascotaRepository mascotaRepository,
+            RefugioRepository refugioRepository,
+        ILogger<MascotaService> logger, IMapper mapper)
         {
             _mascotaRepository = mascotaRepository;
+            _refugioRepository = refugioRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -104,6 +108,7 @@ namespace PetsHome.Business.Services
             }
         }
 
+        #region Dropdown
         public IEnumerable<RazaViewModel> RazaDropdown()
         {
             try
@@ -122,7 +127,7 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _mascotaRepository.RefugioDropdown();
+                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _refugioRepository.RefugioDropdown();
                 return _mapper.Map<List<RefugioViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
@@ -146,6 +151,6 @@ namespace PetsHome.Business.Services
             }
         }
 
-
+        #endregion Dropdown
     }
 }

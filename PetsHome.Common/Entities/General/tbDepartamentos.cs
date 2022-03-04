@@ -10,6 +10,7 @@ namespace PetsHome.Common.Entities
         public tbDepartamentos()
         {
             tbMunicipios = new HashSet<tbMunicipios>();
+            tbRefugios = new HashSet<tbRefugios>();
         }
 
         /// <summary>
@@ -47,5 +48,6 @@ namespace PetsHome.Common.Entities
 
         public virtual tbUsuarios depto_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbMunicipios> tbMunicipios { get; set; }
+        public virtual ICollection<tbRefugios> tbRefugios { get; set; }
     }
 }
