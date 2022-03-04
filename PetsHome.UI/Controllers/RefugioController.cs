@@ -11,6 +11,8 @@ namespace PetsHome.UI.Controllers
     public class RefugioController : BaseController
     {
         private readonly RefugioService _RefugioService;
+        private readonly DepartamentoService _departamentoService;
+        private readonly MunicipioService _municipioService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IActionResult Index()
@@ -19,14 +21,20 @@ namespace PetsHome.UI.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            var model = new RefugioViewModel();
+            var drop = Dropdown(model);
+            return View(drop);
         }
 
-        public RefugioController(RefugioService RefugioService
+        public RefugioController(RefugioService RefugioService,
+                                DepartamentoService DepartamentoService,
+                                MunicipioService MunicipioService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _RefugioService = RefugioService;
+            _departamentoService = DepartamentoService;
+            _municipioService = MunicipioService;
             //  _httpContextAccessor = httpContextAccessor;
         }
 
@@ -49,13 +57,14 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _RefugioService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
+                var dropdown = Dropdown(itemSearched);
+                return View("Create", dropdown);
                 //return Json(new { item = result, success = true });
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return AjaxResult(itemSearched, true);
+                return RedirectToAction("Index");
             }
         }
 
@@ -115,5 +124,15 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public RefugioViewModel Dropdown(RefugioViewModel model)
+        {
+            model.LoadDropDownList(
+                _departamentoService.DepartamentoDropdown(), 
+                _municipioService.MunicipioDropdown() );
+            return model;
+        }
+
+
     }
 }

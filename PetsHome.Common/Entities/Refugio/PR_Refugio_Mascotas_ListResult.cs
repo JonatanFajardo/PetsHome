@@ -12,7 +12,5 @@ namespace PetsHome.Common.Entities
         public string masc_Nombre { get; set; }
         public string raza_Descripcion { get; set; }
         public string refg_Nombre { get; set; }
-        public bool masc_EsAdoptado { get; set; }
-        public bool masc_EsReservado { get; set; }
     }
 }

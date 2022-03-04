@@ -21,7 +21,7 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Refugios_Find]";
             var parameter = new DynamicParameters();
-            parameter.Add("@refg", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@refg_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Find<PR_Refugio_Refugios_FindResult>(sqlQuery, parameter);
         }
 
@@ -76,5 +76,13 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@refg", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
+        #region Dropdown
+        public IEnumerable<PR_Refugio_Refugio_DropdownResult> RefugioDropdown()
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Refugio_Dropdown]";
+            return DbApp.Dropdown<PR_Refugio_Refugio_DropdownResult>(sqlQuery);
+        }
+        #endregion Dropdown
     }
 }

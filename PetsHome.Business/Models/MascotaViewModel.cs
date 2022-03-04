@@ -27,9 +27,9 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? raza_Id { get; set; }
 
-        //[Display(Name = "Raza")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")]
-        //[StringLength(50)]
+        [Display(Name = "Raza")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(50)]
         public string? raza_Descripcion { get; set; }
 
         [Display(Name = "Edad")]
@@ -65,30 +65,24 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? refg_Id { get; set; }
 
-        //[Display(Name = "Refugio")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")]
-        //[StringLength(50)]
+        [Display(Name = "Refugio")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(50)]
         public string? refg_Nombre { get; set; }
 
         [Display(Name = "Id procedencia")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? proc_Id { get; set; }
 
-        ////[Display(Name = "Procedencia")]
-        ////[Required(ErrorMessage = "El campo {0} es requerido")]
-        ////[StringLength(50)]
+        [Display(Name = "Procedencia")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(50)]
         public string? proc_Descripcion { get; set; }
 
-        //[Display(Name = "Es adoptado")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")]
         public bool? masc_EsAdoptado { get; set; }
 
-        //[Display(Name = "Es reservado")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")]
         public bool? masc_EsReservado { get; set; }
 
-        //[Display(Name = "")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")] 
 
         public int masc_UsuarioCrea { get; set; }
 

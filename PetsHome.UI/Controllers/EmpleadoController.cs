@@ -12,14 +12,18 @@ namespace PetsHome.UI.Controllers
     public class EmpleadoController : BaseController
     {
         private readonly EmpleadoService _EmpleadoService;
+        private readonly RefugioService _RefugioService;
+
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public EmpleadoController(EmpleadoService EmpleadoService
+        public EmpleadoController(EmpleadoService EmpleadoService,
+                                    RefugioService RefugioService
         //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _EmpleadoService = EmpleadoService;
+            _RefugioService = RefugioService;
             //  _httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
@@ -124,7 +128,7 @@ namespace PetsHome.UI.Controllers
         public EmpleadoViewModel Dropdown(EmpleadoViewModel model)
         {
             //MascotaViewModel model = new MascotaViewModel();
-            model.LoadDropDownList(_EmpleadoService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
+            model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
             return model;
         }
         //public EmpleadoViewModel Dropdown()

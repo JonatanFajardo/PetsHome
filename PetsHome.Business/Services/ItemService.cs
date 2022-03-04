@@ -100,5 +100,21 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        #region Dropdown
+        public IEnumerable<CategoriaViewModel> CategoriaDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Inventario_Categorias_DropdownResult> mappedResult = _itemRepository.CategoriaDropdown();
+                return _mapper.Map<List<CategoriaViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+        #endregion Dropdown
     }
 }

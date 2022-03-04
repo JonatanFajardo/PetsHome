@@ -100,5 +100,19 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        public IEnumerable<MunicipioViewModel> MunicipioDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_General_Municipios_DropdownResult> mappedResult = _municipioRepository.MunicipioDropdown();
+                return _mapper.Map<IEnumerable<MunicipioViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@
                     <!--Campo Codigo-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Codigo</label>
-                        <input class="form-control" asp-for="itm_Codigo" type="text" />
+                        <input class="form-control" asp-for="itm_Codigo" type="number" />
                         <span class="text-danger" asp-validation-for="itm_Codigo"></span>
                     </div>
                     <!--Campo Descripcion-->
@@ -33,7 +33,9 @@
                     <!--Campo Categoria-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Categoria</label>
-                        <input class="form-control" asp-for="cat_Id" type="text" />
+                        <select class="form-control" asp-for="cat_Id" asp-items="Model.itemList">
+                            <option value="">-- Seleccionar --</option>
+                        </select> 
                         <span class="text-danger" asp-validation-for="cat_Id"></span>
                     </div>
                     <!--Campo Precio-->
@@ -43,7 +45,10 @@
                         <span class="text-danger" asp-validation-for="itm_Precio"></span>
                     </div>
                 </div>
-
+                <div class="d-flex justify-content-end">
+                    <a class="btn mr-2 btn btn-secondary" asp-action="Index">Cancelar</a>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -53,4 +58,3 @@
 <script src="~/js/load-dropdownlist.js"></script>
 <script src="~/js/Extensions/image-Extension.js"></script>
 }
-END 

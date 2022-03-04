@@ -11,8 +11,6 @@ namespace PetsHome.Common.Entities
         public string eve_Descripcion { get; set; }
         public int refg_Id { get; set; }
         public string refg_Nombre { get; set; }
-        public TimeSpan eve_HoraInicio { get; set; }
-        public TimeSpan eve_HoraFinal { get; set; }
         public DateTime eve_Fecha { get; set; }
     }
 }

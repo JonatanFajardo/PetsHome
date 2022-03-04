@@ -15,11 +15,14 @@ namespace PetsHome.UI.Controllers
     public class MascotaController : BaseController
     {
         private readonly MascotaService _mascotaService;
+        private readonly RefugioService _refugioService;
         private readonly IOptions<MascotaViewModel> _pathFile;
-        public MascotaController(MascotaService mascotaService, IMapper mapper,
+        public MascotaController(MascotaService mascotaService,
+            RefugioService refugioService,
             IOptions<MascotaViewModel> options)
         {
             _mascotaService = mascotaService;
+            _refugioService = refugioService;
             _pathFile = options;
 
         }
@@ -83,18 +86,15 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(MascotaViewModel model)
         {
-            
-
             if (!model.isEdit)
             {
-                
                 Boolean createdItem = await _mascotaService.AddAsync(model);
                 Boolean validation = Validation.IsInsert(createdItem, ModelState.IsValid);
                 if (createdItem)
-                    goto ErrorResult; 
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    //return View("Create");
-                    return RedirectToAction("Create");
+                    goto ErrorResult;
+                ShowAlert("Insertado", AlertMessageType.Success);
+                //return View("Create");
+                return RedirectToAction("Create");
             }
             else
             {
@@ -103,8 +103,8 @@ namespace PetsHome.UI.Controllers
                 if (updatedItem)
                     goto ErrorResult;
 
-                    ShowAlert("Actualizado", AlertMessageType.Success);
-                    return View("Index");
+                ShowAlert("Actualizado", AlertMessageType.Success);
+                return View("Index");
             }
 
         ErrorResult:
@@ -129,8 +129,7 @@ namespace PetsHome.UI.Controllers
 
         public MascotaViewModel Dropdown(MascotaViewModel model)
         {
-            //MascotaViewModel model = new MascotaViewModel();
-            model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _mascotaService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
+            model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
             return model;
         }
 

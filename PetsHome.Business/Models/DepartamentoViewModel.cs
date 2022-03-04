@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -51,7 +52,18 @@ namespace PetsHome.Business.Models
 
         public List<MunicipioViewModel> ListadoMunicipios { get; set; }
 
+        #region Dropdown
+        public SelectList departamentoList { get; set; }
+        public SelectList municipioList { get; set; }
 
+        public void LoadDropDownList(IEnumerable<DepartamentoViewModel> refugioDropdownResults,
+                                       IEnumerable<MunicipioViewModel> empleadoCargoDropdownResults)
+        {
+            departamentoList = new SelectList(refugioDropdownResults, "depto_Id", "depto_Nombre");
+            municipioList = new SelectList(empleadoCargoDropdownResults, "mpio_Id", "mpio_Descripcion");
+
+        }
+        #endregion Dropdown
         //Indica si el formulario se esta editando.
         public Boolean isEdit
         {

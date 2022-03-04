@@ -48,7 +48,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(500)]
         public string refg_InformacionAdicional { get; set; }
-        public bool? refg_EsActivo { get; set; }
+        public bool refg_EsActivo { get; set; }
 
         public int refg_UsuarioCrea { get; set; }
 
@@ -81,11 +81,11 @@ namespace PetsHome.Business.Models
         public SelectList departamentoList { get; set; }
         public SelectList municipioList { get; set; }
 
-        public void LoadDropDownList(IEnumerable<DepartamentoViewModel> razaDropdownResults,
-                                        IEnumerable<MunicipioViewModel> dropdownlists)
+        public void LoadDropDownList(IEnumerable<DepartamentoViewModel> departamentoResults,
+                                        IEnumerable<MunicipioViewModel> municipioResults)
         {
-            departamentoList = new SelectList(razaDropdownResults, "depto_Id", "depto_Descripcion");
-            municipioList = new SelectList(dropdownlists, "mpio_Id", "mpio_Descripcion");
+            departamentoList = new SelectList(departamentoResults, "depto_Id", "depto_Descripcion");
+            municipioList = new SelectList(municipioResults, "mpio_Id", "mpio_Descripcion");
             #endregion Dropdown
 
         }

@@ -85,5 +85,14 @@ namespace PetsHome.Logic.Repositories
             throw new NotImplementedException();
         }
 
+        #region Dropdown
+        public IEnumerable<PR_General_Municipios_DropdownResult> MunicipioDropdown()
+        {
+            const string sqlQuery = "[General].[PR_General_Municipios_Dropdown]";
+            return DbApp.Dropdown<PR_General_Municipios_DropdownResult>(sqlQuery);
+        }
+
+        #endregion Dropdown
+
     }
 }

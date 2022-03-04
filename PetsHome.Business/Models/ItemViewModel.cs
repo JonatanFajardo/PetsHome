@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Business.Models
@@ -8,7 +10,7 @@ namespace PetsHome.Business.Models
         [Key]
         public int itm_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Codigo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string itm_Codigo { get; set; }
@@ -22,10 +24,6 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? cat_Id { get; set; }
 
-        [Display(Name = "Categoría")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(100)]
-        public string cat_Descripcion { get; set; }
 
         [Display(Name = "Id refugio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -39,7 +37,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Precio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [Column(TypeName = "decimal(10, 2)")]
-        public decimal? itm_Precio { get; set; }
+        public decimal itm_Precio { get; set; }
 
         [Display(Name = "Entrada")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -55,19 +53,26 @@ namespace PetsHome.Business.Models
 
         public int itm_UsuarioCrea { get; set; }
 
-        [Display(Name = "Usuario creación")]
-        public string? itm_NombreUsuarioCrea { get; set; }
-
+        //Indica si el formulario se esta editando.
+        public SelectList itemList { get; set; }
 
         public DateTime itm_FechaCrea { get; set; }
 
         public int? itm_UsuarioModifica { get; set; }
 
+        [Display(Name = "Fecha modificación")]
+        public DateTime? itm_FechaModifica { get; set; }
+
+
+        [Display(Name = "Categoría")]
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(100)]
+        public string cat_Descripcion { get; set; }
+        [Display(Name = "Usuario creación")]
+        public string? itm_NombreUsuarioCrea { get; set; }
         [Display(Name = "Usuario modificación")]
         public string? itm_NombreUsuarioModifica { get; set; }
 
-        [Display(Name = "Fecha modificación")]
-        public DateTime? itm_FechaModifica { get; set; }
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
@@ -81,7 +86,12 @@ namespace PetsHome.Business.Models
             }
         }
 
+
         #region Dropdown
+        public void LoadDropDownList(IEnumerable<CategoriaViewModel> categoriaViewModels)
+        {
+            itemList = new SelectList(categoriaViewModels, "cat_Id", "cat_Descripcion");
+        }
 
         #endregion Dropdown
     }

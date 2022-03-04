@@ -158,6 +158,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[Inventario].[PR_Inventario_Categorias_Dropdown]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[Inventario].[PR_Inventario_Categorias_Find]",
          "ObjectType": 1
       },
@@ -255,6 +259,10 @@
       },
       {
          "Name": "[Refugio].[PR_Refugio_Eventos_Find]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Refugio].[PR_Refugio_Eventos_Insert]",
          "ObjectType": 1
       },
       {
