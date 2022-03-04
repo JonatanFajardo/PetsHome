@@ -21,9 +21,9 @@
                         <input class="form-control" asp-for="refg_Nombre" type="text" />
                         <span class="text-danger" asp-validation-for="refg_Nombre"></span>
                     </div>
-                    <!--Campo Ubicacion-->
+                    <!--Campo Ubicación-->
                     <div class="form-group col-md-6">
-                        <label class="control-label">Ubicacion</label>
+                        <label class="control-label">Ubicación</label>
                         <input class="form-control" asp-for="refg_Ubicacion" type="text" />
                         <span class="text-danger" asp-validation-for="refg_Ubicacion"></span>
                     </div>
@@ -33,29 +33,14 @@
                     <!--Campo RTN-->
                     <div class="form-group col-md-6">
                         <label class="control-label">RTN</label>
-                        <input class="form-control" asp-for="refg_RTN" type="text" />
+                        <input class="form-control" asp-for="refg_RTN" type="number" />
                         <span class="text-danger" asp-validation-for="refg_RTN"></span>
                     </div>
                     <!--Campo Telefono-->
                     <div class="form-group col-md-6">
-                        <label class="control-label">Telefono</label>
-                        <input class="form-control" asp-for="refg_Telefono" type="text" />
+                        <label class="control-label">Teléfono</label>
+                        <input class="form-control" asp-for="refg_Telefono" type="number" />
                         <span class="text-danger" asp-validation-for="refg_Telefono"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Correo-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Correo</label>
-                        <input class="form-control" asp-for="refg_Correo" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_Correo"></span>
-                    </div>
-                    <!--Campo Información Adicional-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Información Adicional</label>
-                        <input class="form-control" asp-for="refg_InformacionAdicional" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_InformacionAdicional"></span>
                     </div>
                 </div>
                 <!--Fila-->
@@ -63,23 +48,50 @@
                     <!--Campo Departamento-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Departamento</label>
-                        <input class="form-control" asp-for="depto_Id" type="text" />
+                        <select class="form-control" asp-for="depto_Id" asp-items="Model.departamentoList">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
                         <span class="text-danger" asp-validation-for="depto_Id"></span>
                     </div>
                     <!--Campo Municipio-->
                     <div class="form-group col-md-6">
                         <label class="control-label">Municipio</label>
-                        <input class="form-control" asp-for="mpio_Id" type="text" />
+                        <select class="form-control" asp-for="mpio_Id" asp-items="Model.municipioList">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
                         <span class="text-danger" asp-validation-for="mpio_Id"></span>
                     </div>
                 </div>
                 <!--Fila-->
                 <div class="form-row">
-                    <!--Campo EsActivo-->
+                    <!--Campo Información Adicional-->
                     <div class="form-group col-md-6">
-                        <label class="control-label">Departamento</label>
-                        <input class="form-control" asp-for="refg_EsActivo" type="text" />
-                        <span class="text-danger" asp-validation-for="refg_EsActivo"></span>
+                        <label class="control-label">Información Adicional</label>
+                        <textarea class="form-control" asp-for="refg_InformacionAdicional" rows="4"></textarea>
+                        <span class="text-danger" asp-validation-for="refg_InformacionAdicional"></span>
+                        <div class="form-group col-md-6">
+                        </div>
+                    </div>
+                    <!--Campo Correo Electrónico-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Correo Electrónico</label>
+                        <input class="form-control" asp-for="refg_Correo" type="email" />
+                        <span class="text-danger" asp-validation-for="refg_Correo"></span>
+                        <!--Fila-->
+                        <!--Campo refg_EsActivo-->
+                        <div class="row mt-4 d-flex align-items-center justify-content-between">
+                            <!-- Botones de formulario -->
+                            <div class="col-md-5">
+                                <label>
+                                    <input type="checkbox" asp-for="refg_EsActivo">
+                                    Estado
+                                </label>
+                            </div>
+                            <div class="col-md-7 d-flex justify-content-end">
+                                <a class="btn mr-2 btn btn-secondary" asp-action="Index">Cancelar</a>
+                                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -91,4 +103,3 @@
 <script src="~/js/load-dropdownlist.js"></script>
 <script src="~/js/Extensions/image-Extension.js"></script>
 }
-

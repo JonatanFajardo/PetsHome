@@ -29,7 +29,9 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var model = new ItemViewModel();
+            var drop = Dropdown(model);
+            return View(drop);
         }
         public async Task<IActionResult> List()
         {
@@ -47,16 +49,17 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Find(int id)
         {
-            var itemSearched = await _ItemService.FindAsync(id);
+            ItemViewModel itemSearched = await _ItemService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
-                //return Json(new { item = result, success = true });
+                var dropdown = Dropdown(itemSearched);
+                return View("Create", dropdown);
+                //return View("Create", dropdown);
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return AjaxResult(itemSearched, true);
+                return RedirectToAction("Create");
             }
         }
 
@@ -97,6 +100,7 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
                 return RedirectToAction("Index");
             }
+            Create();
 
         ErrorResult:
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
@@ -115,6 +119,12 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
+        }
+
+        public ItemViewModel Dropdown(ItemViewModel model)
+        {
+            model.LoadDropDownList(_ItemService.CategoriaDropdown());
+            return model;
         }
     }
 }

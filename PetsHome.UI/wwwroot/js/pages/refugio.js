@@ -7,8 +7,10 @@ var Refugio = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: "raza_Id", Size: 200 },
-                { FieldName: "raza_Descripcion" }
+                { FieldName: "refg_Id", Size: 200 },
+                { FieldName: "refg_Nombre" },
+                { FieldName: "refg_RTN" },
+                { FieldName: "refg_Ubicacion" }
             ];
             datatable.init(Direction, header);
         })

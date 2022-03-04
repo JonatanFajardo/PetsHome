@@ -104,19 +104,6 @@ namespace PetsHome.Business.Services
             }
         }
         
-        public IEnumerable<RefugioViewModel> RefugioDropdown()
-        {
-            try
-            {
-                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _empleadoRepository.RefugioDropdown();
-                return _mapper.Map<IEnumerable<RefugioViewModel>>(mappedResult.ToList());
-            }
-            catch (Exception error)
-            {
-                _logger.LogError(error, error.Message);
-                return null;
-            }
-        }
 
         public IEnumerable<EmpleadoCargoViewModel> EmpleadoCargoDropdown()
         {

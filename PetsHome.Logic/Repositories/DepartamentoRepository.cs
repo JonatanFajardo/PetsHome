@@ -89,5 +89,14 @@ namespace PetsHome.Logic.Repositories
         //    parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
         //    return await DbApp.Detail<PR_General_Departamentos_DetailResult>(sqlQuery, parameter);
         //}
+
+        #region Dropdown
+        public IEnumerable<PR_General_Departamentos_DropdownResult> DepartamentoDropdown()
+        {
+            const string sqlQuery = "[General].[PR_General_Departamentos_Dropdown]";
+            return DbApp.Dropdown<PR_General_Departamentos_DropdownResult>(sqlQuery);
+        }
+
+        #endregion Dropdown
     }
 }

@@ -47,6 +47,8 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public DateTime? refg_FechaModifica { get; set; }
 
+        public virtual tbDepartamentos depto { get; set; }
+        public virtual tbMunicipios mpio { get; set; }
         public virtual tbUsuarios refg_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
         public virtual ICollection<tbEntradas> tbEntradas { get; set; }

@@ -5,11 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
-    public partial class PR_Refugio_Refugios_ListResult
+    public partial class PR_Refugio_Eventos_InsertResult
     {
-        public int refg_Id { get; set; }
-        public string refg_Nombre { get; set; }
-        public string refg_RTN { get; set; }
-        public string refg_Ubicacion { get; set; }
     }
 }
