@@ -4,5 +4,115 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Detail</h1>
 
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de empleado</h3>
+        </div>
+
+        <div class="card-body">
+
+            <!--Datos Solicitante-->
+            < class="card">
+            <div class="card-body">
+                <!--Titulo-->
+                <h5 class="card-title">Datos de Solicitante</h5>
+
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Identidad-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Identidad</label>
+                        <input class="form-control" asp-for="sol_Identidad" type="text" />
+                    </div>
+                    <!--Campo Nombres-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Nombres</label>
+                        <input class="form-control" asp-for="sol_Nombres" type="text" />
+                    </div>
+                </div>
+
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Apellidos-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Apellidos</label>
+                        <input class="form-control" asp-for="sol_Apellidos" type="text" />
+                    </div>
+                    <!--Campo Teléfono-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Teléfono</label>
+                        <input class="form-control" asp-for="sol_Telefono" type="text" />
+                    </div>
+                </div>
+
+                <!--Fila-->
+                <div class="form-row">
+                    <!--Campo Correo Electrónico-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Correo Electrónico</label>
+                        <input class="form-control" asp-for="sol_Correo" type="text" />
+                    </div>
+                    <!--Campo Fecha de Solicitud-->
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Fecha de Solicitud</label>
+                        <input class="form-control" asp-for="sol_FechaCrea" type="text" />
+                    </div>
+                </div>
+            </div>
+
+            <!--Datos de mascota-->
+            <div class="card">
+                <div class="card-body">
+                    <!--Titulo-->
+                    <div class="form-row justify-content-between">
+                        <h5 class="card-title">Datos de la mascota</h5>
+                    </div>
+
+                    <!--Titulo-->
+                    <h5 class="card-title">Datos de empleado</h5>
+
+                    <!--Fila-->
+                    <div class="form-row">
+                        <!--Campo Imagen-->
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Imagen</label>
+                            <input class="form-control" asp-for="masc_Imagen" type="text" />
+                        </div>
+                        <!--Campo masc_Nombre-->
+                        <div class="form-group col-md-6">
+                            <label class="control-label">masc_Nombre</label>
+                            <input class="form-control" asp-for="masc_Nombre" type="text" />
+                        </div>
+                    </div>
+
+                    <!--Fila-->
+                    <div class="form-row">
+                        <!--Campo Adoptado-->
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Adoptado</label>
+                            <input class="form-control" asp-for="masc_EsAdoptado" type="text" />
+                        </div>
+                        <!--Campo Raza-->
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Raza</label>
+                            <input class="form-control" asp-for="raza_Descripcion" type="text" />
+                        </div>
+                    </div>
+
+                    <!--Fila-->
+                    <div class="form-row">
+                        <!--Campo Refugio-->
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Refugio</label>
+                            <input class="form-control" asp-for="refg_Nombre" type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

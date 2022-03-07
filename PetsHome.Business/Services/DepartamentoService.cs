@@ -13,10 +13,10 @@ namespace PetsHome.Business.Services
 {
     public class DepartamentoService
     {
-        private readonly DepartamentoRepository _departamentoRepository;
+        private readonly LocalidadRepository _departamentoRepository;
         private readonly ILogger<DepartamentoService> _logger;
         private readonly IMapper _mapper;
-        public DepartamentoService(DepartamentoRepository departamentoRepository, ILogger<DepartamentoService> logger, IMapper mapper)
+        public DepartamentoService(LocalidadRepository departamentoRepository, ILogger<DepartamentoService> logger, IMapper mapper)
         {
             _departamentoRepository = departamentoRepository;
             _logger = logger;
