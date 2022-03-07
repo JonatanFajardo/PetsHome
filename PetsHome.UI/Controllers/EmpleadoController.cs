@@ -107,7 +107,6 @@ namespace PetsHome.UI.Controllers
 
         ErrorResult:
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
-
         }
 
         public async Task<IActionResult> Remove(int Empleado_Id)

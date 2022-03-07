@@ -1,4 +1,4 @@
-var Solicitud = (function () {
+var Localidad = (function () {
 
     var obj = {};
 
@@ -7,11 +7,9 @@ var Solicitud = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: "sol_Id", Size: 200 },
-                { FieldName: "sol_Identidad" },
-                { FieldName: "sol_Nombres" },
-                { FieldName: "masc_Nombre" },
-                { FieldName: "sol_Correo" }
+                { FieldName: 'depto_Id', Visibility: true },
+                { FieldName: 'depto_Codigo', Visibility: true },
+                { FieldName: 'depto_Descripcion', Visibility: true }
             ];
             datatable.init(Direction, header);
         })

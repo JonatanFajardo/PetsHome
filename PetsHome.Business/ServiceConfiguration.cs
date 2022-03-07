@@ -17,7 +17,7 @@ namespace PetsHome.Business
             //string connectionString = Configuration.GetConnectionString("PetsHomeConnectionString");
             services.AddScoped<MunicipioRepository>();
             services.AddScoped<PersonaRepository>();
-            services.AddScoped<DepartamentoRepository>();
+            services.AddScoped<LocalidadRepository>();
             services.AddScoped<CategoriaRepository>();
             services.AddScoped<EntradaRepository>();
             //services.AddScoped<EntradasDetalleRepository>();
@@ -70,7 +70,7 @@ namespace PetsHome.Business
             services.AddScoped<MascotaService>();
             services.AddScoped<ProcedenciaService>();
             services.AddScoped<RazaService>();
-            //services.AddScoped<SolicitudeService>();
+            services.AddScoped<SolicitudService>();
             services.AddScoped<VacunaService>();
             services.AddScoped<VoluntarioService>();
             //services.AddScoped<UsuariosService>();

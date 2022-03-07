@@ -7,20 +7,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PetsHome.Business.Models
 {
-    //public class DepartamentoViewModel
-    //{
-    //    public EditarDepartamento EditarDepartamento { get; set; }
-    //    public MunicipioViewModel EditarMunicipio { get; set; }
-    //    public DepartamentoViewModel()
-    //    {
-    //        EditarDepartamento = new EditarDepartamento();
-    //        EditarMunicipio = new MunicipioViewModel();
-    //    }
-    //}
+    
 
 
     public class DepartamentoViewModel
     {
+        //public EditarDepartamento EditarDepartamento { get; set; }
+        public MunicipioViewModel EditarMunicipio { get; set; }
+        public DepartamentoViewModel()
+        {
+            //EditarDepartamento = new EditarDepartamento();
+            EditarMunicipio = new MunicipioViewModel();
+        }
         [Key]
         [Display(Name = "Id Departamentos")]
         public int depto_Id { get; set; }

@@ -123,19 +123,19 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public IEnumerable<RefugioViewModel> RefugioDropdown()
-        {
-            try
-            {
-                IEnumerable<PR_Refugio_Refugio_DropdownResult> mappedResult = _refugioRepository.RefugioDropdown();
-                return _mapper.Map<List<RefugioViewModel>>(mappedResult.ToList());
-            }
-            catch (Exception error)
-            {
-                _logger.LogError(error, error.Message);
-                return null;
-            }
-        }
+        //public IEnumerable<MascotaViewModel> MascotasDropdown()
+        //{
+        //    try
+        //    {
+        //        IEnumerable<PR_Refugio_Mascotas_DropdownlResult> mappedResult = _mascotaRepository.MascotasDropdown();
+        //        return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
+        //    }
+        //    catch (Exception error)
+        //    {
+        //        _logger.LogError(error, error.Message);
+        //        return null;
+        //    }
+        //}
 
         public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
         {

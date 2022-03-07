@@ -30,6 +30,10 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
+        public IActionResult Detail()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> List()
         {
@@ -45,18 +49,19 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Find(int id)
+        public async void Find(int id)
         {
             var itemSearched = await _SolicitudService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
+                //return View("Create", itemSearched);
+                Detail(id);
                 //return Json(new { item = result, success = true });
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return AjaxResult(itemSearched, true);
+                //return AjaxResult(itemSearched, true);
             }
         }
 
@@ -65,7 +70,7 @@ namespace PetsHome.UI.Controllers
             var itemDetail = await _SolicitudService.DetailAsync(id);
             if (itemDetail != null)
             {
-                return AjaxResult(itemDetail, true);
+                return View("Detail", itemDetail);
             }
             else
             {

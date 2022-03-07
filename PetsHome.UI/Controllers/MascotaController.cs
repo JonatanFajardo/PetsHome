@@ -81,7 +81,6 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
-
         }
 
         public async Task<IActionResult> Add(MascotaViewModel model)
