@@ -92,7 +92,7 @@ namespace PetsHome.Logic.Repositories
         #region Dropdown
         public IEnumerable<PR_Refugio_EmpleadosCargos_DropdownResult> EmpleadoCargoDropdown()
         {
-            const string sqlQuery = "[Refugio].[PR_General_Departamento_Dropdown]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_EmpleadosCargos_Dropdown]";
             return DbApp.Dropdown<PR_Refugio_EmpleadosCargos_DropdownResult>(sqlQuery);
         }
 

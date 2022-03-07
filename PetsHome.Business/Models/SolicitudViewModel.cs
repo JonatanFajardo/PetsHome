@@ -43,10 +43,16 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int masc_Id { get; set; }
 
+        // Propiedades de mascota
+        public byte[] masc_Imagen { get; set; }
+
         [Display(Name = "Mascota")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string masc_Nombre { get; set; }
+        public bool masc_EsAdoptado { get; set; }
+        public string raza_Descripcion { get; set; }
+        public string refg_Nombre { get; set; }
 
         public int sol_UsuarioCrea { get; set; }
 
