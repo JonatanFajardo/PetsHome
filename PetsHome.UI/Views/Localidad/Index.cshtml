@@ -17,13 +17,12 @@
             <thead class="text-center bg-primary text-white">
                 <tr>
                     <th>Id</th>
-                    <th>Codigo</th>
+                    <th>Código</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
         </table>
-
     </div>
 </div>
 
@@ -62,14 +61,13 @@
 </div>
 <!-- Fin Modal -->
 @section Scripts {
-<script src="~/js/pages/localidad.js"></script>
-<script>
-    Localidad.datatable({
+    <script src="~/js/pages/localidad.js"></script>
+    <script>
+        Localidad.datatable({   
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
-        urlInsert: "@Url.Action("Create")",
-        urlUpdate: "@Url.Action("Find")"
+        urlInsert: "@Url.Action("EditDepartamentos")",
+        urlUpdate: "@Url.Action("EditDepartamentos")"
     });
-
-</script>
+    </script>
 }

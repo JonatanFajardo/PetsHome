@@ -21,11 +21,11 @@ namespace PetsHome.Business.Services
             _logger = logger;
             _mapper = mapper;
         }
-        public async Task<List<MunicipioViewModel>> ListAsync()
+        public async Task<List<MunicipioViewModel>> ListIdAsync(int id)
         {
             try
             {
-                IEnumerable<PR_General_Municipios_ListResult> mappedResult = await _municipioRepository.ListAsync();
+                IEnumerable<PR_General_Municipios_ListResult> mappedResult = await _municipioRepository.ListIdAsync(id);
                 return _mapper.Map<List<MunicipioViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)

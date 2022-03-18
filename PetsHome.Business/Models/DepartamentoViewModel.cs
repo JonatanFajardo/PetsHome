@@ -13,12 +13,12 @@ namespace PetsHome.Business.Models
     public class DepartamentoViewModel
     {
         //public EditarDepartamento EditarDepartamento { get; set; }
-        public MunicipioViewModel EditarMunicipio { get; set; }
-        public DepartamentoViewModel()
-        {
-            //EditarDepartamento = new EditarDepartamento();
-            EditarMunicipio = new MunicipioViewModel();
-        }
+        //public MunicipioViewModel EditarMunicipio { get; set; }
+        //public DepartamentoViewModel()
+        //{
+        //    //EditarDepartamento = new EditarDepartamento();
+        //    EditarMunicipio = new MunicipioViewModel();
+        //}
         [Key]
         [Display(Name = "Id Departamentos")]
         public int depto_Id { get; set; }
@@ -27,13 +27,13 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo código es requerido")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El código debe tener {1} caracteres")]
         [RegularExpression(@"^\d*$", ErrorMessage = "Solo se permiten números")]
-        [Remote(action: "ExistDepartamento", controller: "Departamentos", AdditionalFields = nameof(depto_Id))]
+        //[Remote(action: "ExistDepartamento", controller: "Departamentos", AdditionalFields = nameof(depto_Id))]
         public string depto_Codigo { get; set; }
 
         [Display(Name = "Departamento")]
         [Required(ErrorMessage = "El campo departamento es requerido")]
         [StringLength(100, ErrorMessage = "El departamento debe tener un máximo de {1} caracteres")]
-        [Remote(action: "DepartamentosDescripcionExist", controller: "Departamentos", AdditionalFields = nameof(depto_Id))]
+        //[Remote(action: "DepartamentosDescripcionExist", controller: "Departamentos", AdditionalFields = nameof(depto_Id))]
         public string depto_Descripcion { get; set; }
         [Display(Name = "Usuario creación")]
         public int? depto_UsuarioCrea { get; set; }
@@ -48,8 +48,9 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? depto_FechaModifica { get; set; }
 
+        //public MunicipioViewModel Municipio { get; set; }
         public List<MunicipioViewModel> ListadoMunicipios { get; set; }
-
+        public MunicipioViewModel Municipio { get; set; } = new MunicipioViewModel();
         #region Dropdown
         public SelectList departamentoList { get; set; }
         public SelectList municipioList { get; set; }

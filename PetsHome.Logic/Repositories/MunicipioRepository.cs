@@ -20,9 +20,18 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Select<PR_General_Municipios_ListResult>(sqlQuery);
         }
 
+        public async Task<IEnumerable<PR_General_Municipios_ListResult>> ListIdAsync(int id)
+        {
+            const string sqlQuery = "[General].[PR_General_Municipios_SelectbyDepartamento]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_General_Municipios_ListResult>(sqlQuery, parameter);
+        }
+
         public async Task<Boolean> AddAsync(tbMunicipios entity)
         {
             int result = 0;
+            entity.mpio_UsuarioCrea = 1;
             const string sqlQuery = "[General].[PR_General_Municipios_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@mpio_Codigo", entity.mpio_Codigo, DbType.String, ParameterDirection.Input);

@@ -1,0 +1,49 @@
+﻿@model DepartamentoViewModel
+@{
+    ViewData["Title"] = "EditDepartamentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    @if (Model.depto_Id == 0)
+    {
+        <div class="col-md-12">
+            <partial name="Departamento" model="@Model">
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12">
+            <partial name="Departamento" model="@Model">
+                <div class="card mt-3">
+                    <partial name="Municipio" model="@Model">
+                </div>
+        </div>
+    }
+</div>
+@section Scripts{
+    
+    <script src="~/js/pages/municipio.js"></script>
+    <script>
+        Municipio.datatableCatalogs({listUrl: "@Url.Action("ListMunicipios")" });
+    </script>
+    <script>
+            Catalogs.configure({
+                displayName: "municipio",
+                getUrl: "@Url.Action("GetMunicipio")"
+            });
+    </script>
+            <script>
+            function valideKey(evt) {
+                var code = (evt.which) ? evt.which : evt.keyCode;
+
+                if (code == 8) {
+                    return true;
+                } else if (code >= 48 && code <= 57) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
+}

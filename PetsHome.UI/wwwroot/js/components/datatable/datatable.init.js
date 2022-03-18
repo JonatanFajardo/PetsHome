@@ -38,7 +38,6 @@ var datatable = (function () {
     }
 
     obj.configure = function (params) {
-        console.log(params);
         //if (params.dataTableId === undefined)
         //    params.dataTableId = "#datatable";
         if (params.editModalId === undefined)
@@ -245,6 +244,7 @@ var datatable = (function () {
             // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.
             table.on("click", ".edit-btn", function (e) {
                 var getIdEdit = $(this).data("id");
+                console.log(getIdEdit);
                 window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
             });
 

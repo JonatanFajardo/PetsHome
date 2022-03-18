@@ -30,12 +30,9 @@
             <br />
             <div class="row">
                 <div class="col-md-12">
-                    <a style="background-color:gray;color:white" asp-controller="Localidad" asp-action="Editar" class="btn btn-secondary">Edit</a>
-                    <a style="background-color:gray;color:white" asp-controller="Localidad" asp-action="Index" class="btn btn-secondary">Cancelar</a>
                     @if (Model.depto_Id == 0)
                     {
                         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
-                        <button type="submit">Wuardar</button>
                     }
                     else
                     {
@@ -45,6 +42,4 @@
             </div>
         </form>
     </div>
-
-
 </div>
