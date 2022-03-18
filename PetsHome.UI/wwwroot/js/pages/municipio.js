@@ -9,15 +9,9 @@ var Municipio = (function () {
             header = [
                 {FieldName: "mpio_Id"},
                 {FieldName: "mpio_Codigo"},
-                {FieldName: "mpio_Descripcion"},
-                {FieldName: "depto_Id"},
-                {FieldName: "mpio_EsEliminado"},
-                {FieldName: "mpio_UsuarioCrea"},
-                {FieldName: "mpio_FechaCrea"},
-                {FieldName: "mpio_UsuarioModifica"},
-                {FieldName: "mpio_FechaModifica"}
+                {FieldName: "mpio_Descripcion"}
             ];
-            datatable.init(Direction, header);
+            datatableCatalogs.init(Direction.listUrl, header);
         })
     }
     return obj;

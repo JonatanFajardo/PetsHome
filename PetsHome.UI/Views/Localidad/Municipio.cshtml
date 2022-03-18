@@ -1,4 +1,4 @@
-﻿@model MunicipioViewModel
+﻿@model DepartamentoViewModel
 
 <div class="card">
     <div class="card-header">
@@ -11,14 +11,16 @@
         <table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="datatable">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Código</th>
-                    <th> Municipio</th>
+                    <th>Municipio</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
         </table>
     </div>
 </div>
+
 <!--Modal para crear y editar municipios-->
 <div class="modal" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -29,74 +31,93 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form  method="post" autocomplete="off"
-                  data-ajax-begin="appConfig.Catalogs.begin"
-                  data-ajax-success="appConfig.Catalogs.success"
-                  data-ajax-failure="appConfig.Catalogs.failure"
-                  data-ajax-complete="appConfig.Catalogs.complete">
+            <form asp-action="AddMunicipio" asp-controller="Localidad" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="mpio_Id" id="item-id" />
-                <input type="hidden" asp-for="depto_Id" id="depto_Id" />
+                <input type="hidden" asp-for="Municipio.mpio_Id" id="item-id" />
+                <input type="hidden" asp-for="Municipio.depto_Id" id="depto_Id" />
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label asp-for="mpio_Codigo" class="control-label required"></label>
+                                <label asp-for="Municipio.mpio_Codigo" class="control-label required"></label>
                                 <div class="input-group">
-                                    <input type="text" asp-for="codigoDept"  class="form-control" value="@Model.codigoDept" disabled id="txtDepCodigo"/>
-                                    <input type="hidden" asp-for="codigoDept" />
-                                    <input type="text" asp-for="codigo" class="form-control" value="@Model.codigo" id="txtCodigo" style="width:85%;" onkeypress="return valideKey(event);"/>
+                                    <input type="text" asp-for="Municipio.mpio_Codigo" class="form-control" value="@Model.Municipio.depto_Codigo" disabled />
+                                    @*<input type="hidden" asp-for="depto_Codigo" />*@
+                                    <input type="text" asp-for="Municipio.mpio_Codigo" class="form-control" />
                                 </div>
                                 <div class="col-sm-12">
                                     <span style="margin-left:8%;" class="text-danger" id="lblCodigo"></span>
                                 </div>
                             </div>
                         </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label asp-for="mpio_Descripcion" class="control-label required"></label>
-                                    <input type="text" asp-for="mpio_Descripcion" class="form-control" maxlength="100" id="txtMunicipio" />
-                                    <span class="text-danger" id="lblMunicipio"></span>
-                                </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Municipio.mpio_Descripcion" class="control-label required"></label>
+                                <input type="text" asp-for="Municipio.mpio_Descripcion" class="form-control" maxlength="100" />
+                                <span class="text-danger" id="mpio_Descripcion"></span>
                             </div>
                         </div>
                     </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="InsertMunicipio()"></button>
+                    <button type="submit" class="btn btn-primary"></button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!--Fin Modal-->
-<!--Modal Delete-->
-<div class="modal" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar municipio</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal" autocomplete="off">
-                    <p>
-                        ¿Está seguro que desea eliminar este registro?
-                    </p>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="Municipio.mpio_Id" id="delete-item-id">
+                <div class="modal-body">
                     <div class="row">
-                        <div class="col-12">
-                            <input type="hidden" id="txtIdDelete">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btnDelete"><i class="mdi mdi-delete"></i> Aceptar</button>
-            </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<!-- Fin Modal -->
+@section Scripts {
+<script src="~/js/pages/municipio.js"></script>
+<script>
+    Municipio.datatableCatalogs({listUrl: "@Url.Action("ListMunicipios")" ,id: @Model.depto_Id });
+</script>
+
+<script>
+    Catalogs.configure({
+        displayName: "municipio",
+        getUrl: "@Url.Action("Find")"
+    });
+</script>
+}
 <!-- Fin Modal -->

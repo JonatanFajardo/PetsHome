@@ -35,6 +35,31 @@ namespace PetsHome.DataAccess.Extensions
             }
         }
 
+        public static async Task<IEnumerable<T>> SelectById<T>(string sqlQuery, DynamicParameters parameters)
+        {
+            using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                try
+                {
+                    var result = await database.QueryAsync<T>(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                    if (result == null && result.Count() > 0)
+                    {
+                    }
+                    database.Close();
+                    database.Dispose();
+                    return result;
+                }
+                catch (Exception error)
+                {
+                    //answer.ErrorGeneral = error.Message;
+                    //answer.ErrorDetails = error.ToString();
+                    database.Close();
+                    database.Dispose();
+                    return null;
+                }
+            }
+        }
+
         public static async Task<T> Select<T>(string sqlQuery, DynamicParameters parameters)
         {
             using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
