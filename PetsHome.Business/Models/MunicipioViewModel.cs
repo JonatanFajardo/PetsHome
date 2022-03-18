@@ -10,8 +10,8 @@ namespace PetsHome.Business.Models
         [Display(Name = "Id")]
         public int mpio_Id { get; set; }
         [Display(Name = "Código de municipio")]
-        [Required(ErrorMessage = "El campo código es requerido")]
-        [StringLength(4, MinimumLength = 4, ErrorMessage = "El código debe tener {1} caracteres")]
+        //[Required(ErrorMessage = "El campo código es requerido")]
+        //[StringLength(4, MinimumLength = 4, ErrorMessage = "El código debe tener {1} caracteres")]
         public string mpio_Codigo { get; set; }
         [Display(Name = "Municipio")]
         [Required(ErrorMessage = "El campo municipio es requerido")]
@@ -20,13 +20,13 @@ namespace PetsHome.Business.Models
         [Display(Name = "Id dep")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int depto_Id { get; set; }
-        public string codigoDept { get; set; }
         [Display(Name = "Código")]
         [Required(ErrorMessage = "El campo código es requerido")]
-        [StringLength(2, MinimumLength = 2, ErrorMessage = "El código debe tener {1} caracteres")]
+        //[StringLength(2, MinimumLength = 2, ErrorMessage = "El código debe tener {1} caracteres")]
         [RegularExpression(@"^\d*$", ErrorMessage = "Solo se permiten números")]
         //[Remote(action: "MunicipiosExist", controller: "Departamentos", AdditionalFields = nameof(mpio_Id) + "," + nameof(codigoDept))]
-        public string codigo { get; set; }
+        public string depto_Codigo { get; set; }
+        //public string codigo { get; set; }
         [Display(Name = "Usuario creación")]
         public int? mpio_UsuarioCrea { get; set; }
         [Display(Name = "Usuario creación")]

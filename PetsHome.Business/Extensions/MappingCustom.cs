@@ -81,5 +81,21 @@ namespace PetsHome.Business.Extensions
             };
             return model;
         }
+
+        public static DepartamentoViewModel Map(PR_General_Departamentos_FindResult map)
+        {
+            DepartamentoViewModel model = new DepartamentoViewModel()
+            {
+                depto_Id = map.depto_Id,
+                depto_Codigo = map.depto_Codigo,
+                depto_Descripcion = map.depto_Descripcion,
+                Municipio = new MunicipioViewModel()
+                {
+                    depto_Id = map.depto_Id,
+                    depto_Codigo = map.depto_Codigo
+                },
+            };
+            return model;
+        }
     }
 }

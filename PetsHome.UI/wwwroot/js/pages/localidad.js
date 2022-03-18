@@ -7,9 +7,9 @@ var Localidad = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'depto_Id', Visibility: true },
-                { FieldName: 'depto_Codigo', Visibility: true },
-                { FieldName: 'depto_Descripcion', Visibility: true }
+                { FieldName: 'depto_Id'},
+                { FieldName: 'depto_Codigo'},
+                { FieldName: 'depto_Descripcion'}
             ];
             datatable.init(Direction, header);
         })

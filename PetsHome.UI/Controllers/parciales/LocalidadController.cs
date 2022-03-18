@@ -11,18 +11,18 @@ namespace PetsHome.UI.Controllers
 {
     public class LocalidadController : BaseController
     {
-        private readonly MunicipioService _MunicipioService;
+        private readonly MunicipioService _municipioService;
         private readonly DepartamentoService _departamentoService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
 
-        public LocalidadController(MunicipioService MunicipioService,
+        public LocalidadController(MunicipioService municipioService,
                                     DepartamentoService departamentoService,
                                     //IHttpContextAccessor httpContextAccessor,
                                     IMapper mapper)
         {
-            _MunicipioService = MunicipioService;
+            _municipioService = municipioService;
             _departamentoService = departamentoService;
             //_httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
@@ -32,28 +32,48 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
-        public ActionResult EditDepartamentos()
+
+        public async Task<IActionResult> ListMunicipios(int id)
         {
-            return View();
+            var listMunicipios = await _municipioService.ListIdAsync(id);
+            return Json(new
+            {
+                data = listMunicipios
+            });
         }
 
-        //[HttpPost("Mascotas/Agregar", Name = "save")]
-        public IActionResult Edit(int value)
+        //public ActionResult EditDepartamentos()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost("Localidad/EditDepartamentos", Name = "save")]
+        // 
+        public async Task<IActionResult> EditDepartamentos(int id)
         {
-            if (value == 0)
+            if (id == 0)
             {
                 var model = new DepartamentoViewModel();
-                model.depto_Id = value;
+                model.depto_Id = id;
                 return View(nameof(EditDepartamentos), model);
             }
-            return View();
+            else
+            { 
+                var result = await _departamentoService.FindAsync(id);
+                result.ListadoMunicipios = await _municipioService.ListIdAsync(id);
+                //var model = new DepartamentoViewModel();
+                //model.Municipio.depto_Codigo = result.depto_Codigo;
+                //model.Municipio.depto_Id = result.depto_Id;
+                //var model = new DepartamentoViewModel();
+                return View(nameof(EditDepartamentos), result);
+            }
         }
 
-        //public async Task<IActionResult> List()
-        //{
-        //    var itemListing = await _departamentoService.ListAsync();
-        //    return Json(new { data = itemListing });
-        //}
+        public async Task<IActionResult> List()
+        {
+            var itemListing = await _departamentoService.ListAsync();
+            return Json(new { data = itemListing });
+        }
 
         //public async Task<IActionResult> Find(int id)
         //{
@@ -76,31 +96,59 @@ namespace PetsHome.UI.Controllers
         //    throw new NotImplementedException();
         //}
 
-        //public async Task<IActionResult> Add(DepartamentoViewModel model)
-        //{
-        //    if (!model.isEdit)
-        //    {
-        //        Boolean createdItem = await _departamentoService.AddAsync(model);
-        //        if (createdItem)
-        //            goto ErrorResult;
-        //        ShowAlert("Insertado", AlertMessageType.Success);
-        //        //return View("Create");
-        //        return RedirectToAction("EditDepartamento");
-        //    }
-        //    else
-        //    {
-        //        Boolean updatedItem = await _departamentoService.UpdateAsync(model);
-        //        //Boolean validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
-        //        if (updatedItem)
-        //            goto ErrorResult;
+        
+        public async Task<IActionResult> Add(DepartamentoViewModel model)
+        {
+            if (!model.isEdit)
+            {
+                Boolean createdItem = await _departamentoService.AddAsync(model);
+                if (createdItem)
+                    goto ErrorResult;
+                ShowAlert("Insertado", AlertMessageType.Success);
+                //return View("Create");
+                return RedirectToAction("EditDepartamentos");
+            }
+            else
+            {
+                Boolean updatedItem = await _departamentoService.UpdateAsync(model);
+                //Boolean validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
+                if (updatedItem)
+                    goto ErrorResult;
 
-        //        ShowAlert("Actualizado", AlertMessageType.Success);
-        //        return RedirectToAction("Index");
-        //    }
+                ShowAlert("Actualizado", AlertMessageType.Success);
+                return RedirectToAction("EditDepartamentos", routeValues: new { id = model.depto_Id });
+            }
 
-        //ErrorResult:
-        //    return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
-        //}
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
+        }
+
+        //[HttpPost("Departamentos/AddMunicipio", Name = "SaveMunicipio")]
+        public async Task<IActionResult> AddMunicipio(DepartamentoViewModel model)
+        {
+            if (!model.Municipio.isEdit)
+            {
+                Boolean createdItem = await _municipioService.AddAsync(model.Municipio);
+                if (createdItem)
+                    goto ErrorResult;
+                ShowAlert("Insertado", AlertMessageType.Success);
+                //return View("Create");
+                return RedirectToAction("EditDepartamentos", routeValues: new { id = model.depto_Id });
+            }
+            else
+            {
+                Boolean updatedItem = await _municipioService.UpdateAsync(model.Municipio);
+                //Boolean validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert("Actualizado", AlertMessageType.Success);
+                return RedirectToAction("EditDepartamentos", routeValues: new { id = model.depto_Id });
+            }
+
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
+        }
 
         //public async Task<IActionResult> Remove(int masc_Id)
         //{
@@ -121,48 +169,41 @@ namespace PetsHome.UI.Controllers
 
 
         //[SessionManager("Registro Departamentos")]
-        public ActionResult EditDepartamento(int id)
-        {
-            if (id == 0)
-            {
-                var model = new DepartamentoViewModel();
-                model.depto_Id = id;
-                return View(nameof(EditDepartamentos), model);
-            }
-            else
-            {
-                var result = _departamentoService.ListAsync();
-                if (result == null)
-                {
-                    return View(nameof(Index));
-                }
-                var model = new DepartamentoViewModel();
-                ViewBag.depto_Id = id;
-                model = _mapper.Map<DepartamentoViewModel>(result);
-                model.EditarMunicipio = _mapper.Map<MunicipioViewModel>(result);
-                //model.EditarDepartamento.depto_Id = id;
-                //model.EditarDepartamento.depto_Codigo = result.depto_Codigo;
-                //model.EditarDepartamento.depto_Descripcion = result.depto_Descripcion;
-                //model.EditarMunicipio.depto_Id = result.depto_Id;
-                //model.EditarMunicipio.codigoDept = result.depto_Codigo;
-                return View(nameof(EditDepartamentos), model);
-            }
-        }
+        //public ActionResult EditDepartamento(int id)
+        //{
+        //    if (id == 0)
+        //    {
+        //        var model = new DepartamentoViewModel();
+        //        model.depto_Id = id;
+        //        return View(nameof(EditDepartamentos), model);
+        //    }
+        //    else
+        //    {
+        //        var result = _departamentoService.ListAsync();
+        //        if (result == null)
+        //        {
+        //            return View(nameof(Index));
+        //        }
+        //        var model = new DepartamentoViewModel();
+        //        ViewBag.depto_Id = id;
+        //        model = _mapper.Map<DepartamentoViewModel>(result);
+        //        model.EditarMunicipio = _mapper.Map<MunicipioViewModel>(result);
+        //        //model.EditarDepartamento.depto_Id = id;
+        //        //model.EditarDepartamento.depto_Codigo = result.depto_Codigo;
+        //        //model.EditarDepartamento.depto_Descripcion = result.depto_Descripcion;
+        //        //model.EditarMunicipio.depto_Id = result.depto_Id;
+        //        //model.EditarMunicipio.codigoDept = result.depto_Codigo;
+        //        return View(nameof(EditDepartamentos), model);
+        //    }
+        //}
 
         ////[SessionManager("Listado Municipios")]
-        //public IActionResult ListMunicipios(int id)
-        //{
-        //    var listMunicipios = _MunicipioService.ListMunicipios().Where(x => x.depto_Id == id);
-        //    return Json(new
-        //    {
-        //        data = listMunicipios
-        //    });
-        //}
+
 
         ////[SessionManager("Listado Municipios")]
         //public IActionResult ListMunicipiosDetalle(int id)
         //{
-        //    var listMunicipios = _MunicipioService.DetailsMunicipios(id);
+        //    var listMunicipios = _municipioService.DetailsMunicipios(id);
         //    return Json(new
         //    {
         //        data = listMunicipios
@@ -222,12 +263,12 @@ namespace PetsHome.UI.Controllers
         //    var mpio_Codigo = codigoDept + codigo;
         //    var result = 0;
         //    var id = _httpContextAccessor.HttpContext.Session.GetInt32("idUsuario");
-        //    var validacio = _MunicipioService.MunicipiosExist(mpio_Codigo);
+        //    var validacio = _municipioService.MunicipiosExist(mpio_Codigo);
         //    if (mpio_Id == 0)
         //    {
         //        if (validacio == null)
         //        {
-        //            result = _MunicipioService.Insert(mpio_Codigo, municipio.Trim(), idDep, (int)id);
+        //            result = _municipioService.Insert(mpio_Codigo, municipio.Trim(), idDep, (int)id);
         //        }
         //        else
         //        {
@@ -238,7 +279,7 @@ namespace PetsHome.UI.Controllers
         //    {
         //        if (validacio == null || validacio.mpio_Id == mpio_Id)
         //        {
-        //            result = _MunicipioService.Update(mpio_Id, mpio_Codigo, municipio.Trim(), idDep, (int)id);
+        //            result = _municipioService.Update(mpio_Id, mpio_Codigo, municipio.Trim(), idDep, (int)id);
         //        }
         //        else
         //        {
@@ -262,7 +303,7 @@ namespace PetsHome.UI.Controllers
         ////[SessionManager("Listado Municipios")]
         //public IActionResult GetMunicipio(int id)
         //{
-        //    var municipio = _MunicipioService.ListMunicipios().FirstOrDefault(x => x.mpio_Id == id);
+        //    var municipio = _municipioService.ListMunicipios().FirstOrDefault(x => x.mpio_Id == id);
         //    return AjaxResult(municipio, true);
         //}
 
@@ -275,7 +316,7 @@ namespace PetsHome.UI.Controllers
         //    {
         //        return View(nameof(Index));
         //    }
-        //    var municipio = _MunicipioService.DetailsMunicipios(id);
+        //    var municipio = _municipioService.DetailsMunicipios(id);
         //    var listado = new List<MunicipioViewModel>();
         //    if (municipio == null)
         //    {
@@ -310,13 +351,13 @@ namespace PetsHome.UI.Controllers
         ////[SessionManager("Modificar Municipios")]
         //public IActionResult DeleteMunicipios(int id)
         //{
-        //    var validationPersonas = _MunicipioService.ValidationPersonas(id);
-        //    var validationSucursales = _MunicipioService.ValidationSucursales(id);
-        //    var validationProveedores = _MunicipioService.ValidationProveedores(id);
+        //    var validationPersonas = _municipioService.ValidationPersonas(id);
+        //    var validationSucursales = _municipioService.ValidationSucursales(id);
+        //    var validationProveedores = _municipioService.ValidationProveedores(id);
         //    var validationTotal = validationPersonas.Count() + validationSucursales.Count() + validationProveedores.Count();
         //    if (validationTotal == 0)
         //    {
-        //        var result = _MunicipioService.Delete(id);
+        //        var result = _municipioService.Delete(id);
         //        return Json(result);
         //    }
         //    return Json(validationTotal);
