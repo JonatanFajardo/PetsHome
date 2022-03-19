@@ -46,7 +46,7 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = @"[General].[PR_General_Municipios_Find]";
             var parameter = new DynamicParameters();
-            parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@mpio_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Select<PR_General_Municipios_FindResult>(sqlQuery, parameter);
         }
         
@@ -61,6 +61,7 @@ namespace PetsHome.Logic.Repositories
         public async Task<Boolean> EditAsync(tbMunicipios entity)
         {
             int result = 0;
+            entity.mpio_UsuarioModifica = 1;
             const string sqlQuery = "[General].[PR_General_Municipios_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);
