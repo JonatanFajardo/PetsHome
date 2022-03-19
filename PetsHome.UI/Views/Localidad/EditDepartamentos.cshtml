@@ -7,12 +7,14 @@
 <div class="row">
     @if (Model.depto_Id == 0)
     {
+        //Redirige a la vista para crear 
         <div class="col-md-12">
             <partial name="Departamento" model="@Model">
         </div>
     }
     else
     {
+        //Redirige a la vista para editar 
         <div class="col-md-12">
             <partial name="Departamento" model="@Model">
                 <div class="card mt-3">
@@ -22,28 +24,32 @@
     }
 </div>
 @section Scripts{
-    
-    <script src="~/js/pages/municipio.js"></script>
-    <script>
-        Municipio.datatableCatalogs({listUrl: "@Url.Action("ListMunicipios")" });
-    </script>
-    <script>
-            Catalogs.configure({
-                displayName: "municipio",
-                getUrl: "@Url.Action("GetMunicipio")"
-            });
-    </script>
-            <script>
-            function valideKey(evt) {
-                var code = (evt.which) ? evt.which : evt.keyCode;
 
-                if (code == 8) {
-                    return true;
-                } else if (code >= 48 && code <= 57) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        </script>
+<script src="~/js/pages/municipio.js"></script>
+<script>
+    Municipio.datatablePartials({
+        //console.log('hola'+@Model.depto_Id);
+        listUrl: "@Url.Action($"ListMunicipios")",
+        id: @Model.depto_Id
+    });
+</script>
+<script>
+    Catalogs.configure({
+        displayName: "municipio",
+        getUrl: "@Url.Action("FindMunicipio")"
+    });
+</script>
+<script>
+    function valideKey(evt) {
+        var code = (evt.which) ? evt.which : evt.keyCode;
+
+        if (code == 8) {
+            return true;
+        } else if (code >= 48 && code <= 57) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
 }

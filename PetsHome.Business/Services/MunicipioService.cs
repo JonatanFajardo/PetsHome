@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -34,12 +35,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<MunicipioViewModel> FindAsync(int id)
+        public async Task<DepartamentoViewModel> FindAsync(int id)
         {
             try
             {
-                PR_General_Municipios_FindResult mappedResult = await _municipioRepository.FindAsync(id);
-                return _mapper.Map<MunicipioViewModel>(mappedResult);
+                var mappedResult = await _municipioRepository.FindAsync(id);
+                return MappingCustom.Map(mappedResult);
             }
             catch (Exception error)
             {

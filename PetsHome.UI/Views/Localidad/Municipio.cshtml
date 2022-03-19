@@ -108,9 +108,13 @@
 </div>
 <!-- Fin Modal -->
 @section Scripts {
-<script src="~/js/pages/municipio.js"></script>
+@*<script src="~/js/pages/municipio.js"></script> 
 <script>
-    Municipio.datatableCatalogs({listUrl: "@Url.Action("ListMunicipios")" ,id: @Model.depto_Id });
+    Municipio.datatablePartials({
+        //console.log('hola'+@Model.depto_Id);
+        listUrl: "@Url.Action($"ListMunicipios")",
+        id: @Model.depto_Id 
+    });
 </script>
 
 <script>
@@ -118,6 +122,6 @@
         displayName: "municipio",
         getUrl: "@Url.Action("Find")"
     });
-</script>
+</script>*@
 }
 <!-- Fin Modal -->
