@@ -13,7 +13,7 @@
      */
     function createDataTable(params) {
         table = $("#datatable");
-
+        console.log('params.getUrl' + params.getUrl);
         // Eventos que se levantan al dar clic en el boton de editar en datatable.
         table.on("click", ".edit-btn", function (e) {
             var id = $(this).data("id");

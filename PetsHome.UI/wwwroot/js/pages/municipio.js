@@ -2,7 +2,7 @@ var Municipio = (function () {
 
     var obj = {};
 
-    obj.datatableCatalogs = function (Direction) {
+    obj.datatablePartials = function (Direction) {
         $(function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
@@ -11,7 +11,7 @@ var Municipio = (function () {
                 {FieldName: "mpio_Codigo"},
                 {FieldName: "mpio_Descripcion"}
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatablePartials.init(Direction.listUrl, Direction.id, header);
         })
     }
     return obj;
