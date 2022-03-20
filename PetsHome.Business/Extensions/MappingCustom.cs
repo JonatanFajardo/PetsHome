@@ -113,5 +113,36 @@ namespace PetsHome.Business.Extensions
             };
             return model;
         }
+
+        public static EntradaViewModel Map(PR_Inventario_EntradasDetalles_FindResult map)
+        {
+            EntradaViewModel model = new EntradaViewModel()
+            {
+                ent_Id = map.ent_Id,
+                EntradaDetalle = new EntradaDetalleViewModel()
+                {
+                    entdet_Id = map.entdet_Id,
+                    entdet_Cantidad = map.entdet_Cantidad,
+                    itm_Id = map.itm_Id,
+                    ent_Id = map.ent_Id
+                },
+            };
+            return model;
+        }
+
+        public static EntradaViewModel Map(PR_Inventario_Entradas_FindResult map)
+        {
+            EntradaViewModel model = new EntradaViewModel()
+            {
+                ent_Id = map.ent_Id,
+                ent_Descripcion = map.ent_Descripcion,
+                ent_Fecha = map.ent_Fecha,
+                EntradaDetalle = new EntradaDetalleViewModel()
+                {
+                    ent_Id = map.ent_Id
+                },
+            };
+            return model;
+        }
     }
 }

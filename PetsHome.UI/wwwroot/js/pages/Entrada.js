@@ -2,7 +2,7 @@ var Entrada = (function () {
 
     var obj = {};
 
-    obj.datatableCatalogs = function (Direction) {
+    obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad

@@ -24,8 +24,9 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_Entradas_DetailResult, EntradaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Entradas_FindResult, EntradaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Entradas_ListResult, EntradaViewModel>().ReverseMap();
+            CreateMap<tbEntradasDetalles, EntradaDetalleViewModel>().ReverseMap();
             //CreateMap<PR_Inventario_EntradasDetalles_DetailResult, EntradaDetalleViewModel>().ReverseMap();
-            //CreateMap<PR_Inventario_EntradasDetalles_ListResult, EntradaDetalleViewModel>().ReverseMap();
+            CreateMap<EntradaDetalleViewModel, PR_Inventario_EntradasDetalles_ListResult>().ReverseMap();
             CreateMap<PR_Inventario_Inventarios_DetailResult, InventarioViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Inventarios_FindResult, InventarioViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Inventarios_ListResult, InventarioViewModel>().ReverseMap();
@@ -88,6 +89,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbDepartamentos, DepartamentoViewModel>().ReverseMap();
             CreateMap<tbEmpleados, EmpleadoViewModel>().ReverseMap();
             CreateMap<tbItems, ItemViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_Items_DropdownResult, ItemViewModel>().ReverseMap();
             //.ForMember(x => x.per, opt =>
             //opt.MapFrom(x => x.Select(y => new tbPersonas
             //{

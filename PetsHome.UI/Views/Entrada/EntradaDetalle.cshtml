@@ -1,0 +1,123 @@
+﻿@model EntradaViewModel
+
+<div class="card">
+    <div class="card-header">
+        <div class="row space-between">
+            <div class="col-md-9"><h3>Listado de entradas detalles</h3></div>
+            <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn">  Agregar</button></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="datatable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Item</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!--Modal para crear y editar municipios-->
+<div class="modal" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddEntradaDetalle" asp-controller="Entrada" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="EntradaDetalle.entdet_Id" id="item-id" />
+                <input type="hidden" asp-for="EntradaDetalle.ent_Id" id="ent_Id" />
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="item_Id" class="control-label required"></label>
+                                <select class="form-control" asp-for="EntradaDetalle.itm_Id" asp-items="Model.EntradaDetalle.itemList">
+                                    <option value="">-- Seleccionar --</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="EntradaDetalle.itm_Id"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="EntradaDetalle.entdet_Cantidad" class="control-label required"></label>
+                                <input type="text" asp-for="EntradaDetalle.entdet_Cantidad" class="form-control" maxlength="100" />
+                                <span class="text-danger" id="mpio_Descripcion"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Fin Modal-->
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" asp-for="EntradaDetalle.entdet_Id" id="delete-item-id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->
+@section Scripts {
+@*<script src="~/js/pages/municipio.js"></script>
+    <script>
+    Municipio.datatablePartials({
+    //console.log('hola'+@Model.depto_Id);
+    listUrl: "@Url.Action($"ListMunicipios")",
+    id: @Model.depto_Id
+    });
+    </script>
+
+    <script>
+    Catalogs.configure({
+    displayName: "municipio",
+    getUrl: "@Url.Action("Find")"
+    });
+    </script>*@
+}
+<!-- Fin Modal -->

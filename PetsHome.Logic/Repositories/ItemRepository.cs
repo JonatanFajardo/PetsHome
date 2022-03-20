@@ -72,6 +72,12 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Dropdown]";
             return DbApp.Dropdown<PR_Inventario_Categorias_DropdownResult>(sqlQuery);
         }
+
+        public IEnumerable<PR_Inventario_Items_DropdownResult> ItemDropdown()
+        {
+            const string sqlQuery = "[Inventario].[PR_Inventario_Items_Dropdown]";
+            return DbApp.Dropdown<PR_Inventario_Items_DropdownResult>(sqlQuery);
+        }
         #endregion Dropdown
     }
 }
