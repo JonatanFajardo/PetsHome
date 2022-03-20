@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
@@ -38,8 +39,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                PR_Inventario_Entradas_FindResult mappedResult = await _entradaRepository.FindAsync(id);
-                return _mapper.Map<EntradaViewModel>(mappedResult);
+                var mappedResult = await _entradaRepository.FindAsync(id);
+                return MappingCustom.Map(mappedResult);
             }
             catch (Exception error)
             {
@@ -53,6 +54,7 @@ namespace PetsHome.Business.Services
             {
                 PR_Inventario_Entradas_DetailResult mappedResult = await _entradaRepository.DetailAsync(id);
                 return _mapper.Map<EntradaViewModel>(mappedResult);
+
             }
             catch (Exception error)
             {

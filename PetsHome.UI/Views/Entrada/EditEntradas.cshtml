@@ -1,0 +1,41 @@
+﻿@model EntradaViewModel
+@{
+    ViewData["Title"] = "EditEntradas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    @if (Model.ent_Id == 0)
+    {
+        //Redirige a la vista para crear 
+        <div class="col-md-12">
+            <partial name="Entrada" model="@Model">
+        </div>
+    }
+    else
+    {
+        //Redirige a la vista para editar 
+        <div class="col-md-12">
+            <partial name="Entrada" model="@Model">
+                <div class="card mt-3">
+                    <partial name="EntradaDetalle" model="@Model">
+                </div>
+        </div>
+    }
+</div>
+@section Scripts{
+
+<script src="~/js/pages/entrada-detalle.js"></script>
+<script>
+    EntradasDetalle.datatablePartials({
+        listUrl: "@Url.Action($"ListEntradasDetalles")",
+        id: @Model.ent_Id
+    });
+</script>
+<script>
+    Catalogs.configure({
+        displayName: "entrada detalle",
+        getUrl: "@Url.Action("FindEntradaDetalle")"
+    });
+</script>
+}
