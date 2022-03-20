@@ -1,4 +1,7 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
+using PetsHome.Business.Extensions;
+using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
 using System;
@@ -10,21 +13,51 @@ namespace PetsHome.Business.Services
 {
     public class EntradasDetalleService
     {
-        //private readonly EntradasDetalleRepository _entradasdetalleRepository;
-        //private readonly ILogger<EntradasDetalleService> _logger;
-        //private readonly IMapper _mapper;
-        //public EntradasDetalleService(EntradasDetalleRepository entradasdetalleRepository, ILogger<EntradasDetalleService> logger, IMapper mapper)
+        private readonly EntradasDetalleRepository _entradaDetalleRepository;
+        private readonly ItemRepository _itemRepository;
+        private readonly ILogger<EntradasDetalleService> _logger;
+        private readonly IMapper _mapper;
+        public EntradasDetalleService(EntradasDetalleRepository municipioRepository, 
+            ILogger<EntradasDetalleService> logger, 
+            IMapper mapper)
+        {
+            _entradaDetalleRepository = municipioRepository;
+            _logger = logger;
+            _mapper = mapper;
+        }
+        public async Task<List<EntradaDetalleViewModel>> ListIdAsync(int id)
+        {
+            try
+            {
+                IEnumerable<PR_Inventario_EntradasDetalles_ListResult> mappedResult = await _entradaDetalleRepository.ListIdAsync(id);
+                return _mapper.Map<List<EntradaDetalleViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+        public async Task<EntradaViewModel> FindAsync(int id)
+        {
+            try
+            {
+                var mappedResult = await _entradaDetalleRepository.FindAsync(id);
+                //mappedResult.
+                return MappingCustom.Map(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+        //public async Task<MunicipioViewModel> DetailAsync(int id)
         //{
-        //    _entradasdetalleRepository = entradasdetalleRepository;
-        //    _logger = logger;
-            //_mapper = mapper;
-        //}
-        //public async Task<List<EntradaDetalleViewModel>> ListAsync()
-        //{
-        //    try
+        //   try
         //    {
-        //        IEnumerable<PR_Inventario_Entradas_ListResult> mappedResult = await _entradasdetalleRepository.ListAsync();
-        //        return _mapper.Map<List<EntradasDetalleViewModel>>(mappedResult.ToList());
+        //        IEnumerable<PR_tbMunicipios_DetailResult> mappedResult = await _entradaDetalleRepository.DetailAsync(id);
+        //        return _mapper.Map<MunicipioViewModel>(mappedResult);
         //    }
         //    catch (Exception error)
         //    {
@@ -32,70 +65,45 @@ namespace PetsHome.Business.Services
         //        throw;
         //    }
         //}
-        //public async Task<EntradasDetalleViewModel> FindAsync(int id)
-        //{
-        //    try
-        //    {
-        //        PR_Inventario_Entradas_FindResult mappedResult = await _entradasdetalleRepository.FindAsync(id);
-        //        return _mapper.Map<EntradasDetalleViewModel>(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
+        public async Task<Boolean> AddAsync(EntradaDetalleViewModel model)
+        {
+            try
+            {
+                tbEntradasDetalles mappedResult = _mapper.Map<tbEntradasDetalles>(model);
+                return await _entradaDetalleRepository.AddAsync(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return true;
+            }
+        }
 
-        //        throw;
-        //    }
-        //}
-        //public async Task<EntradasDetalleViewModel> DetailAsync(int id)
-        //{
-        //    try
-        //    {
-        //        PR_Inventario_Entradas_DetailResult mappedResult = await _entradasdetalleRepository.DetailAsync(id);
-        //        return _mapper.Map<EntradasDetalleViewModel>(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-        //public async Task<Boolean> AddAsync(EntradasDetallViewModel model)
-        //{
-        //    try
-        //    {
-        //        tbEntradasDetalles mappedResult = await _mapper.Map<tbEntradasDetalles>(mappedResult);
-        //        return await _entradasdetalleRepository.AddAsync(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-        //public async Task<Boolean> UpdateAsync(EntradasDetallViewModel model)
-        //{
-        //    try
-        //    {
-        //        tbEntradasDetalles mappedResult = await _mapper.Map<tbEntradasDetalles>(mappedResult);
-        //        return await _entradasdetalleRepository.EditAsync(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-        //public async Task<Boolean> RemoveAsync(int id)
-        //{
-        //    try
-        //    {
-        //        Boolean mappedResult = await _entradasdetalleRepository.RemoveAsync(id);
-        //        return mappedResult;
-        //    }
-        //    catch (Exception error)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+        public async Task<Boolean> UpdateAsync(EntradaDetalleViewModel model)
+        {
+            try
+            {
+                tbEntradasDetalles mappedResult = _mapper.Map<tbEntradasDetalles>(model);
+                return await _entradaDetalleRepository.EditAsync(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return true;
+            }
+        }
+        public async Task<Boolean> RemoveAsync(int id)
+        {
+            try
+            {
+                Boolean mappedResult = await _entradaDetalleRepository.RemoveAsync(id);
+                return mappedResult;
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return true;
+            }
+        }
     }
 }

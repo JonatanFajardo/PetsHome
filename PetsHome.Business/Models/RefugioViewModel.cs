@@ -86,8 +86,7 @@ namespace PetsHome.Business.Models
         {
             departamentoList = new SelectList(departamentoResults, "depto_Id", "depto_Descripcion");
             municipioList = new SelectList(municipioResults, "mpio_Id", "mpio_Descripcion");
-            #endregion Dropdown
-
         }
+        #endregion Dropdown
     }
 }
