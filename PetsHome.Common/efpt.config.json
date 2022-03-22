@@ -186,6 +186,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[Inventario].[PR_Inventario_EntradasDetalles_Find]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[Inventario].[PR_Inventario_EntradasDetalles_List]",
          "ObjectType": 1
       },
@@ -203,6 +207,10 @@
       },
       {
          "Name": "[Inventario].[PR_Inventario_Items_Detail]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[Inventario].[PR_Inventario_Items_Dropdown]",
          "ObjectType": 1
       },
       {
@@ -394,7 +402,7 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "JOHN-EB.PetsHome_V1.6",
+   "UiHint": "DESKTOP-NG\\SQLEXPRESS.PetsHome_V1.6",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": true,

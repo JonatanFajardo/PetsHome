@@ -20,7 +20,7 @@ namespace PetsHome.Business
             services.AddScoped<LocalidadRepository>();
             services.AddScoped<CategoriaRepository>();
             services.AddScoped<EntradaRepository>();
-            //services.AddScoped<EntradasDetalleRepository>();
+            services.AddScoped<EntradasDetalleRepository>();
             services.AddScoped<InventarioRepository>();
             services.AddScoped<InventariosDetalleRepository>();
             services.AddScoped<ItemRepository>();
@@ -57,7 +57,7 @@ namespace PetsHome.Business
             services.AddScoped<DepartamentoService>();
             services.AddScoped<CategoriaService>();
             services.AddScoped<EntradaService>();
-            //services.AddScoped<EntradasDetalleService>();
+            services.AddScoped<EntradasDetalleService>();
             services.AddScoped<InventarioService>();
             services.AddScoped<InventariosDetalleService>();
             services.AddScoped<ItemService>();
