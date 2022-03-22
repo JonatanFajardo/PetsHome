@@ -51,18 +51,18 @@ namespace PetsHome.Business.Models
         //public MunicipioViewModel Municipio { get; set; }
         public List<MunicipioViewModel> ListadoMunicipios { get; set; }
         public MunicipioViewModel Municipio { get; set; } = new MunicipioViewModel();
-        #region Dropdown
-        public SelectList departamentoList { get; set; }
-        public SelectList municipioList { get; set; }
+        //#region Dropdown
+        //public SelectList departamentoList { get; set; }
+        //public SelectList municipioList { get; set; }
 
-        public void LoadDropDownList(IEnumerable<DepartamentoViewModel> refugioDropdownResults,
-                                       IEnumerable<MunicipioViewModel> empleadoCargoDropdownResults)
-        {
-            departamentoList = new SelectList(refugioDropdownResults, "depto_Id", "depto_Nombre");
-            municipioList = new SelectList(empleadoCargoDropdownResults, "mpio_Id", "mpio_Descripcion");
+        //public void LoadDropDownList(IEnumerable<DepartamentoViewModel> refugioDropdownResults,
+        //                               IEnumerable<MunicipioViewModel> empleadoCargoDropdownResults)
+        //{
+        //    departamentoList = new SelectList(refugioDropdownResults, "depto_Id", "depto_Nombre");
+        //    municipioList = new SelectList(empleadoCargoDropdownResults, "mpio_Id", "mpio_Descripcion");
 
-        }
-        #endregion Dropdown
+        //}
+        //#endregion Dropdown
         //Indica si el formulario se esta editando.
         public Boolean isEdit
         {

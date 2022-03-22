@@ -61,6 +61,8 @@ var datatablePartials = (function () {
                     type: "GET",
                     dataType: "json",
                     success: function (response) {
+                        console.log('response' + response);
+                        console.log('reponse.data' + response.data);
                         callback(response);
                     },
                 }).fail(function (jqXHR, textStatus, error) {

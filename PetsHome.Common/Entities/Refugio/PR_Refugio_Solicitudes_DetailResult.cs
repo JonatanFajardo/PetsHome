@@ -13,7 +13,6 @@ namespace PetsHome.Common.Entities
         public string sol_Apellidos { get; set; }
         public string sol_Telefono { get; set; }
         public string sol_Correo { get; set; }
-        public DateTime sol_Fecha { get; set; }
         public int masc_Id { get; set; }
         public byte[] masc_Imagen { get; set; }
         public string masc_Nombre { get; set; }

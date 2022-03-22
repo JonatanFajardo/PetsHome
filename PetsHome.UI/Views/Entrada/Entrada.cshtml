@@ -1,0 +1,54 @@
+﻿@model EntradaViewModel
+<!-- Card-->
+<div class="card">
+    <div class="card-header">
+        @if (Model.ent_Id == 0)
+        {
+            <h3>Agregar entrada</h3>
+        }
+        else
+        {
+            <h3>Editar entrada</h3>
+        }
+    </div>
+
+    <div class="card-body">
+        <form asp-controller="Entrada" asp-action="Add" class="col-md-10" autocomplete="off">
+            <input class="form-control" asp-for="ent_Id" type="hidden" />
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label required">Descripción</label>
+                    <input class="form-control" asp-for="ent_Descripcion" />
+                    <span class="text-danger" asp-validation-for="ent_Descripcion"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label required">Refugio</label>
+                    <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="refg_Id"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label required">Fecha</label>
+                    <input class="form-control" type="date" asp-for="ent_Fecha" />
+                    <span class="text-danger" asp-validation-for="ent_Fecha"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @if (Model.ent_Id == 0)
+                    {
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar cambios</button>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
