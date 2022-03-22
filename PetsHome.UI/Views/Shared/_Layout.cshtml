@@ -10,11 +10,12 @@
 
     <link href="~/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
     <!-- App favicon -->
-    <link href="~/plugins/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/scss/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
     <link href="~/scss/icons.min.css" rel="stylesheet" />
     <link href="~/css/metisMenu.min.css" rel="stylesheet" />
-    <link href="~/scss/app.css" rel="stylesheet" />
+    <link href="~/scss/app.min.css" rel="stylesheet" />
+    <link href="~/scss/app-material.min.css" rel="stylesheet" />
 
     @*lada*@
     <link href="~/plugins/ladda/ladda-themeless.css" rel="stylesheet" />
@@ -31,6 +32,7 @@
 </head>
 
 <body class="mm-active active mm-show">
+
     <!-- Loader -->
     @*<div id="preloader">
             <div id="status">
@@ -49,6 +51,7 @@
     <div id="page-wrapper">
         <!-- Top Bar Start -->
         @Html.Partial("~/Views/Shared/_topbar.cshtml")
+
         <!-- Top Bar End-->
         <!-- Left Sidebar -->
         @Html.Partial("~/Views/Shared/_sidebar.cshtml")
@@ -78,7 +81,7 @@
 
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/jquery-ui.min.js"></script>
-    <script src="~/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/metismenu.min.js"></script>
     <script src="~/js/waves.js"></script>
     <script src="~/js/feather.min.js"></script>

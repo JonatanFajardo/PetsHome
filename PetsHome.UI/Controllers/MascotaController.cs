@@ -92,7 +92,6 @@ namespace PetsHome.UI.Controllers
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
-                //return View("Create");
                 return RedirectToAction("Create");
             }
             else
