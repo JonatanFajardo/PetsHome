@@ -18,5 +18,9 @@
   {
     "outputFile": "wwwroot/scss/components/_tables.css",
     "inputFile": "wwwroot/scss/components/_tables.scss"
+  },
+  {
+    "outputFile": "wwwroot/plugins/bootstrap/bootstrap.css",
+    "inputFile": "wwwroot/plugins/bootstrap/bootstrap.scss"
   }
 ]
