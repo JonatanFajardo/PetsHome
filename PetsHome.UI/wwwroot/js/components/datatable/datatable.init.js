@@ -338,8 +338,8 @@ var datatable = (function () {
                 botones = "";
                 var head = _header[0].FieldName;
                 if (type == "display") {
-                    botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
-                    botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-delete-outline"></i></span></button>';
+                    botones += '<button class="btn btn-soft-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
+                    botones += '<button class="btn btn-soft-danger btn-sm ml-1 delete-btn-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-delete-outline"></i></span></button>';
 
                 }
                 return botones;
