@@ -115,6 +115,20 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        public IEnumerable<ItemViewModel> ItemDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Inventario_Items_DropdownResult> mappedResult = _itemRepository.ItemDropdown();
+                return _mapper.Map<IEnumerable<ItemViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
         #endregion Dropdown
     }
 }
