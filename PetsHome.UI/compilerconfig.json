@@ -22,5 +22,13 @@
   {
     "outputFile": "wwwroot/plugins/bootstrap/bootstrap.css",
     "inputFile": "wwwroot/plugins/bootstrap/bootstrap.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/assets/main.css",
+    "inputFile": "wwwroot/scss/assets/main.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/assets/structure.css",
+    "inputFile": "wwwroot/scss/assets/structure.scss"
   }
 ]

@@ -3,61 +3,64 @@
     ViewData["Title"] = "Entradas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container">
+    @* Listado *@
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12"><h3>Listado de entradas</h3></div>
+            </div>
+        </div>
 
-@* Listado *@
-<div class="card">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-12"><h3>Listado de entradas</h3></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped dt-responsive nowrap" id="datatable">
+                    <thead class="text-center bg-primary text-white">
+                        <tr>
+                            <th>Id</th>
+                            <th>Descripción</th>
+                            <th>Refugio</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
         </div>
     </div>
 
-    <div class="card-body">
-        <table class="table table-striped dt-responsive nowrap" id="datatable">
-            <thead class="text-center bg-primary text-white">
-                <tr>
-                    <th>Id</th>
-                    <th>Descripción</th>
-                    <th>Refugio</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-        </table>
-
-    </div>
-</div>
-
-<!-- Modal Delete-->
-<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="Remove" method="post" autocomplete="off"
-                  data-ajax-begin="Catalogs.begin"
-                  data-ajax-success="Catalogs.success"
-                  data-ajax-failure="Catalogs.failure"
-                  data-ajax-complete="Catalogs.complete">
-                <input type="hidden" asp-for="ent_Id" id="delete-item-id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <p>¿Está seguro de que desea eliminar este registro?</p>
+    <!-- Modal Delete-->
+    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form asp-action="Remove" method="post" autocomplete="off"
+                      data-ajax-begin="Catalogs.begin"
+                      data-ajax-success="Catalogs.success"
+                      data-ajax-failure="Catalogs.failure"
+                      data-ajax-complete="Catalogs.complete">
+                    <input type="hidden" asp-for="ent_Id" id="delete-item-id">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <p>¿Está seguro de que desea eliminar este registro?</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <input type="submit" class="btn btn-danger" />
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
