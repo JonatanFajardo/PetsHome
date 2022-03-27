@@ -10,27 +10,29 @@
             <h4>Agregar Adopcion</h4>
         </div>
         <div class="card-body">
-            <form asp-action="Add" asp-controller="Adopcion" method="post" autocomplete="ON">
-                <!-- Campo Id -->
-                <input type="hidden" asp-for="adop_Id" id="adop_Id" />
-                <!--Fila-->
-                <div class="form-row">
+            <div class="table-responsive">
+                <form asp-action="Add" asp-controller="Adopcion" method="post" autocomplete="ON">
                     <!-- Campo Id -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Solicitud</label>
-                        <select class="form-control" asp-for="sol_Id" id="sol_Id">
-                            <option value="" selected>Seleccionar</option>
-                        </select>
-                        <span class="text-danger" asp-validation-for="sol_Id"></span>
+                    <input type="hidden" asp-for="adop_Id" id="adop_Id" />
+                    <!--Fila-->
+                    <div class="form-row">
+                        <!-- Campo Id -->
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Solicitud</label>
+                            <select class="form-control" asp-for="sol_Id" id="sol_Id">
+                                <option value="" selected>Seleccionar</option>
+                            </select>
+                            <span class="text-danger" asp-validation-for="sol_Id"></span>
+                        </div>
+                        <!-- Campo EsAprobado -->
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Es Aprobado?</label>
+                            <input class="form-control" asp-for="adop_EsAprobado" id="adop_EsAprobado" type="text" />
+                            <span class="text-danger" asp-validation-for="adop_EsAprobado"></span>
+                        </div>
                     </div>
-                    <!-- Campo EsAprobado -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Es Aprobado?</label>
-                        <input class="form-control" asp-for="adop_EsAprobado" id="adop_EsAprobado" type="text" />
-                        <span class="text-danger" asp-validation-for="adop_EsAprobado"></span>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -6,36 +6,37 @@
 @*
     <!-- BEGIN LOADER -->
     </div>
-
     <div id="load_screen"> <div class="loader"> <div class="loader-content">
-        <div class="spinner-grow align-self-center"></div>
+    <div class="spinner-grow align-self-center"></div>
     </div></div></div>
     <!--  END LOADER -->*@
 
-@* Listado *@
-<div class="card">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-12"><h3>Listado de empleados</h3></div>
-        </div>
-    <div class="card-body">
-        <div class="table-responsive">
+<div class="container">
+    @* Listado *@
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12"><h3>Listado de empleados</h3></div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover " id="datatable">
+                        <thead class="text-center text-white">
+                            <tr>
+                                <th>Id</th>
+                                <th>Codigo</th>
+                                <th>Nombres</th>
+                                <th>Cargos</th>
+                                <th>Refugio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
 
-        <table class="table table-striped table-hover " id="datatable">
-            <thead class="text-center text-white">
-                <tr>
-                    <th>Id</th>
-                    <th>Codigo</th>
-                    <th>Nombrus</th>
-                    <th>Cargos</th>
-                    <th>Refugio</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-        </table>
         </div>
-
     </div>
 </div>
 
@@ -84,4 +85,4 @@
     });
 
 </script>
-}
+    }

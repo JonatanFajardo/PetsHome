@@ -7,17 +7,17 @@
 </header>
 <body class="coming-soon">
 
-    <!-- BEGIN LOADER -->
-    <div id="load_screen">
+    @*    <!-- BEGIN LOADER -->
+        <div id="load_screen">
         <div class="loader">
-            <div class="loader-content">
-                <div class="spinner-grow align-self-center"></div>
-            </div>
+        <div class="loader-content">
+        <div class="spinner-grow align-self-center"></div>
         </div>
-    </div>
-
+        </div>
+        </div>
+    *@
     <!--  END LOADER -->
-    <div class="coming-soon-container ">
+    <div class="coming-soon-container " style="width:100%;">
         <div class="coming-soon-cont">
             <div class="coming-soon-wrap ">
                 <div class="coming-soon-container">
@@ -30,10 +30,10 @@
                         <h3>Agrega un nuevo..</h3>
                         <div class="row">
                             <div class="col-4" asp-controller="Empleados" asp-action="List">
-                                <div class="card bg-primary" >
+                                <div class="card bg-primary">
                                     <div class="card-body">
                                         <img src="assets/img/90x90.jpg" class="card-img-top" alt="...">
-                                        <h5 class="title">@Html.ActionLink("Estudiantes", "Index", "Estudiante")</h5>
+                                        <h5 class="title" style="color:white;">@Html.ActionLink("Estudiantes", "Index", "Estudiante")</h5>
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +42,8 @@
                                     <div class="card-body">
                                         <img src="assets/img/90x90.jpg" class="card-img-top" alt="...">
                                         <h5 class="title">
-                                            @Html.ActionLink("Encargados", "Index", "Encargado")</h5>
+                                            @Html.ActionLink("Encargados", "Index", "Encargado", new {@class="text-white"})
+                                        </h5>
 
                                     </div>
                                 </div>
@@ -56,20 +57,19 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="terms-conditions">© 2020 All Rights Reserved. <a href="index.html">GESTIONCOLEGIAL</a> is a product of Designreset. <a href="javascript:void(0);">Cookie Preferences</a>, <a href="javascript:void(0);">Privacy</a>, and <a href="javascript:void(0);">Terms</a>.</p>
+                        <p class="terms-conditions">© 2020 All Rights Reserved. <a href="index.html">PetsHome</a> is a product of Designreset. <a href="javascript:void(0);">Cookie Preferences</a>, <a href="javascript:void(0);">Privacy</a>, and <a href="javascript:void(0);">Terms</a>.</p>
 
                     </div>
                 </div>
             </div>
         </div>
-        <div class="coming-soon-image">
-            <div class="l-image" style="background-color:#FFE5D2">
-                <div class="img-content">
-                    <img src="~/images//mochila.jpg" alt="coming_soon">
+        <div class="coming-soon-cont" style="background-color:#FFE5D2">
+                <div class="l-image" >
+                    <div class="img-content">
+                        <img src="~/images/mochila.jpg" alt="coming_soon">
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 
 </body>
-</html>
