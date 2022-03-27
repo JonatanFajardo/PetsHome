@@ -16,16 +16,17 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-striped dt-responsive nowrap " id="datatable">
-                <thead class="text-center bg-primary text-white">
-                    <tr>
-                        <th>Fila</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-            </table>
-
+            <div class="table-responsive">
+                <table class="table table-striped dt-responsive nowrap " id="datatable">
+                    <thead class="text-center bg-primary text-white">
+                        <tr>
+                            <th>Fila</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -117,21 +118,18 @@
     </div>
 </div>
 <!-- Fin Modal -->
-
-
-
 @section Scripts {
-    <script src="~/js/pages/vacuna.js"></script>
-    <script>
-        Vacuna.datatableCatalogs({listUrl: "@Url.Action("List")" });
-    </script>
+<script src="~/js/pages/vacuna.js"></script>
+<script>
+    Vacuna.datatableCatalogs({listUrl: "@Url.Action("List")" });
+</script>
 
-    <script>
-        Catalogs.configure({
-            displayName: "vacuna",
-            getUrl: "@Url.Action("Find")"
-            //urlGetData
-            //urlSetData
-        });
-    </script>
-}
+<script>
+    Catalogs.configure({
+        displayName: "vacuna",
+        getUrl: "@Url.Action("Find")"
+        //urlGetData
+        //urlSetData
+    });
+</script>
+    }
