@@ -64,7 +64,7 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                tbInventarios mappedResult = _mapper.Map<tbInventarios>(model); 
+                tbInventarios mappedResult = _mapper.Map<tbInventarios>(model);
                 return await _inventarioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -73,12 +73,12 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(InventarioViewModel model)
         {
             try
             {
-                tbInventarios mappedResult = _mapper.Map<tbInventarios>(model); 
+                tbInventarios mappedResult = _mapper.Map<tbInventarios>(model);
                 return await _inventarioRepository.EditAsync(mappedResult);
             }
             catch (Exception error)
