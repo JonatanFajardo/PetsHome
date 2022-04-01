@@ -5,35 +5,7 @@
 }
 
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4>Agregar Cargos de los Empleados</h4>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <form asp-action="Add" asp-controller="Empleado" method="post" autocomplete="ON">
-                    <!-- Campo Id -->
-                    <input type="hidden" asp-for="cag_Id" id="cag_Id" />
-                    <!--Fila-->
-                    <div class="form-row">
-                        <!-- Campo Descripcion -->
-                        <div class="form-group col-md-6">
-                            <label class="control-label required">Descripción</label>
-                            <input class="form-control" asp-for="cag_Descripcion" id="cag_Descripcion" type="text" />
-                            <span class="text-danger" asp-validation-for="cag_Descripcion"></span>
-                        </div>
-                    </div>
-                    <!-- Campo Salario -->
-                    <div class="form-group col-md-6">
-                        <label class="control-label required">Salario</label>
-                        <input class="form-control" asp-for="cag_Salario" id="cag_Salario" type="text" />
-                        <span class="text-danger" asp-validation-for="cag_Salario"></span>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    
     @* Listado *@
     <div class="card">
         <div class="card-header">
