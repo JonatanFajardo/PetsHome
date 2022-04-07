@@ -1965,7 +1965,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   letter-spacing: 1px;
 }
 .table > thead > tr > th {
-  color: var(--primary-color);
+  color: white;
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 1px;
