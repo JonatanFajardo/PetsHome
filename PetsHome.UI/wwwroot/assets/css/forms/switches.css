@@ -62,7 +62,7 @@
   .switch.s-danger .slider:before {
     background-color: #e7515a; }
   .switch.s-secondary .slider:before {
-    background-color: #805dca; }
+    background-color: #1ba9af; }
   .switch.s-info .slider:before {
     background-color: #2196f3; }
   .switch.s-dark .slider:before {
@@ -90,9 +90,9 @@
   .switch.s-danger input:focus + .slider {
     box-shadow: 0 0 1px #e7515a; }
   .switch.s-secondary input:checked + .slider {
-    background-color: #805dca; }
+    background-color: #1ba9af; }
   .switch.s-secondary input:focus + .slider {
-    box-shadow: 0 0 1px #805dca; }
+    box-shadow: 0 0 1px #1ba9af; }
   .switch.s-info input:checked + .slider {
     background-color: #2196f3; }
   .switch.s-info input:focus + .slider {
@@ -127,7 +127,7 @@
   .switch.s-icons.s-outline-danger {
     color: #e7515a; }
   .switch.s-icons.s-outline-secondary {
-    color: #805dca; }
+    color: #1ba9af; }
   .switch.s-icons.s-outline-info {
     color: #2196f3; }
   .switch.s-icons.s-outline-dark {
@@ -173,13 +173,13 @@
   .switch.s-outline-danger input:focus + .slider {
     box-shadow: 0 0 1px #e7515a; }
   .switch.s-outline-secondary input:checked + .slider {
-    border: 2px solid #805dca; }
+    border: 2px solid #1ba9af; }
     .switch.s-outline-secondary input:checked + .slider:before {
-      border: 2px solid #805dca;
-      background-color: #805dca;
+      border: 2px solid #1ba9af;
+      background-color: #1ba9af;
       box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34); }
   .switch.s-outline-secondary input:focus + .slider {
-    box-shadow: 0 0 1px #805dca; }
+    box-shadow: 0 0 1px #1ba9af; }
   .switch.s-outline-info input:checked + .slider {
     border: 2px solid #2196f3; }
     .switch.s-outline-info input:checked + .slider:before {
