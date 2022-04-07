@@ -132,7 +132,7 @@
 }
 .tab-title .nav-pills.group-list .nav-item a.g-dot-success:before {
     background: #f3effc;
-    border:1px solid #805dca;
+    border:1px solid #1ba9af;
 }
 /*Mail Labels*/
 .tab-title .nav-pills .nav-item .dropdown-menu {
@@ -215,7 +215,7 @@
 .note-container.note-grid .note-item.note-personal .note-inner-content { border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-bottom: 3px solid #4461ed;     background: #eaf1ff; }
 .note-container.note-grid .note-item.note-work .note-inner-content { border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-bottom: 3px solid #e2a03f;     background: #fff9ed; }
 .note-container.note-grid .note-item.note-important .note-inner-content { border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-bottom: 3px solid #e7515a;     background: #fff5f5; }
-.note-container.note-grid  .note-item.note-social .note-inner-content { border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-bottom: 3px solid #805dca;     background: #f3effc; }
+.note-container.note-grid  .note-item.note-social .note-inner-content { border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-bottom: 3px solid #1ba9af;     background: #f3effc; }
 .note-container.note-grid .note-item .note-inner-content {
     border-radius: 4px;
     width: 100%;
@@ -301,7 +301,7 @@
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags .g-dot-social {
     background: #f3effc;
-    border: 2px solid #805dca;
+    border: 2px solid #1ba9af;
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags .g-dot-important {
     background: #fff5f5;
@@ -345,7 +345,7 @@
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags-selector .dropdown-menu a.g-dot-social:before {
     background: #f3effc;
-    border: 1px solid #805dca;
+    border: 1px solid #1ba9af;
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .nav-link { padding: 0; }
 .note-container.note-grid .note-item .note-inner-content .note-footer .nav-link span { display: block; }

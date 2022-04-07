@@ -82,7 +82,7 @@ table.dataTable {
   .table > tbody > tr > td:first-child {
     border-top-left-radius: 6px; }
   .table > tbody > tr > td .inv-number {
-    color: #805dca;
+    color: #1ba9af;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
@@ -114,7 +114,7 @@ table.dataTable {
       width: 17px;
       height: 17px;
       vertical-align: text-bottom;
-      color: #805dca;
+      color: #1ba9af;
       fill: #f3effc;
       stroke-width: 1.5; }
   .table > tbody > tr > td .inv-date svg {

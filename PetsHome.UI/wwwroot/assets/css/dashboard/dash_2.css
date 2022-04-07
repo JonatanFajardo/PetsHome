@@ -92,7 +92,7 @@
 .widget-card-four .progress-bar.bg-gradient-secondary {
     position: relative;
     background-color: #fc5296;
-    background-image: linear-gradient(315deg, #805dca  0%, #4361ee 74%); 
+    background-image: linear-gradient(315deg, #1ba9af  0%, #4361ee 74%); 
 }
 .widget-card-four .progress-bar:before {
     content: '';
@@ -328,8 +328,8 @@
     color: #fff;
 }
 .widget-activity-five .timeline-line .item-timeline .t-dot div.t-secondary {
-    background-color: #805dca;
-    box-shadow: 0 10px 20px -8px #805dca;
+    background-color: #1ba9af;
+    box-shadow: 0 10px 20px -8px #1ba9af;
 }
 .widget-activity-five .timeline-line .item-timeline .t-dot div.t-secondary svg {
     color: #fff;
@@ -880,7 +880,7 @@
     width: 42px;
     height: 42px;
     border-radius: 12px;
-    background-color: #805dca;
+    background-color: #1ba9af;
     color: #f3effc;
 }
 .widget-five .widget-heading .usr-avatar span {

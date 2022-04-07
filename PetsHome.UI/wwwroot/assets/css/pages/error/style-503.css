@@ -52,8 +52,8 @@ body.error503 {
   width: 134px;
   padding: 6px;
   font-size: 17px;
-  background-image: linear-gradient(135deg, #4361ee 0%, #805dca 100%);
+  background-image: linear-gradient(135deg, #4361ee 0%, #1ba9af 100%);
   border: none;
   letter-spacing: 2px; }
   .error503 a.btn:hover, .error503 a.btn:not(:disabled):not(.disabled):active {
-    background-image: linear-gradient(to right, #4361ee 0%, #805dca 100%); }
+    background-image: linear-gradient(to right, #4361ee 0%, #1ba9af 100%); }

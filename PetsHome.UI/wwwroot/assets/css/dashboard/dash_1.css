@@ -225,7 +225,7 @@
     background: rgb(255 236 203 / 51%);
 }
 .widget-three .widget-content .summary-list:nth-child(1) .w-icon svg {
-    color: #805dca;
+    color: #1ba9af;
 }
 .widget-three .widget-content .summary-list:nth-child(2) .w-icon svg {
     color: #009688;
@@ -413,7 +413,7 @@
     background-color: rgb(220, 207, 247);
 }
 .widget-table-one .transactions-list.t-secondary .t-item .t-icon .icon svg {
-    color: #805dca;
+    color: #1ba9af;
 }
 .widget-table-one .transactions-list .t-item .t-icon .icon {
     position: relative;
@@ -574,7 +574,7 @@
     /* border: 2px solid rgb(159, 163, 187); */
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-secondary .t-dot:before {
-    background: #805dca;
+    background: #1ba9af;
     /* border: 2px solid rgb(92 26 195 / 35%);     */
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-warning .t-dot:before {
@@ -629,8 +629,8 @@
     background-color: #eaf1ff;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-secondary .t-text span.badge {
-    color: #805dca;
-    border: 1px solid #805dca;
+    color: #1ba9af;
+    border: 1px solid #1ba9af;
     background-color: #f3effc;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-danger .t-text span.badge {
@@ -957,7 +957,7 @@
     letter-spacing: 1px;
 }
 .widget-account-invoice-three .invoice-list .inv-action a.view-details {
-    color: #805dca!important;
+    color: #1ba9af!important;
     background: rgb(92 26 195 / 17%);
     border: none!important;
 }

@@ -56,7 +56,7 @@ nav .navbar-brand {
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 16px;
-    color: #805dca;
+    color: #1ba9af;
 }
 .faq .faq-layouting .fq-comman-question-wrapper ul li:hover {
     cursor: pointer;
@@ -67,7 +67,7 @@ nav .navbar-brand {
     margin-right: 9px;
 }
 .faq .faq-layouting .fq-comman-question-wrapper ul li svg {
-    color: #805dca;
+    color: #1ba9af;
     width: 19px;
     height: 19px;
     vertical-align: bottom;

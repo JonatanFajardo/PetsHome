@@ -27,7 +27,7 @@
     border-radius: 5px;
     padding: 4px;
     letter-spacing: 1px;
-    background-image: linear-gradient(to right, #4361ee 0%, #805dca 100%); }
+    background-image: linear-gradient(to right, #4361ee 0%, #1ba9af 100%); }
   .sidenav .sidenav-content {
     background-color: transparent;
     display: block;
@@ -39,13 +39,13 @@
       font-size: 12px;
       padding: 3px 25px; }
       .sidenav .sidenav-content a.active {
-        color: #805dca;
+        color: #1ba9af;
         font-weight: 700;
-        border-left: 1px solid #805dca; }
+        border-left: 1px solid #1ba9af; }
       .sidenav .sidenav-content a:hover {
         color: #4361ee;
         font-weight: 700;
-        border-left: 1px solid #805dca; }
+        border-left: 1px solid #1ba9af; }
 
 #content > .container {
   display: flex;

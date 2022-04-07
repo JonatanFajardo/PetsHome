@@ -8,6 +8,9 @@
 			@Import	Mixins
 	===============================
 */
+
+
+
 html {
   min-height: 100%;
 }
@@ -209,7 +212,7 @@ code {
 .navbar {
   padding: 0;
   min-height: 80px;
-  background: #445ede;
+  background: var(--primary-color);
   -webkit-transition: 0.3s ease all;
   transition: 0.3s ease all;
   -webkit-box-shadow: 0 4px 6px 0 rgba(85, 85, 85, 0.08), 0 1px 20px 0 rgba(0, 0, 0, 0.07), 0px 1px 11px 0px rgba(0, 0, 0, 0.07);
@@ -251,8 +254,8 @@ code {
   display: flex;
   justify-content: space-around;
   background: #fff;
-  border-right: 1px solid #445ede;
-  background-image: linear-gradient(to right, #445ede 0%, #304aca 100%);
+  border-right: 1px solid var(--primary-color);
+  background-color: #d34e4a;
 }
 .header-container .navbar-nav.theme-brand .theme-logo {
   align-self: center;
@@ -312,7 +315,7 @@ code {
   word-wrap: normal;
 }
 .navbar .navbar-item .nav-item.dropdown.show a.nav-link span {
-  color: #805dca !important;
+  color: #1ba9af !important;
 }
 .navbar .navbar-item .nav-item.dropdown.show a.nav-link span.badge {
   background-color: #888ea8 !important;
@@ -322,7 +325,7 @@ code {
   color: #16181b;
 }
 .navbar .navbar-item .nav-item.dropdown .nav-link:hover span {
-  color: #805dca !important;
+  color: #1ba9af !important;
 }
 .navbar .navbar-item .nav-item.dropdown .dropdown-menu {
   /* top: 109%; */
@@ -644,7 +647,7 @@ code {
   font-weight: 500;
 }
 .navbar .navbar-item .nav-item.dropdown.message-dropdown .dropdown-menu .dropdown-item:hover .media-body h5.usr-name {
-  color: #445ede;
+  color: var(--primary-color);
 }
 .navbar .navbar-item .nav-item.dropdown.message-dropdown .dropdown-menu .media .media-body {
   align-self: center;
@@ -1147,7 +1150,7 @@ code {
   transition: all 0.2s ease-in-out;
 }
 #sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle[aria-expanded=true] {
-  background: #445ede;
+  background: var(--primary-color);
 }
 #sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle:not([aria-expanded=true]):hover svg:not(.feather-chevron-right), #sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle:hover svg:not(.feather-chevron-right) {
   margin-right: 22px;
@@ -1184,7 +1187,7 @@ code {
   border-radius: 50%;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a:before {
-  background-color: #445ede;
+  background-color: var(--primary-color);
 }
 #sidebar ul.menu-categories ul.submenu > li.active a {
   color: #304aca;
@@ -1600,7 +1603,7 @@ code {
     position: absolute;
     bottom: 0;
     top: 0;
-    background: #445ede;
+    background: var(--primary-color);
     height: 100%;
     width: 100%;
     left: 0;
