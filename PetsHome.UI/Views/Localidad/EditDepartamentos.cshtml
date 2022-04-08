@@ -3,25 +3,26 @@
     ViewData["Title"] = "EditDepartamentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="row">
-    @if (Model.depto_Id == 0)
-    {
-        //Redirige a la vista para crear 
-        <div class="col-md-12">
-            <partial name="Departamento" model="@Model">
-        </div>
-    }
-    else
-    {
-        //Redirige a la vista para editar 
-        <div class="col-md-12">
-            <partial name="Departamento" model="@Model">
-                <div class="card mt-3">
-                    <partial name="Municipio" model="@Model">
-                </div>
-        </div>
-    }
+<div class="container">
+    <div class="row">
+        @if (Model.depto_Id == 0)
+        {
+            //Redirige a la vista para crear
+            <div class="col-md-12">
+                <partial name="Departamento" model="@Model">
+            </div>
+        }
+        else
+        {
+            //Redirige a la vista para editar
+            <div class="col-md-12">
+                <partial name="Departamento" model="@Model">
+                    <div class="card mt-3">
+                        <partial name="Municipio" model="@Model">
+                    </div>
+            </div>
+        }
+    </div>
 </div>
 @section Scripts{
 
