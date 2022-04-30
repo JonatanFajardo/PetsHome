@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Content Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
@@ -602,7 +609,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\NewFolder\NewFolder\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
