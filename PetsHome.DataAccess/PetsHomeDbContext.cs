@@ -7,14 +7,14 @@ namespace PetsHome.DataAccess
     {
         public static string ConnectionString { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(ConnectionString);
-            }
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer(ConnectionString);
+        //    }
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         public static void BuildConnectionString(string connectionString)
         {
