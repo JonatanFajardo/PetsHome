@@ -65,7 +65,6 @@ var datatable = (function () {
     };
 
     obj.success = function (data, status, xhr) {
-        //console.log(data);
         if (data.success) {
             //$editModal.modal("hide");
             $deleteModal.modal("hide");
@@ -106,14 +105,10 @@ var datatable = (function () {
     obj.init = function (DirectionUrls, header) {
         $(function () {
 
-
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
-                //dom: "<'row mb-3'<'col-md-7'f> <'col-md-5 d-flex justify-content-end custom-buttons'B>>" +
-                //    "<'row'<'col-sm-12'tr>>" +
-                //    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 dom:
-                    "<'row mb-3' <'col-md-3 'B><'col-md-7'f><'col-md-2'l>>" +
+                    "<'row mb-3' <'col-md-4 'B><'col-md-6'f><'col-md-2'l>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 order: [],
@@ -157,15 +152,16 @@ var datatable = (function () {
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
             var table = $('#datatable').DataTable({
                 responsive: true,
+                deferRender:true,
                 //serverSide: true,
                 buttons: [
-                    //{
-                    //text: '<i class="mdi mdi-refresh"> Recargar</i>',
-                    //titleAttr: 'Recargar tabla',
-                    //action: function (e, dt, config) {
-                    //    dt.ajax.reload();
-                    //}
-                    //},
+                    {
+                    text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                    titleAttr: 'Recargar tabla',
+                    action: function (e, dt, config) {
+                        dt.ajax.reload();
+                    }
+                    },
                     {
                         title: "Exportar a CSV",
                         extend: "csvHtml5",
