@@ -12,17 +12,17 @@ var datatableCatalogs = (function () {
      */
     obj.createDatatable = function (listUrl, header) {
         var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
-        var table = $('#datatable').DataTable({
+        $('#datatable').DataTable({
             //serverSide: true,
             //responsive: true,
             buttons: [
-                //{
-                //text: '<i class="mdi mdi-refresh"> Recargar</i>',
-                //titleAttr: 'Recargar tabla',
-                //action: function (e, dt, config) {
-                //    dt.ajax.reload();
-                //}
-                //},
+                {
+                text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                titleAttr: 'Recargar tabla',
+                action: function (e, dt, config) {
+                    dt.ajax.reload();
+                }
+                },
                 {
                     extend: "collection",
                     text: '<i class="mdi mdi-export"> Exportar</i>',
@@ -77,11 +77,10 @@ var datatableCatalogs = (function () {
      * */
     obj.config = function () {
 
-        //$("input").removeClass(".form-control-sm")
         //configuraciones
         $.extend(true, $.fn.dataTable.defaults, {
             dom:
-                "<'row mb-3' <'col-md-3 'B><'col-md-7'f><'col-md-2'l>>" +
+                "<'row mb-3' <'col-md-4 'B><'col-md-6'f><'col-md-2'l>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
             order: [],

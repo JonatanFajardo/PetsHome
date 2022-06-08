@@ -147,9 +147,9 @@ namespace PetsHome.DataAccess.Extensions
             {
                 database.Open();
                 var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-                if (result.Count() !=0)
+                if (result.Count() != 0)
                 {
-                    
+
                 }
                 resultSql = false;
                 database.Close();
