@@ -12,9 +12,13 @@ namespace PetsHome.Business
 {
     public static class ServiceConfiguration
     {
+        /// <summary>
+        /// Agrega las dependencias de la capa de negocio
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connectionString"></param>
         public static void AddLogicLayer(this IServiceCollection services, string connectionString)
         {
-            //string connectionString = Configuration.GetConnectionString("PetsHomeConnectionString");
             services.AddScoped<MunicipioRepository>();
             services.AddScoped<PersonaRepository>();
             services.AddScoped<LocalidadRepository>();
@@ -22,7 +26,6 @@ namespace PetsHome.Business
             services.AddScoped<EntradaRepository>();
             services.AddScoped<EntradasDetalleRepository>();
             services.AddScoped<InventarioRepository>();
-            services.AddScoped<InventariosDetalleRepository>();
             services.AddScoped<ItemRepository>();
             services.AddScoped<RefugioRepository>();
             services.AddScoped<EmpleadoRepository>();
@@ -36,7 +39,6 @@ namespace PetsHome.Business
             services.AddScoped<SolicitudRepository>();
             services.AddScoped<VacunaRepository>();
             services.AddScoped<VoluntarioRepository>();
-            //services.AddScoped<UsuariosRepository>();
 
             //https://www.it-swarm.dev/es/c%23/obtencion-de-url-absolutas-utilizando-asp.net-core/1053425403/
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
@@ -47,19 +49,18 @@ namespace PetsHome.Business
             PetsHomeDbContext.BuildConnectionString(connectionString);
         }
 
+        /// <summary>
+        /// Agrega los servicios de la capa de negocio
+        /// </summary>
+        /// <param name="services"></param>
         public static void AddBusinessLogic(this IServiceCollection services)
         {
-            //services.AddAutoMapper(x => x.AddProfile<MappingProfileExtensions>(), AppDomain.CurrentDomain.GetAssemblies());
-
-            //string connectionString = Configuration.GetConnectionString("PetsHomeConnectionString");
             services.AddScoped<MunicipioService>();
-            services.AddScoped<PersonaService>();
             services.AddScoped<DepartamentoService>();
             services.AddScoped<CategoriaService>();
             services.AddScoped<EntradaService>();
             services.AddScoped<EntradasDetalleService>();
             services.AddScoped<InventarioService>();
-            services.AddScoped<InventariosDetalleService>();
             services.AddScoped<ItemService>();
             services.AddScoped<RefugioService>();
             services.AddScoped<EmpleadoService>();
@@ -73,7 +74,6 @@ namespace PetsHome.Business
             services.AddScoped<SolicitudService>();
             services.AddScoped<VacunaService>();
             services.AddScoped<VoluntarioService>();
-            //services.AddScoped<UsuariosService>();
 
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>

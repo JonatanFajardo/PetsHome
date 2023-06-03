@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,8 +16,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public VacunaController(VacunaService vacunaService,
-                                IMapper mapper)
+        public VacunaController(VacunaService vacunaService)
         {
             _vacunaService = vacunaService;
         }
@@ -65,7 +63,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(VacunaViewModel model)
         {
             if (!model.isEdit)

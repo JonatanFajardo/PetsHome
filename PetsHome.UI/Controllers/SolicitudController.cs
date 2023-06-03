@@ -10,14 +10,11 @@ namespace PetsHome.UI.Controllers
     public class SolicitudController : BaseController
     {
         private readonly SolicitudService _SolicitudService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public SolicitudController(SolicitudService SolicitudService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _SolicitudService = SolicitudService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -54,9 +51,7 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _SolicitudService.FindAsync(id);
             if (itemSearched != null)
             {
-                //return View("Create", itemSearched);
                 Detail(id);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -79,10 +74,8 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
         public async Task<IActionResult> Add(SolicitudViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {

@@ -4,9 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Business.Models
 {
+    /// <summary>
+    /// Representa un registro de la tabla tbSubmenu.
+    /// </summary>
     [Table("tbSubmenu")]
     public partial class SubmenuViewModel
     {
+        /// <summary>
+        /// Obtiene o establece el identificador del registro.
+        /// </summary>
         [Key]
         public int sub_Id { get; set; }
 
@@ -15,7 +21,9 @@ namespace PetsHome.Business.Models
         [StringLength(50)]
         public string sub_Nombre { get; set; }
 
-        //Indica si el formulario se esta editando.
+        /// <summary>
+        /// Indica si el formulario se esta editando.
+        /// </summary>
         public Boolean isEdit
         {
             get

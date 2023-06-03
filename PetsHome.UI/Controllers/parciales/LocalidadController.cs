@@ -16,7 +16,7 @@ namespace PetsHome.UI.Controllers
         private readonly IMapper _mapper;
 
         public LocalidadController(MunicipioService municipioService,
-                                    DepartamentoService departamentoService,,
+                                    DepartamentoService departamentoService,
                                     IMapper mapper)
         {
             _municipioService = municipioService;

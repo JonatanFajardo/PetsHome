@@ -51,19 +51,6 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-
-        //public async Task<MunicipioViewModel> DetailAsync(int id)
-        //{
-        //   try
-        //    {
-        //        IEnumerable<PR_tbMunicipios_DetailResult> mappedResult = await _municipioRepository.DetailAsync(id);
-        //        return _mapper.Map<MunicipioViewModel>(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
         public async Task<Boolean> AddAsync(MunicipioViewModel model)
         {
             try

@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\Especific\IRazaRepository.cs" />
+    <Compile Remove="Repositories\InventariosDetalleRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PetsHome.DataAccess\PetsHome.DataAccess.csproj" />
   </ItemGroup>
 
