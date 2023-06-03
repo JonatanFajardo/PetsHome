@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PetsHome.Business.Models
 {
     public partial class AdopcionViewModel
@@ -26,6 +27,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Usuario creación")]
         public string? adop_NombreUsuarioCrea { get; set; }
+
         public DateTime adop_FechaCrea { get; set; }
         public int? adop_UsuarioModifica { get; set; }
 
@@ -46,9 +48,5 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
-
-        #region Dropdown
-
-        #endregion Dropdown
     }
 }

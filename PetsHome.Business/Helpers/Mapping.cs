@@ -4,11 +4,10 @@
     {
         public Mapping()
         {
-
         }
-        class Raza
-        {
 
+        private class Raza
+        {
             //public tbRazas ToEntity()
             //{
             //    return _mapper.Map<tbRazas>(model);

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using PetsHome.Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PetsHome.Business.Models
 {
     public partial class EntradaViewModel
@@ -43,6 +43,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Usuario creación")]
         public string? ent_NombreUsuarioCrea { get; set; }
+
         public DateTime ent_FechaCrea { get; set; }
         public int? ent_UsuarioModifica { get; set; }
 
@@ -68,11 +69,12 @@ namespace PetsHome.Business.Models
         }
 
         #region Dropdown
+
         public SelectList refugioList { get; set; }
         //public SelectList empleadoCargoList { get; set; }
         //public SelectList procedenciaList { get; set; }
 
-        public void LoadDropDownList(IEnumerable<RefugioViewModel> refugioDropdownResults )
+        public void LoadDropDownList(IEnumerable<RefugioViewModel> refugioDropdownResults)
         //                                IEnumerable<Dropdown> dropdownlists,
         //                                IEnumerable<PR_Refugio_Procedencia_DropdownResult> procedenciaDropdownResults)
         {
@@ -80,7 +82,7 @@ namespace PetsHome.Business.Models
             //empleadoCargoList = new SelectList(dropdownlists, "cag_Id", "cag_Descripcion");
             //procedenciaList = new SelectList(procedenciaDropdownResults, "proc_Id", "proc_Descripcion");
         }
-        #endregion Dropdown
 
+        #endregion Dropdown
     }
 }

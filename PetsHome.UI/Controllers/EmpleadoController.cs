@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -16,7 +14,6 @@ namespace PetsHome.UI.Controllers
 
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
-
         public EmpleadoController(EmpleadoService EmpleadoService,
                                     RefugioService RefugioService
         //                      IHttpContextAccessor httpContextAccessor
@@ -26,6 +23,7 @@ namespace PetsHome.UI.Controllers
             _RefugioService = RefugioService;
             //  _httpContextAccessor = httpContextAccessor;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -37,6 +35,7 @@ namespace PetsHome.UI.Controllers
             var drop = Dropdown(model);
             return View(drop);
         }
+
         public async Task<IActionResult> List()
         {
             var itemListing = await _EmpleadoService.ListAsync();
@@ -130,6 +129,7 @@ namespace PetsHome.UI.Controllers
             model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
             return model;
         }
+
         //public EmpleadoViewModel Dropdown()
         //{
         //    EmpleadoViewModel itemListing = _EmpleadoService.RefugioDropdown();

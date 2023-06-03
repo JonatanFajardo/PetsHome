@@ -1,8 +1,5 @@
 ﻿using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PetsHome.Business.Extensions
 {
@@ -40,6 +37,7 @@ namespace PetsHome.Business.Extensions
             };
             return model;
         }
+
         //internal static VoluntarioViewModel Map(PR_Refugio_Voluntarios_ListResult map)
         //{
         //    VoluntarioViewModel model = new VoluntarioViewModel()

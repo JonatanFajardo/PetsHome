@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using PetsHome.Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class RefugioViewModel
@@ -48,6 +48,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(500)]
         public string refg_InformacionAdicional { get; set; }
+
         public bool refg_EsActivo { get; set; }
 
         public int refg_UsuarioCrea { get; set; }
@@ -57,6 +58,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Fecha creación")]
         public DateTime refg_FechaCrea { get; set; }
+
         public int? refg_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modificación")]
@@ -78,6 +80,7 @@ namespace PetsHome.Business.Models
         }
 
         #region Dropdown
+
         public SelectList departamentoList { get; set; }
         public SelectList municipioList { get; set; }
 
@@ -87,6 +90,7 @@ namespace PetsHome.Business.Models
             departamentoList = new SelectList(departamentoResults, "depto_Id", "depto_Descripcion");
             municipioList = new SelectList(municipioResults, "mpio_Id", "mpio_Descripcion");
         }
+
         #endregion Dropdown
     }
 }

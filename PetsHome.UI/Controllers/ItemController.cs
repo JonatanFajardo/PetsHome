@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -12,7 +11,6 @@ namespace PetsHome.UI.Controllers
     {
         private readonly ItemService _ItemService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
-
 
         public ItemController(ItemService ItemService
         //                      IHttpContextAccessor httpContextAccessor
@@ -33,6 +31,7 @@ namespace PetsHome.UI.Controllers
             var drop = Dropdown(model);
             return View(drop);
         }
+
         public async Task<IActionResult> List()
         {
             var itemListing = await _ItemService.ListAsync();

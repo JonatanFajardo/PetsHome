@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly EventoRepository _eventoRepository;
         private readonly ILogger<EventoService> _logger;
         private readonly IMapper _mapper;
+
         public EventoService(EventoRepository eventoRepository, ILogger<EventoService> logger, IMapper mapper)
         {
             _eventoRepository = eventoRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<EventoViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<EventoViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<EventoViewModel> DetailAsync(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(EventoViewModel model)
         {
             try
@@ -73,12 +78,12 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(EventoViewModel model)
         {
             try
             {
-                tbEventos mappedResult = _mapper.Map<tbEventos>(model); 
+                tbEventos mappedResult = _mapper.Map<tbEventos>(model);
                 return await _eventoRepository.EditAsync(mappedResult);
             }
             catch (Exception error)
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

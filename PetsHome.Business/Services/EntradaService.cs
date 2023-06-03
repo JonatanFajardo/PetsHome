@@ -16,12 +16,14 @@ namespace PetsHome.Business.Services
         private readonly EntradaRepository _entradaRepository;
         private readonly ILogger<EntradaService> _logger;
         private readonly IMapper _mapper;
+
         public EntradaService(EntradaRepository entradaRepository, ILogger<EntradaService> logger, IMapper mapper)
         {
             _entradaRepository = entradaRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<EntradaViewModel>> ListAsync()
         {
             try
@@ -35,6 +37,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<EntradaViewModel> FindAsync(int id)
         {
             try
@@ -48,13 +51,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<EntradaViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Inventario_Entradas_DetailResult mappedResult = await _entradaRepository.DetailAsync(id);
                 return _mapper.Map<EntradaViewModel>(mappedResult);
-
             }
             catch (Exception error)
             {
@@ -62,6 +65,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(EntradaViewModel model)
         {
             try
@@ -89,6 +93,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

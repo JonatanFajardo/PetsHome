@@ -17,6 +17,7 @@ namespace PetsHome.Business.Services
         private readonly RefugioRepository _refugioRepository;
         private readonly ILogger<MascotaService> _logger;
         private readonly IMapper _mapper;
+
         public MascotaService(MascotaRepository mascotaRepository,
             RefugioRepository refugioRepository,
         ILogger<MascotaService> logger, IMapper mapper)
@@ -26,6 +27,7 @@ namespace PetsHome.Business.Services
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<MascotaViewModel>> ListAsync()
         {
             try
@@ -39,6 +41,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<MascotaViewModel> FindAsync(int id)
         {
             try
@@ -52,6 +55,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<MascotaViewModel> DetailAsync(int id)
         {
             try
@@ -65,6 +69,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(MascotaViewModel model)
         {
             try
@@ -94,6 +99,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try
@@ -109,6 +115,7 @@ namespace PetsHome.Business.Services
         }
 
         #region Dropdown
+
         public IEnumerable<RazaViewModel> RazaDropdown()
         {
             try

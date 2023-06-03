@@ -96,7 +96,6 @@ namespace PetsHome.UI.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
         }
 
         public async Task<IActionResult> Remove(int cat_Id)

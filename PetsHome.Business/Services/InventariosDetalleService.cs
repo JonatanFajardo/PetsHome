@@ -1,12 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PetsHome.Business.Models;
-using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
@@ -15,12 +9,14 @@ namespace PetsHome.Business.Services
         private readonly InventariosDetalleRepository _inventariosdetalleRepository;
         private readonly ILogger<InventariosDetalleService> _logger;
         private readonly IMapper _mapper;
+
         public InventariosDetalleService(InventariosDetalleRepository inventariosdetalleRepository, ILogger<InventariosDetalleService> logger, IMapper mapper)
         {
             _inventariosdetalleRepository = inventariosdetalleRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         //public async Task<List<InventarioDetalleViewModel>> ListAsync()
         //{
         //    try
@@ -30,7 +26,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}
@@ -43,7 +38,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}
@@ -56,7 +50,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}
@@ -69,7 +62,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}
@@ -82,7 +74,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}
@@ -95,7 +86,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}

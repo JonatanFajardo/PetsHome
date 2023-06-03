@@ -13,7 +13,7 @@ namespace PetsHome.Business.Helpers
         private static IWebHostEnvironment _hostEnvironment;
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         ///// <param name="extensions">Extensiones permitidas.</param>
         ///// <param name="file">Imagen recibida.</param>
@@ -57,8 +57,6 @@ namespace PetsHome.Business.Helpers
         //    return newReturn;
         //}
 
-
-
         //static Boolean ValidateExtension(string[] extensions, IFormFile file)
         //{
         //    bool validateExtension = true;
@@ -68,7 +66,6 @@ namespace PetsHome.Business.Helpers
         //    }
         //    return validateExtension;
         //}
-
 
         public static String GetName(IFormFile image)
         {
@@ -114,5 +111,4 @@ namespace PetsHome.Business.Helpers
             return base64Data;
         }
     }
-
 }

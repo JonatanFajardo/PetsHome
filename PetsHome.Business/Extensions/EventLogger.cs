@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;
+using PetsHome.Common.Entities;
+using PetsHome.Logic.Repositories;
 using System;
 using System.Reflection;
-using PetsHome.Logic.Repositories;
-using PetsHome.Common.Entities;
 
 namespace PetsHome.Business.Extensions
 {
@@ -14,7 +13,7 @@ namespace PetsHome.Business.Extensions
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// El ID del usuario del sistema que realiza el evento.        
+        /// El ID del usuario del sistema que realiza el evento.
         /// </summary>
         public static int? UserId { get; set; } = null;
 
@@ -92,11 +91,10 @@ namespace PetsHome.Business.Extensions
             Write(EventLogType.Search, details, null, null);
         }
 
-
         /// <summary>
         /// Hace un registro de evento para creación de objetos.
         /// </summary>
-        /// <param name="details"></param>     
+        /// <param name="details"></param>
         /// <param name="newState"></param>
         public static void Create(string details, object newState = null)
         {
@@ -106,7 +104,7 @@ namespace PetsHome.Business.Extensions
         /// <summary>
         /// Hace un registro de evento para actualización de objetos.
         /// </summary>
-        /// <param name="details"></param> 
+        /// <param name="details"></param>
         /// <param name="previousState"></param>
         /// <param name="newState"></param>
         public static void Update(string details, object previousState = null, object newState = null)
@@ -117,7 +115,7 @@ namespace PetsHome.Business.Extensions
         /// <summary>
         /// Hace un registro de evento para actualización de objetos.
         /// </summary>
-        /// <param name="details"></param>        
+        /// <param name="details"></param>
         public static void PasswordChange(string details)
         {
             Write(EventLogType.PasswordChange, details);
@@ -126,7 +124,7 @@ namespace PetsHome.Business.Extensions
         /// <summary>
         /// Hace un registro de evento para eliminación de objetos.
         /// </summary>
-        /// <param name="details"></param>        
+        /// <param name="details"></param>
         public static void Delete(string details, object previousState = null)
         {
             Write(EventLogType.Delete, details, previousState, null);
@@ -135,7 +133,7 @@ namespace PetsHome.Business.Extensions
         /// <summary>
         /// Hace un registro de evento para actualización de objetos.
         /// </summary>
-        /// <param name="details"></param>        
+        /// <param name="details"></param>
         public static void Login(string details)
         {
             Write(EventLogType.Login, details);
@@ -144,7 +142,7 @@ namespace PetsHome.Business.Extensions
         /// <summary>
         /// Hace un registro de evento para actualización de objetos.
         /// </summary>
-        /// <param name="details"></param>        
+        /// <param name="details"></param>
         public static void Logout(string details)
         {
             Write(EventLogType.Logout, details);
@@ -153,12 +151,11 @@ namespace PetsHome.Business.Extensions
         /// <summary>
         /// Hace un registro de evento para actualización de objetos.
         /// </summary>
-        /// <param name="details"></param>        
+        /// <param name="details"></param>
         public static void UpdateState(string details)
         {
             Write(EventLogType.Update, details);
         }
-
 
         /// <summary>
         /// Reinicia las propiedades de un envento de log, para evitar duplicidad.

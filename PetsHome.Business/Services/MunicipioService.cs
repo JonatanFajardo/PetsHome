@@ -16,12 +16,14 @@ namespace PetsHome.Business.Services
         private readonly MunicipioRepository _municipioRepository;
         private readonly ILogger<MunicipioService> _logger;
         private readonly IMapper _mapper;
+
         public MunicipioService(MunicipioRepository municipioRepository, ILogger<MunicipioService> logger, IMapper mapper)
         {
             _municipioRepository = municipioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<MunicipioViewModel>> ListIdAsync(int id)
         {
             try
@@ -35,6 +37,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<DepartamentoViewModel> FindAsync(int id)
         {
             try
@@ -48,6 +51,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         //public async Task<MunicipioViewModel> DetailAsync(int id)
         //{
         //   try
@@ -57,7 +61,6 @@ namespace PetsHome.Business.Services
         //    }
         //    catch (Exception error)
         //    {
-
         //        throw;
         //    }
         //}
@@ -74,7 +77,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(MunicipioViewModel model)
         {
             try
@@ -88,6 +91,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

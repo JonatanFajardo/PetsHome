@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,13 +16,15 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
+
         public IActionResult Create()
         {
             return View();
         }
-            public AdopcionController(AdopcionService AdopcionService
+
+        public AdopcionController(AdopcionService AdopcionService
         //                      IHttpContextAccessor httpContextAccessor
-            )
+        )
         {
             _AdopcionService = AdopcionService;
             //  _httpContextAccessor = httpContextAccessor;
@@ -79,7 +80,6 @@ namespace PetsHome.UI.Controllers
 
             if (!model.isEdit)
             {
-
                 Boolean createdItem = await _AdopcionService.AddAsync(model);
                 if (!createdItem)
                 {
@@ -107,7 +107,6 @@ namespace PetsHome.UI.Controllers
                     //return RedirectToAction("Index");
                 }
             }
-
         }
 
         public async Task<IActionResult> Remove(int adop_Id)
@@ -124,6 +123,5 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
-        
     }
 }

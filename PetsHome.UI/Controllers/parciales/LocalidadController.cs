@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using PetsHome.Logic.Repositories;
 using System;
 using System.Threading.Tasks;
 
@@ -13,18 +12,15 @@ namespace PetsHome.UI.Controllers
     {
         private readonly MunicipioService _municipioService;
         private readonly DepartamentoService _departamentoService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
+
         private readonly IMapper _mapper;
 
-
         public LocalidadController(MunicipioService municipioService,
-                                    DepartamentoService departamentoService,
-                                    //IHttpContextAccessor httpContextAccessor,
+                                    DepartamentoService departamentoService,,
                                     IMapper mapper)
         {
             _municipioService = municipioService;
             _departamentoService = departamentoService;
-            //_httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
@@ -53,7 +49,7 @@ namespace PetsHome.UI.Controllers
                 return View(nameof(EditDepartamentos), model);
             }
             else
-            { 
+            {
                 var result = await _departamentoService.FindAsync(id);
                 result.ListadoMunicipios = await _municipioService.ListIdAsync(id);
                 return View(nameof(EditDepartamentos), result);
@@ -116,7 +112,6 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        
         public async Task<IActionResult> FindMunicipio(int id)
         {
             var itemSearched = await _municipioService.FindAsync(id);

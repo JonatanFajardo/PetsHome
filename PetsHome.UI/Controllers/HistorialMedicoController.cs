@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -13,7 +12,6 @@ namespace PetsHome.UI.Controllers
         private readonly HistorialMedicoService _HistorialMedicoService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
-
         public HistorialMedicoController(HistorialMedicoService HistorialMedicoService
         //                      IHttpContextAccessor httpContextAccessor
             )
@@ -26,10 +24,12 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
+
         public IActionResult Create()
         {
             return View();
         }
+
         public async Task<IActionResult> List()
         {
             var itemListing = await _HistorialMedicoService.ListAsync();

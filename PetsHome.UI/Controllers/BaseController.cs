@@ -32,11 +32,11 @@ namespace PetsHome.UI.Controllers
             return View("Create", model);
         }
 
-
         public JsonResult AjaxResult(dynamic model, Boolean success)
         {
             return Json(new { item = model, success = success });
         }
+
         public JsonResult AjaxResult(Boolean success)
         {
             return Json(new { success = success });

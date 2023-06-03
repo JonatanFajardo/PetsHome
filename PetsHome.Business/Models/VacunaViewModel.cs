@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class VacunaViewModel
@@ -21,6 +22,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Usuario creación")]
         public string? vac_NombreUsuarioCrea { get; set; }
+
         public DateTime vac_FechaCrea { get; set; }
         public int? vac_UsuarioModifica { get; set; }
 

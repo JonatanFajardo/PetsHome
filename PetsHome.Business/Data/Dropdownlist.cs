@@ -17,9 +17,5 @@ namespace PetsHome.Business.Data
             };
             return lista;
         }
-
     }
-
-
-
 }

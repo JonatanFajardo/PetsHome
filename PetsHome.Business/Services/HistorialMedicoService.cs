@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly HistorialMedicoRepository _historialmedicoRepository;
         private readonly ILogger<HistorialMedicoService> _logger;
         private readonly IMapper _mapper;
+
         public HistorialMedicoService(HistorialMedicoRepository historialmedicoRepository, ILogger<HistorialMedicoService> logger, IMapper mapper)
         {
             _historialmedicoRepository = historialmedicoRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<HistorialMedicoViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<HistorialMedicoViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<HistorialMedicoViewModel> DetailAsync(int id)
         {
             try
@@ -60,11 +64,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(HistorialMedicoViewModel model)
         {
             try
             {
-                tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model); 
+                tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
                 return await _historialmedicoRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -73,7 +78,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(HistorialMedicoViewModel model)
         {
             try
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly SolicitudRepository _solicitudRepository;
         private readonly ILogger<SolicitudService> _logger;
         private readonly IMapper _mapper;
+
         public SolicitudService(SolicitudRepository solicitudeRepository, ILogger<SolicitudService> logger, IMapper mapper)
         {
             _solicitudRepository = solicitudeRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<SolicitudViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<SolicitudViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<SolicitudViewModel> DetailAsync(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(SolicitudViewModel model)
         {
             try
@@ -73,7 +78,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(SolicitudViewModel model)
         {
             try
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

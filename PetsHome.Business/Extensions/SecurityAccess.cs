@@ -3,6 +3,7 @@
     public class SecurityAccess
     {
         #region EsquemaGeneral
+
         public const string ListMunicipios = "Listado_Municipios";
         public const string InsertMunicipios = "Registro_Municipios";
         public const string EditMunicipios = "Modificar_Municipios";
@@ -18,9 +19,10 @@
         public const string EditDepartamentos = "Modificar_Departamentos";
         public const string DeleteDepartamentos = "Eliminar_Departamentos";
 
-        #endregion
+        #endregion EsquemaGeneral
 
         #region EsquemaInventario
+
         public const string ListCategorias = "Listado_Categorias";
         public const string InsertCategorias = "Registro_Categorias";
         public const string EditCategorias = "Modificar_Categorias";
@@ -51,9 +53,10 @@
         public const string EditItems = "Modificar_Items";
         public const string DeleteItems = "Eliminar_Items";
 
-        #endregion
+        #endregion EsquemaInventario
 
         #region EsquemaRefugio
+
         public const string ListMascotas = "Listado_Mascotas";
         public const string InsertMascotas = "Registro_Mascotas";
         public const string EditMascotas = "Modificar_Mascotas";
@@ -124,6 +127,6 @@
         public const string EditVoluntarios = "Modificar_Voluntarios";
         public const string DeleteVoluntarios = "Eliminar_Voluntarios";
 
-        #endregion
+        #endregion EsquemaRefugio
     }
 }

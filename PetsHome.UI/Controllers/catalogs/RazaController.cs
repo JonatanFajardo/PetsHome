@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -76,7 +75,6 @@ namespace PetsHome.UI.Controllers
 
             if (!model.isEdit)
             {
-
                 Boolean createdItem = await _razaService.AddAsync(model);
                 if (!createdItem)
                 {
@@ -87,7 +85,6 @@ namespace PetsHome.UI.Controllers
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                     return RedirectToAction("Index");
-
                 }
             }
             else
@@ -105,7 +102,6 @@ namespace PetsHome.UI.Controllers
                     //return RedirectToAction("Index");
                 }
             }
-
         }
 
         public async Task<IActionResult> Remove(int raza_Id)
@@ -122,7 +118,5 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-
     }
 }

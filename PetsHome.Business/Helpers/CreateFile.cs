@@ -17,7 +17,6 @@ namespace PetsHome.Business.Helpers
         public static string Path { set => _path = value; }
         public static string FolderName { set => _folderName = value; }
 
-
         /// <summary>
         /// Crea un nuevo folder en la ruta especificada.
         /// </summary>
@@ -52,6 +51,7 @@ namespace PetsHome.Business.Helpers
             _path = "";
             _folderName = "";
         }
+
         /// <summary>
         /// Crea un nuevo folder en la ruta especificada.
         /// </summary>
@@ -108,7 +108,6 @@ namespace PetsHome.Business.Helpers
             return 0;
         }
 
-
         /// <summary>
         /// Crea una imagen.
         /// </summary>
@@ -149,12 +148,15 @@ namespace PetsHome.Business.Helpers
                             case ".png":
                                 img.Save(ruta, new PngEncoder());
                                 break;
+
                             case ".jpg":
                                 img.Save(ruta, new JpegEncoder { Quality = 70 });
                                 break;
+
                             case ".jpeg":
                                 img.Save(ruta, new JpegEncoder { Quality = 70 });
                                 break;
+
                             case ".gif":
                                 img.Save(ruta, new GifEncoder());
                                 break;
@@ -176,16 +178,12 @@ namespace PetsHome.Business.Helpers
             }
         }
 
-
-
-
         public enum Extension
         {
             png,
             jpgandjpeg,
             gif
         }
-
 
         /// <summary>
         /// Elimina un archivo en la ruta especificada.

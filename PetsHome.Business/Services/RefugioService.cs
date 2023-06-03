@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly RefugioRepository _refugioRepository;
         private readonly ILogger<RefugioService> _logger;
         private readonly IMapper _mapper;
+
         public RefugioService(RefugioRepository refugioRepository, ILogger<RefugioService> logger, IMapper mapper)
         {
             _refugioRepository = refugioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<RefugioViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<RefugioViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<RefugioViewModel> DetailAsync(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(RefugioViewModel model)
         {
             try
@@ -73,7 +78,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(RefugioViewModel model)
         {
             try
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

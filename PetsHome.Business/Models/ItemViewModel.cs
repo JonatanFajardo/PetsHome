@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PetsHome.Business.Models
 {
     public partial class ItemViewModel
@@ -23,7 +24,6 @@ namespace PetsHome.Business.Models
         [Display(Name = "Id categoría")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? cat_Id { get; set; }
-
 
         [Display(Name = "Id refugio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -63,16 +63,16 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? itm_FechaModifica { get; set; }
 
-
         [Display(Name = "Categoría")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(100)]
         public string cat_Descripcion { get; set; }
+
         [Display(Name = "Usuario creación")]
         public string? itm_NombreUsuarioCrea { get; set; }
+
         [Display(Name = "Usuario modificación")]
         public string? itm_NombreUsuarioModifica { get; set; }
-
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
@@ -86,8 +86,8 @@ namespace PetsHome.Business.Models
             }
         }
 
-
         #region Dropdown
+
         public void LoadDropDownList(IEnumerable<CategoriaViewModel> categoriaViewModels)
         {
             itemList = new SelectList(categoriaViewModels, "cat_Id", "cat_Descripcion");

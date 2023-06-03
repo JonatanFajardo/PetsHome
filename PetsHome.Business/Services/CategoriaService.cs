@@ -7,21 +7,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Clase que representa el servicio de categoría.
+    /// </summary>
     public class CategoriaService
     {
         private readonly CategoriaRepository _categoriaRepository;
         private readonly ILogger<CategoriaService> _logger;
         private readonly IMapper _mapper;
+
         public CategoriaService(CategoriaRepository categoriaRepository, ILogger<CategoriaService> logger, IMapper mapper)
         {
             _categoriaRepository = categoriaRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de categorías de forma asíncrona.
+        /// </summary>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de categorías.</returns>
         public async Task<List<CategoriaViewModel>> ListAsync()
         {
             try
@@ -35,6 +43,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca una categoría por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de la categoría.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la categoría encontrada.</returns>
         public async Task<CategoriaViewModel> FindAsync(int id)
         {
             try
@@ -48,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de una categoría por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de la categoría.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles de la categoría.</returns>
         public async Task<CategoriaViewModel> DetailAsync(int id)
         {
             try
@@ -60,8 +80,13 @@ namespace PetsHome.Business.Services
                 _logger.LogError(error, error.Message);
                 return null;
             }
-            return null;
         }
+
+        /// <summary>
+        /// Agrega una nueva categoría de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo de la categoría a agregar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó la categoría correctamente.</returns>
         public async Task<Boolean> AddAsync(CategoriaViewModel model)
         {
             try
@@ -76,6 +101,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Actualiza una categoría de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo de la categoría a actualizar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó la categoría correctamente.</returns>
         public async Task<Boolean> UpdateAsync(CategoriaViewModel model)
         {
             try
@@ -85,9 +115,16 @@ namespace PetsHome.Business.Services
             }
             catch (Exception error)
             {
+                _logger.LogError(error, error.Message);
                 return true;
             }
         }
+
+        /// <summary>
+        /// Elimina una categoría por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de la categoría a eliminar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó la categoría correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

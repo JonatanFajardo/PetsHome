@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly ItemRepository _itemRepository;
         private readonly ILogger<ItemService> _logger;
         private readonly IMapper _mapper;
+
         public ItemService(ItemRepository itemRepository, ILogger<ItemService> logger, IMapper mapper)
         {
             _itemRepository = itemRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<ItemViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<ItemViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<ItemViewModel> DetailAsync(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(ItemViewModel model)
         {
             try
@@ -73,7 +78,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(ItemViewModel model)
         {
             try
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try
@@ -102,6 +108,7 @@ namespace PetsHome.Business.Services
         }
 
         #region Dropdown
+
         public IEnumerable<CategoriaViewModel> CategoriaDropdown()
         {
             try
@@ -129,6 +136,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         #endregion Dropdown
     }
 }
