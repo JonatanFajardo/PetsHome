@@ -86,6 +86,5 @@ namespace PetsHome.Business
 
             services.AddMvc();
         }
-
     }
 }

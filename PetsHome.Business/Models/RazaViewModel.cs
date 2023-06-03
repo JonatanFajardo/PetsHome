@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public class RazaViewModel
     {
         public long? Fila { get; set; }
+
         [Display(Name = "Id raza")]
         public int? raza_Id { get; set; }
 
@@ -13,14 +15,13 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         [Espacios(ErrorMessage = "bebesita")]
-        //[RegularExpression(@"[^s]+", ErrorMessage = "El campo {0} no admite espacios")]
-        //[RazaExist(ErrorMessage = "Ya existe")]
         public string raza_Descripcion { get; set; }
 
         public int? raza_UsuarioCrea { get; set; }
 
         [Display(Name = "Usuario creación")]
         public string? raza_NombreUsuarioCrea { get; set; }
+
         public DateTime? raza_FechaCrea { get; set; }
         public int? raza_UsuarioModifica { get; set; }
 
@@ -47,7 +48,6 @@ namespace PetsHome.Business.Models
     {
         public override bool IsValid(object value)
         {
-
             //string cc = value.ToString();
             //char chaar = cc[0];
             //if (chaar == ' ')

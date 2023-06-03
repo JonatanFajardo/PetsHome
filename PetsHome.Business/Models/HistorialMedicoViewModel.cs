@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class HistorialMedicoViewModel
     {
-
         [Key]
         [Display(Name = "Id ficha medica")]
         public int medic_Id { get; set; }
@@ -39,6 +39,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Fecha modificación")]
         public DateTime medic_FechaCrea { get; set; }
+
         public int? medic_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modificación")]
@@ -58,10 +59,5 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
-
-        #region Dropdown
-
-        #endregion Dropdown
-
     }
 }

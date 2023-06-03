@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PetsHome.Business.Models
 {
-
     public partial class PersonaViewModel
     {
         [Key]
@@ -78,13 +77,14 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Usuario modificación")]
         public string? usuarioModifica { get; set; }
+
         [Display(Name = "Usuario creación")]
         public string? usuarioCrea { get; set; }
 
         public SelectList refugio { get; set; }
 
         //public string cag_Descripcion { get; set; }
-        
+
         //public string per_Domicilio { get; set; }
         //public string per_Telefono { get; set; }
         //public string per_Correo { get; set; }
@@ -103,7 +103,6 @@ namespace PetsHome.Business.Models
 
         //public class PersonasDetailViewModel
         //{
-
         //}
     }
 }

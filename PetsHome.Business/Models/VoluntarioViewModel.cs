@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class VoluntarioViewModel
@@ -26,10 +27,12 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string per_Apellidos { get; set; }
+
         public int vol_UsuarioCrea { get; set; }
 
         [Display(Name = "Usuario creación")]
         public string? vol_NombreUsuarioCrea { get; set; }
+
         public DateTime vol_FechaCrea { get; set; }
         public int? vol_UsuarioModifica { get; set; }
 
@@ -41,8 +44,10 @@ namespace PetsHome.Business.Models
 
         // Propiedades Extras
         public string vol_Nombres { get; set; }
+
         public string per_Identidad { get; set; }
         public virtual PersonaViewModel per { get; set; } = new PersonaViewModel();
+
         //Indica si el formulario se esta editando.
         public Boolean isEdit
         {
@@ -54,9 +59,5 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
-
-        #region Dropdown
-
-        #endregion Dropdown
     }
 }

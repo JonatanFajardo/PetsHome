@@ -1,12 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using PetsHome.Common.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -17,6 +15,7 @@ namespace PetsHome.UI.Controllers
         private readonly MascotaService _mascotaService;
         private readonly RefugioService _refugioService;
         private readonly IOptions<MascotaViewModel> _pathFile;
+
         public MascotaController(MascotaService mascotaService,
             RefugioService refugioService,
             IOptions<MascotaViewModel> options)
@@ -24,8 +23,8 @@ namespace PetsHome.UI.Controllers
             _mascotaService = mascotaService;
             _refugioService = refugioService;
             _pathFile = options;
-
         }
+
         public IActionResult Index()
         {
             return View();
@@ -67,7 +66,6 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Find(int id)
         {
-
             if (id != 0)
             {
                 var itemSearched = await _mascotaService.FindAsync(id);
@@ -107,7 +105,6 @@ namespace PetsHome.UI.Controllers
 
         ErrorResult:
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
-
         }
 
         public async Task<IActionResult> Remove(int masc_Id)

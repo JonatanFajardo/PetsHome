@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class ProcedenciaViewModel
@@ -17,6 +18,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Usuario creación")]
         public string? proc_NombreUsuarioCrea { get; set; }
+
         public DateTime proc_FechaCrea { get; set; }
         public int? proc_UsuarioModifica { get; set; }
 

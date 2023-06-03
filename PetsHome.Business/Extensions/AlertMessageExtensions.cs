@@ -2,11 +2,14 @@
 {
     public class AlertMessageExtensions
     {
-        public AlertMessageExtensions() { }
+        public AlertMessageExtensions()
+        { }
+
         public string Text { get; set; }
         public string CssClass { get; set; }
 
         private AlertMessageType _type;
+
         public AlertMessageType Type
         {
             get { return _type; }
@@ -24,7 +27,6 @@
             }
         }
 
-
         public AlertMessageExtensions(string text, AlertMessageType type)
         {
             Text = text;
@@ -38,7 +40,6 @@
         Info = 1,
         Warning = 2,
         Error = 3
-
     }
 
     public class AlertMessaje

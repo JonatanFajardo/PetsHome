@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -12,18 +11,26 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Clase que representa el servicio de Empleado.
+    /// </summary>
     public class EmpleadoService
     {
         private readonly EmpleadoRepository _empleadoRepository;
         private readonly ILogger<EmpleadoService> _logger;
         private readonly IMapper _mapper;
+
         public EmpleadoService(EmpleadoRepository empleadoRepository, ILogger<EmpleadoService> logger, IMapper mapper)
         {
             _empleadoRepository = empleadoRepository;
-            _mapper = mapper;
             _logger = logger;
-
+            _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de Empleados de forma asíncrona.
+        /// </summary>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de Empleados.</returns>
         public async Task<List<EmpleadoViewModel>> ListAsync()
         {
             try
@@ -36,6 +43,12 @@ namespace PetsHome.Business.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// Busca un Empleado por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID del Empleado.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el Empleado encontrado.</returns>
         public async Task<EmpleadoViewModel> FindAsync(int id)
         {
             try
@@ -49,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de un Empleado por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID del Empleado.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles del Empleado.</returns>
         public async Task<EmpleadoViewModel> DetailAsync(int id)
         {
             try
@@ -62,6 +81,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Agrega un nuevo Empleado de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo del Empleado a agregar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el Empleado correctamente.</returns>
         public async Task<Boolean> AddAsync(EmpleadoViewModel model)
         {
             try
@@ -75,7 +100,12 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
+        /// <summary>
+        /// Actualiza un Empleado de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo del Empleado a actualizar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el Empleado correctamente.</returns>
         public async Task<Boolean> UpdateAsync(EmpleadoViewModel model)
         {
             try
@@ -90,6 +120,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Elimina un Empleado por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID del Empleado a eliminar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el Empleado correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try
@@ -103,8 +138,11 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        
 
+        /// <summary>
+        /// Obtiene una lista de opciones de cargo de empleados de forma asíncrona.
+        /// </summary>
+        /// <returns>Una enumeración de las opciones de cargo de empleados.</returns>
         public IEnumerable<EmpleadoCargoViewModel> EmpleadoCargoDropdown()
         {
             try

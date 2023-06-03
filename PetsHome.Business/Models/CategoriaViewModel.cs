@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class CategoriaViewModel
@@ -40,6 +41,5 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
-
     }
 }

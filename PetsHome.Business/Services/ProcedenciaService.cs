@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly ProcedenciaRepository _procedenciaRepository;
         private readonly ILogger<ProcedenciaService> _logger;
         private readonly IMapper _mapper;
+
         public ProcedenciaService(ProcedenciaRepository procedenciaRepository, ILogger<ProcedenciaService> logger, IMapper mapper)
         {
             _procedenciaRepository = procedenciaRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<ProcedenciaViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<ProcedenciaViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<ProcedenciaViewModel> DetailAsync(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(ProcedenciaViewModel model)
         {
             try
@@ -73,7 +78,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(ProcedenciaViewModel model)
         {
             try
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try
