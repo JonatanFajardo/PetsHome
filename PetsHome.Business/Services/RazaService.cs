@@ -15,12 +15,14 @@ namespace PetsHome.Business.Services
         private readonly ILogger<RazaService> _logger;
         private readonly IMapper _mapper;
         private readonly RazaRepository _razaRepository;
+
         public RazaService(RazaRepository razaRepository, ILogger<RazaService> logger, IMapper mapper)
         {
             _razaRepository = razaRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<List<RazaViewModel>> ListAsync()
         {
             try
@@ -34,6 +36,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<RazaViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<RazaViewModel> DetailAsync(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(RazaViewModel model)
         {
             try
@@ -73,7 +78,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(RazaViewModel model)
         {
             try
@@ -87,6 +92,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

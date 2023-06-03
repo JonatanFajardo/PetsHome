@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace PetsHome.UI.Controllers
 {
@@ -10,7 +9,5 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
-
-        
     }
 }

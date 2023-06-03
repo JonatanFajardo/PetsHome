@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace PetsHome.Business.Models
 {
     public partial class InventarioDetalleViewModel
@@ -45,7 +46,6 @@ namespace PetsHome.Business.Models
         public string? invdet_NombreUsuarioModifica { get; set; }
 
         [Display(Name = "Fecha modificación")]
-
         public DateTime? invdet_FechaModifica { get; set; }
 
         //Indica si el formulario se esta editando.
@@ -59,10 +59,5 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
-
-        #region Dropdown
-
-        #endregion Dropdown
-
     }
 }

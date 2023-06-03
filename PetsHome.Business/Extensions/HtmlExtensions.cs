@@ -15,12 +15,10 @@ namespace PetsHome.Business.Extensions
                 return new HtmlString("");
             }
 
-
             // var type = message.CssClass;
 
             //switch (type)
             //{
-
             //    default:
             //    case "info":
             //        alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";

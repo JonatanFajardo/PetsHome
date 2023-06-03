@@ -96,7 +96,6 @@ namespace PetsHome.UI.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
         }
 
         public async Task<IActionResult> Remove(int emp_id)
@@ -112,7 +111,6 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
-        
         }
     }
 }

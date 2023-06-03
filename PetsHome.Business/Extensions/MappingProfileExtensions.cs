@@ -95,7 +95,7 @@ namespace PetsHome.Business.Extensions
             //{
             //    PetId = y.PetId
             //    PetName = y.PetName
-            //}))); 
+            //})));
             //.ForMember(x => x, opt =>
             //opt.MapFrom(y => new tbPersonas
             //{
@@ -134,11 +134,9 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbVacunas, VacunaViewModel>().ReverseMap();
             CreateMap<tbVoluntarios, VoluntarioViewModel>().ReverseMap();
 
-
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
             ////CreateMap<tbContratos, ContratosViewModel>().ReverseMap()();
-
 
             //CreateMap<tbEntradas, EntradaViewModel>().ReverseMap();
             //CreateMap<tbAdopciones, AdopcionViewModel>().ReverseMap();
@@ -165,17 +163,13 @@ namespace PetsHome.Business.Extensions
             //CreateMap<tbCategorias, CategoriaViewModel>().ReverseMap();
             //CreateMap<tbEmpleados, EmpleadoViewModel>().ReverseMap();
 
-
             //CreateMap<tbDepartamentos, MunicipioViewModel>().ReverseMap();
             //CreateMap<MascotaViewModel, PR_Refugio_Mascotas_FindResult>().ReverseMap();
-
 
             ////Departamento
 
             //CreateMap<tbDepartamentos, EditarDepartamento>().ReverseMap();
             //CreateMap<PR_General_Departamentos_FindResult, EditarDepartamento>().ReverseMap();
-
-
         }
     }
 }

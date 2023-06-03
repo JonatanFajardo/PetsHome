@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using PetsHome.Common.Entities;
 using PetsHome.Common.InternalEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PetsHome.Business.Models
 {
     public partial class MascotaViewModel
@@ -38,7 +38,6 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Sexo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        //[StringLength(1)]
         public string masc_Sexo { get; set; }
 
         [Display(Name = "Peso")]
@@ -83,7 +82,6 @@ namespace PetsHome.Business.Models
 
         public bool? masc_EsReservado { get; set; }
 
-
         public int masc_UsuarioCrea { get; set; }
 
         public DateTime masc_masc_FechaCrea { get; set; }
@@ -95,14 +93,14 @@ namespace PetsHome.Business.Models
         // Propiedades Extras
         [Display(Name = "Usuario creación")]
         public string? NombreUsuarioCrea { get; set; }
+
         [Display(Name = "Usuario modificación")]
         public string? masc_NombreUsuarioModifica { get; set; }
+
         public long? masc_Fila { get; set; }
         public IFormFile ImageFile { get; set; }
 
         public string pathMascotaImage { get; set; }
-
-
 
         //Indica si el formulario se esta editando.
         public Boolean isEdit
@@ -122,6 +120,7 @@ namespace PetsHome.Business.Models
         public SelectList sexoList { get; set; }
         public SelectList refugioList { get; set; }
         public SelectList procedenciaList { get; set; }
+
         //public void LoadDropDownList(IEnumerable<PR_Refugio_Raza_DropdownResult> razaDropdownResults,
         //                               IEnumerable<Dropdown> dropdownlists,
         //                               IEnumerable<PR_Refugio_Refugio_DropdownResult> refugioDropdownResults,
@@ -136,7 +135,7 @@ namespace PetsHome.Business.Models
             refugioList = new SelectList(refugioDropdownResults, "refg_Id", "refg_Nombre");
             procedenciaList = new SelectList(procedenciaDropdownResults, "proc_Id", "proc_Descripcion");
         }
-        #endregion Dropdown
 
+        #endregion Dropdown
     }
 }
