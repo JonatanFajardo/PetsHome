@@ -10,14 +10,11 @@ namespace PetsHome.UI.Controllers
     public class VoluntarioController : BaseController
     {
         private readonly VoluntarioService _VoluntarioService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public VoluntarioController(VoluntarioService VoluntarioService
-              //                      IHttpContextAccessor httpContextAccessor
               )
         {
             _VoluntarioService = VoluntarioService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -72,7 +69,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(VoluntarioViewModel model)
         {
             //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");

@@ -5,11 +5,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_Voluntarios_ListResult
     {
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int vol_Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int vol_HorasTrabajadas { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string vol_Nombres { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_Identidad { get; set; }
     }
 }

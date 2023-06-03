@@ -17,10 +17,5 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        //public MascotaViewModel Dropdown(MascotaViewModel model)
-        //{
-        //    model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _RefugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
-        //    return model;
-        //}
     }
 }

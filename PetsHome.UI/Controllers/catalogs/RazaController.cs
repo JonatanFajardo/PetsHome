@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
     public class RazaController : BaseController
     {
         private readonly RazaService _razaService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IActionResult Index()
         {
@@ -18,11 +17,9 @@ namespace PetsHome.UI.Controllers
         }
 
         public RazaController(RazaService razaService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _razaService = razaService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> List()
@@ -45,7 +42,6 @@ namespace PetsHome.UI.Controllers
             if (itemSearched != null)
             {
                 return AjaxResult(itemSearched, true);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -68,10 +64,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
         public async Task<IActionResult> Add(RazaViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
+
 
             if (!model.isEdit)
             {
@@ -99,7 +94,6 @@ namespace PetsHome.UI.Controllers
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                     return AjaxResult(false);
-                    //return RedirectToAction("Index");
                 }
             }
         }

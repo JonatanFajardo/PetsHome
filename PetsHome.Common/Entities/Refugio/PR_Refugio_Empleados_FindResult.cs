@@ -5,31 +5,106 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_Empleados_FindResult
     {
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int emp_Id { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string emp_Codigo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int per_Id { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_PrimerNombre { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_SegundoNombre { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_ApellidoPaterno { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_ApellidoMaterno { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_Identidad { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime per_FechaNacimiento { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_Domicilio { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_Telefono { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string per_Correo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int cag_Id { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string cag_Descripcion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int refg_Id { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_Nombre { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public bool emp_EsActivo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string esActivo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int per_UsuarioCrea { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string usuarioCrea { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime per_FechaCrea { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int? per_UsuarioModifica { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string usuarioModifica { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime? per_FechaModifica { get; set; }
     }
 }

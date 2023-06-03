@@ -5,21 +5,80 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_Refugios_DetailResult
     {
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int refg_Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_Nombre { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_Ubicacion { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_RTN { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_Telefono { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_Correo { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int depto_Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int mpio_Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_InformacionAdicional { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string EsActivo { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string UsuarioCreacion { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime refg_FechaCrea { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string UsuarioModificacion { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime? refg_FechaModifica { get; set; }
     }
 }

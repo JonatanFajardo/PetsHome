@@ -5,13 +5,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Inventario_Categorias_DetailResult
     {
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int cat_Id { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string cat_Descripcion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string UsuarioCreacion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime cat_FechaCrea { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string UsuarioModificacion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime? cat_FechaModifica { get; set; }
     }
 }

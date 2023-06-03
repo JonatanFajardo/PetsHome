@@ -12,7 +12,6 @@ namespace PetsHome.UI.Controllers
         private readonly RefugioService _RefugioService;
         private readonly DepartamentoService _departamentoService;
         private readonly MunicipioService _municipioService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IActionResult Index()
         {
@@ -29,13 +28,11 @@ namespace PetsHome.UI.Controllers
         public RefugioController(RefugioService RefugioService,
                                 DepartamentoService DepartamentoService,
                                 MunicipioService MunicipioService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _RefugioService = RefugioService;
             _departamentoService = DepartamentoService;
             _municipioService = MunicipioService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> List()
@@ -59,7 +56,6 @@ namespace PetsHome.UI.Controllers
             {
                 var dropdown = Dropdown(itemSearched);
                 return View("Create", dropdown);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -82,10 +78,8 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
         public async Task<IActionResult> Add(RefugioViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {

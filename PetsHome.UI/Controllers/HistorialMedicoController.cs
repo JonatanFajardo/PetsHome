@@ -10,14 +10,10 @@ namespace PetsHome.UI.Controllers
     public class HistorialMedicoController : BaseController
     {
         private readonly HistorialMedicoService _HistorialMedicoService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-
         public HistorialMedicoController(HistorialMedicoService HistorialMedicoService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _HistorialMedicoService = HistorialMedicoService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -50,7 +46,6 @@ namespace PetsHome.UI.Controllers
             if (itemSearched != null)
             {
                 return AjaxResult(itemSearched, true);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -73,10 +68,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
         public async Task<IActionResult> Add(HistorialMedicoViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
+
 
             if (!model.isEdit)
             {

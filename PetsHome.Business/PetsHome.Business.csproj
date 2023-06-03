@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\InventariosDetalleService.cs" />
+    <Compile Remove="Services\PersonaService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PetsHome.DataAccess\PetsHome.DataAccess.csproj" />
     <ProjectReference Include="..\PetsHome.Logic\PetsHome.Logic.csproj" />
   </ItemGroup>

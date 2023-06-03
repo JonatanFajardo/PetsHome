@@ -5,16 +5,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_General_Municipios_DetailResult
     {
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int mpio_Id { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string mpio_Codigo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string mpio_Descripcion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string codigoDept { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string codigo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int mpio_UsuarioCrea { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime mpio_FechaCrea { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int? mpio_UsuarioModifica { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime? mpio_FechaModifica { get; set; }
     }
 }

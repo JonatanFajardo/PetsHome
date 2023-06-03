@@ -5,14 +5,45 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_Eventos_FindResult
     {
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int eve_Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string eve_Descripcion { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int refg_Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string refg_Nombre { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public TimeSpan eve_HoraInicio { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public TimeSpan eve_HoraFinal { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public DateTime eve_Fecha { get; set; }
     }
 }
