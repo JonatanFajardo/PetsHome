@@ -11,7 +11,6 @@ namespace PetsHome.Business.Models
         public int? raza_Id { get; set; }
 
         [Display(Name = "Descripción")]
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "El campo descripción es requerido")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         [Espacios(ErrorMessage = "bebesita")]
@@ -48,14 +47,6 @@ namespace PetsHome.Business.Models
     {
         public override bool IsValid(object value)
         {
-            //string cc = value.ToString();
-            //char chaar = cc[0];
-            //if (chaar == ' ')
-            //{
-            //return new ValidationResult("golaaa");
-            //}
-            //    return ValidationResult.Success;
-
             string cc = value.ToString();
             char chaar = cc[0];
             if (chaar == ' ')
@@ -65,52 +56,4 @@ namespace PetsHome.Business.Models
             return true;
         }
     }
-
-    //public class RazaExistAttribute : ValidationAttribute
-    //{
-    //    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    //    {
-    //        RazaRepository razaRepository = new RazaRepository();
-    //        //int priod_Id = (int)value;
-    //        string raza_Descripcion = (string)value;
-    //        var result = razaRepository.Validation(raza_Descripcion);
-    //        if (result != null)
-    //        {
-    //            //if (result.priod_Id == priod_Id)
-    //            //{
-    //            //    return ValidationResult.Success;
-    //            //}
-    //            //else
-    //            //{
-    //            return new ValidationResult("Registro existente");
-    //            //}
-    //        }
-    //        return ValidationResult.Success;
-    //    }
-    //}
-
-    //public class RazaExistAttribute : ValidationAttribute
-    //{
-    //    public override bool IsValid(object value/*, ValidationContext validationContext*/)
-    //    {
-    //        RazaRepository razaRepository = new RazaRepository();
-    //        //int priod_Id = (int)value;
-    //        string raza_Descripcion = (string)value;
-    //        var result = razaRepository.Validation(raza_Descripcion);
-    //        if (result != null)
-    //        {
-    //            //if (result.priod_Id == priod_Id)
-    //            //{
-    //            //    return ValidationResult.Success;
-    //            //}
-    //            //else
-    //            //{
-    //            return false;
-    //            //return new ValidationResult("Registro existente");
-    //            //}
-    //        }
-    //        return true;
-    //        //return ValidationResult.Success;
-    //    }
-    //}
 }

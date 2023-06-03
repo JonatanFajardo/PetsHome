@@ -10,7 +10,6 @@ namespace PetsHome.UI.Controllers
     public class AdopcionController : BaseController
     {
         private readonly AdopcionService _AdopcionService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IActionResult Index()
         {
@@ -23,11 +22,9 @@ namespace PetsHome.UI.Controllers
         }
 
         public AdopcionController(AdopcionService AdopcionService
-        //                      IHttpContextAccessor httpContextAccessor
         )
         {
             _AdopcionService = AdopcionService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> List()
@@ -50,7 +47,6 @@ namespace PetsHome.UI.Controllers
             if (itemSearched != null)
             {
                 return AjaxResult(itemSearched, true);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -73,10 +69,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(AdopcionViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {
@@ -104,7 +99,6 @@ namespace PetsHome.UI.Controllers
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                     return RedirectToAction("Index");
-                    //return RedirectToAction("Index");
                 }
             }
         }

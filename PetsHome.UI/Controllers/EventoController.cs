@@ -11,16 +11,12 @@ namespace PetsHome.UI.Controllers
     {
         private readonly EventoService _EventoService;
         private readonly RefugioService _RefugioService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-
         public EventoController(EventoService eventoService,
                                 RefugioService refugioService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _EventoService = eventoService;
             _RefugioService = refugioService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -56,7 +52,6 @@ namespace PetsHome.UI.Controllers
             {
                 var dropdown = Dropdown(itemSearched);
                 return View("Create", dropdown);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -79,11 +74,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(EventoViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
-
             if (!model.isEdit)
             {
                 Boolean createdItem = await _EventoService.AddAsync(model);

@@ -5,8 +5,14 @@ using System.Collections.Generic;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class tbMunicipios
     {
+        /// <summary>
+        /// Constructor de la clase.
+        /// </summary>
         public tbMunicipios()
         {
             tbRefugios = new HashSet<tbRefugios>();

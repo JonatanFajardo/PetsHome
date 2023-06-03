@@ -5,11 +5,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_EmpleadosCargos_ListResult
     {
+        
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int cag_Id { get; set; }
+        
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string cag_Descripcion { get; set; }
+        
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public decimal? cag_Salario { get; set; }
+        
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string EsActivo { get; set; }
     }
 }

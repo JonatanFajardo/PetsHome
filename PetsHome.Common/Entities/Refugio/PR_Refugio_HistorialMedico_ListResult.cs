@@ -5,13 +5,40 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_HistorialMedico_ListResult
     {
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public int Id { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string Mascota { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public bool Esterilizacion { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string Comportamiento { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string SaludCuidado { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string InformacionAdicional { get; set; }
     }
 }

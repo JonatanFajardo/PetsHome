@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,8 +16,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public ProcedenciaController(ProcedenciaService procedenciaService,
-                                IMapper mapper)
+        public ProcedenciaController(ProcedenciaService procedenciaService)
         {
             _procedenciaService = procedenciaService;
         }
@@ -65,7 +63,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(ProcedenciaViewModel model)
         {
             if (!model.isEdit)

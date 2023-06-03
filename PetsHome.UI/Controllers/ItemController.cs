@@ -10,14 +10,10 @@ namespace PetsHome.UI.Controllers
     public class ItemController : BaseController
     {
         private readonly ItemService _ItemService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-
         public ItemController(ItemService ItemService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _ItemService = ItemService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -53,7 +49,6 @@ namespace PetsHome.UI.Controllers
             {
                 var dropdown = Dropdown(itemSearched);
                 return View("Create", dropdown);
-                //return View("Create", dropdown);
             }
             else
             {
@@ -76,11 +71,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(ItemViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
-
             if (!model.isEdit)
             {
                 Boolean createdItem = await _ItemService.AddAsync(model);

@@ -23,14 +23,16 @@ namespace PetsHome.Business.Services
             _logger = logger;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Obtiene la lista de voluntarios
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<VoluntarioViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Voluntarios_ListResult> mappedResult = await _voluntarioRepository.ListAsync();
                 return _mapper.Map<List<VoluntarioViewModel>>(mappedResult.ToList());
-                //return MappingCustom.Map(mappedResult).ToList();
             }
             catch (Exception error)
             {

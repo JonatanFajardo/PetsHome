@@ -11,12 +11,12 @@ namespace PetsHome.Logic.Repositories
 {
     public class AdopcionRepository : IGenericRepository<tbAdopciones>
     {
-
         public async Task<IEnumerable<PR_Refugio_Adopciones_ListResult>> ListAsync()
         {
             const string sqlQuery = "[General].[PR_Refugio_Adopciones_List]";
             return await DbApp.Select<PR_Refugio_Adopciones_ListResult>(sqlQuery);
         }
+
         public async Task<PR_Refugio_Adopciones_FindResult> FindAsync(int id)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Adopciones_Find]";
@@ -63,6 +63,5 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
-
     }
 }

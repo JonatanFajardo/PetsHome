@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
 using System;
@@ -16,7 +15,6 @@ namespace PetsHome.Logic.Repositories
         public async Task<IEnumerable<PR_General_Municipios_ListResult>> ListAsync()
         {
             const string sqlQuery = "[General].[PR_General_Municipios_List]";
-            var parameter = new DynamicParameters();
             return await DbApp.Select<PR_General_Municipios_ListResult>(sqlQuery);
         }
 
@@ -30,7 +28,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> AddAsync(tbMunicipios entity)
         {
-            int result = 0;
+
             entity.mpio_UsuarioCrea = 1;
             const string sqlQuery = "[General].[PR_General_Municipios_Insert]";
             var parameter = new DynamicParameters();
@@ -49,7 +47,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@mpio_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Select<PR_General_Municipios_FindResult>(sqlQuery, parameter);
         }
-        
+
         public async Task<PR_General_Municipios_DetailResult> DetailAsync(int id)
         {
             const string sqlQuery = "[General].[PR_General_Municipios_Detail]";
@@ -60,7 +58,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbMunicipios entity)
         {
-            int result = 0;
+
             entity.mpio_UsuarioModifica = 1;
             const string sqlQuery = "[General].[PR_General_Municipios_Update]";
             var parameter = new DynamicParameters();
@@ -75,7 +73,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            int result = 0;
+
             const string sqlQuery = "[General].[PR_General_Municipios_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@mpio_Id", id, DbType.Int32, ParameterDirection.Input);

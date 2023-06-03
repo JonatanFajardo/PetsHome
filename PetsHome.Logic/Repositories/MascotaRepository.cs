@@ -98,16 +98,6 @@ namespace PetsHome.Logic.Repositories
             }
         }
 
-        //public IEnumerable<PR_Refugio_Mascotas_DropdownResult> MascotasDropdown()
-        //{
-        //    const string query = "[Refugio].[PR_Refugio_Mascotas_Dropdown]";
-        //    using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
-        //    {
-        //        var result = db.Query<PR_Refugio_Mascotas_DropdownResult>(query, commandType: CommandType.StoredProcedure);
-        //        return result;
-        //    }
-        //}
-
         public IEnumerable<PR_Refugio_Procedencia_DropdownResult> ProcedenciaDropdown()
         {
             const string query = "[Refugio].[PR_Refugio_Procedencia_Dropdown]";

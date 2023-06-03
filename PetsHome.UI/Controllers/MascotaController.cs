@@ -52,7 +52,7 @@ namespace PetsHome.UI.Controllers
             //_mascotaRepository.AddAsync(tbMascotas);
             //ViewBag.raza_Id()
 
-            // Cargamos Dropdown
+            // 
             var model = new MascotaViewModel();
             var drop = Dropdown(model);
             return View(drop);
@@ -122,33 +122,16 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Cargamos Dropdown
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public MascotaViewModel Dropdown(MascotaViewModel model)
         {
             model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
             return model;
         }
 
-        //public MascotaViewModel RazaDropdown()
-        //{
-        //    MascotaViewModel model = new MascotaViewModel();
-        //    var response = _mascotaRepository.RazaDropdown();
-        //    model.LoadDropDownList(response);
-        //    return model;
-        //}
-
-        //public MascotaViewModel RefugioDropdown()
-        //{
-        //    MascotaViewModel model = new MascotaViewModel();
-        //    var response = _mascotaRepository.RefugioDropdown();
-        //    model.LoadDropDownList(response);
-        //    return model;
-        //}
-        //public MascotaViewModel ProcedenciaDropdown()
-        //{
-        //    MascotaViewModel model = new MascotaViewModel();
-        //    var response = _mascotaRepository.ProcedenciaDropdown();
-        //    model.LoadDropDownList(response);
-        //    return model;
-        //}
     }
 }

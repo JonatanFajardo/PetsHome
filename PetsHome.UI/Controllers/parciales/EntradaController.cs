@@ -66,7 +66,11 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
-        //Método que crea o edita un nuevo departamento
+        /// <summary>
+        /// Método que crea o edita un nuevo departamento
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Add(EntradaViewModel model)
         {
             if (!model.isEdit)
@@ -91,7 +95,11 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        //Añade un nuevo o edita un municipio
+        /// <summary>
+        /// Añade un nuevo o edita un municipio
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<IActionResult> AddEntradaDetalle(EntradaViewModel model)
         {
             if (!model.EntradaDetalle.isEdit)
@@ -133,31 +141,16 @@ namespace PetsHome.UI.Controllers
 
         public EntradaViewModel Dropdown(EntradaViewModel model)
         {
-            //MascotaViewModel model = new MascotaViewModel();
             model.LoadDropDownList(_refugioService.RefugioDropdown());
             return model;
         }
 
         public EntradaViewModel ItemDropdown(EntradaViewModel model)
         {
-            //MascotaViewModel model = new MascotaViewModel();
             model.EntradaDetalle.LoadDropDownList(_itemService.ItemDropdown());
             return model;
         }
 
-        //public async Task<IActionResult> Remove(int masc_Id)
-        //{
-        //    Boolean deletedItem = await _entradaService.RemoveAsync(masc_Id);
-        //    if (!deletedItem)
-        //    {
-        //        ShowAlert("Eliminado", AlertMessageType.Success);
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-        //        return RedirectToAction("Index");
-        //    }
-        //}
+
     }
 }

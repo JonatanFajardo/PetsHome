@@ -33,7 +33,6 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Refugio_Voluntarios_DetailResult>(sqlQuery, parameter);
         }
 
-
         public async Task<Boolean> AddAsync(tbVoluntarios entity)
         {
             entity.per.per_UsuarioCrea = 1;

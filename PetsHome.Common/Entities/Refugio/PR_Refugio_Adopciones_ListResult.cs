@@ -5,10 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Common.Entities
 {
+    /// <summary>
+    /// Entidad que representa la tabla.
+    /// </summary>
     public partial class PR_Refugio_Adopciones_ListResult
     {
-        public int adop_Id { get; set; }
-        public int sol_Id { get; set; }
-        public bool adop_EsAprobado { get; set; }
+       /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+       public int adop_Id { get; set; }
+       /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+       public int sol_Id { get; set; }
+       /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+       public bool adop_EsAprobado { get; set; }
     }
 }
