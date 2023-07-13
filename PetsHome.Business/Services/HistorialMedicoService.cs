@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona el historial médico de las mascotas.
+    /// </summary>
     public class HistorialMedicoService
     {
         private readonly HistorialMedicoRepository _historialmedicoRepository;
@@ -23,6 +26,10 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los registros del historial médico.
+        /// </summary>
+        /// <returns>Una lista de objetos HistorialMedicoViewModel.</returns>
         public async Task<List<HistorialMedicoViewModel>> ListAsync()
         {
             try
@@ -37,6 +44,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Busca un registro del historial médico por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del registro del historial médico.</param>
+        /// <returns>Un objeto HistorialMedicoViewModel que corresponde al registro encontrado.</returns>
         public async Task<HistorialMedicoViewModel> FindAsync(int id)
         {
             try
@@ -51,6 +63,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene los detalles de un registro del historial médico por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del registro del historial médico.</param>
+        /// <returns>Un objeto HistorialMedicoViewModel que contiene los detalles del registro del historial médico.</returns>
         public async Task<HistorialMedicoViewModel> DetailAsync(int id)
         {
             try
@@ -65,7 +82,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> AddAsync(HistorialMedicoViewModel model)
+        /// <summary>
+        /// Agrega un nuevo registro al historial médico.
+        /// </summary>
+        /// <param name="model">Datos del registro del historial médico a agregar.</param>
+        /// <returns>True si el registro del historial médico se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(HistorialMedicoViewModel model)
         {
             try
             {
@@ -79,7 +101,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(HistorialMedicoViewModel model)
+        /// <summary>
+        /// Actualiza un registro existente del historial médico.
+        /// </summary>
+        /// <param name="model">Datos actualizados del registro del historial médico.</param>
+        /// <returns>True si el registro del historial médico se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(HistorialMedicoViewModel model)
         {
             try
             {
@@ -93,11 +120,16 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        /// <summary>
+        /// Elimina un registro del historial médico por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del registro del historial médico a eliminar.</param>
+        /// <returns>True si el registro del historial médico se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _historialmedicoRepository.RemoveAsync(id);
+                bool mappedResult = await _historialmedicoRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)

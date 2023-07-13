@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona las procedencias.
+    /// </summary>
     public class ProcedenciaService
     {
         private readonly ProcedenciaRepository _procedenciaRepository;
@@ -23,6 +26,10 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Obtiene una lista de procedencias.
+        /// </summary>
+        /// <returns>Una lista de objetos ProcedenciaViewModel que corresponden a las procedencias encontradas.</returns>
         public async Task<List<ProcedenciaViewModel>> ListAsync()
         {
             try
@@ -37,6 +44,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Busca una procedencia por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la procedencia.</param>
+        /// <returns>Un objeto ProcedenciaViewModel que corresponde a la procedencia encontrada.</returns>
         public async Task<ProcedenciaViewModel> FindAsync(int id)
         {
             try
@@ -51,6 +63,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene los detalles de una procedencia por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la procedencia.</param>
+        /// <returns>Un objeto ProcedenciaViewModel que contiene los detalles de la procedencia encontrada.</returns>
         public async Task<ProcedenciaViewModel> DetailAsync(int id)
         {
             try
@@ -65,7 +82,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> AddAsync(ProcedenciaViewModel model)
+        /// <summary>
+        /// Agrega una nueva procedencia.
+        /// </summary>
+        /// <param name="model">Datos de la procedencia a agregar.</param>
+        /// <returns>True si la procedencia se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(ProcedenciaViewModel model)
         {
             try
             {
@@ -79,7 +101,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(ProcedenciaViewModel model)
+        /// <summary>
+        /// Actualiza una procedencia existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados de la procedencia.</param>
+        /// <returns>True si la procedencia se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(ProcedenciaViewModel model)
         {
             try
             {
@@ -93,11 +120,16 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        /// <summary>
+        /// Elimina una procedencia por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la procedencia a eliminar.</param>
+        /// <returns>True si la procedencia se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _procedenciaRepository.RemoveAsync(id);
+                bool mappedResult = await _procedenciaRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)

@@ -32,6 +32,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Detail<PR_Refugio_HistorialMedico_DetailResult>(sqlQuery, parameter);
         }
+
         public async Task<Boolean> AddAsync(tbHistorialMedico entity)
         {
             entity.medic_UsuarioCrea = 1;
@@ -45,7 +46,6 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@medic_UsuarioCrea", entity.medic_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
-
 
         public async Task<Boolean> EditAsync(tbHistorialMedico entity)
         {
@@ -69,6 +69,5 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
-
     }
 }

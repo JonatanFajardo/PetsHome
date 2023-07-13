@@ -396,6 +396,5 @@
         public const string DeleteVoluntarios = "Eliminar_Voluntarios";
 
         #endregion EsquemaRefugio
-
     }
 }
