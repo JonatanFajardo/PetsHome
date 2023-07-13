@@ -16,6 +16,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_List]";
             return await DbApp.Select<PR_Inventario_Categorias_ListResult>(sqlQuery);
         }
+
         public async Task<PR_Inventario_Categorias_FindResult> FindAsync(int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Find]";
@@ -41,6 +42,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cat_UsuarioCrea", entity.cat_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
+
         public async Task<Boolean> EditAsync(tbCategorias entity)
         {
             entity.cat_UsuarioModifica = 1;
@@ -52,7 +54,6 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Update(sqlQuery, parameter);
         }
 
-
         public async Task<Boolean> RemoveAsync(int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Delete]";
@@ -60,6 +61,5 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cat_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
-
     }
 }

@@ -72,8 +72,6 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(VoluntarioViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
-
             if (!model.isEdit)
             {
                 Boolean createdItem = await _VoluntarioService.AddAsync(model);

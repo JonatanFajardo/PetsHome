@@ -15,6 +15,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Eventos_List]";
             return await DbApp.Select<PR_Refugio_Eventos_ListResult>(sqlQuery);
         }
+
         public async Task<PR_Refugio_Eventos_FindResult> FindAsync(int id)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Eventos_Find]";

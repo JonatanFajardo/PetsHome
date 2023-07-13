@@ -38,21 +38,6 @@ namespace PetsHome.Business.Extensions
             return model;
         }
 
-        //internal static VoluntarioViewModel Map(PR_Refugio_Voluntarios_ListResult map)
-        //{
-        //    VoluntarioViewModel model = new VoluntarioViewModel()
-        //    {
-        //        vol_Id = map.vol_Id,
-        //        vol_HorasTrabajadas = map.vol_HorasTrabajadas,
-        //        emp_Nombres = map.per_PrimerNombre + " " + map.per_ApellidoPaterno,
-        //        per = new PersonaViewModel()
-        //        {
-        //            per_Identidad = map.per_Identidad
-        //        }
-        //    };
-        //    return model;
-        //}
-
         public static VoluntarioViewModel Map(PR_Refugio_Voluntarios_FindResult map)
         {
             VoluntarioViewModel model = new VoluntarioViewModel()

@@ -16,6 +16,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Solicitudes_List]";
             return await DbApp.Select<PR_Refugio_Solicitudes_ListResult>(sqlQuery);
         }
+
         public async Task<PR_Refugio_Solicitudes_FindResult> FindAsync(int id)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Solicitudes_Find]";
@@ -32,7 +33,6 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Refugio_Solicitudes_DetailResult>(sqlQuery, parameter);
         }
 
-
         public async Task<Boolean> AddAsync(tbSolicitudes entity)
         {
             entity.sol_UsuarioCrea = 1;
@@ -48,6 +48,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@sol_UsuarioCrea", entity.sol_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
+
         public async Task<Boolean> EditAsync(tbSolicitudes entity)
         {
             entity.sol_UsuarioModifica = 1;

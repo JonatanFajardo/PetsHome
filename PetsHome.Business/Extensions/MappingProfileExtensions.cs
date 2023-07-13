@@ -116,7 +116,6 @@ namespace PetsHome.Business.Extensions
             ////CreateMap<tbSubmenu, SubmenuViewModel>().ReverseMap();
             ////CreateMap<tbSubmenu_tbModpan, Submenu_tbModpanViewModel>().ReverseMap();
             ////Departamento
-
         }
     }
 }

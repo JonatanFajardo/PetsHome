@@ -15,6 +15,7 @@
         /// Propiedad para el texto del mensaje
         /// </summary>
         public string Text { get; set; }
+
         /// <summary>
         /// Propiedad para la clase css del mensaje
         /// </summary>

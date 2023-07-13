@@ -20,7 +20,6 @@ namespace PetsHome.Business
         public static void AddLogicLayer(this IServiceCollection services, string connectionString)
         {
             services.AddScoped<MunicipioRepository>();
-            services.AddScoped<PersonaRepository>();
             services.AddScoped<LocalidadRepository>();
             services.AddScoped<CategoriaRepository>();
             services.AddScoped<EntradaRepository>();

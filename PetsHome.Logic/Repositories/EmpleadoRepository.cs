@@ -87,9 +87,11 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@masc_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
         #endregion Consultas
 
         #region Dropdown
+
         public IEnumerable<PR_Refugio_EmpleadosCargos_DropdownResult> EmpleadoCargoDropdown()
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_EmpleadosCargos_Dropdown]";
@@ -97,6 +99,5 @@ namespace PetsHome.Logic.Repositories
         }
 
         #endregion Dropdown
-
     }
 }

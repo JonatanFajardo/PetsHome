@@ -21,7 +21,6 @@ namespace PetsHome.Business.Helpers
         ///// <returns></returns>
         public static String GetName(IFormFile image)
         {
-
             if (image == null)
             {
                 return string.Empty;

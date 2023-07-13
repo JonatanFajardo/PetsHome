@@ -15,25 +15,6 @@ namespace PetsHome.Business.Extensions
                 return new HtmlString("");
             }
 
-            // var type = message.CssClass;
-
-            //switch (type)
-            //{
-            //    default:
-            //    case "info":
-            //        alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
-            //        break;
-            //    case "success":
-            //        alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
-            //        break;
-            //    case "error":
-            //        alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
-            //        break;
-            //    case "warning":
-            //        alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
-            //        break;
-            //}
-
             string alert = $"<script>appConfig.alert('{HttpUtility.JavaScriptStringEncode(message.CssClass)}', '{HttpUtility.JavaScriptStringEncode(message.Text)}')</script>";
             return new HtmlString(alert);
         }

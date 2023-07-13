@@ -33,7 +33,6 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Refugio_Refugios_DetailResult>(sqlQuery, parameter);
         }
 
-
         public async Task<Boolean> AddAsync(tbRefugios entity)
         {
             entity.refg_UsuarioCrea = 1;
@@ -78,11 +77,13 @@ namespace PetsHome.Logic.Repositories
         }
 
         #region Dropdown
+
         public IEnumerable<PR_Refugio_Refugio_DropdownResult> RefugioDropdown()
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Refugio_Dropdown]";
             return DbApp.Dropdown<PR_Refugio_Refugio_DropdownResult>(sqlQuery);
         }
+
         #endregion Dropdown
     }
 }
