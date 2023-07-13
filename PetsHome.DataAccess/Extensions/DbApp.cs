@@ -169,7 +169,6 @@ namespace PetsHome.DataAccess.Extensions
                 var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
                 if (result.Count() != 0)
                 {
-
                 }
                 resultSql = false;
                 database.Close();
@@ -223,7 +222,6 @@ namespace PetsHome.DataAccess.Extensions
                 var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
                 if (result.Count() != 0)
                 {
-
                 }
                 resultSql = false;
                 database.Close();

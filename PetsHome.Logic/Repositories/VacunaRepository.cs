@@ -16,6 +16,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Vacunas_List]";
             return await DbApp.Select<PR_Refugio_Vacunas_ListResult>(sqlQuery);
         }
+
         public async Task<PR_Refugio_Vacunas_FindResult> FindAsync(int id)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Vacunas_Find]";
@@ -31,7 +32,6 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@vac_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Detail<PR_Refugio_Vacunas_DetailResult>(sqlQuery, parameter);
         }
-
 
         public async Task<Boolean> AddAsync(tbVacunas entity)
         {

@@ -30,29 +30,8 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        //[HttpPost("Mascotas/Agregar", Name = "save")]
         public IActionResult Create()
         {
-            //tbMascotas tbMascotas = new tbMascotas() {
-            //    masc_Imagen = "",
-            //    masc_Nombre = "jona",
-            //    raza_Id = 1,
-            //    masc_Edad = 22,
-            //    masc_Sexo = "M",
-            //    masc_Peso = 13,
-            //    masc_Talla = 43,
-            //    masc_Color = "rojo",
-            //    masc_Historia = "su historia",
-            //    refg_Id = 1,
-            //    proc_Id = 1,
-            //    masc_UsuarioCrea = 1
-
-            //};
-
-            //_mascotaRepository.AddAsync(tbMascotas);
-            //ViewBag.raza_Id()
-
-            // 
             var model = new MascotaViewModel();
             var drop = Dropdown(model);
             return View(drop);

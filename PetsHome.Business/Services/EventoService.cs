@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona eventos relacionados con las mascotas.
+    /// </summary>
     public class EventoService
     {
         private readonly EventoRepository _eventoRepository;
@@ -23,6 +26,10 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los eventos.
+        /// </summary>
+        /// <returns>Una lista de objetos EventoViewModel.</returns>
         public async Task<List<EventoViewModel>> ListAsync()
         {
             try
@@ -37,6 +44,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Busca un evento por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del evento.</param>
+        /// <returns>Un objeto EventoViewModel que corresponde al evento encontrado.</returns>
         public async Task<EventoViewModel> FindAsync(int id)
         {
             try
@@ -51,6 +63,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene los detalles de un evento por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del evento.</param>
+        /// <returns>Un objeto EventoViewModel que contiene los detalles del evento.</returns>
         public async Task<EventoViewModel> DetailAsync(int id)
         {
             try
@@ -65,7 +82,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> AddAsync(EventoViewModel model)
+        /// <summary>
+        /// Agrega un nuevo evento.
+        /// </summary>
+        /// <param name="model">Datos del evento a agregar.</param>
+        /// <returns>True si el evento se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(EventoViewModel model)
         {
             try
             {
@@ -79,7 +101,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(EventoViewModel model)
+        /// <summary>
+        /// Actualiza un evento existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados del evento.</param>
+        /// <returns>True si el evento se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(EventoViewModel model)
         {
             try
             {
@@ -93,11 +120,16 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        /// <summary>
+        /// Elimina un evento por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del evento a eliminar.</param>
+        /// <returns>True si el evento se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _eventoRepository.RemoveAsync(id);
+                bool mappedResult = await _eventoRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)
