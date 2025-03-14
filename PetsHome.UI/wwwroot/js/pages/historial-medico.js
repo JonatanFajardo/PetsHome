@@ -9,11 +9,11 @@ var HistorialMedico = (function () {
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
                 { FieldName: 'medic_Id', Visibility: false },
-                { FieldName: 'masc_Id', Size: 200, Visibility: true },
-                { FieldName: 'medic_Esterilizacion', Visibility: true },
-                { FieldName: 'com_Id', Visibility: true },
-                { FieldName: 'medic_SaludCuidado', Visibility: true },
-                { FieldName: 'medic_InformacionAdicional', Visibility: true }
+                { FieldName: 'mascota', Size: 200, Visibility: true },
+                { FieldName: 'esterilizacion', Visibility: true },
+                { FieldName: 'comportamiento', Visibility: true },
+                { FieldName: 'saludcuidado', Visibility: true },
+                { FieldName: 'informacionadicional', Visibility: true }
             ];
             datatable.init(Direction, header);
         })

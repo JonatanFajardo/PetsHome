@@ -87,6 +87,14 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? medic_FechaModifica { get; set; }
 
+        public string Mascota { get; set; }
+
+        public bool Esterilizacion { get; set; }
+        public string Comportamiento { get; set; }
+        public string SaludCuidado { get; set; }
+
+        public string InformacionAdicional { get; set; }
+
         /// <summary>
         /// Indica si el formulario se está editando.
         /// </summary>
