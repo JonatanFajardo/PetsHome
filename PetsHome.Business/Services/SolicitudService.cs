@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona las solicitudes.
+    /// </summary>
     public class SolicitudService
     {
         private readonly SolicitudRepository _solicitudRepository;
         private readonly ILogger<SolicitudService> _logger;
         private readonly IMapper _mapper;
-        public SolicitudService(SolicitudRepository solicitudeRepository, ILogger<SolicitudService> logger, IMapper mapper)
+
+        public SolicitudService(SolicitudRepository solicitudRepository, ILogger<SolicitudService> logger, IMapper mapper)
         {
-            _solicitudRepository = solicitudeRepository;
+            _solicitudRepository = solicitudRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de solicitudes.
+        /// </summary>
+        /// <returns>Una lista de objetos SolicitudViewModel que corresponden a las solicitudes encontradas.</returns>
         public async Task<List<SolicitudViewModel>> ListAsync()
         {
             try
@@ -34,6 +43,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca una solicitud por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la solicitud.</param>
+        /// <returns>Un objeto SolicitudViewModel que corresponde a la solicitud encontrada.</returns>
         public async Task<SolicitudViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de una solicitud por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la solicitud.</param>
+        /// <returns>Un objeto SolicitudViewModel que contiene los detalles de la solicitud encontrada.</returns>
         public async Task<SolicitudViewModel> DetailAsync(int id)
         {
             try
@@ -60,7 +81,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<Boolean> AddAsync(SolicitudViewModel model)
+
+        /// <summary>
+        /// Agrega una nueva solicitud.
+        /// </summary>
+        /// <param name="model">Datos de la solicitud a agregar.</param>
+        /// <returns>True si la solicitud se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(SolicitudViewModel model)
         {
             try
             {
@@ -73,8 +100,13 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
-        public async Task<Boolean> UpdateAsync(SolicitudViewModel model)
+
+        /// <summary>
+        /// Actualiza una solicitud existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados de la solicitud.</param>
+        /// <returns>True si la solicitud se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(SolicitudViewModel model)
         {
             try
             {
@@ -87,11 +119,17 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina una solicitud por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la solicitud a eliminar.</param>
+        /// <returns>True si la solicitud se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _solicitudRepository.RemoveAsync(id);
+                bool mappedResult = await _solicitudRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)

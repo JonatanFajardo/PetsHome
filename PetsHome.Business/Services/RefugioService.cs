@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona los refugios.
+    /// </summary>
     public class RefugioService
     {
         private readonly RefugioRepository _refugioRepository;
         private readonly ILogger<RefugioService> _logger;
         private readonly IMapper _mapper;
+
         public RefugioService(RefugioRepository refugioRepository, ILogger<RefugioService> logger, IMapper mapper)
         {
             _refugioRepository = refugioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de refugios.
+        /// </summary>
+        /// <returns>Una lista de objetos RefugioViewModel que corresponden a los refugios encontrados.</returns>
         public async Task<List<RefugioViewModel>> ListAsync()
         {
             try
@@ -34,6 +43,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca un refugio por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del refugio.</param>
+        /// <returns>Un objeto RefugioViewModel que corresponde al refugio encontrado.</returns>
         public async Task<RefugioViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de un refugio por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del refugio.</param>
+        /// <returns>Un objeto RefugioViewModel que contiene los detalles del refugio encontrado.</returns>
         public async Task<RefugioViewModel> DetailAsync(int id)
         {
             try
@@ -60,7 +81,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<Boolean> AddAsync(RefugioViewModel model)
+
+        /// <summary>
+        /// Agrega un nuevo refugio.
+        /// </summary>
+        /// <param name="model">Datos del refugio a agregar.</param>
+        /// <returns>True si el refugio se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(RefugioViewModel model)
         {
             try
             {
@@ -73,8 +100,13 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
-        public async Task<Boolean> UpdateAsync(RefugioViewModel model)
+
+        /// <summary>
+        /// Actualiza un refugio existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados del refugio.</param>
+        /// <returns>True si el refugio se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(RefugioViewModel model)
         {
             try
             {
@@ -87,11 +119,17 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina un refugio por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del refugio a eliminar.</param>
+        /// <returns>True si el refugio se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _refugioRepository.RemoveAsync(id);
+                bool mappedResult = await _refugioRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)
@@ -101,6 +139,10 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene una lista de refugios para usar en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos RefugioViewModel que corresponden a los refugios encontrados.</returns>
         public IEnumerable<RefugioViewModel> RefugioDropdown()
         {
             try

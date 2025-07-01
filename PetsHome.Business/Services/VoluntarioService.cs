@@ -13,23 +13,27 @@ namespace PetsHome.Business.Services
 {
     public class VoluntarioService
     {
-
         private readonly VoluntarioRepository _voluntarioRepository;
         private readonly ILogger<VoluntarioService> _logger;
         private readonly IMapper _mapper;
+
         public VoluntarioService(VoluntarioRepository voluntarioRepository, ILogger<VoluntarioService> logger, IMapper mapper)
         {
             _voluntarioRepository = voluntarioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene la lista de voluntarios
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<VoluntarioViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Voluntarios_ListResult> mappedResult = await _voluntarioRepository.ListAsync();
                 return _mapper.Map<List<VoluntarioViewModel>>(mappedResult.ToList());
-                //return MappingCustom.Map(mappedResult).ToList();
             }
             catch (Exception error)
             {
@@ -37,6 +41,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<VoluntarioViewModel> FindAsync(int id)
         {
             try
@@ -50,6 +55,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<VoluntarioViewModel> DetailAsync(int id)
         {
             try
@@ -63,11 +69,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         public async Task<Boolean> AddAsync(VoluntarioViewModel model)
         {
             try
             {
-                tbVoluntarios mappedResult = _mapper.Map<tbVoluntarios>(model); 
+                tbVoluntarios mappedResult = _mapper.Map<tbVoluntarios>(model);
                 return await _voluntarioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -76,7 +83,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
+
         public async Task<Boolean> UpdateAsync(VoluntarioViewModel model)
         {
             try
@@ -90,6 +97,7 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

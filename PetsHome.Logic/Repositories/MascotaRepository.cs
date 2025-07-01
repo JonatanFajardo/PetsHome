@@ -85,9 +85,11 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@masc_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
         #endregion Consultas
 
         #region Dropdown
+
         public IEnumerable<PR_Refugio_Raza_DropdownResult> RazaDropdown()
         {
             const string query = "[Refugio].[PR_Refugio_Raza_Dropdown]";
@@ -97,16 +99,6 @@ namespace PetsHome.Logic.Repositories
                 return result;
             }
         }
-
-        //public IEnumerable<PR_Refugio_Mascotas_DropdownResult> MascotasDropdown()
-        //{
-        //    const string query = "[Refugio].[PR_Refugio_Mascotas_Dropdown]";
-        //    using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
-        //    {
-        //        var result = db.Query<PR_Refugio_Mascotas_DropdownResult>(query, commandType: CommandType.StoredProcedure);
-        //        return result;
-        //    }
-        //}
 
         public IEnumerable<PR_Refugio_Procedencia_DropdownResult> ProcedenciaDropdown()
         {
@@ -119,6 +111,5 @@ namespace PetsHome.Logic.Repositories
         }
 
         #endregion Dropdown
-
     }
 }

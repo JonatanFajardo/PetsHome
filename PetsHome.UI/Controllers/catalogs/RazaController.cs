@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -11,7 +10,6 @@ namespace PetsHome.UI.Controllers
     public class RazaController : BaseController
     {
         private readonly RazaService _razaService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IActionResult Index()
         {
@@ -19,11 +17,9 @@ namespace PetsHome.UI.Controllers
         }
 
         public RazaController(RazaService razaService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _razaService = razaService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> List()
@@ -46,7 +42,6 @@ namespace PetsHome.UI.Controllers
             if (itemSearched != null)
             {
                 return AjaxResult(itemSearched, true);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -69,14 +64,12 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
         public async Task<IActionResult> Add(RazaViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
+
 
             if (!model.isEdit)
             {
-
                 Boolean createdItem = await _razaService.AddAsync(model);
                 if (!createdItem)
                 {
@@ -87,7 +80,6 @@ namespace PetsHome.UI.Controllers
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                     return RedirectToAction("Index");
-
                 }
             }
             else
@@ -102,10 +94,8 @@ namespace PetsHome.UI.Controllers
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                     return AjaxResult(false);
-                    //return RedirectToAction("Index");
                 }
             }
-
         }
 
         public async Task<IActionResult> Remove(int raza_Id)
@@ -122,7 +112,5 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-
     }
 }

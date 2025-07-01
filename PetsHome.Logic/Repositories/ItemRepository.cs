@@ -66,7 +66,9 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@itm_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
         #region Dropdown
+
         public IEnumerable<PR_Inventario_Categorias_DropdownResult> CategoriaDropdown()
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Dropdown]";
@@ -78,6 +80,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Dropdown]";
             return DbApp.Dropdown<PR_Inventario_Items_DropdownResult>(sqlQuery);
         }
+
         #endregion Dropdown
     }
 }

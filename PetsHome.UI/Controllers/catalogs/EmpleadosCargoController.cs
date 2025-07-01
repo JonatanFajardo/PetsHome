@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,8 +16,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public EmpleadosCargoController(EmpleadosCargoService empleadosCargoService,
-                                IMapper mapper)
+        public EmpleadosCargoController(EmpleadosCargoService empleadosCargoService)
         {
             _empleadosCargoService = empleadosCargoService;
         }
@@ -65,7 +63,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(EmpleadoCargoViewModel model)
         {
             if (!model.isEdit)
@@ -96,7 +94,6 @@ namespace PetsHome.UI.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
         }
 
         public async Task<IActionResult> Remove(int emp_id)
@@ -112,7 +109,6 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
-        
         }
     }
 }

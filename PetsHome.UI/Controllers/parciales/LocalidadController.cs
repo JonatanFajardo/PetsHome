@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using PetsHome.Logic.Repositories;
 using System;
 using System.Threading.Tasks;
 
@@ -13,18 +12,15 @@ namespace PetsHome.UI.Controllers
     {
         private readonly MunicipioService _municipioService;
         private readonly DepartamentoService _departamentoService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IMapper _mapper;
 
+        private readonly IMapper _mapper;
 
         public LocalidadController(MunicipioService municipioService,
                                     DepartamentoService departamentoService,
-                                    //IHttpContextAccessor httpContextAccessor,
                                     IMapper mapper)
         {
             _municipioService = municipioService;
             _departamentoService = departamentoService;
-            //_httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
@@ -42,18 +38,16 @@ namespace PetsHome.UI.Controllers
             });
         }
 
-        // Redirecciona a la vista parcial de departamentos
         public async Task<IActionResult> EditDepartamentos(int id)
         {
             if (id == 0)
             {
                 var model = new DepartamentoViewModel();
-                //Asignamos el valor de 0 para registrar un nuevo departamento
                 model.depto_Id = id;
                 return View(nameof(EditDepartamentos), model);
             }
             else
-            { 
+            {
                 var result = await _departamentoService.FindAsync(id);
                 result.ListadoMunicipios = await _municipioService.ListIdAsync(id);
                 return View(nameof(EditDepartamentos), result);
@@ -66,7 +60,6 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
-        //Método que crea o edita un nuevo departamento
         public async Task<IActionResult> Add(DepartamentoViewModel model)
         {
             if (!model.isEdit)
@@ -91,7 +84,6 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        //Añade un nuevo o edita un municipio
         public async Task<IActionResult> AddMunicipio(DepartamentoViewModel model)
         {
             if (!model.Municipio.isEdit)
@@ -116,7 +108,6 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        
         public async Task<IActionResult> FindMunicipio(int id)
         {
             var itemSearched = await _municipioService.FindAsync(id);
@@ -131,19 +122,5 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //public async Task<IActionResult> Remove(int masc_Id)
-        //{
-        //    Boolean deletedItem = await _departamentoService.RemoveAsync(masc_Id);
-        //    if (!deletedItem)
-        //    {
-        //        ShowAlert("Eliminado", AlertMessageType.Success);
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-        //        return RedirectToAction("Index");
-        //    }
-        //}
     }
 }

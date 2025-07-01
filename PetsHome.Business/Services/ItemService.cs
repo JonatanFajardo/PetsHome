@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona los elementos del inventario.
+    /// </summary>
     public class ItemService
     {
         private readonly ItemRepository _itemRepository;
         private readonly ILogger<ItemService> _logger;
         private readonly IMapper _mapper;
+
         public ItemService(ItemRepository itemRepository, ILogger<ItemService> logger, IMapper mapper)
         {
             _itemRepository = itemRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de todos los elementos del inventario.
+        /// </summary>
+        /// <returns>Una lista de objetos ItemViewModel.</returns>
         public async Task<List<ItemViewModel>> ListAsync()
         {
             try
@@ -34,6 +43,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca un elemento del inventario por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del elemento del inventario.</param>
+        /// <returns>Un objeto ItemViewModel que corresponde al elemento encontrado.</returns>
         public async Task<ItemViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de un elemento del inventario por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del elemento del inventario.</param>
+        /// <returns>Un objeto ItemViewModel que contiene los detalles del elemento del inventario.</returns>
         public async Task<ItemViewModel> DetailAsync(int id)
         {
             try
@@ -60,7 +81,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<Boolean> AddAsync(ItemViewModel model)
+
+        /// <summary>
+        /// Agrega un nuevo elemento al inventario.
+        /// </summary>
+        /// <param name="model">Datos del elemento del inventario a agregar.</param>
+        /// <returns>True si el elemento del inventario se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(ItemViewModel model)
         {
             try
             {
@@ -73,8 +100,13 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
-        public async Task<Boolean> UpdateAsync(ItemViewModel model)
+
+        /// <summary>
+        /// Actualiza un elemento existente del inventario.
+        /// </summary>
+        /// <param name="model">Datos actualizados del elemento del inventario.</param>
+        /// <returns>True si el elemento del inventario se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(ItemViewModel model)
         {
             try
             {
@@ -87,11 +119,17 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina un elemento del inventario por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del elemento del inventario a eliminar.</param>
+        /// <returns>True si el elemento del inventario se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _itemRepository.RemoveAsync(id);
+                bool mappedResult = await _itemRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)
@@ -102,6 +140,11 @@ namespace PetsHome.Business.Services
         }
 
         #region Dropdown
+
+        /// <summary>
+        /// Obtiene una lista de categorías para su uso en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos CategoriaViewModel para el dropdown.</returns>
         public IEnumerable<CategoriaViewModel> CategoriaDropdown()
         {
             try
@@ -116,6 +159,10 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene una lista de elementos para su uso en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos ItemViewModel para el dropdown.</returns>
         public IEnumerable<ItemViewModel> ItemDropdown()
         {
             try
@@ -129,6 +176,7 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
         #endregion Dropdown
     }
 }

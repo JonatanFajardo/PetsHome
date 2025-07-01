@@ -11,21 +11,28 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona las mascotas en un refugio.
+    /// </summary>
     public class MascotaService
     {
         private readonly MascotaRepository _mascotaRepository;
         private readonly RefugioRepository _refugioRepository;
         private readonly ILogger<MascotaService> _logger;
         private readonly IMapper _mapper;
-        public MascotaService(MascotaRepository mascotaRepository,
-            RefugioRepository refugioRepository,
-        ILogger<MascotaService> logger, IMapper mapper)
+
+        public MascotaService(MascotaRepository mascotaRepository, RefugioRepository refugioRepository, ILogger<MascotaService> logger, IMapper mapper)
         {
             _mascotaRepository = mascotaRepository;
             _refugioRepository = refugioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de todas las mascotas en el refugio.
+        /// </summary>
+        /// <returns>Una lista de objetos MascotaViewModel.</returns>
         public async Task<List<MascotaViewModel>> ListAsync()
         {
             try
@@ -39,6 +46,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca una mascota por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la mascota.</param>
+        /// <returns>Un objeto MascotaViewModel que corresponde a la mascota encontrada.</returns>
         public async Task<MascotaViewModel> FindAsync(int id)
         {
             try
@@ -52,6 +65,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de una mascota por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la mascota.</param>
+        /// <returns>Un objeto MascotaViewModel que contiene los detalles de la mascota.</returns>
         public async Task<MascotaViewModel> DetailAsync(int id)
         {
             try
@@ -65,7 +84,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<Boolean> AddAsync(MascotaViewModel model)
+
+        /// <summary>
+        /// Agrega una nueva mascota al refugio.
+        /// </summary>
+        /// <param name="model">Datos de la mascota a agregar.</param>
+        /// <returns>True si la mascota se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(MascotaViewModel model)
         {
             try
             {
@@ -80,7 +105,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(MascotaViewModel model)
+        /// <summary>
+        /// Actualiza una mascota existente en el refugio.
+        /// </summary>
+        /// <param name="model">Datos actualizados de la mascota.</param>
+        /// <returns>True si la mascota se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(MascotaViewModel model)
         {
             try
             {
@@ -94,11 +124,17 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina una mascota del refugio por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la mascota a eliminar.</param>
+        /// <returns>True si la mascota se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _mascotaRepository.RemoveAsync(id);
+                bool mappedResult = await _mascotaRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)
@@ -109,6 +145,11 @@ namespace PetsHome.Business.Services
         }
 
         #region Dropdown
+
+        /// <summary>
+        /// Obtiene una lista de razas para su uso en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos RazaViewModel para el dropdown.</returns>
         public IEnumerable<RazaViewModel> RazaDropdown()
         {
             try
@@ -123,20 +164,10 @@ namespace PetsHome.Business.Services
             }
         }
 
-        //public IEnumerable<MascotaViewModel> MascotasDropdown()
-        //{
-        //    try
-        //    {
-        //        IEnumerable<PR_Refugio_Mascotas_DropdownlResult> mappedResult = _mascotaRepository.MascotasDropdown();
-        //        return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        _logger.LogError(error, error.Message);
-        //        return null;
-        //    }
-        //}
-
+        /// <summary>
+        /// Obtiene una lista de procedencias para su uso en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos ProcedenciaViewModel para el dropdown.</returns>
         public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
         {
             try

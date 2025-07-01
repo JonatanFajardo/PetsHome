@@ -11,7 +11,6 @@ namespace PetsHome.Logic.Repositories
 {
     public class EmpleadosCargoRepository : IGenericRepository<tbEmpleadosCargos>
     {
-
         public async Task<IEnumerable<PR_Refugio_EmpleadosCargos_ListResult>> ListAsync()
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_EmpleadosCargos_Lis]";
@@ -44,6 +43,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cag_UsuarioCrea", entity.cag_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
+
         public async Task<Boolean> EditAsync(tbEmpleadosCargos entity)
         {
             entity.cag_UsuarioModifica = 1;

@@ -1,423 +1,423 @@
 ﻿{
-   "CodeGenerationMode": 0,
-   "ContextClassName": "AppPetshomeContext",
-   "ContextNamespace": null,
-   "DefaultDacpacSchema": null,
-   "FilterSchemas": false,
-   "IncludeConnectionString": false,
-   "ModelNamespace": null,
-   "OutputContextPath": "AppPetshomeDbContext",
-   "OutputPath": "Entities",
-   "ProjectRootNamespace": "PetsHome.Common",
-   "Schemas": null,
-   "SelectedHandlebarsLanguage": 0,
-   "SelectedToBeGenerated": 0,
-   "Tables": [
-      {
-         "Name": "[General].[tbDepartamentos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[General].[tbMunicipios]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[General].[tbPersonas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Inventario].[tbCategorias]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Inventario].[tbEntradas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Inventario].[tbEntradasDetalles]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Inventario].[tbInventarios]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Inventario].[tbInventariosDetalles]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Inventario].[tbItems]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbAdopciones]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbComportamientos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbEmpleados]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbEmpleadosCargos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbEventos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbEventos_tbVoluntarios]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbHistorialMedico]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbHistorialMedico_tbVacunas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbMascotas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbProcedencias]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbRazas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbRefugios]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbSolicitudes]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbVacunas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Refugio].[tbVoluntarios]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Seguridad].[tbRegistroEventos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Seguridad].[tbUsuarios]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[General].[PR_General_Departamentos_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Departamentos_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Departamentos_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Departamentos_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Municipios_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Municipios_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Municipios_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Municipios_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[General].[PR_General_Municipios_SelectbyDepartamento]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Categorias_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Categorias_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Categorias_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Categorias_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Entradas_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Entradas_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Entradas_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_EntradasDetalles_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_EntradasDetalles_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_EntradasDetalles_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Inventarios_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Inventarios_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Inventarios_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Items_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Items_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Items_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Inventario].[PR_Inventario_Items_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Adopciones_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Adopciones_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Adopciones_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Empleados_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Empleados_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Empleados_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Eventos_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Eventos_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Eventos_Insert]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Eventos_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_HistorialMedico_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_HistorialMedico_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_HistorialMedico_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Mascotas_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Mascotas_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Mascotas_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Procedencia_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Procedencias_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Procedencias_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Procedencias_Insert]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Procedencias_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Raza_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Razas_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Razas_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Razas_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Refugio_Dropdown]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Refugios_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Refugios_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Refugios_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Solicitudes_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Solicitudes_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Solicitudes_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Vacunas_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Vacunas_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Vacunas_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Voluntarios_Detail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Voluntarios_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Refugio].[PR_Refugio_Voluntarios_List]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Find]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Insert]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Select]",
-         "ObjectType": 1
-      }
-   ],
-   "UiHint": "DESKTOP-NG\\SQLEXPRESS.PetsHome_V1.6",
-   "UseBoolPropertiesWithoutDefaultSql": false,
-   "UseDatabaseNames": true,
-   "UseDbContextSplitting": true,
-   "UseFluentApiOnly": true,
-   "UseHandleBars": false,
-   "UseHierarchyId": false,
-   "UseInflector": false,
-   "UseLegacyPluralizer": false,
-   "UseManyToManyEntity": false,
-   "UseNoConstructor": false,
-   "UseNoDefaultConstructor": false,
-   "UseNoNavigations": false,
-   "UseNoObjectFilter": false,
-   "UseNodaTime": false,
-   "UseNullableReferences": false,
-   "UseSchemaFolders": true,
-   "UseSpatial": false
+  "CodeGenerationMode": 0,
+  "ContextClassName": "AppPetshomeContext",
+  "ContextNamespace": null,
+  "DefaultDacpacSchema": null,
+  "FilterSchemas": false,
+  "IncludeConnectionString": false,
+  "ModelNamespace": null,
+  "OutputContextPath": "AppPetshomeDbContext",
+  "OutputPath": "Entities",
+  "ProjectRootNamespace": "PetsHome.Common",
+  "Schemas": null,
+  "SelectedHandlebarsLanguage": 0,
+  "SelectedToBeGenerated": 0,
+  "Tables": [
+    {
+      "Name": "[General].[tbDepartamentos]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[General].[tbMunicipios]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[General].[tbPersonas]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Inventario].[tbCategorias]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Inventario].[tbEntradas]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Inventario].[tbEntradasDetalles]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Inventario].[tbInventarios]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Inventario].[tbInventariosDetalles]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Inventario].[tbItems]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbAdopciones]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbComportamientos]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbEmpleados]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbEmpleadosCargos]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbEventos]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbEventos_tbVoluntarios]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbHistorialMedico]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbHistorialMedico_tbVacunas]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbMascotas]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbProcedencias]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbRazas]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbRefugios]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbSolicitudes]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbVacunas]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Refugio].[tbVoluntarios]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Seguridad].[tbRegistroEventos]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[Seguridad].[tbUsuarios]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[General].[PR_General_Departamentos_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Departamentos_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Departamentos_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Departamentos_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Municipios_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Municipios_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Municipios_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Municipios_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[General].[PR_General_Municipios_SelectbyDepartamento]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Categorias_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Categorias_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Categorias_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Categorias_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Entradas_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Entradas_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Entradas_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_EntradasDetalles_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_EntradasDetalles_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_EntradasDetalles_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Inventarios_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Inventarios_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Inventarios_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Items_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Items_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Items_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Inventario].[PR_Inventario_Items_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Adopciones_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Adopciones_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Adopciones_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Empleados_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Empleados_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Empleados_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_EmpleadosCargos_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Eventos_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Eventos_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Eventos_Insert]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Eventos_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_HistorialMedico_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_HistorialMedico_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_HistorialMedico_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Mascotas_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Mascotas_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Mascotas_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Procedencia_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Procedencias_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Procedencias_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Procedencias_Insert]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Procedencias_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Raza_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Razas_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Razas_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Razas_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Refugio_Dropdown]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Refugios_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Refugios_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Refugios_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Solicitudes_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Solicitudes_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Solicitudes_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Vacunas_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Vacunas_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Vacunas_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Voluntarios_Detail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Voluntarios_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Refugio].[PR_Refugio_Voluntarios_List]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Find]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Insert]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[Seguridad].[PR_Seguridad_RegistroEventos_Select]",
+      "ObjectType": 1
+    }
+  ],
+  "UiHint": "DESKTOP-NG\\SQLEXPRESS.PetsHome_V1.6",
+  "UseBoolPropertiesWithoutDefaultSql": false,
+  "UseDatabaseNames": true,
+  "UseDbContextSplitting": true,
+  "UseFluentApiOnly": true,
+  "UseHandleBars": false,
+  "UseHierarchyId": false,
+  "UseInflector": false,
+  "UseLegacyPluralizer": false,
+  "UseManyToManyEntity": false,
+  "UseNoConstructor": false,
+  "UseNoDefaultConstructor": false,
+  "UseNoNavigations": false,
+  "UseNoObjectFilter": false,
+  "UseNodaTime": false,
+  "UseNullableReferences": false,
+  "UseSchemaFolders": true,
+  "UseSpatial": false
 }

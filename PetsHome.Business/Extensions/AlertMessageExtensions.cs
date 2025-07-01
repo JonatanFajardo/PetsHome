@@ -1,12 +1,31 @@
 ﻿namespace PetsHome.Business.Extensions
 {
+    /// <summary>
+    /// Objeto para mostrar mensajes de alerta en la vista
+    /// </summary>
     public class AlertMessageExtensions
     {
-        public AlertMessageExtensions() { }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public AlertMessageExtensions()
+        { }
+
+        /// <summary>
+        /// Propiedad para el texto del mensaje
+        /// </summary>
         public string Text { get; set; }
+
+        /// <summary>
+        /// Propiedad para la clase css del mensaje
+        /// </summary>
         public string CssClass { get; set; }
 
         private AlertMessageType _type;
+
+        /// <summary>
+        /// Propiedad para el tipo de mensaje
+        /// </summary>
         public AlertMessageType Type
         {
             get { return _type; }
@@ -24,7 +43,6 @@
             }
         }
 
-
         public AlertMessageExtensions(string text, AlertMessageType type)
         {
             Text = text;
@@ -38,9 +56,11 @@
         Info = 1,
         Warning = 2,
         Error = 3
-
     }
 
+    /// <summary>
+    /// Mensajes de alerta
+    /// </summary>
     public class AlertMessaje
     {
         public static string Error = "Parece haber ocurrido un problema.";

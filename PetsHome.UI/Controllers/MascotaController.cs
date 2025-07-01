@@ -1,12 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using PetsHome.Common.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -17,6 +15,7 @@ namespace PetsHome.UI.Controllers
         private readonly MascotaService _mascotaService;
         private readonly RefugioService _refugioService;
         private readonly IOptions<MascotaViewModel> _pathFile;
+
         public MascotaController(MascotaService mascotaService,
             RefugioService refugioService,
             IOptions<MascotaViewModel> options)
@@ -24,36 +23,15 @@ namespace PetsHome.UI.Controllers
             _mascotaService = mascotaService;
             _refugioService = refugioService;
             _pathFile = options;
-
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        //[HttpPost("Mascotas/Agregar", Name = "save")]
         public IActionResult Create()
         {
-            //tbMascotas tbMascotas = new tbMascotas() {
-            //    masc_Imagen = "",
-            //    masc_Nombre = "jona",
-            //    raza_Id = 1,
-            //    masc_Edad = 22,
-            //    masc_Sexo = "M",
-            //    masc_Peso = 13,
-            //    masc_Talla = 43,
-            //    masc_Color = "rojo",
-            //    masc_Historia = "su historia",
-            //    refg_Id = 1,
-            //    proc_Id = 1,
-            //    masc_UsuarioCrea = 1
-
-            //};
-
-            //_mascotaRepository.AddAsync(tbMascotas);
-            //ViewBag.raza_Id()
-
-            // Cargamos Dropdown
             var model = new MascotaViewModel();
             var drop = Dropdown(model);
             return View(drop);
@@ -67,7 +45,6 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Find(int id)
         {
-
             if (id != 0)
             {
                 var itemSearched = await _mascotaService.FindAsync(id);
@@ -107,7 +84,6 @@ namespace PetsHome.UI.Controllers
 
         ErrorResult:
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
-
         }
 
         public async Task<IActionResult> Remove(int masc_Id)
@@ -125,33 +101,16 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Cargamos Dropdown
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public MascotaViewModel Dropdown(MascotaViewModel model)
         {
             model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
             return model;
         }
 
-        //public MascotaViewModel RazaDropdown()
-        //{
-        //    MascotaViewModel model = new MascotaViewModel();
-        //    var response = _mascotaRepository.RazaDropdown();
-        //    model.LoadDropDownList(response);
-        //    return model;
-        //}
-
-        //public MascotaViewModel RefugioDropdown()
-        //{
-        //    MascotaViewModel model = new MascotaViewModel();
-        //    var response = _mascotaRepository.RefugioDropdown();
-        //    model.LoadDropDownList(response);
-        //    return model;
-        //}
-        //public MascotaViewModel ProcedenciaDropdown()
-        //{
-        //    MascotaViewModel model = new MascotaViewModel();
-        //    var response = _mascotaRepository.ProcedenciaDropdown();
-        //    model.LoadDropDownList(response);
-        //    return model;
-        //}
     }
 }

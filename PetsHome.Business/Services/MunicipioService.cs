@@ -11,17 +11,27 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona los municipios.
+    /// </summary>
     public class MunicipioService
     {
         private readonly MunicipioRepository _municipioRepository;
         private readonly ILogger<MunicipioService> _logger;
         private readonly IMapper _mapper;
+
         public MunicipioService(MunicipioRepository municipioRepository, ILogger<MunicipioService> logger, IMapper mapper)
         {
             _municipioRepository = municipioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de municipios por el identificador de departamento.
+        /// </summary>
+        /// <param name="id">Identificador del departamento.</param>
+        /// <returns>Una lista de objetos MunicipioViewModel que corresponden a los municipios encontrados.</returns>
         public async Task<List<MunicipioViewModel>> ListIdAsync(int id)
         {
             try
@@ -35,6 +45,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca un municipio por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del municipio.</param>
+        /// <returns>Un objeto DepartamentoViewModel que corresponde al municipio encontrado.</returns>
         public async Task<DepartamentoViewModel> FindAsync(int id)
         {
             try
@@ -48,20 +64,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        //public async Task<MunicipioViewModel> DetailAsync(int id)
-        //{
-        //   try
-        //    {
-        //        IEnumerable<PR_tbMunicipios_DetailResult> mappedResult = await _municipioRepository.DetailAsync(id);
-        //        return _mapper.Map<MunicipioViewModel>(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
 
-        //        throw;
-        //    }
-        //}
-        public async Task<Boolean> AddAsync(MunicipioViewModel model)
+        /// <summary>
+        /// Agrega un nuevo municipio.
+        /// </summary>
+        /// <param name="model">Datos del municipio a agregar.</param>
+        /// <returns>True si el municipio se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(MunicipioViewModel model)
         {
             try
             {
@@ -74,8 +83,13 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
-        public async Task<Boolean> UpdateAsync(MunicipioViewModel model)
+
+        /// <summary>
+        /// Actualiza un municipio existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados del municipio.</param>
+        /// <returns>True si el municipio se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(MunicipioViewModel model)
         {
             try
             {
@@ -88,11 +102,17 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina un municipio por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del municipio a eliminar.</param>
+        /// <returns>True si el municipio se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _municipioRepository.RemoveAsync(id);
+                bool mappedResult = await _municipioRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)
@@ -102,6 +122,10 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene una lista de municipios para su uso en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos MunicipioViewModel para el dropdown.</returns>
         public IEnumerable<MunicipioViewModel> MunicipioDropdown()
         {
             try

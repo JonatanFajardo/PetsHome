@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -14,18 +12,15 @@ namespace PetsHome.UI.Controllers
         private readonly EmpleadoService _EmpleadoService;
         private readonly RefugioService _RefugioService;
 
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-
 
         public EmpleadoController(EmpleadoService EmpleadoService,
                                     RefugioService RefugioService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _EmpleadoService = EmpleadoService;
             _RefugioService = RefugioService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -37,6 +32,7 @@ namespace PetsHome.UI.Controllers
             var drop = Dropdown(model);
             return View(drop);
         }
+
         public async Task<IActionResult> List()
         {
             var itemListing = await _EmpleadoService.ListAsync();
@@ -58,7 +54,6 @@ namespace PetsHome.UI.Controllers
             {
                 var dropdown = Dropdown(itemSearched);
                 return View("Create", dropdown);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -81,11 +76,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(EmpleadoViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
-
             if (!model.isEdit)
             {
                 Boolean createdItem = await _EmpleadoService.AddAsync(model);
@@ -126,14 +119,9 @@ namespace PetsHome.UI.Controllers
 
         public EmpleadoViewModel Dropdown(EmpleadoViewModel model)
         {
-            //MascotaViewModel model = new MascotaViewModel();
             model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
             return model;
         }
-        //public EmpleadoViewModel Dropdown()
-        //{
-        //    EmpleadoViewModel itemListing = _EmpleadoService.RefugioDropdown();
-        //    return itemListing;
-        //}
+
     }
 }
