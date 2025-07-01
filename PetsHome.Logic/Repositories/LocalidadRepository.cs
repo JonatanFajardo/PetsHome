@@ -12,11 +12,13 @@ namespace PetsHome.Logic.Repositories
     public class LocalidadRepository : IGenericRepository<tbDepartamentos>
     {
         #region Consultas
+
         public async Task<IEnumerable<PR_General_Departamentos_ListResult>> ListAsync()
         {
             const string sqlQuery = "[General].[PR_General_Departamentos_List]";
             return await DbApp.Select<PR_General_Departamentos_ListResult>(sqlQuery);
         }
+
         public async Task<PR_General_Departamentos_FindResult> FindAsync(int id)
         {
             const string sqlQuery = "[General].[PR_General_Departamentos_Find]";
@@ -65,18 +67,9 @@ namespace PetsHome.Logic.Repositories
         }
 
         #endregion Consultas
-       
-       
-
-        //public async Task<PR_General_Departamentos_DetailResult> DetailAsync(int id)
-        //{
-        //    const string sqlQuery = "[General].[PR_General_Departamentos_Detail]";
-        //    var parameter = new DynamicParameters();
-        //    parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
-        //    return await DbApp.Detail<PR_General_Departamentos_DetailResult>(sqlQuery, parameter);
-        //}
 
         #region Dropdown
+
         public IEnumerable<PR_General_Departamentos_DropdownResult> DepartamentoDropdown()
         {
             const string sqlQuery = "[General].[PR_General_Departamentos_Dropdown]";

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -11,25 +10,23 @@ namespace PetsHome.UI.Controllers
     public class SolicitudController : BaseController
     {
         private readonly SolicitudService _SolicitudService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
-        
         public SolicitudController(SolicitudService SolicitudService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _SolicitudService = SolicitudService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult Create()
         {
             return View();
         }
+
         public IActionResult Detail()
         {
             return View();
@@ -54,14 +51,11 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _SolicitudService.FindAsync(id);
             if (itemSearched != null)
             {
-                //return View("Create", itemSearched);
                 Detail(id);
-                //return Json(new { item = result, success = true });
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                //return AjaxResult(itemSearched, true);
             }
         }
 
@@ -79,10 +73,8 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
         public async Task<IActionResult> Add(SolicitudViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
 
             if (!model.isEdit)
             {

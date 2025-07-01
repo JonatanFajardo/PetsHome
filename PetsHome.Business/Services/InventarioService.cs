@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona el inventario de productos.
+    /// </summary>
     public class InventarioService
     {
         private readonly InventarioRepository _inventarioRepository;
         private readonly ILogger<InventarioService> _logger;
         private readonly IMapper _mapper;
+
         public InventarioService(InventarioRepository inventarioRepository, ILogger<InventarioService> logger, IMapper mapper)
         {
             _inventarioRepository = inventarioRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de todos los registros del inventario.
+        /// </summary>
+        /// <returns>Una lista de objetos InventarioViewModel.</returns>
         public async Task<List<InventarioViewModel>> ListAsync()
         {
             try
@@ -34,6 +43,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca un registro del inventario por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del registro del inventario.</param>
+        /// <returns>Un objeto InventarioViewModel que corresponde al registro encontrado.</returns>
         public async Task<InventarioViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de un registro del inventario por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del registro del inventario.</param>
+        /// <returns>Un objeto InventarioViewModel que contiene los detalles del registro del inventario.</returns>
         public async Task<InventarioViewModel> DetailAsync(int id)
         {
             try
@@ -60,7 +81,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<Boolean> AddAsync(InventarioViewModel model)
+
+        /// <summary>
+        /// Agrega un nuevo registro al inventario.
+        /// </summary>
+        /// <param name="model">Datos del registro del inventario a agregar.</param>
+        /// <returns>True si el registro del inventario se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(InventarioViewModel model)
         {
             try
             {
@@ -74,7 +101,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(InventarioViewModel model)
+        /// <summary>
+        /// Actualiza un registro existente del inventario.
+        /// </summary>
+        /// <param name="model">Datos actualizados del registro del inventario.</param>
+        /// <returns>True si el registro del inventario se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(InventarioViewModel model)
         {
             try
             {
@@ -87,11 +119,17 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina un registro del inventario por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del registro del inventario a eliminar.</param>
+        /// <returns>True si el registro del inventario se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _inventarioRepository.RemoveAsync(id);
+                bool mappedResult = await _inventarioRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)

@@ -17,7 +17,6 @@ namespace PetsHome.Business.Helpers
         public static string Path { set => _path = value; }
         public static string FolderName { set => _folderName = value; }
 
-
         /// <summary>
         /// Crea un nuevo folder en la ruta especificada.
         /// </summary>
@@ -28,19 +27,6 @@ namespace PetsHome.Business.Helpers
         /// 1 No pudo crearse.
         /// 2 Ya existe.
         /// </returns>
-        //public static int Folder(string path)
-        //{
-        //    if (!Directory.Exists(path))
-        //    {
-        //        Directory.CreateDirectory(path);
-        //        return 0;
-        //    }
-        //    else
-        //    {
-        //        return 2;
-        //    }
-        //}
-
         /// <summary>
         /// Limpia las propiedades.
         /// </summary>
@@ -52,6 +38,7 @@ namespace PetsHome.Business.Helpers
             _path = "";
             _folderName = "";
         }
+
         /// <summary>
         /// Crea un nuevo folder en la ruta especificada.
         /// </summary>
@@ -98,7 +85,7 @@ namespace PetsHome.Business.Helpers
         public static int File(string name, string extension, string writer = "")
         {
             string path = $"{_path}/{_folderName}";
-            StreamWriter streamWriter = new StreamWriter($"{path}/{name}.{extension}", true);//EL parametro encoding nos permite evitar sobre escribir en todo el archivo.
+            StreamWriter streamWriter = new StreamWriter($"{path}/{name}.{extension}", true);
             if (writer != "")
             {
                 streamWriter.Write(writer);
@@ -107,7 +94,6 @@ namespace PetsHome.Business.Helpers
             streamWriter.Close();
             return 0;
         }
-
 
         /// <summary>
         /// Crea una imagen.
@@ -132,29 +118,28 @@ namespace PetsHome.Business.Helpers
                 {
                     using (var img = SixLabors.ImageSharp.Image.Load(imagenStream))
                     {
-                        // Configuramos tamaño de la imagen
                         img.Mutate(x => x.Resize(new ResizeOptions
                         {
                             Mode = ResizeMode.Min,
                             Size = new SixLabors.ImageSharp.Size(width: 500, height: 500)
                         }));
 
-                        //  Obtenemos el nombre del archivo el cual contiene la extension, luego se obtiene solamente la extension con el {Path.GetExtension}
                         newExtension = System.IO.Path.GetExtension(file.FileName);
-                        //  ruta en la que se guardara la imagen.
                         string ruta = $"{path}/{name}{newExtension}";
-                        // Guarda y codifica la imagen segun la extension recibida.
                         switch (newExtension)
                         {
                             case ".png":
                                 img.Save(ruta, new PngEncoder());
                                 break;
+
                             case ".jpg":
                                 img.Save(ruta, new JpegEncoder { Quality = 70 });
                                 break;
+
                             case ".jpeg":
                                 img.Save(ruta, new JpegEncoder { Quality = 70 });
                                 break;
+
                             case ".gif":
                                 img.Save(ruta, new GifEncoder());
                                 break;
@@ -162,11 +147,6 @@ namespace PetsHome.Business.Helpers
 
                         return newDirection = $"{path}\\{name}{newExtension}";
                     }
-                    //Jpeg.
-                    //Png.
-                    //Bmp.
-                    //Gif.
-                    //Tga.
                 }
             }
             catch (Exception error)
@@ -176,16 +156,12 @@ namespace PetsHome.Business.Helpers
             }
         }
 
-
-
-
         public enum Extension
         {
             png,
             jpgandjpeg,
             gif
         }
-
 
         /// <summary>
         /// Elimina un archivo en la ruta especificada.

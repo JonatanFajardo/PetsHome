@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -12,17 +11,12 @@ namespace PetsHome.UI.Controllers
     {
         private readonly EventoService _EventoService;
         private readonly RefugioService _RefugioService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-
-
         public EventoController(EventoService eventoService,
                                 RefugioService refugioService
-        //                      IHttpContextAccessor httpContextAccessor
             )
         {
             _EventoService = eventoService;
             _RefugioService = refugioService;
-            //  _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -36,6 +30,7 @@ namespace PetsHome.UI.Controllers
             var drop = Dropdown(model);
             return View(drop);
         }
+
         public async Task<IActionResult> List()
         {
             var itemListing = await _EventoService.ListAsync();
@@ -57,7 +52,6 @@ namespace PetsHome.UI.Controllers
             {
                 var dropdown = Dropdown(itemSearched);
                 return View("Create", dropdown);
-                //return Json(new { item = result, success = true });
             }
             else
             {
@@ -80,11 +74,9 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        //[SessionManager("")]
+
         public async Task<IActionResult> Add(EventoViewModel model)
         {
-            //string pantallas = _httpContextAccessor.HttpContext.Session.GetString("pantallas");
-
             if (!model.isEdit)
             {
                 Boolean createdItem = await _EventoService.AddAsync(model);
@@ -106,7 +98,6 @@ namespace PetsHome.UI.Controllers
 
         ErrorResult:
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
-
         }
 
         public async Task<IActionResult> Remove(int eve_Id)

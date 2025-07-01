@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PetsHome.Business.Data
 {
+    /// <summary>
+    /// Clase que contiene los datos de los dropdownlist
+    /// </summary>
     public class Dropdownlist
     {
         /// <summary>
@@ -17,9 +20,5 @@ namespace PetsHome.Business.Data
             };
             return lista;
         }
-
     }
-
-
-
 }

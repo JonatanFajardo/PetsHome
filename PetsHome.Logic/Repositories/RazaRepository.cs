@@ -25,6 +25,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Find<PR_Refugio_Razas_FindResult>(sqlQuery, parameter);
         }
+
         public async Task<PR_Refugio_Razas_DetailResult> DetailAsync(int id)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Razas_Detail]";

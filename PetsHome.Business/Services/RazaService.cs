@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
+    /// <summary>
+    /// Servicio que gestiona las razas.
+    /// </summary>
     public class RazaService
     {
         private readonly ILogger<RazaService> _logger;
         private readonly IMapper _mapper;
         private readonly RazaRepository _razaRepository;
+
         public RazaService(RazaRepository razaRepository, ILogger<RazaService> logger, IMapper mapper)
         {
             _razaRepository = razaRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Obtiene una lista de razas.
+        /// </summary>
+        /// <returns>Una lista de objetos RazaViewModel que corresponden a las razas encontradas.</returns>
         public async Task<List<RazaViewModel>> ListAsync()
         {
             try
@@ -34,6 +43,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Busca una raza por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la raza.</param>
+        /// <returns>Un objeto RazaViewModel que corresponde a la raza encontrada.</returns>
         public async Task<RazaViewModel> FindAsync(int id)
         {
             try
@@ -47,6 +62,12 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Obtiene los detalles de una raza por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la raza.</param>
+        /// <returns>Un objeto RazaViewModel que contiene los detalles de la raza encontrada.</returns>
         public async Task<RazaViewModel> DetailAsync(int id)
         {
             try
@@ -60,7 +81,13 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
-        public async Task<Boolean> AddAsync(RazaViewModel model)
+
+        /// <summary>
+        /// Agrega una nueva raza.
+        /// </summary>
+        /// <param name="model">Datos de la raza a agregar.</param>
+        /// <returns>True si la raza se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(RazaViewModel model)
         {
             try
             {
@@ -73,8 +100,13 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-            
-        public async Task<Boolean> UpdateAsync(RazaViewModel model)
+
+        /// <summary>
+        /// Actualiza una raza existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados de la raza.</param>
+        /// <returns>True si la raza se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(RazaViewModel model)
         {
             try
             {
@@ -87,7 +119,13 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
-        public async Task<Boolean> RemoveAsync(int id)
+
+        /// <summary>
+        /// Elimina una raza por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador de la raza a eliminar.</param>
+        /// <returns>True si la raza se eliminó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
