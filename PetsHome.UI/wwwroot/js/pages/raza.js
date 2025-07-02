@@ -11,7 +11,7 @@
             //    "raza_Id",
             //    "raza_Descripcion"
             //];
-
+            console.log(Direction.listUrl)
             header = [
                 { FieldName: "raza_Id", Size: 200 },
                 { FieldName: "raza_Descripcion" }

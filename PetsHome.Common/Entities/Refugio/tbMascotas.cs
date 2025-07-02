@@ -9,7 +9,7 @@ namespace PetsHome.Common.Entities
     {
         public tbMascotas()
         {
-            tbHistorialMedico = new HashSet<tbHistorialMedico>();
+            tbHistorialMedico = new HashSet<tbCitaMedica>();
             tbSolicitudes = new HashSet<tbSolicitudes>();
         }
 
@@ -54,7 +54,7 @@ namespace PetsHome.Common.Entities
         public virtual tbProcedencias proc { get; set; }
         public virtual tbRazas raza { get; set; }
         public virtual tbRefugios refg { get; set; }
-        public virtual ICollection<tbHistorialMedico> tbHistorialMedico { get; set; }
+        public virtual ICollection<tbCitaMedica> tbHistorialMedico { get; set; }
         public virtual ICollection<tbSolicitudes> tbSolicitudes { get; set; }
     }
 }

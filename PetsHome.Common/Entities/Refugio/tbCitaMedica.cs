@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace PetsHome.Common.Entities
 {
-    public partial class tbHistorialMedico
+    public partial class tbCitaMedica
     {
-        public tbHistorialMedico()
+        public tbCitaMedica()
         {
             tbHistorialMedico_tbVacunas = new HashSet<tbHistorialMedico_tbVacunas>();
         }

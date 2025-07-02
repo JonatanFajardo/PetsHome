@@ -9,7 +9,7 @@ namespace PetsHome.Common.Entities
     {
         public tbComportamientos()
         {
-            tbHistorialMedico = new HashSet<tbHistorialMedico>();
+            tbHistorialMedico = new HashSet<tbCitaMedica>();
         }
 
         public int com_Id { get; set; }
@@ -20,6 +20,6 @@ namespace PetsHome.Common.Entities
         public int? com_UsuarioModifica { get; set; }
         public DateTime? com_FechaModifica { get; set; }
 
-        public virtual ICollection<tbHistorialMedico> tbHistorialMedico { get; set; }
+        public virtual ICollection<tbCitaMedica> tbHistorialMedico { get; set; }
     }
 }

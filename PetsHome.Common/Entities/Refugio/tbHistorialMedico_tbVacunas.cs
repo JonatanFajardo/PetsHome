@@ -10,7 +10,7 @@ namespace PetsHome.Common.Entities
         public int medic_Id { get; set; }
         public int vac_Id { get; set; }
 
-        public virtual tbHistorialMedico medic { get; set; }
+        public virtual tbCitaMedica medic { get; set; }
         public virtual tbVacunas vac { get; set; }
     }
 }

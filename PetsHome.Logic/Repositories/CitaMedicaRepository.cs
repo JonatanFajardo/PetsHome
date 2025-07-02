@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace PetsHome.Logic.Repositories
 {
-    public class HistorialMedicoRepository : IGenericRepository<tbHistorialMedico>
+    public class CitaMedicaRepository : IGenericRepository<tbCitaMedica>
     {
-        public async Task<IEnumerable<PR_Refugio_HistorialMedico_ListResult>> ListAsync()
+        public async Task<IEnumerable<PR_Refugio_CitaMedica_ListResult>> ListAsyncs()
         {
-            const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_List]";
-            return await DbApp.Select<PR_Refugio_HistorialMedico_ListResult>(sqlQuery);
+            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_List]";
+            return await DbApp.Select<PR_Refugio_CitaMedica_ListResult>(sqlQuery);
         }
 
         public async Task<PR_Refugio_HistorialMedico_FindResult> FindAsync(int id)
@@ -33,7 +33,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Refugio_HistorialMedico_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbHistorialMedico entity)
+        public async Task<Boolean> AddAsync(tbCitaMedica entity)
         {
             entity.medic_UsuarioCrea = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Insert]";
@@ -47,7 +47,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbHistorialMedico entity)
+        public async Task<Boolean> EditAsync(tbCitaMedica entity)
         {
             entity.medic_UsuarioModifica = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Update]";

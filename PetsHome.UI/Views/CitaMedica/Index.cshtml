@@ -1,4 +1,4 @@
-﻿@model HistorialMedicoViewModel
+﻿@model CitaMedicaViewModel
 @{
     ViewData["Title"] = "HistorialMedico";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -16,21 +16,24 @@
                     <thead class="text-center bg-primary text-white">
                         <tr>
                             <th>Id</th>
-                            <th>mascota</th>
-                            <th>Esterilizacion</th>
-                            <th>comportamiento</th>
-                            <th>Salud Cuidado</th>
-                            <th>Informacion Adicional</th>
+                            <th>Mascota</th>
                             <th>Acciones</th>
+                            @* 
+                            <th>Fecha Consulta</th>
+                            <th>Tipo Consulta</th>
+                            <th>Diagnóstico</th>
+                            <th>Peso</th>
+                            <th>Temperatura</th>
+                            <th>Próxima Cita</th>
+                            <th>Acciones</th> *@
                         </tr>
                     </thead>
                 </table>
-
             </div>
         </div>
     </div>
 </div>
-
+@* 
 <!-- Modal Delete-->
 <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -63,16 +66,16 @@
             </form>
         </div>
     </div>
-</div>
+</div> *@
 <!-- Fin Modal -->
 @section Scripts {
-<script src="~/js/pages/historial-medico.js"></script>
+    <script src="~/js/pages/cita-medica.js"></script>
 <script>
-    HistorialMedico.datatable({
+        CitaMedica.datatable({
         urlList: "@Url.Action("List")",
-        urlDetail: "@Url.Action("Detail")",
-        urlInsert: "@Url.Action("Create")",
-        urlUpdate: "@Url.Action("Find")"
+        // urlDetail: "@Url.Action("Detail")",
+        // urlInsert: "@Url.Action("Create")",
+        // urlUpdate: "@Url.Action("Find")"
     });
 
 </script>

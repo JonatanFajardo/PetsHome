@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="Views\CitaMedica\Create.cshtml" />
+    <Content Remove="Views\CitaMedica\Detail.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

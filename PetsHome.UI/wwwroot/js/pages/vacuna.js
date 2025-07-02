@@ -2,7 +2,7 @@ var Vacuna = (function () {
 
     var obj = {};
 
-    obj.datatable = function (Direction) {
+    obj.datatableCatalogs = function (Direction) {
         $(function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad

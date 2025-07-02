@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    public class HistorialMedicoController : BaseController
+    public class CitaMedicaController : BaseController
     {
-        private readonly HistorialMedicoService _HistorialMedicoService;
-        public HistorialMedicoController(HistorialMedicoService HistorialMedicoService
+        private readonly CitaMedicaService _HistorialMedicoService;
+        public CitaMedicaController(CitaMedicaService HistorialMedicoService
             )
         {
             _HistorialMedicoService = HistorialMedicoService;
@@ -68,7 +68,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(HistorialMedicoViewModel model)
+        public async Task<IActionResult> Add(CitaMedicaViewModel model)
         {
 
 

@@ -13,13 +13,13 @@ namespace PetsHome.Business.Services
     /// <summary>
     /// Servicio que gestiona el historial médico de las mascotas.
     /// </summary>
-    public class HistorialMedicoService
+    public class CitaMedicaService
     {
-        private readonly HistorialMedicoRepository _historialmedicoRepository;
-        private readonly ILogger<HistorialMedicoService> _logger;
+        private readonly CitaMedicaRepository _historialmedicoRepository;
+        private readonly ILogger<CitaMedicaService> _logger;
         private readonly IMapper _mapper;
 
-        public HistorialMedicoService(HistorialMedicoRepository historialmedicoRepository, ILogger<HistorialMedicoService> logger, IMapper mapper)
+        public CitaMedicaService(CitaMedicaRepository historialmedicoRepository, ILogger<CitaMedicaService> logger, IMapper mapper)
         {
             _historialmedicoRepository = historialmedicoRepository;
             _logger = logger;
@@ -30,12 +30,12 @@ namespace PetsHome.Business.Services
         /// Obtiene una lista de todos los registros del historial médico.
         /// </summary>
         /// <returns>Una lista de objetos HistorialMedicoViewModel.</returns>
-        public async Task<List<HistorialMedicoViewModel>> ListAsync()
+        public async Task<List<CitaMedicaViewModel>> ListAsync()
         {
             try
             {
-                IEnumerable<PR_Refugio_HistorialMedico_ListResult> mappedResult = await _historialmedicoRepository.ListAsync();
-                return _mapper.Map<List<HistorialMedicoViewModel>>(mappedResult.ToList());
+                IEnumerable<PR_Refugio_CitaMedica_ListResult> mappedResult = await _historialmedicoRepository.ListAsyncs();
+                return _mapper.Map<List<CitaMedicaViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -49,12 +49,12 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="id">Identificador del registro del historial médico.</param>
         /// <returns>Un objeto HistorialMedicoViewModel que corresponde al registro encontrado.</returns>
-        public async Task<HistorialMedicoViewModel> FindAsync(int id)
+        public async Task<CitaMedicaViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_HistorialMedico_FindResult mappedResult = await _historialmedicoRepository.FindAsync(id);
-                return _mapper.Map<HistorialMedicoViewModel>(mappedResult);
+                return _mapper.Map<CitaMedicaViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -68,12 +68,12 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="id">Identificador del registro del historial médico.</param>
         /// <returns>Un objeto HistorialMedicoViewModel que contiene los detalles del registro del historial médico.</returns>
-        public async Task<HistorialMedicoViewModel> DetailAsync(int id)
+        public async Task<CitaMedicaViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_HistorialMedico_DetailResult mappedResult = await _historialmedicoRepository.DetailAsync(id);
-                return _mapper.Map<HistorialMedicoViewModel>(mappedResult);
+                return _mapper.Map<CitaMedicaViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -87,11 +87,11 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos del registro del historial médico a agregar.</param>
         /// <returns>True si el registro del historial médico se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(HistorialMedicoViewModel model)
+        public async Task<bool> AddAsync(CitaMedicaViewModel model)
         {
             try
             {
-                tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
+                tbCitaMedica mappedResult = _mapper.Map<tbCitaMedica>(model);
                 return await _historialmedicoRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -106,11 +106,11 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados del registro del historial médico.</param>
         /// <returns>True si el registro del historial médico se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(HistorialMedicoViewModel model)
+        public async Task<bool> UpdateAsync(CitaMedicaViewModel model)
         {
             try
             {
-                tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
+                tbCitaMedica mappedResult = _mapper.Map<tbCitaMedica>(model);
                 return await _historialmedicoRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

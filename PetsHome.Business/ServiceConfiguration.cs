@@ -31,7 +31,7 @@ namespace PetsHome.Business
             services.AddScoped<EmpleadosCargoRepository>();
             services.AddScoped<EventoRepository>();
             services.AddScoped<AdopcionRepository>();
-            services.AddScoped<HistorialMedicoRepository>();
+            services.AddScoped<CitaMedicaRepository>();
             services.AddScoped<MascotaRepository>();
             services.AddScoped<ProcedenciaRepository>();
             services.AddScoped<RazaRepository>();
@@ -66,7 +66,7 @@ namespace PetsHome.Business
             services.AddScoped<EmpleadosCargoService>();
             services.AddScoped<EventoService>();
             services.AddScoped<AdopcionService>();
-            services.AddScoped<HistorialMedicoService>();
+            services.AddScoped<CitaMedicaService>();
             services.AddScoped<MascotaService>();
             services.AddScoped<ProcedenciaService>();
             services.AddScoped<RazaService>();

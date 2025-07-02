@@ -6,6 +6,7 @@ var Mascota = (function () {
         $(function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
+            console.log(Direction.listUrl)
             header = [
                 { FieldName: 'masc_Id', Visibility: true },
                 { FieldName: 'masc_Fila', Size: 200, Visibility: true },
