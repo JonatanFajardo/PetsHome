@@ -7,6 +7,11 @@
     <title>@ViewBag.Title - PetsHome</title>
     <meta content="template" name="description" />
 
+    @*CDN FONTAWESOME*@
+    @*https://cdnjs.com/libraries/font-awesome*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/regular.min.css" integrity="sha512-YoxvmIzlVlt4nYJ6QwBqDzFc+2aXL7yQwkAuscf2ZAg7daNQxlgQHV+LLRHnRXFWPHRvXhJuBBjQqHAqRFkcVw==" crossorigin="anonymous" referrerpolicy="no-referrer" />*@
+
     <!--Font Awesome styles -->
    @* <link href="~/plugins/fontawesome-free-6.1.0-web/css/fontawesome.css" rel="stylesheet">
     <link href="~/plugins/fontawesome-free-6.1.0-web/css/brands.css" rel="stylesheet">
@@ -40,14 +45,10 @@
     <link href="~/assets/css/plugins.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link href="~/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
-    <link href="~/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+   @*  <link href="~/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" /> *@
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
-    @*CDN FONTAWESOME*@
-    @*https://cdnjs.com/libraries/font-awesome*@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/regular.min.css" integrity="sha512-YoxvmIzlVlt4nYJ6QwBqDzFc+2aXL7yQwkAuscf2ZAg7daNQxlgQHV+LLRHnRXFWPHRvXhJuBBjQqHAqRFkcVw==" crossorigin="anonymous" referrerpolicy="no-referrer" />*@
 
     <!-- App Css-->
     @RenderSection("styles", required: false)
@@ -119,8 +120,8 @@
     <script src="~/assets/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    <script src="~/plugins/apex/apexcharts.min.js"></script>
-    <script src="~/assets/js/dashboard/dash_1.js"></script>
+    @* <script src="~/plugins/apex/apexcharts.min.js"></script> *@
+    @* <script src="~/assets/js/dashboard/dash_1.js"></script> *@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @*<script src="~/js/bootstrap.bundle.min.js"></script>*@
     @*<script src="~/js/jquery.min.js"></script>

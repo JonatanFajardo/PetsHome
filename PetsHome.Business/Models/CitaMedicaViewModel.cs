@@ -21,7 +21,9 @@ namespace PetsHome.Business.Models
         [Display(Name = "Id Mascota ")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int masc_Id { get; set; }
-         
+
+        public string mascota { get; set; }
+
 
         /// <summary>
         /// Obtiene o establece el ID del comportamiento.
@@ -29,6 +31,9 @@ namespace PetsHome.Business.Models
         [Display(Name = "Comportamiento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int com_Id { get; set; }
+
+        public string comportamiento { get; set; }
+
 
         /// <summary>
         /// Obtiene o establece la fecha de la consulta médica.
@@ -42,7 +47,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Tipo de consulta")]
         [StringLength(255)]
-        public string medic_TipoConsulta { get; set; }
+        public string TipoConsulta { get; set; }
 
         /// <summary>
         /// Obtiene o establece el motivo de la consulta médica.
@@ -91,6 +96,9 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Vacuna")]
         public int? vac_Id { get; set; }
+
+        public string vacuna { get; set; }
+
 
         /// <summary>
         /// Obtiene o establece los medicamentos recetados.
@@ -168,9 +176,7 @@ namespace PetsHome.Business.Models
         public DateTime? medic_FechaModifica { get; set; }
 
         // Propiedades adicionales para mostrar información relacionada
-        public string Mascota { get; set; }
-        public string Comportamiento { get; set; }
-        public string Vacuna { get; set; }
+       
 
         /// <summary>
         /// Indica si el formulario se está editando.
