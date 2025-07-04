@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PetsHome.Business.Models;
-using PetsHome.Common.Entities;
+using PetsHome.Common.Entities; 
 
 namespace PetsHome.Business.Extensions
 {
@@ -56,6 +56,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Mascotas_DetailResult, MascotaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Mascotas_FindResult, MascotaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Mascotas_ListResult, MascotaViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Mascotas_DropdownResult, MascotaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencia_DropdownResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_DetailResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_FindResult, ProcedenciaViewModel>().ReverseMap();

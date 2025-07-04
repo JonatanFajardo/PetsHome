@@ -22,13 +22,13 @@ var CitaMedica = (function () {
                 // Configuración de headers
                 var header = [
                     //{ FieldName: "medic_Id" },
-                    //{ FieldName: "mascota" },
-                    //{ FieldName: "fechaConsulta"}
-                    { FieldName: "medic_tipoConsulta"},
-                    //{ FieldName: "diagnostico"},
-                    //{ FieldName: "peso"},
-                    //{ FieldName: "temperatura"},
-                    //{ FieldName: "proximaCita"},
+                    { FieldName: "masc_Nombre" },
+                    { FieldName: "medic_FechaConsulta"},
+                    { FieldName: "medic_TipoConsulta"},
+                    { FieldName: "medic_Diagnostico"},
+                    { FieldName: "medic_Peso"},
+                    { FieldName: "medic_Temperatura"},
+                    { FieldName: "medic_ProximaCita"},
                 ];
 
                 // Validar que header tenga elementos

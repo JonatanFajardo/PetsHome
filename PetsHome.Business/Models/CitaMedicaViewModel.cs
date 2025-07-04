@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace PetsHome.Business.Models
 {
@@ -22,7 +25,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int masc_Id { get; set; }
 
-        public string mascota { get; set; }
+        public string masc_Nombre { get; set; }
 
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Tipo de consulta")]
         [StringLength(255)]
-        public string TipoConsulta { get; set; }
+        public string medic_TipoConsulta { get; set; }
 
         /// <summary>
         /// Obtiene o establece el motivo de la consulta médica.
@@ -176,7 +179,18 @@ namespace PetsHome.Business.Models
         public DateTime? medic_FechaModifica { get; set; }
 
         // Propiedades adicionales para mostrar información relacionada
-       
+        //public List<SelectListItem> MascotaList { get; set; } = new List<SelectListItem>();
+        public SelectList MascotaList { get; set; }
+
+        /// <summary>
+        /// Carga los elementos de las listas desplegables.
+        /// </summary>
+        /// <param name="refugioDropdownResults">Resultados de la lista desplegable de refugios.</param>
+        /// <param name="empleadoCargoDropdownResults">Resultados de la lista desplegable de cargos de empleados.</param>
+        public void LoadDropDownList(IEnumerable<MascotaViewModel> mascotaViewModelsTask)
+        {
+            MascotaList = new SelectList(mascotaViewModelsTask, "masc_Id", "masc_Nombre");
+        }
 
         /// <summary>
         /// Indica si el formulario se está editando.

@@ -7,6 +7,7 @@ using PetsHome.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.Logic.Repositories
@@ -109,7 +110,15 @@ namespace PetsHome.Logic.Repositories
                 return result;
             }
         }
-
+        public List<PR_Refugio_Mascotas_DropdownResult> MascotasDropdown()
+        {
+            const string query = "[Refugio].[PR_Refugio_Mascotas_Dropdown]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = db.Query<PR_Refugio_Mascotas_DropdownResult>(query, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
         #endregion Dropdown
     }
 }

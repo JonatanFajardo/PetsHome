@@ -2,7 +2,11 @@
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.Common.Entities;
+using PetsHome.Logic.Repositories;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -10,10 +14,13 @@ namespace PetsHome.UI.Controllers
     public class CitaMedicaController : BaseController
     {
         private readonly CitaMedicaService _HistorialMedicoService;
-        public CitaMedicaController(CitaMedicaService HistorialMedicoService
-            )
+        private readonly MascotaService _mascotaService;
+     
+
+        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService)
         {
-            _HistorialMedicoService = HistorialMedicoService;
+            _HistorialMedicoService = historialMedicoService;
+            _mascotaService = mascotaService;
         }
 
         public IActionResult Index()
@@ -23,7 +30,13 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Create()
         {
+            var model = new CitaMedicaViewModel();
+
+            //var drop = Dropdown(model);
+            // Asegúrate de que el ViewBag tenga los datos de refugios
+            //ViewBag.RefugiosList = drop.MascotaList; // O como se llame tu propiedad
             return View();
+             
         }
 
         public async Task<IActionResult> List()
@@ -91,8 +104,8 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-        ErrorResult:
-            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
+            ErrorResult:
+                return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
         public async Task<IActionResult> Remove(int medic_Id)
@@ -109,5 +122,16 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public List<PR_Refugio_Mascotas_DropdownResult> Dropdown()
+        {
+            var mascotaList = _HistorialMedicoService.MascotaDropdown();
+            //model.LoadDropDownList(mascotaList);
+            return mascotaList.ToList();
+        }
+
+
+
+
     }
 }

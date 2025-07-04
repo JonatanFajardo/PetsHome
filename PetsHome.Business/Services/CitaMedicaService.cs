@@ -16,12 +16,16 @@ namespace PetsHome.Business.Services
     public class CitaMedicaService
     {
         private readonly CitaMedicaRepository _historialmedicoRepository;
+        private readonly MascotaRepository _mascotaRepository;
         private readonly ILogger<CitaMedicaService> _logger;
         private readonly IMapper _mapper;
 
-        public CitaMedicaService(CitaMedicaRepository historialmedicoRepository, ILogger<CitaMedicaService> logger, IMapper mapper)
+        public CitaMedicaService(CitaMedicaRepository historialmedicoRepository,
+            MascotaRepository mascotaRepository,
+            ILogger<CitaMedicaService> logger, IMapper mapper)
         {
             _historialmedicoRepository = historialmedicoRepository;
+            _mascotaRepository = mascotaRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -136,6 +140,20 @@ namespace PetsHome.Business.Services
             {
                 _logger.LogError(error, error.Message);
                 return true;
+            }
+        }
+
+        public List<PR_Refugio_Mascotas_DropdownResult> MascotaDropdown()
+        {
+            try
+            {
+                List<PR_Refugio_Mascotas_DropdownResult> mappedResult = _mascotaRepository.MascotasDropdown();
+                return mappedResult.ToList();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
             }
         }
     }

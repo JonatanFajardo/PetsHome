@@ -19,7 +19,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Mascota.
         /// </summary>
-        public string medic_Mascota { get; set; }
+        public string masc_Nombre { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Comportamiento.

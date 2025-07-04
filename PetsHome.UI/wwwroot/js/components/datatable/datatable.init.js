@@ -103,7 +103,7 @@ var datatable = (function () {
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
     obj.init = function (DirectionUrls, header) {
-
+        console.log("Direccion completa de la url list:" + DirectionUrls.urlList)
         $(function () { 
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
@@ -267,18 +267,15 @@ var datatable = (function () {
                         beforeSend: function (xhr) {
                             DataTableProgress.show('datatable', '#myTableContainer');
                             DataTableProgress.update('ajax_send', 'Iniciando petición AJAX...');
-
-
                             console.log('Enviando petición AJAX...');
                         },
+
                         dataSrc: function (json) {
                             // AJAX response received
                             DataTableProgress.update('ajax_response', 'Datos recibidos del servidor.');
-                            return json.data; 
-                        }, error: function (xhr, error, thrown) {
-                            // Handle errors
-                            DataTableProgress.error('Error de Carga', 'Hubo un problema al cargar los datos.', { xhr: xhr, error: thrown }); // Simplified error object for display
+                            return json.data;
                         },
+
                         success: function (response, textStatus, jqXHR) {
                             try {
                                 DataTableProgress.update('ajax_response', 'Respuesta recibida del servidor', {
@@ -308,6 +305,7 @@ var datatable = (function () {
 
                             } catch (processError) {
                                 console.error('Error procesando respuesta:', processError);
+                                console.error('Stack trace:', processError.stack); // Línea agregada para ver el stack trace
 
                                 DataTableProgress.error('Error al procesar datos', processError.message);
 
@@ -325,9 +323,12 @@ var datatable = (function () {
                             console.error('Status:', textStatus);
                             console.error('Error:', errorThrown);
                             console.error('Status Code:', jqXHR.status);
+                            console.error('Response Text:', jqXHR.responseText); // Línea agregada para ver la respuesta completa
+                            console.error('Response Headers:', jqXHR.getAllResponseHeaders()); // Línea agregada para ver headers
 
                             var errorMessage = 'Error desconocido';
                             var errorDetails = `Status: ${textStatus}\nCódigo: ${jqXHR.status}\nError: ${errorThrown}`;
+
 
                             // Determinar mensaje de error
                             switch (textStatus) {
@@ -362,6 +363,7 @@ var datatable = (function () {
                                     errorMessage = `Error: ${textStatus}`;
                             }
 
+                            // Mostrar error más detallado
                             DataTableProgress.error(errorMessage, errorDetails);
 
                             callback({
@@ -374,6 +376,7 @@ var datatable = (function () {
 
                         complete: function (jqXHR, textStatus) {
                             console.log('Petición AJAX completada:', textStatus);
+                            console.log('Status final:', jqXHR.status);
                         }
                     });
                 },

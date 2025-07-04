@@ -6,11 +6,7 @@
 
 <head>
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
+     
         .card {
             background-color: #ffffff;
             border: none;
@@ -54,61 +50,11 @@
             overflow: hidden;
         }
         
-        .header-vitals::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-        }
-        
-        /* .header-treatment {
-            background: linear-gradient(135deg, #3742fa 0%, #2f3542 100%);
-            position: relative;
-            overflow: hidden;
-        } */
-        
-        .header-treatment::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 25% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 60% 60%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-        }
-        
-       /*  .header-appointment {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-            position: relative;
-            overflow: hidden;
-        } */
-        
-        .header-appointment::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 35% 65%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 65% 35%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-        }
         
         .card-header h3,
         .card-header i {
             position: relative;
-            z-index: 1;
+            /* z-index: 100; */
         }
         
         .form-control {
@@ -167,6 +113,190 @@
         .container {
             max-width: 1200px;
         }
+
+
+
+
+
+        /* Estilos para el dropdown searchable de mascotas */
+        .searchable-dropdown {
+            position: relative;
+            z-index: 1000;
+        }
+
+            .searchable-dropdown .original-select {
+                display: none; /* Ocultar el select original */
+            }
+
+            .searchable-dropdown .input-group {
+                position: relative;
+            }
+
+            .searchable-dropdown .searchable-input {
+                cursor: pointer;
+                background-color: #fff;
+            }
+
+                .searchable-dropdown .searchable-input:focus {
+                    cursor: text;
+                }
+
+                .searchable-dropdown .searchable-input[readonly] {
+                    cursor: pointer;
+                    background-color: #f8f9fa;
+                }
+
+            .searchable-dropdown .dropdown-toggle-btn {
+                border-left: 0;
+                background-color: #fff;
+                border-color: #ced4da;
+            }
+
+                .searchable-dropdown .dropdown-toggle-btn:hover {
+                    background-color: #f8f9fa;
+                }
+
+                .searchable-dropdown .dropdown-toggle-btn:focus {
+                    box-shadow: none;
+                }
+
+            .searchable-dropdown .clear-selection {
+                position: absolute;
+                right: 60px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: #6c757d;
+                /* z-index: 10; */
+                padding: 5px;
+                border-radius: 3px;
+            }
+
+                .searchable-dropdown .clear-selection:hover {
+                    color: #dc3545;
+                    background-color: #f8f9fa;
+                }
+
+            .searchable-dropdown .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                 z-index: 9999;
+                display: none;
+                max-height: 300px;
+                overflow-y: auto;
+                border: 1px solid #ced4da;
+                border-radius: 0.25rem;
+                background-color: #fff;
+                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            }
+
+                .searchable-dropdown .dropdown-menu.show {
+                    display: block;
+                }
+
+            .searchable-dropdown .dropdown-item {
+                display: flex;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                border: none;
+                background-color: transparent;
+                width: 100%;
+                text-align: left;
+            }
+
+                .searchable-dropdown .dropdown-item:hover {
+                    background-color: #f8f9fa;
+                }
+
+                .searchable-dropdown .dropdown-item:focus,
+                .searchable-dropdown .dropdown-item:active {
+                    background-color: #e9ecef;
+                }
+
+                .searchable-dropdown .dropdown-item .mascota-nombre {
+                    font-weight: 500;
+                    color: #333;
+                }
+
+                .searchable-dropdown .dropdown-item .text-muted {
+                    font-size: 0.875rem;
+                    margin-left: 0.25rem;
+                }
+
+            .searchable-dropdown .dropdown-item-text {
+                padding: 0.5rem 1rem;
+                margin: 0;
+                color: #6c757d;
+                font-size: 0.875rem;
+            }
+
+            /* Animaciones */
+            .searchable-dropdown .dropdown-menu {
+                transition: opacity 0.2s ease-in-out;
+            }
+
+            .searchable-dropdown .dropdown-toggle-btn i {
+                transition: transform 0.2s ease-in-out;
+            }
+
+            .searchable-dropdown .dropdown-menu.show + .input-group .dropdown-toggle-btn i {
+                transform: rotate(180deg);
+            }
+
+        /* Responsive */
+       
+
+        .searchable-dropdown .dropdown-item {
+            padding: 0.75rem 1rem;
+        }
+
+        }
+
+        /* Estados de loading */
+        .searchable-dropdown .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+            .searchable-dropdown .loading::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: 15px;
+                width: 16px;
+                height: 16px;
+                margin-top: -8px;
+                border: 2px solid #dee2e6;
+                border-top-color: #007bff;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+ 
+        /* Validación de errores */
+        .searchable-dropdown.is-invalid .input-group .form-control {
+            border-color: #dc3545;
+        }
+
+        .searchable-dropdown.is-invalid .input-group .btn {
+            border-color: #dc3545;
+        }
+
+        /* Estilos para cuando no hay resultados */
+        .searchable-dropdown .no-results {
+            padding: 1rem;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+            .searchable-dropdown .no-results i {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+                display: block;
+            }
     </style>
 </head>
 <body>
@@ -181,7 +311,7 @@
                     <input class="form-control" asp-for="medic_Id" type="hidden" />
 
                     <div class="row g-3">
-                        <div class="col-md-6">
+                      @*   <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" asp-for="masc_Id">Mascota</label>
                                 <div class="input-group">
@@ -190,7 +320,36 @@
                                 </div>
                                 <span class="text-danger" asp-validation-for="masc_Id"></span>
                             </div>
+                        </div> *@
+                        <!-- Ejemplo 1: Refugio -->
+                       
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Mascota</label>
+                            <div class="searchable-dropdown" id="mascota-dropdown">
+                                <select class="form-control original-select" asp-for="masc_Id" asp-items="ViewBag.MascotasList">
+                                    <option value="">-- Seleccionar Mascota --</option>
+                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control searchable-input"
+                                           placeholder="Buscar mascota..."
+                                           autocomplete="off"
+                                           readonly />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary dropdown-toggle-btn" type="button">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <i class="fas fa-times clear-selection" style="display: none;"></i>
+                                <div class="dropdown-menu"></div>
+                            </div>
+                            <span asp-validation-for="masc_Id" class="text-danger"></span>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" asp-for="com_Id">Comportamiento</label>
@@ -213,12 +372,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" asp-for="TipoConsulta">Tipo de Consulta</label>
+                                <label class="form-label" asp-for="medic_TipoConsulta">Tipo de Consulta</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-clipboard-list"></i></span>
-                                    <input class="form-control" asp-for="TipoConsulta" type="text" placeholder="Ej: Consulta general, Emergencia, Control" />
+                                    <input class="form-control" asp-for="medic_TipoConsulta" type="text" placeholder="Ej: Consulta general, Emergencia, Control" />
                                 </div>
-                                <span class="text-danger" asp-validation-for="TipoConsulta"></span>
+                                <span class="text-danger" asp-validation-for="medic_TipoConsulta"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -405,9 +564,195 @@
         </div>
     </div>
 </body>
+@section Scripts {
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/Extensions/image-Extension.js"></script>
 
-@section Scripts{
-<script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+    <script>
+        // JavaScript para cargar el dropdown de mascotas con AJAX
+        $(document).ready(function() {
+            // Cargar mascotas al inicializar la página
+            cargarMascotas();
+
+            // Configurar el dropdown searchable
+            configurarDropdownSearchable();
+        });
+
+        // Función para cargar mascotas via AJAX
+        function cargarMascotas() {
+            $.ajax({
+                url: 'https://localhost:44350/CitaMedica/Dropdown', // Cambia por tu URL del controlador
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+                    // Mostrar loading
+                    $('#mascota-dropdown .searchable-input').attr('placeholder', 'Cargando mascotas...');
+                    $('#mascota-dropdown .dropdown-toggle-btn').prop('disabled', true);
+                },
+                success: function(data) {
+                    // Limpiar opciones existentes
+                    $('#mascota-dropdown .original-select').empty();
+                    $('#mascota-dropdown .dropdown-menu').empty();
+
+                    // Agregar opción por defecto
+                    $('#mascota-dropdown .original-select').append('<option value="">-- Seleccionar Mascota --</option>');
+
+                    // Agregar mascotas al dropdown
+                    $.each(data, function(index, mascota) {
+
+                        // Agregar al select original (para el form) - CORREGIDO
+                        $('#mascota-dropdown .original-select').append(
+                            '<option value="' + mascota.masc_Id + '">' + mascota.masc_Nombre + '</option>'
+                        );
+
+                        // Agregar al dropdown menu personalizado - CORREGIDO
+                        $('#mascota-dropdown .dropdown-menu').append(
+                            '<div class="dropdown-item" data-value="' + mascota.masc_Id + '">' +
+                            '<i class="fas fa-paw text-primary me-2"></i>' +
+                            '<span class="mascota-nombre">' + mascota.masc_Nombre + '</span>' +
+                            '</div>'
+                        );
+                    });
+
+                    // Restaurar placeholder
+                    $('#mascota-dropdown .searchable-input').attr('placeholder', 'Buscar mascota...');
+                    $('#mascota-dropdown .dropdown-toggle-btn').prop('disabled', false);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar mascotas:', error);
+                    $('#mascota-dropdown .searchable-input').attr('placeholder', 'Error al cargar mascotas');
+
+                    // Mostrar mensaje de error
+                    $('#mascota-dropdown .dropdown-menu').html(
+                        '<div class="dropdown-item-text text-danger">' +
+                        '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                        'Error al cargar las mascotas' +
+                        '</div>'
+                    );
+                }
+            });
+        }
+
+        // Función para configurar el dropdown searchable
+        function configurarDropdownSearchable() {
+            const $dropdown = $('#mascota-dropdown');
+            const $input = $dropdown.find('.searchable-input');
+            const $menu = $dropdown.find('.dropdown-menu');
+            const $select = $dropdown.find('.original-select');
+            const $toggleBtn = $dropdown.find('.dropdown-toggle-btn');
+            const $clearBtn = $dropdown.find('.clear-selection');
+
+            // Remover el readonly inicial para permitir clicks
+            $input.prop('readonly', false);
+
+            // Mostrar/ocultar dropdown
+            $input.on('click', function() {
+                console.log('Input clicked');
+                if (!$(this).prop('disabled')) {
+                    $menu.toggleClass('show');
+                }
+            });
+
+            $toggleBtn.on('click', function(e) {
+                e.preventDefault();
+                console.log('Toggle button clicked');
+                $menu.toggleClass('show');
+                $input.focus();
+            });
+
+            // Habilitar búsqueda
+            $input.on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                console.log('Searching for:', searchTerm);
+
+                $menu.find('.dropdown-item').each(function() {
+                    const text = $(this).text().toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                $menu.addClass('show');
+            });
+
+            // Seleccionar item
+            $menu.on('click', '.dropdown-item', function(e) {
+                e.preventDefault();
+                const value = $(this).data('value');
+                const text = $(this).find('.mascota-nombre').text();
+
+                console.log('Selected:', value, text);
+
+                $select.val(value);
+                $input.val(text);
+                $input.prop('readonly', true);
+                $menu.removeClass('show');
+                $clearBtn.show();
+
+                // Trigger change event para validaciones
+                $select.trigger('change');
+            });
+
+            // Limpiar selección
+            $clearBtn.on('click', function(e) {
+                e.preventDefault();
+                $select.val('');
+                $input.val('').prop('readonly', false);
+                $clearBtn.hide();
+                $menu.removeClass('show');
+                $input.focus();
+            });
+
+            // Cerrar dropdown al hacer click fuera
+            $(document).on('click', function(e) {
+                if (!$dropdown.is(e.target) && $dropdown.has(e.target).length === 0) {
+                    $menu.removeClass('show');
+                }
+            });
+        }
+
+        // Función para recargar mascotas (útil para actualizaciones)
+        function recargarMascotas() {
+            // Limpiar selección actual
+            $('#mascota-dropdown .clear-selection').click();
+
+            // Recargar datos
+            cargarMascotas();
+        }
+
+        // Función para filtrar mascotas por propietario (opcional)
+        function filtrarMascotasPorPropietario(propietarioId) {
+            $.ajax({
+                url: '/Mascotas/GetMascotasPorPropietario', // Cambia por tu URL
+                type: 'GET',
+                data: { propietarioId: propietarioId },
+                dataType: 'json',
+                success: function(data) {
+                    // Limpiar y recargar con mascotas filtradas
+                    $('#mascota-dropdown .original-select').empty();
+                    $('#mascota-dropdown .dropdown-menu').empty();
+
+                    $('#mascota-dropdown .original-select').append('<option value="">-- Seleccionar Mascota --</option>');
+
+                    $.each(data, function(index, mascota) {
+                        $('#mascota-dropdown .original-select').append(
+                            '<option value="' + mascota.masc_Id + '">' + mascota.masc_Nombre + '</option>'
+                        );
+
+                        $('#mascota-dropdown .dropdown-menu').append(
+                            '<div class="dropdown-item" data-value="' + mascota.masc_Id + '">' +
+                            '<i class="fas fa-paw text-primary me-2"></i>' +
+                            '<span class="mascota-nombre">' + mascota.masc_Nombre + '</span>' +
+                            '</div>'
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al filtrar mascotas:', error);
+                }
+            });
+        }
+    </script>
 }
-
