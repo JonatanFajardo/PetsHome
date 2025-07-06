@@ -107,10 +107,9 @@ var datatable = (function () {
         $(function () { 
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
-                dom:
-                    "<'row mb-3' <'col-md-4 'B><'col-md-6'f><'col-md-2'l>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                dom: '<"row"<"col-sm-12 col-md-1"l><"col-sm-12 col-md-4"f><"col-sm-12 col-md-7 d-flex justify-content-end"B>>' +
+                    '<"row"<"col-sm-12"t>>' +
+                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
                 order: [],
                 scrollCollapse: true,
                 paging: true,
@@ -158,31 +157,32 @@ var datatable = (function () {
                     {
                         text: '<i class="mdi mdi-refresh"> Recargar</i>',
                         titleAttr: 'Recargar tabla',
+                        className: 'btn btn-secondary',
                         action: function (e, dt, config) {
                             dt.ajax.reload();
                         }
                     },
-                    {
-                        title: "Exportar a CSV",
-                        extend: "csvHtml5",
-                        text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
-                        className: "btn-secondary",
-                        exportOptions: exportOptions
-                    },
+                    //{
+                    //    title: "Exportar a CSV",
+                    //    extend: "csvHtml5",
+                    //    text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                    //    className: "btn-secondary",
+                    //    exportOptions: exportOptions
+                    //},
                     {
                         extend: "pdfHtml5",
                         title: "Exportar a PDF",
                         text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
-                        class: "btn btn-secondary",
+                        className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
                     {
                         extend: "excelHtml5",
                         title: "Exportar a EXCEL",
                         text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
-                        class: "btn btn-secondary",
+                        className: "btn btn-secondary",
                         exportOptions: exportOptions
-                    },
+                    }, 
                     {
 
                         //attr: 
@@ -202,7 +202,7 @@ var datatable = (function () {
                         attr: {
                             title: "Añadir nuevo elemento",
                             id: "add-btn",
-                            class: "btn btn-primary",
+                            class: "btn btn-primary ",
                             'data-style': "zoom-in",
                             'data-toggle': "modal",
                             'data-target': "#edit-modal"
@@ -384,6 +384,12 @@ var datatable = (function () {
                 columnDefs: obj.dataHeader(header)
 
             });
+
+            //Estilos para los botones
+            const sheet = new CSSStyleSheet();
+            sheet.insertRule('.dt-buttons { text-align: end !important; width: 100%; }');
+            sheet.insertRule('.dt-buttons button { padding: 0.75rem margin-buttom:15px; !important; }');
+            document.adoptedStyleSheets = [sheet];
 
             // Evento click que Redirecciona.
             // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.

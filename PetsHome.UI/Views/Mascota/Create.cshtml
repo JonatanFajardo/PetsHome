@@ -13,14 +13,7 @@
         <div class="card-body">
             <form asp-action="Add" asp-controller="Mascota" method="post" autocomplete="ON" enctype="multipart/form-data">
                 <input class="form-control" asp-for="masc_Id" type="hidden" />
-
-                @*<div class="custom-file">
-                        <label id="lblImageFile" asp-for="ImageFile" class="custom-file-label" accept="imagen/png, imagen/jpeg, imagen/gif">Seleccione imagen</label>
-                        <input asp-for="ImageFile" type="file" class="custom-file-input" id="file" />
-                        <span asp-validation-for="ImageFile" class="text-danger"></span>
-                        <p>Seleccione una imagen(.jpg, .png, gif)con un tamaño menor de 2MB(2,048 KB).</p>
-                    </div>*@
-
+ 
                 <div class="col-md-6">
                     <label class="control-label">Imagen de perfil</label>
                     <br />

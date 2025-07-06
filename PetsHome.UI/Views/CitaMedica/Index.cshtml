@@ -40,8 +40,8 @@
                             <th>Fecha Consulta</th>
                              <th>Tipo Consulta</th>
                             <th>Diagnóstico</th>
-                            <th>Peso</th>
-                             <th>Temperatura</th> 
+                            <th>Peso</th> 
+                            <th>Temperatura</th> 
                             <th>Próxima Cita</th>
                             <th>Acciones</th>
                         </tr>
@@ -91,9 +91,9 @@
 <script>
         CitaMedica.datatable({
         urlList: "@Url.Action("List")",
-        // urlDetail: "@Url.Action("Detail")",
-        // urlInsert: "@Url.Action("Create")",
-        // urlUpdate: "@Url.Action("Find")"
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
     });
 
 </script>

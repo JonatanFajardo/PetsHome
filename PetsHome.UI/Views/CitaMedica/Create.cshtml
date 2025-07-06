@@ -3,311 +3,17 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<head>
-    <style>
-     
-        .card {
-            background-color: #ffffff;
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .card-header {
-            border-radius: 15px 15px 0 0 !important;
-            border: none;
-            padding: 20px;
-        }
-        
-        /* .header-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
-        } */
-        
-        .header-info::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-        }
-        
-        #formulario .card-header {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        
-        .card-header h3,
-        .card-header i {
-            position: relative;
-            /* z-index: 100; */
-        }
-        
-        .form-control {
-            border-radius: 10px;
-            border: 1px solid #e1e5e9;
-            padding: 12px 16px;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            border-color: #667eea;
-        }
-        
-        .input-group-text {
-            border-radius: 10px 0 0 10px;
-            border: 1px solid #e1e5e9;
-            background-color: #f8f9fa;
-            color: #6c757d;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
-        }
-        
-        .form-label {
-            font-weight: 500;
-            color: #495057;
-            margin-bottom: 8px;
-        }
-        
-        .container {
-            max-width: 1200px;
-        }
-
-
-
-
-
-        /* Estilos para el dropdown searchable de mascotas */
-        .searchable-dropdown {
-            position: relative;
-            z-index: 1000;
-        }
-
-            .searchable-dropdown .original-select {
-                display: none; /* Ocultar el select original */
-            }
-
-            .searchable-dropdown .input-group {
-                position: relative;
-            }
-
-            .searchable-dropdown .searchable-input {
-                cursor: pointer;
-                background-color: #fff;
-            }
-
-                .searchable-dropdown .searchable-input:focus {
-                    cursor: text;
-                }
-
-                .searchable-dropdown .searchable-input[readonly] {
-                    cursor: pointer;
-                    background-color: #f8f9fa;
-                }
-
-            .searchable-dropdown .dropdown-toggle-btn {
-                border-left: 0;
-                background-color: #fff;
-                border-color: #ced4da;
-            }
-
-                .searchable-dropdown .dropdown-toggle-btn:hover {
-                    background-color: #f8f9fa;
-                }
-
-                .searchable-dropdown .dropdown-toggle-btn:focus {
-                    box-shadow: none;
-                }
-
-            .searchable-dropdown .clear-selection {
-                position: absolute;
-                right: 60px;
-                top: 50%;
-                transform: translateY(-50%);
-                cursor: pointer;
-                color: #6c757d;
-                /* z-index: 10; */
-                padding: 5px;
-                border-radius: 3px;
-            }
-
-                .searchable-dropdown .clear-selection:hover {
-                    color: #dc3545;
-                    background-color: #f8f9fa;
-                }
-
-            .searchable-dropdown .dropdown-menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                 z-index: 9999;
-                display: none;
-                max-height: 300px;
-                overflow-y: auto;
-                border: 1px solid #ced4da;
-                border-radius: 0.25rem;
-                background-color: #fff;
-                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            }
-
-                .searchable-dropdown .dropdown-menu.show {
-                    display: block;
-                }
-
-            .searchable-dropdown .dropdown-item {
-                display: flex;
-                align-items: center;
-                padding: 0.5rem 1rem;
-                cursor: pointer;
-                border: none;
-                background-color: transparent;
-                width: 100%;
-                text-align: left;
-            }
-
-                .searchable-dropdown .dropdown-item:hover {
-                    background-color: #f8f9fa;
-                }
-
-                .searchable-dropdown .dropdown-item:focus,
-                .searchable-dropdown .dropdown-item:active {
-                    background-color: #e9ecef;
-                }
-
-                .searchable-dropdown .dropdown-item .mascota-nombre {
-                    font-weight: 500;
-                    color: #333;
-                }
-
-                .searchable-dropdown .dropdown-item .text-muted {
-                    font-size: 0.875rem;
-                    margin-left: 0.25rem;
-                }
-
-            .searchable-dropdown .dropdown-item-text {
-                padding: 0.5rem 1rem;
-                margin: 0;
-                color: #6c757d;
-                font-size: 0.875rem;
-            }
-
-            /* Animaciones */
-            .searchable-dropdown .dropdown-menu {
-                transition: opacity 0.2s ease-in-out;
-            }
-
-            .searchable-dropdown .dropdown-toggle-btn i {
-                transition: transform 0.2s ease-in-out;
-            }
-
-            .searchable-dropdown .dropdown-menu.show + .input-group .dropdown-toggle-btn i {
-                transform: rotate(180deg);
-            }
-
-        /* Responsive */
-       
-
-        .searchable-dropdown .dropdown-item {
-            padding: 0.75rem 1rem;
-        }
-
-        }
-
-        /* Estados de loading */
-        .searchable-dropdown .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-            .searchable-dropdown .loading::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                right: 15px;
-                width: 16px;
-                height: 16px;
-                margin-top: -8px;
-                border: 2px solid #dee2e6;
-                border-top-color: #007bff;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
  
-        /* Validación de errores */
-        .searchable-dropdown.is-invalid .input-group .form-control {
-            border-color: #dc3545;
-        }
-
-        .searchable-dropdown.is-invalid .input-group .btn {
-            border-color: #dc3545;
-        }
-
-        /* Estilos para cuando no hay resultados */
-        .searchable-dropdown .no-results {
-            padding: 1rem;
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
-        }
-
-            .searchable-dropdown .no-results i {
-                font-size: 2rem;
-                margin-bottom: 0.5rem;
-                display: block;
-            }
-    </style>
-</head>
 <body>
     <div class="container py-4" id="formulario">
+                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+            @* <input class="form-control" asp-for="emp_Id" type="hidden" /> *@
         <div class="card shadow-sm mb-4">
             <div class="card-header header-info text-white d-flex align-items-center">
                 <i class="fas fa-info-circle fa-lg me-2"></i>
                 <h3 class="h5 mb-0 text-white"> Información Básica</h3>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
                     <input class="form-control" asp-for="medic_Id" type="hidden" />
 
                     <div class="row g-3">
@@ -352,20 +58,26 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" asp-for="com_Id">Comportamiento</label>
+                                <label class="form-label" asp-for="medic_FechaConsulta">Comportamiento</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-brain"></i></span>
-                                    <input class="form-control" asp-for="com_Id" type="text" placeholder="ID del comportamiento" />
+                                    <span class="input-group-text"><i class="fas fa-user-check"></i></span>
+                                    <select class="form-control" asp-for="Com_Id" asp-items="Model.comportamientoList">
+                                        <option value="">-- Seleccionar --</option>
+                                    </select>
                                 </div>
-                                <span class="text-danger" asp-validation-for="com_Id"></span>
+                                <span class="text-danger" asp-validation-for="Com_Id"></span>
                             </div>
                         </div>
+
+
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" asp-for="medic_FechaConsulta">Fecha de Consulta</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                    <input class="form-control" asp-for="medic_FechaConsulta" type="datetime-local" />
+                                    <input class="form-control" asp-for="medic_FechaConsulta" type="datetime-local"
+                                           value="@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central America Standard Time").ToString("yyyy-MM-ddTHH:mm")" />
                                 </div>
                                 <span class="text-danger" asp-validation-for="medic_FechaConsulta"></span>
                             </div>
@@ -401,7 +113,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
 
@@ -411,7 +122,6 @@
                 <h3 class="h5 mb-0 text-white"> Signos Vitales</h3>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
                     <div class="row g-3">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -454,7 +164,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
 
@@ -464,7 +173,6 @@
                 <h3 class="h5 mb-0 text-white"> Tratamiento y Procedimientos</h3>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -517,7 +225,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
 
@@ -527,7 +234,6 @@
                 <h3 class="h5 mb-0 text-white"> Próxima Cita</h3>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -550,18 +256,19 @@
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
-
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary btn-lg me-3">
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+            @* <button type="submit" class="btn btn-primary btn-lg me-3">
                 <i class="fas fa-save"></i> Guardar Registro
-            </button>
+            </button> *@
             <button type="button" class="btn btn-secondary btn-lg">
                 <i class="fas fa-times"></i> Cancelar
             </button>
         </div>
+        </form>
+
     </div>
 </body>
 @section Scripts {
@@ -581,7 +288,7 @@
         // Función para cargar mascotas via AJAX
         function cargarMascotas() {
             $.ajax({
-                url: 'https://localhost:44350/CitaMedica/Dropdown', // Cambia por tu URL del controlador
+                url: 'https://localhost:44350/CitaMedica/GetMascotasDropdown', // Cambia por tu URL del controlador
                 type: 'GET',
                 dataType: 'json',
                 beforeSend: function() {

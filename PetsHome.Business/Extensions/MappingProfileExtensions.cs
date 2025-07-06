@@ -14,6 +14,7 @@ namespace PetsHome.Business.Extensions
         /// </summary>
         public MappingProfileExtensions()
         {
+            CreateMap<PR_Refugio_Comportamiento_ListResult, ComportamientoViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_DetailResult, DepartamentoViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_DropdownResult, DepartamentoViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_FindResult, DepartamentoViewModel>().ReverseMap();

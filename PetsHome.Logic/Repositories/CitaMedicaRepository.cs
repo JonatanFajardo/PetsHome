@@ -1,10 +1,13 @@
 ﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
+using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.Logic.Repositories
@@ -68,6 +71,16 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
+        }
+
+        public IEnumerable<PR_Refugio_Comportamiento_ListResult> ComportamientoList()
+        {
+            const string query = "[Refugio].[PR_Refugio_Comportamiento_List]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = db.Query<PR_Refugio_Comportamiento_ListResult>(query, commandType: CommandType.StoredProcedure);
+                return result;
+            }
         }
     }
 }

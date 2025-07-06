@@ -66,6 +66,7 @@ namespace PetsHome.Business
             services.AddScoped<EmpleadosCargoService>();
             services.AddScoped<EventoService>();
             services.AddScoped<AdopcionService>();
+            services.AddScoped<ComportamientosService>();
             services.AddScoped<CitaMedicaService>();
             services.AddScoped<MascotaService>();
             services.AddScoped<ProcedenciaService>();

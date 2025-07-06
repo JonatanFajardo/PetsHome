@@ -249,13 +249,13 @@ code {
 }
 
 .header-container .navbar-nav.theme-brand {
-  width: 255px;
-  height: 80px;
-  display: flex;
-  justify-content: space-around;
-  background: #fff;
-  border-right: 1px solid var(--primary-color);
-  background-color: #d34e4a;
+    width: 255px;
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    border-right: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
 }
 .header-container .navbar-nav.theme-brand .theme-logo {
   align-self: center;

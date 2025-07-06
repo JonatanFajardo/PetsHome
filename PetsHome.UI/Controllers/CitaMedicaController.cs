@@ -3,8 +3,10 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using PetsHome.Common.Entities;
+using PetsHome.Common.InternalEntities;
 using PetsHome.Logic.Repositories;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +17,14 @@ namespace PetsHome.UI.Controllers
     {
         private readonly CitaMedicaService _HistorialMedicoService;
         private readonly MascotaService _mascotaService;
+        private readonly ComportamientosService _comportamientosService;
      
-
-        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService)
+ 
+        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService, ComportamientosService comportamientosService)
         {
             _HistorialMedicoService = historialMedicoService;
             _mascotaService = mascotaService;
+            _comportamientosService = comportamientosService;
         }
 
         public IActionResult Index()
@@ -28,15 +32,13 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var model = new CitaMedicaViewModel();
-
-            //var drop = Dropdown(model);
-            // Asegúrate de que el ViewBag tenga los datos de refugios
-            //ViewBag.RefugiosList = drop.MascotaList; // O como se llame tu propiedad
-            return View();
-             
+            //Dropdown(model);
+            var drop = Dropdown(model);
+            
+            return View(drop);
         }
 
         public async Task<IActionResult> List()
@@ -123,15 +125,40 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public List<PR_Refugio_Mascotas_DropdownResult> Dropdown()
+        //public List<PR_Refugio_Mascotas_DropdownResult> Dropdown()
+        //{
+        //    var mascotaList = _HistorialMedicoService.MascotaDropdown();
+        //    //model.LoadDropDownList(mascotaList);
+        //    return mascotaList.ToList();
+        //}
+
+
+        public CitaMedicaViewModel Dropdown(CitaMedicaViewModel model)
         {
+            if (model == null)
+                model = new CitaMedicaViewModel(); // ← protección
+
             var mascotaList = _HistorialMedicoService.MascotaDropdown();
-            //model.LoadDropDownList(mascotaList);
-            return mascotaList.ToList();
+
+            IEnumerable<ComportamientoViewModel> comp = _comportamientosService.ComportamientoDropdown();
+            model.LoadDropDownList(comp);
+
+            return model;
         }
 
-
-
+        [HttpGet]
+        public JsonResult GetMascotasDropdown()
+        {
+            try
+            {
+                var mascotas = _HistorialMedicoService.MascotaDropdown();
+                return Json(mascotas);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, message = ex.Message });
+            }
+        }
 
     }
 }

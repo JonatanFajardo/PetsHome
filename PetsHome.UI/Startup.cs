@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PetsHome.Business;
 using PetsHome.Business.Models;
+using PetsHome.UI.Middleware;
 
 namespace PetsHome.UI
 {
@@ -44,6 +45,10 @@ namespace PetsHome.UI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseMiddleware<DropDownErrorMiddleware>();
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -55,7 +60,7 @@ namespace PetsHome.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=CitaMedica}/{action=create}/{id?}");
             });
         }
     }

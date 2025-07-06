@@ -11,6 +11,11 @@ namespace PetsHome.Business.Models
     /// </summary>
     public partial class CitaMedicaViewModel
     {
+
+        //public CitaMedicaViewModel()
+        //{
+        //    //ComportamientoList = new SelectList(new List<ComportamientoViewModel>(), "Com_Id", "Com_Nombre");
+        //}
         /// <summary>
         /// Obtiene o establece el ID de la cita médica.
         /// </summary>
@@ -33,9 +38,9 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Comportamiento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int com_Id { get; set; }
+        public int Com_Id { get; set; }
 
-        public string comportamiento { get; set; }
+        public string Com_Nombre { get; set; }
 
 
         /// <summary>
@@ -183,15 +188,20 @@ namespace PetsHome.Business.Models
         public SelectList MascotaList { get; set; }
 
         /// <summary>
+        /// Obtiene o establece la lista desplegable de comportamiento.
+        /// </summary>
+        public SelectList comportamientoList { get; set; } 
+
+        /// <summary>
         /// Carga los elementos de las listas desplegables.
         /// </summary>
         /// <param name="refugioDropdownResults">Resultados de la lista desplegable de refugios.</param>
         /// <param name="empleadoCargoDropdownResults">Resultados de la lista desplegable de cargos de empleados.</param>
-        public void LoadDropDownList(IEnumerable<MascotaViewModel> mascotaViewModelsTask)
+        public void LoadDropDownList(IEnumerable<ComportamientoViewModel> comportamientoViewModels)
         {
-            MascotaList = new SelectList(mascotaViewModelsTask, "masc_Id", "masc_Nombre");
+            comportamientoList = new SelectList(comportamientoViewModels, "Com_Id", "Com_Descripcion");
         }
-
+         
         /// <summary>
         /// Indica si el formulario se está editando.
         /// </summary>
