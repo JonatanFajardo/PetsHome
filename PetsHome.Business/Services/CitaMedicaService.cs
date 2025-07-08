@@ -23,7 +23,7 @@ namespace PetsHome.Business.Services
         public CitaMedicaService(CitaMedicaRepository historialmedicoRepository,
             MascotaRepository mascotaRepository,
             ILogger<CitaMedicaService> logger, IMapper mapper)
-        {
+        { 
             _historialmedicoRepository = historialmedicoRepository;
             _mascotaRepository = mascotaRepository;
             _logger = logger;
@@ -57,7 +57,7 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                PR_Refugio_HistorialMedico_FindResult mappedResult = await _historialmedicoRepository.FindAsync(id);
+                PR_Refugio_CitaMedica_FindResult mappedResult = await _historialmedicoRepository.FindAsync(id);
                 return _mapper.Map<CitaMedicaViewModel>(mappedResult);
             }
             catch (Exception error)
@@ -76,7 +76,7 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                PR_Refugio_HistorialMedico_DetailResult mappedResult = await _historialmedicoRepository.DetailAsync(id);
+                PR_Refugio_CitaMedica_DetailResult mappedResult = await _historialmedicoRepository.DetailAsync(id);
                 return _mapper.Map<CitaMedicaViewModel>(mappedResult);
             }
             catch (Exception error)

@@ -11,7 +11,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header header-info text-white d-flex align-items-center">
                 <i class="fas fa-info-circle fa-lg me-2"></i>
-                <h3 class="h5 mb-0 text-white"> Información Básica</h3>
+                <h3 class="h5 mb-0 text-white ml-2"> Información Básica</h3>
             </div>
             <div class="card-body p-4">
                     <input class="form-control" asp-for="medic_Id" type="hidden" />
@@ -119,7 +119,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header header-vitals text-white d-flex align-items-center">
                 <i class="fas fa-heartbeat fa-lg me-2"></i>
-                <h3 class="h5 mb-0 text-white"> Signos Vitales</h3>
+                <h3 class="h5 mb-0 text-white ml-2"> Signos Vitales</h3>
             </div>
             <div class="card-body p-4">
                     <div class="row g-3">
@@ -170,7 +170,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header header-treatment text-white d-flex align-items-center">
                 <i class="fas fa-pills fa-lg me-2"></i>
-                <h3 class="h5 mb-0 text-white"> Tratamiento y Procedimientos</h3>
+                <h3 class="h5 mb-0 text-white ml-2"> Tratamiento y Procedimientos</h3>
             </div>
             <div class="card-body p-4">
                     <div class="row g-3">
@@ -179,7 +179,7 @@
                                 <label class="form-label" asp-for="vac_Id">Vacuna Aplicada</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-syringe"></i></span>
-                                    <input class="form-control" asp-for="vac_Id" type="text" placeholder="ID de la vacuna" />
+                                    <select class="form-control" asp-for="vac_Id" asp-items="Model.VacunaList"></select>
                                 </div>
                                 <span class="text-danger" asp-validation-for="vac_Id"></span>
                             </div>
@@ -231,7 +231,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header header-appointment text-white d-flex align-items-center">
                 <i class="fas fa-calendar-plus fa-lg me-2"></i>
-                <h3 class="h5 mb-0 text-white"> Próxima Cita</h3>
+                <h3 class="h5 mb-0 text-white ml-2"> Próxima Cita</h3>
             </div>
             <div class="card-body p-4">
                     <div class="row g-3">
@@ -260,9 +260,7 @@
         </div>
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
-            @* <button type="submit" class="btn btn-primary btn-lg me-3">
-                <i class="fas fa-save"></i> Guardar Registro
-            </button> *@
+                 
             <button type="button" class="btn btn-secondary btn-lg">
                 <i class="fas fa-times"></i> Cancelar
             </button>

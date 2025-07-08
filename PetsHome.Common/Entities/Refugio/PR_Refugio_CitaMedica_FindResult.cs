@@ -8,7 +8,7 @@ namespace PetsHome.Common.Entities
     /// <summary>
     /// Entidad que representa la tabla.
     /// </summary>
-    public partial class PR_Refugio_HistorialMedico_DetailResult
+    public partial class PR_Refugio_CitaMedica_FindResult
     {
         
         /// <summary>
@@ -20,11 +20,6 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string masc_Nombre { get; set; }
-        
-        /// <summary>
-        /// Obtiene o establece el valor de la propiedad.
-        /// </summary>
-        public string raza_Descripcion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -54,12 +49,12 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool medic_EsEliminado { get; set; }
+        public int medic_UsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string UsuarioCreacion { get; set; }
+        public string usuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -69,7 +64,12 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string UsuarioModificacion { get; set; }
+        public int? medic_UsuarioModifica { get; set; }
+        
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string usuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.

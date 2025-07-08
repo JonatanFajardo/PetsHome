@@ -21,6 +21,7 @@ namespace PetsHome.UI.Controllers
             _vacunaService = vacunaService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> List()
         {
             var itemListing = await _vacunaService.ListAsync();

@@ -1626,22 +1626,38 @@ var datatable = (function () {
         head = [];
         var i = 0;
         for (i; i < _header.length; i++) {
-
-            head.push({
+            var columnConfig = {
                 targets: i,
                 data: _header[i].FieldName
-            })
+            };
+
+            // Aplicar función Render personalizada si existe
+            if (_header[i].Render && typeof _header[i].Render === 'function') {
+                columnConfig.render = _header[i].Render;
+            }
+
+            // Aplicar alineación si existe
+            if (_header[i].Align) {
+                columnConfig.className = _header[i].Align === 'center' ? 'text-center' :
+                    _header[i].Align === 'right' ? 'text-right' : 'text-left';
+            }
+
             // Entra si se desea deshabilitar la columna
             if (header[i].Visibility == false) {
-                head[i]['visible'] = "false"
+                columnConfig.visible = false;
             }
-            //if (header[i].Visibility == false || header[i].Visibility !== undefined) {
-            //    head[i]['visible'] = false
-            //}
+
             // Entra si se desea indicar un ancho especifico
-            if (_header[i].Size != undefined) {
-                head[i]['width'] = _header[i].Size
+            // CORREGIDO: Cambiar Size por Width para que coincida con tu configuración
+            if (_header[i].Width != undefined) {
+                columnConfig.width = _header[i].Width;
             }
+            // También mantener compatibilidad con Size si existe
+            else if (_header[i].Size != undefined) {
+                columnConfig.width = _header[i].Size;
+            }
+
+            head.push(columnConfig);
         }
 
         head.push({

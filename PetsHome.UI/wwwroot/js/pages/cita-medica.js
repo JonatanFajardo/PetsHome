@@ -14,7 +14,6 @@ var CitaMedica = (function () {
             return false;
         }
 
-        $(function () {
             try {
                 console.log("Inicializando CitaMedica datatable");
 
@@ -23,7 +22,7 @@ var CitaMedica = (function () {
                     {
                         FieldName: "masc_Nombre",
                         DisplayName: "👤 Nombre de la Mascota",
-                        Width: "200px",
+                        //Width: "200px",
                         Align: "left",
                         Sortable: true,
                         Searchable: true,
@@ -37,7 +36,7 @@ var CitaMedica = (function () {
                     {
                         FieldName: "medic_FechaConsulta",
                         DisplayName: "📅 Fecha de Consulta",
-                        Width: "150px",
+                        //Width: "150px",
                         Align: "center",
                         Sortable: true,
                         Render: function (data) {
@@ -57,7 +56,7 @@ var CitaMedica = (function () {
                     {
                         FieldName: "medic_TipoConsulta",
                         DisplayName: "🏥 Tipo de Consulta",
-                        Width: "180px",
+                        //Width: "180px",
                         Align: "center",
                         Sortable: true,
                         Render: function (data) {
@@ -68,9 +67,8 @@ var CitaMedica = (function () {
                                 'Cirugía': { color: 'warning', icon: 'fas fa-cut' },
                                 'Control': { color: 'info', icon: 'fas fa-clipboard-check' }
                             };
-                            const tipo = tipos[data] || { color: 'secondary', icon: 'fas fa-question' };
+                            const tipo = tipos[data] || { color: 'secondary'};
                             return `<span class="badge bg-${tipo.color} p-2">
-                                        <i class="${tipo.icon} me-1"></i>
                                         ${data || 'No especificado'}
                                     </span>`;
                         }
@@ -78,7 +76,7 @@ var CitaMedica = (function () {
                     {
                         FieldName: "medic_Diagnostico",
                         DisplayName: "📋 Diagnóstico",
-                        Width: "250px",
+                        //Width: "250px",
                         Align: "left",
                         Sortable: false,
                         Render: function (data) {
@@ -114,7 +112,7 @@ var CitaMedica = (function () {
                     {
                         FieldName: "medic_Temperatura",
                         DisplayName: "🌡️ Temperatura",
-                        Width: "130px",
+                        //Width: "130px",
                         Align: "center",
                         Sortable: true,
                         Render: function (data) {
@@ -135,7 +133,7 @@ var CitaMedica = (function () {
                     {
                         FieldName: "medic_ProximaCita",
                         DisplayName: "🔄 Próxima Cita",
-                        Width: "160px",
+                        //Width: "160px",
                         Align: "center",
                         Sortable: true,
                         Render: function (data) {
@@ -174,22 +172,22 @@ var CitaMedica = (function () {
                     }
                 ];
 
-                // Validar que header tenga elementos
-                if (!header || header.length === 0) {
-                    throw new Error('La configuración de header está vacía');
-                }
+                //// Validar que header tenga elementos
+                //if (!header || header.length === 0) {
+                //    throw new Error('La configuración de header está vacía');
+                //}
 
-                console.log("URL de lista:", Direction.urlList);
-                console.log("Configuración de header:", header);
+                //console.log("URL de lista:", Direction.urlList);
+                //console.log("Configuración de header:", header);
 
-                // Verificar que datatable existe y tiene el método init
-                if (typeof datatable === 'undefined') {
-                    throw new Error('El objeto datatable no está definido');
-                }
+                //// Verificar que datatable existe y tiene el método init
+                //if (typeof datatable === 'undefined') {
+                //    throw new Error('El objeto datatable no está definido');
+                //}
 
-                if (typeof datatable.init !== 'function') {
-                    throw new Error('datatable.init no es una función');
-                }
+                //if (typeof datatable.init !== 'function') {
+                //    throw new Error('datatable.init no es una función');
+                //}
 
                 // Agregar estilos CSS personalizados
                 obj.addCustomStyles();
@@ -245,7 +243,6 @@ var CitaMedica = (function () {
 
                 return false;
             }
-        });
 
         return true;
     };

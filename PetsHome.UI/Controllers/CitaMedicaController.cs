@@ -18,13 +18,15 @@ namespace PetsHome.UI.Controllers
         private readonly CitaMedicaService _HistorialMedicoService;
         private readonly MascotaService _mascotaService;
         private readonly ComportamientosService _comportamientosService;
+        private readonly VacunaService _vacunaService;
      
  
-        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService, ComportamientosService comportamientosService)
+        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService, ComportamientosService comportamientosService, VacunaService vacunaService)
         {
             _HistorialMedicoService = historialMedicoService;
             _mascotaService = mascotaService;
             _comportamientosService = comportamientosService;
+            _vacunaService = vacunaService;
         }
 
         public IActionResult Index()
@@ -60,7 +62,8 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _HistorialMedicoService.FindAsync(id);
             if (itemSearched != null)
             {
-                return AjaxResult(itemSearched, true);
+                var dropdown = Dropdown(itemSearched);
+                return View("Create", dropdown);
             }
             else
             {
@@ -140,8 +143,7 @@ namespace PetsHome.UI.Controllers
 
             var mascotaList = _HistorialMedicoService.MascotaDropdown();
 
-            IEnumerable<ComportamientoViewModel> comp = _comportamientosService.ComportamientoDropdown();
-            model.LoadDropDownList(comp);
+            model.LoadDropDownList(_comportamientosService.ComportamientoDropdown(), _vacunaService.VacunaDropdown());
 
             return model;
         }

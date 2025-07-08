@@ -52,7 +52,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Eventos_DetailResult, EventoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Eventos_FindResult, EventoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Eventos_ListResult, EventoViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_HistorialMedico_FindResult, CitaMedicaViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_CitaMedica_FindResult, CitaMedicaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_CitaMedica_ListResult, CitaMedicaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Mascotas_DetailResult, MascotaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Mascotas_FindResult, MascotaViewModel>().ReverseMap();
@@ -107,6 +107,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbSolicitudes, SolicitudViewModel>().ReverseMap();
             CreateMap<tbVacunas, VacunaViewModel>().ReverseMap();
             CreateMap<tbVoluntarios, VoluntarioViewModel>().ReverseMap();
+            CreateMap<tbCitaMedica, CitaMedicaViewModel>().ReverseMap();
 
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();

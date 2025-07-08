@@ -12,8 +12,7 @@ var Voluntario = (function () {
                 { FieldName: "vol_Nombres" },
                 { FieldName: "per_Identidad" }
             ];
-            console.log("llego");
-            datatable.init(Direction, header);
+            datatable.init(Direction.listUrl, header);
         })
     }
     return obj;

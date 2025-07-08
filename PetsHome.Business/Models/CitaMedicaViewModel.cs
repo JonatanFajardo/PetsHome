@@ -192,14 +192,17 @@ namespace PetsHome.Business.Models
         /// </summary>
         public SelectList comportamientoList { get; set; } 
 
+        public SelectList VacunaList { get; set; }
+
         /// <summary>
         /// Carga los elementos de las listas desplegables.
         /// </summary>
         /// <param name="refugioDropdownResults">Resultados de la lista desplegable de refugios.</param>
         /// <param name="empleadoCargoDropdownResults">Resultados de la lista desplegable de cargos de empleados.</param>
-        public void LoadDropDownList(IEnumerable<ComportamientoViewModel> comportamientoViewModels)
+        public void LoadDropDownList(IEnumerable<ComportamientoViewModel> comportamientoViewModels, IEnumerable<VacunaViewModel> vacunaViewModel)
         {
             comportamientoList = new SelectList(comportamientoViewModels, "Com_Id", "Com_Descripcion");
+            VacunaList = new SelectList(vacunaViewModel, "vac_Id", "vac_Descripcion");
         }
          
         /// <summary>

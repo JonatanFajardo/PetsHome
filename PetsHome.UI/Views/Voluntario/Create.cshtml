@@ -17,109 +17,167 @@
 
                 <!--Datos Personales-->
                 <div class="card">
-                    <div class="card-body">
-                    <h5 class="card-title">Datos personales</h5>
+                    <div class="card-body p-4">
+                        <h5 class="card-title">Datos personales</h5>
                         <!--Fila-->
-                        <div class="form-row">
+                        <div class="row g-3">
                             <!--Campo Primer Nombre-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Primer Nombre</label>
-                                <input class="form-control" asp-for="per.per_PrimerNombre" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Primer Nombre</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input class="form-control" asp-for="per.per_PrimerNombre" type="text" placeholder="Ingrese su primer nombre" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
+                                </div>
                             </div>
                             <!--Campo Segundo Nombre-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Segundo Nombre</label>
-                                <input class="form-control" asp-for="per.per_SegundoNombre" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_SegundoNombre"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Segundo Nombre</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input class="form-control" asp-for="per.per_SegundoNombre" type="text" placeholder="Ingrese su segundo nombre" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_SegundoNombre"></span>
+                                </div>
                             </div>
                         </div>
                         <!--Fila-->
-                        <div class="form-row">
+                        <div class="row g-3">
                             <!--Campo Apellido Paterno-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Apellido Paterno</label>
-                                <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Apellido Paterno</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                        <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" placeholder="Ingrese su apellido paterno" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
+                                </div>
                             </div>
                             <!--Campo Apellido Materno-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Apellido Materno</label>
-                                <input class="form-control" asp-for="per.per_ApellidoMaterno" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_ApellidoMaterno"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Apellido Materno</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                        <input class="form-control" asp-for="per.per_ApellidoMaterno" type="text" placeholder="Ingrese su apellido materno" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_ApellidoMaterno"></span>
+                                </div>
                             </div>
                         </div>
                         <!--Fila-->
-                        <div class="form-row">
+                        <div class="row g-3">
                             <!--Campo Identidad-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Identidad</label>
-                                <input class="form-control" asp-for="per.per_Identidad" type="number" />
-                                <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Identidad</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        <input class="form-control" asp-for="per.per_Identidad" type="number" placeholder="Ingrese su número de identidad" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
+                                </div>
                             </div>
                             <!--Campo Fecha Nacimiento-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Fecha Nacimiento</label>
-                                <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
-                                <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Fecha Nacimiento</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
+                                </div>
                             </div>
                         </div>
                         <!--Fila-->
-                        <div class="form-row">
+                        <div class="row g-3">
                             <!--Campo Correo Electronico-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Correo Electrónico</label>
-                                <input class="form-control" asp-for="per.per_Correo" type="email" />
-                                <span class="text-danger" asp-validation-for="per.per_Correo"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Correo Electrónico</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input class="form-control" asp-for="per.per_Correo" type="email" placeholder="ejemplo@correo.com" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_Correo"></span>
+                                </div>
                             </div>
                             <!--Campo Teléfono-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Teléfono</label>
-                                <input class="form-control" asp-for="per.per_Telefono" type="number" />
-                                <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Teléfono</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input class="form-control" asp-for="per.per_Telefono" type="number" placeholder="0000-0000" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
+                                </div>
                             </div>
                         </div>
                         <!--Fila-->
-                        <div class="form-row">
+                        <div class="row g-3">
                             <!--Campo Domicilio-->
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Domicilio</label>
-                                <textarea class="form-control" asp-for="per.per_Domicilio" rows="3"></textarea>
-                                <span class="text-danger" asp-validation-for="per.per_Domicilio"></span>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Domicilio</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-home"></i></span>
+                                        <textarea class="form-control" asp-for="per.per_Domicilio" rows="3" placeholder="Ingrese su dirección completa"></textarea>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="per.per_Domicilio"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card mt-4">
-                    <div class="card-body">
-                    <!--Titulo-->
-                        <div class="form-row justify-content-between">
-                            <h5 class="card-title">Datos de voluntario</h5>
+                    <div class="card-body p-4">
+                        <!--Titulo-->
+                        <div class="row g-3 justify-content-between align-items-center">
+                            <div class="col-auto">
+                                <h5 class="card-title">Datos de voluntario</h5>
+                            </div>
                             <!--Campo Recurrente-->
-                            <div class="col-3">
-                                <label class="float-right">
-                                    Recurrente
-                                    <input type="checkbox" asp-for="vol_Recurrente">
-                                </label>
+                            <div class="col-auto">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" asp-for="vol_Recurrente" id="recurrenteSwitch">
+                                    <label class="form-check-label" for="recurrenteSwitch">
+                                        <i class="fas fa-redo-alt"></i> Recurrente
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
                         <!--Fila-->
-                        <div class="form-row">
+                        <div class="row g-3">
                             <!--Campo Horas Trabajadas-->
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Horas Trabajadas</label>
-                                <input class="form-control" asp-for="vol_HorasTrabajadas" type="number" />
-                                <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Horas Trabajadas</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                        <input class="form-control" asp-for="vol_HorasTrabajadas" type="number" placeholder="Ingrese el número de horas trabajadas" min="0" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
+                                </div>
                             </div>
                         </div>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <div class="float-right mt-4">
-                                    <a class="btn mr-2 btn btn-secondary " asp-action="Index">Cancelar</a>
-                                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                        <!--Fila de botones-->
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-end gap-2 mt-4">
+                                    <a class="btn btn-secondary" asp-action="Index">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Guardar
+                                    </button>
                                 </div>
                             </div>
                         </div>

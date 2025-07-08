@@ -61,5 +61,11 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@vac_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+        public IEnumerable<PR_Refugio_Vacunas_ListResult> Dropdown()
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Vacunas_List]";
+            return DbApp.Dropdown<PR_Refugio_Vacunas_ListResult>(sqlQuery);
+        }
+
     }
 }

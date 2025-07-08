@@ -13,52 +13,124 @@ namespace PetsHome.Common.Entities
         }
 
         /// <summary>
-        /// Identificador único de la tabla HistorialMedico.
+        /// Identificador único de la tabla CitaMedica.
         /// </summary>
         public int medic_Id { get; set; }
+
         /// <summary>
         /// Identificador de la mascota.
         /// </summary>
         public int masc_Id { get; set; }
+
         /// <summary>
-        /// Indica si la mascota esta esterilizada.
-        /// </summary>
-        public bool medic_Esterilizacion { get; set; }
-        /// <summary>
-        /// Indica el tipo de comportamiento tiene la mascota con las personas.
+        /// Identificador del comportamiento de la mascota.
         /// </summary>
         public int com_Id { get; set; }
+
         /// <summary>
-        /// Indica el nivel de salud en la que se encuentra.
+        /// Fecha de la consulta médica.
         /// </summary>
-        public string medic_SaludCuidado { get; set; }
+        public DateTime medic_FechaConsulta { get; set; }
+
         /// <summary>
-        /// Descripción sobre comentario de parte del medico.
+        /// Tipo de consulta médica realizada.
         /// </summary>
-        public string medic_InformacionAdicional { get; set; }
+        public string medic_TipoConsulta { get; set; }
+
+        /// <summary>
+        /// Motivo de la consulta médica.
+        /// </summary>
+        public string medic_MotivoConsulta { get; set; }
+
+        /// <summary>
+        /// Diagnóstico médico de la mascota.
+        /// </summary>
+        public string medic_Diagnostico { get; set; }
+
+        /// <summary>
+        /// Peso de la mascota en gramos.
+        /// </summary>
+        public int? medic_Peso { get; set; }
+
+        /// <summary>
+        /// Temperatura corporal de la mascota.
+        /// </summary>
+        public int? medic_Temperatura { get; set; }
+
+        /// <summary>
+        /// Frecuencia cardíaca de la mascota.
+        /// </summary>
+        public int? medic_FrecuenciaCardiaca { get; set; }
+
+        /// <summary>
+        /// Frecuencia respiratoria de la mascota.
+        /// </summary>
+        public int? medic_FrecuenciaRespiratoria { get; set; }
+
+        /// <summary>
+        /// Identificador de la vacuna aplicada (si aplica).
+        /// </summary>
+        public int? vac_Id { get; set; }
+
+        /// <summary>
+        /// Medicamentos recetados durante la consulta.
+        /// </summary>
+        public string medic_MedicamentosRecetados { get; set; }
+
+        /// <summary>
+        /// Dosificación de los medicamentos recetados.
+        /// </summary>
+        public string medic_Dosificacion { get; set; }
+
+        /// <summary>
+        /// Procedimientos médicos realizados durante la consulta.
+        /// </summary>
+        public string medic_ProcedimientosRealizados { get; set; }
+
+        /// <summary>
+        /// Resultados de exámenes médicos realizados.
+        /// </summary>
+        public string medic_ResultadosExamenes { get; set; }
+
+        /// <summary>
+        /// Fecha programada para la próxima cita médica.
+        /// </summary>
+        public DateTime? medic_ProximaCita { get; set; }
+
+        /// <summary>
+        /// Motivo de la próxima cita médica.
+        /// </summary>
+        public string medic_MotivoProximaCita { get; set; }
+
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
         public bool medic_EsEliminado { get; set; }
+
         /// <summary>
         /// Indica el identificador del usuario que creó el registro.
         /// </summary>
         public int medic_UsuarioCrea { get; set; }
+
         /// <summary>
         /// Registra la fecha en que se creó el registro.
         /// </summary>
         public DateTime medic_FechaCrea { get; set; }
+
         /// <summary>
         /// Indica el identificador del último usuario que modificó el registro.
         /// </summary>
         public int? medic_UsuarioModifica { get; set; }
+
         /// <summary>
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? medic_FechaModifica { get; set; }
 
+        // Navigation Properties
         public virtual tbComportamientos com { get; set; }
         public virtual tbMascotas masc { get; set; }
+        public virtual tbVacunas vac { get; set; }
         public virtual tbUsuarios medic_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbHistorialMedico_tbVacunas> tbHistorialMedico_tbVacunas { get; set; }
     }

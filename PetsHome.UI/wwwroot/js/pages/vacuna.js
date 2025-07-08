@@ -1,19 +1,25 @@
 var Vacuna = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
-        $(function () {
-            var header = new Array();
-            //Nombre | Tama�o/AutoWidth | Visibilidad
-            header = [
-                { FieldName: "vac_Id", Size: 200 },
-                { FieldName: "vac_Descripcion" },
-                { FieldName: "EsActivo" }
+ 
+            var header = [
+                { FieldName: "vac_Id", Size: "200px" },
+                { FieldName: "vac_Descripcion" }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
-        })
-    }
-    return obj;
 
+            console.log('URL configurada:', Direction.listUrl);
+
+            // Verificar que la URL sea válida
+            if (!Direction.listUrl) {
+                console.error('ERROR: listUrl no está definida');
+                return;
+            }
+
+            // Inicializar el DataTable
+        datatableCatalogs.init(Direction.listUrl, header);
+        
+    };
+
+    return obj;
 }());
