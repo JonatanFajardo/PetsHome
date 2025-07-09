@@ -142,7 +142,7 @@ namespace PetsHome.Business.Models
         /// <summary>
         /// Obtiene o establece la fecha de creación de la mascota.
         /// </summary>
-        public DateTime masc_masc_FechaCrea { get; set; }
+        public DateTime masc_FechaCrea { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que modifica la mascota.

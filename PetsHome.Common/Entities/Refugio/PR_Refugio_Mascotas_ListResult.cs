@@ -34,6 +34,14 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refg_Nombre { get; set; }
+        public int masc_Edad { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string masc_Sexo { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public bool masc_EsAdoptado { get; set; }
     }
 }

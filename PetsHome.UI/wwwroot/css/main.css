@@ -2411,6 +2411,11 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
   color: #fff;
 }
 
+.bg-rosado {
+    background-color: #ed9ac4 !important;
+    border-color: #e07eaf;
+    color: #fff;
+}
 /*  
     Light Background  
 */
