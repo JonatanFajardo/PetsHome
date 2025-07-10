@@ -3,6 +3,7 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="container py-4" id="formulario">
     <form asp-action="Add" asp-controller="Mascota" method="post" autocomplete="ON" enctype="multipart/form-data">
         <input class="form-control" asp-for="masc_Id" type="hidden" />
@@ -179,13 +180,13 @@
         </div>
 
         <!-- Botones -->
-        <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary btn-lg me-3">
-                <i class="fas fa-save"></i> Guardar
-            </button>
+        <div class="text-right mt-4">
             <a class="btn btn-secondary btn-lg" asp-action="Index">
                 <i class="fas fa-times"></i> Cancelar
             </a>
+            <button type="submit" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-save"></i> Guardar
+            </button>
         </div>
     </form>
 </div>

@@ -18,7 +18,7 @@ var CitaMedica = (function () {
                 console.log("Inicializando CitaMedica datatable");
 
                 // Configuración de headers con mejoras visuales
-                var header = [
+                var header = [ 
                     {
                         FieldName: "masc_Nombre",
                         DisplayName: "👤 Nombre de la Mascota",

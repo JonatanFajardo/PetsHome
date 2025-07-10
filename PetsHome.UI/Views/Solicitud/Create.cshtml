@@ -4,77 +4,138 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de solicitud</h3>
-        </div>
+<div class="container py-4" id="formulario">
+    <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+        <input class="form-control" asp-for="sol_Id" type="hidden" />
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="sol_Id" type="hidden" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Identidad-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Identidad</label>
-                        <input class="form-control" asp-for="sol_Identidad" type="number" />
-                        <span class="text-danger" asp-validation-for="sol_Identidad"></span>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-info text-white d-flex align-items-center">
+                <i class="fas fa-user-plus fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2">Registro de Solicitud</h3>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <!-- Campo Identidad -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="sol_Identidad">Identidad</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                <input class="form-control" asp-for="sol_Identidad" type="number" placeholder="Número de identidad" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="sol_Identidad"></span>
+                        </div>
                     </div>
-                    <!--Campo Nombres-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Nombres</label>
-                        <input class="form-control" asp-for="sol_Nombres" type="text" />
-                        <span class="text-danger" asp-validation-for="sol_Nombres"></span>
+
+                    <!-- Campo Nombres -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="sol_Nombres">Nombres</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input class="form-control" asp-for="sol_Nombres" type="text" placeholder="Nombres completos" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="sol_Nombres"></span>
+                        </div>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Apellidos-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Apellidos</label>
-                        <input class="form-control" asp-for="sol_Apellidos" type="text" />
-                        <span class="text-danger" asp-validation-for="sol_Apellidos"></span>
+
+                    <!-- Campo Apellidos -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="sol_Apellidos">Apellidos</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input class="form-control" asp-for="sol_Apellidos" type="text" placeholder="Apellidos completos" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="sol_Apellidos"></span>
+                        </div>
                     </div>
-                    <!--Campo Telefono-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Telefono</label>
-                        <input class="form-control" asp-for="sol_Telefono" type="number" />
-                        <span class="text-danger" asp-validation-for="sol_Telefono"></span>
+
+                    <!-- Campo Telefono -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="sol_Telefono">Teléfono</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                <input class="form-control" asp-for="sol_Telefono" type="number" placeholder="Número de teléfono" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="sol_Telefono"></span>
+                        </div>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Correo-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Correo</label>
-                        <input class="form-control" asp-for="sol_Correo" type="email" />
-                        <span class="text-danger" asp-validation-for="sol_Correo"></span>
+
+                    <!-- Campo Correo -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="sol_Correo">Correo</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input class="form-control" asp-for="sol_Correo" type="email" placeholder="correo@ejemplo.com" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="sol_Correo"></span>
+                        </div>
                     </div>
-                    <!--Campo Fecha-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Fecha</label>
-                        <input class="form-control" asp-for="sol_Fecha" type="date" />
-                        <span class="text-danger" asp-validation-for="sol_Fecha"></span>
+
+                    <!-- Campo Fecha -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="sol_Fecha">Fecha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                <input class="form-control" asp-for="sol_Fecha" type="date" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="sol_Fecha"></span>
+                        </div>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Mascota-->
+
+                    <!-- Campo Mascota -->
                     <div class="form-group col-md-6">
                         <label class="control-label">Mascota</label>
-                        <input class="form-control" asp-for="masc_Id" type="text" />
-                        <span class="text-danger" asp-validation-for="masc_Id"></span>
+                        <div class="searchable-dropdown" id="mascota-dropdown">
+                            <select class="form-control original-select" asp-for="masc_Id" asp-items="ViewBag.MascotasList">
+                                <option value="">-- Seleccionar Mascota --</option>
+                            </select>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                                </div>
+                                <input type="text"
+                                       class="form-control searchable-input"
+                                       placeholder="Buscar mascota..."
+                                       autocomplete="off"
+                                       readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary dropdown-toggle-btn" type="button">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <i class="fas fa-times clear-selection" style="display: none;"></i>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                        <span asp-validation-for="masc_Id" class="text-danger"></span>
                     </div>
                 </div>
-
-            </form>
+            </div>
         </div>
-    </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-content-save"></i> Guardar
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+        </div>
+    </form>
 </div>
 
 @section Scripts{
 <script src="~/js/load-dropdownlist.js"></script>
 <script src="~/js/Extensions/image-Extension.js"></script>
+    <script>
+        $(function() {
+            dropdown.inicializarMascotas();
+        });
+    </script>
 }
 

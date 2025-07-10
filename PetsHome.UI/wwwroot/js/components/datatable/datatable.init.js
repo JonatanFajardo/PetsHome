@@ -37,6 +37,71 @@ var datatable = (function () {
         }
     }
 
+
+    /**
+     * Configura y establece los valores del modal.
+     * @param {any} params
+     */
+    function createEditModal(params) {
+        $editModal = $(params.editModalId);
+        formId = params.editModalId + " form:first";
+
+        $editModal.on("show.bs.modal", function () {
+            var modalTitle = "Agregar ", saveBtnText = "Guardar";
+
+            //si el id es igual a 0 que le asigne otros valores al titulo y al boton de guardar
+            if ($("#item-id").val() && $("#item-id").val() != "0") {
+                modalTitle = "Editar ";
+                saveBtnText = "Guardar cambios";
+            }
+
+            $(params.editModalId + " .modal-title").html(modalTitle + params.displayName);
+            $(params.editModalId + " .modal-footer .btn-primary").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
+
+            //le asigna el focus al primer input del primer formulario despues de pasados los 500s
+            setTimeout(function () {
+                $(formId + " *:input[type!=hidden]:first").focus();
+            }, 500);
+        });
+
+
+        $editModal.on("hidden.bs.modal", function () {
+            $(":input", formId).not(':button, :submit, :reset, input[name="__RequestVerificationToken"]').val("").removeAttr("readonly");
+
+            //$(".selectpicker").val("").selectpicker("refresh");
+
+            var validator = $(formId).validate();
+            $('[name]', formId).each(function () {
+                validator.successList.push(this);
+                validator.showErrors();
+            });
+            validator.resetForm();
+            validator.reset();
+            $(".input-validation-error").removeClass("input-validation-error");
+        });
+
+
+    }
+
+    /**
+     * Configura y establece los valores del modal.
+     * @param {any} params
+     */
+    function createDeleteModal(params) {
+
+        $deleteModal = $(params.deleteModalId);
+        $deleteModal.on("show.bs.modal", function () {
+            var modalTitle = "Eliminar ", saveBtnText = "Aceptar";
+            $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
+
+        });
+
+
+        $deleteModal.on("hidden.bs.modal", function () { });
+    }
+
+
     obj.configure = function (params) {
         //if (params.dataTableId === undefined)
         //    params.dataTableId = "#datatable";
@@ -47,10 +112,10 @@ var datatable = (function () {
             params.deleteModalId = "#delete-modal-secondary";
 
         $(function () {
-            //createDataTable(params);
-            typeModal(params);
-            //createModal(params);
-            //createEditModal(params);
+            createDataTable(params);
+            //typeModal(params);
+            createModal(params);
+            createEditModal(params);
         });
     };
 
@@ -390,6 +455,7 @@ var datatable = (function () {
             sheet.insertRule('.dt-buttons { text-align: end !important; width: 100%; }');
             sheet.insertRule('.dt-buttons button { padding: 0.75rem margin-buttom:15px; !important; }');
             document.adoptedStyleSheets = [sheet];
+            tabla.buttons().container().removeClass('btn-group');
 
             // Evento click que Redirecciona.
             // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.
@@ -1636,10 +1702,14 @@ var datatable = (function () {
                 columnConfig.render = _header[i].Render;
             }
 
-            // Aplicar alineación si existe
+            // Aplicar alineación, por defecto a la izquierda
+            columnConfig.className = 'text-left';
+
             if (_header[i].Align) {
-                columnConfig.className = _header[i].Align === 'center' ? 'text-center' :
-                    _header[i].Align === 'right' ? 'text-right' : 'text-left';
+                columnConfig.className =
+                    _header[i].Align === 'center' ? 'text-center' :
+                        _header[i].Align === 'right' ? 'text-right' :
+                            'text-left';
             }
 
             // Entra si se desea deshabilitar la columna

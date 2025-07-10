@@ -46,16 +46,18 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async void Find(int id)
+        public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _SolicitudService.FindAsync(id);
             if (itemSearched != null)
             {
                 Detail(id);
+                return View("Create", itemSearched);
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return AjaxResult(itemSearched, true);
             }
         }
 

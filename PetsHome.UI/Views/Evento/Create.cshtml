@@ -4,68 +4,98 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de evento</h3>
-        </div>
+<div class="container py-4" id="formulario">
+    <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+        <input class="form-control" asp-for="eve_Id" type="hidden" />
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="eve_Id" type="hidden" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Descripcion-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Descripcion</label>
-                        <input class="form-control" asp-for="eve_Descripcion" type="text" />
-                        <span class="text-danger" asp-validation-for="eve_Descripcion"></span>
+        <!-- Información del Evento -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-info text-white d-flex align-items-center">
+                <i class="fas fa-calendar-plus fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2">Información del Evento</h3>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="eve_Descripcion">Descripción</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <input class="form-control" asp-for="eve_Descripcion" type="text" placeholder="Descripción del evento" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="eve_Descripcion"></span>
+                        </div>
                     </div>
-                    <!--Campo Refugio-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Refugio</label>
-                        <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
-                            <option value="">-- Seleccionar --</option>
-                        </select>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Hora Inicio-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Hora Inicio</label>
-                        <input class="form-control" asp-for="eve_HoraInicio" type="time" />
-                        <span class="text-danger" asp-validation-for="eve_HoraInicio"></span>
-                    </div>
-                    <!--Campo Hora Final-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Hora Final</label>
-                        <input class="form-control" asp-for="eve_HoraFinal" type="time" />
-                        <span class="text-danger" asp-validation-for="eve_HoraFinal"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Fecha-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Fecha</label>
-                        <input class="form-control" asp-for="eve_Fecha" type="date" />
-                        <span class="text-danger" asp-validation-for="eve_Fecha"></span>
-                    </div>
-                    <!--Botones de accion en el formulario-->
-                    <div class="form-group col-md-6">
-                        <div class="float-right mt-4">
-                            <a class="btn mr-2 btn btn-secondary " asp-action="Index">Cancelar</a>
-                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="refg_Id">Refugio</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-home"></i></span>
+                                <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
+                                    <option value="">-- Seleccionar Refugio --</option>
+                                </select>
+                            </div>
+                            <span class="text-danger" asp-validation-for="refg_Id"></span>
                         </div>
                     </div>
                 </div>
-
-            </form>
+            </div>
         </div>
-    </div>
-</div>
 
+        <!-- Horario del Evento -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-vitals text-white d-flex align-items-center">
+                <i class="fas fa-clock fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2">Horario del Evento</h3>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="eve_HoraInicio">Hora de Inicio</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-play"></i></span>
+                                <input class="form-control" asp-for="eve_HoraInicio" type="time" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="eve_HoraInicio"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="eve_HoraFinal">Hora de Finalización</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-stop"></i></span>
+                                <input class="form-control" asp-for="eve_HoraFinal" type="time" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="eve_HoraFinal"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="eve_Fecha">Fecha del Evento</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                <input class="form-control" asp-for="eve_Fecha" type="date"
+                                       value="@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central America Standard Time").ToString("yyyy-MM-ddTHH:mm")" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="eve_Fecha"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="text-center mt-4">
+            <a class="btn btn-secondary btn-lg" asp-action="Index">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-save"></i> Guardar
+            </button>
+        </div>
+    </form>
+</div>
 @section Scripts{
 <script src="~/js/load-dropdownlist.js"></script>
 <script src="~/js/Extensions/image-Extension.js"></script>
