@@ -37,71 +37,6 @@ var datatable = (function () {
         }
     }
 
-
-    /**
-     * Configura y establece los valores del modal.
-     * @param {any} params
-     */
-    function createEditModal(params) {
-        $editModal = $(params.editModalId);
-        formId = params.editModalId + " form:first";
-
-        $editModal.on("show.bs.modal", function () {
-            var modalTitle = "Agregar ", saveBtnText = "Guardar";
-
-            //si el id es igual a 0 que le asigne otros valores al titulo y al boton de guardar
-            if ($("#item-id").val() && $("#item-id").val() != "0") {
-                modalTitle = "Editar ";
-                saveBtnText = "Guardar cambios";
-            }
-
-            $(params.editModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.editModalId + " .modal-footer .btn-primary").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
-
-            //le asigna el focus al primer input del primer formulario despues de pasados los 500s
-            setTimeout(function () {
-                $(formId + " *:input[type!=hidden]:first").focus();
-            }, 500);
-        });
-
-
-        $editModal.on("hidden.bs.modal", function () {
-            $(":input", formId).not(':button, :submit, :reset, input[name="__RequestVerificationToken"]').val("").removeAttr("readonly");
-
-            //$(".selectpicker").val("").selectpicker("refresh");
-
-            var validator = $(formId).validate();
-            $('[name]', formId).each(function () {
-                validator.successList.push(this);
-                validator.showErrors();
-            });
-            validator.resetForm();
-            validator.reset();
-            $(".input-validation-error").removeClass("input-validation-error");
-        });
-
-
-    }
-
-    /**
-     * Configura y establece los valores del modal.
-     * @param {any} params
-     */
-    function createDeleteModal(params) {
-
-        $deleteModal = $(params.deleteModalId);
-        $deleteModal.on("show.bs.modal", function () {
-            var modalTitle = "Eliminar ", saveBtnText = "Aceptar";
-            $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
-
-        });
-
-
-        $deleteModal.on("hidden.bs.modal", function () { });
-    }
-
-
     obj.configure = function (params) {
         //if (params.dataTableId === undefined)
         //    params.dataTableId = "#datatable";
@@ -112,10 +47,10 @@ var datatable = (function () {
             params.deleteModalId = "#delete-modal-secondary";
 
         $(function () {
-            createDataTable(params);
-            //typeModal(params);
-            createModal(params);
-            createEditModal(params);
+            //createDataTable(params);
+            typeModal(params);
+            //createModal(params);
+            //createEditModal(params);
         });
     };
 
@@ -455,7 +390,7 @@ var datatable = (function () {
             sheet.insertRule('.dt-buttons { text-align: end !important; width: 100%; }');
             sheet.insertRule('.dt-buttons button { padding: 0.75rem margin-buttom:15px; !important; }');
             document.adoptedStyleSheets = [sheet];
-            tabla.buttons().container().removeClass('btn-group');
+
 
             // Evento click que Redirecciona.
             // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.
@@ -463,6 +398,12 @@ var datatable = (function () {
                 var getIdEdit = $(this).data("id");
                 console.log(getIdEdit);
                 window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
+            });
+
+            table.on("click", ".detail-btn", function (e) {
+                var getIdEdit = $(this).data("id");
+                console.log(getIdEdit);
+                window.location = `${DirectionUrls.urlDetail}/${getIdEdit}`;
             });
 
             table.on("click", ".delete-btn-btn", function (e) {
@@ -1740,6 +1681,7 @@ var datatable = (function () {
                 if (type == "display") {
                     //botones += '<button class="btn btn-soft-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="fa-thin fa-pen-to-square"></i></span></button>';
                     //botones += '<button class="btn btn-soft-danger btn-sm ml-1 delete-btn-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="fa-thin fa-trash"></i></span></button>';
+                    botones += '<a href="javascript:void(0);" data-id="' + row[head] + '" ladda-button" data-style="zoom-in" class="bs-tooltip detail-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Detalles"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row[head] + '" class="bs-tooltip edit-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
                 }

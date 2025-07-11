@@ -30,7 +30,7 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Empleados_Detail]";
             var parameter = new DynamicParameters();
-            parameter.Add("@masc_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@emp_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Detail<PR_Refugio_Empleados_DetailResult>(sqlQuery, parameter);
         }
 

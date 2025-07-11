@@ -1,8 +1,300 @@
-﻿
+﻿@model EmpleadoDetailViewModel;
 @{
     ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+ 
 
-<h1>Detail</h1>
+<style>
+    /* Gradiente personalizado */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    
+    /* Avatar y estado */
+    .avatar-container {
+        position: relative;
+    }
+    
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .avatar-status {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 3px solid white;
+    }
+    
+    /* Secciones y títulos */
+    .section-title {
+        color: #495057;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .info-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .info-group {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #007bff;
+    }
+    
+    /* Items de información */
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .info-item:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+        min-width: 140px;
+    }
+    
+    .info-value {
+        color: #212529;
+        font-size: 0.9rem;
+        text-align: right;
+        flex: 1;
+    }
+    
+    /* Badges personalizados */
+    .badge-outline-primary {
+        color: #007bff;
+        border: 1px solid #007bff;
+        background: transparent;
+    }
+    
+    /* Efectos hover */
+    .card {
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    
+    .info-item:hover {
+        background: rgba(0, 123, 255, 0.05);
+        border-radius: 0.25rem;
+        margin: 0 -0.5rem;
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Responsividad */
 
+    
+    /* Botones */
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Footer */
+    .card-footer {
+        border-top: 1px solid #e9ecef;
+        background: #f8f9fa;
+    }
+    
+    /* Texto blanco transparente */
+    .text-white-50 {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+</style>
+
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-container position-relative">
+                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-user text-primary fa-2x"></i>
+                                </div>
+                                <div class="avatar-status bg-success"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="mb-1 text-white font-weight-bold">@Model.per_PrimerNombre @Model.per_ApellidoPaterno</h4>
+                            <div class="mb-2">
+                                <span class="badge badge-light text-primary px-3 py-1">
+                                    <i class="fas fa-briefcase mr-1"></i>@Model.cag_Descripcion
+                                </span>
+                            </div>
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-envelope mr-1"></i>@Model.per_Correo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Información Personal -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-user-circle text-primary mr-2"></i>Información Personal
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Código:</span>
+                                        <span class="info-value badge badge-outline-primary">@Model.emp_Codigo</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Primer Nombre:</span>
+                                        <span class="info-value">@Model.per_PrimerNombre</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Segundo Nombre:</span>
+                                        <span class="info-value">@Model.per_SegundoNombre</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Apellido Paterno:</span>
+                                        <span class="info-value">@Model.per_ApellidoPaterno</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Apellido Materno:</span>
+                                        <span class="info-value">@Model.per_ApellidoMaterno</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Identidad:</span>
+                                        <span class="info-value">@Model.per_Identidad</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha de Nacimiento:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                            @Model.per_FechaNacimiento.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Domicilio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-map-marker-alt text-muted mr-1"></i>
+                                            @Model.per_Domicilio
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Teléfono:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-phone text-muted mr-1"></i>
+                                            @Model.per_Telefono
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Correo:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-envelope text-muted mr-1"></i>
+                                            @Model.per_Correo
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Laboral -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-building text-success mr-2"></i>Información Laboral
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Cargo:</span>
+                                        <span class="info-value badge badge-success">@Model.cag_Descripcion</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Refugio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-home text-muted mr-1"></i>
+                                            @Model.refg_Nombre
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section mt-4">
+                                <h6 class="section-title">
+                                    <i class="fas fa-history text-info mr-2"></i>Información de Auditoría
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Creación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-plus-circle text-muted mr-1"></i>
+                                            @Model.per_FechaCrea.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Modificación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-edit text-muted mr-1"></i>
+                                            @(Model.per_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm ml-2">
+                                <i class="fas fa-print mr-1"></i>Imprimir
+                            </button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                Última actualización: @(Model.per_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

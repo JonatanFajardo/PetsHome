@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
@@ -35,6 +36,15 @@ namespace PetsHome.UI.Controllers
             var model = new MascotaViewModel();
             var drop = Dropdown(model);
             return View(drop);
+        }
+
+        public async Task<IActionResult>  Detail(int id)
+        {
+            var mascota = await _mascotaService.DetailAsync(id);
+            if (mascota == null)
+                return NotFound();
+
+            return View(mascota);
         }
 
         public async Task<IActionResult> List()

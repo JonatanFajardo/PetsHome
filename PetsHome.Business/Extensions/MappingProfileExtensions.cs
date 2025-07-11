@@ -42,7 +42,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Adopciones_DetailResult, AdopcionViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Adopciones_FindResult, AdopcionViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Adopciones_ListResult, AdopcionViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Empleados_DetailResult, EmpleadoViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Empleados_DetailResult, EmpleadoDetailViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Empleados_FindResult, EmpleadoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Empleados_ListResult, EmpleadoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_EmpleadosCargos_DetailResult, EmpleadoCargoViewModel>().ReverseMap();

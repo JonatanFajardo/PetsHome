@@ -77,14 +77,14 @@
         });
 
         table.on("click", ".delete-btn", function (e) {
-            var id = $(this).data("id"); 
+            var id = $(this).data("id");
             console.log(id);
             var btn = Ladda.create($(this)[0]);
             console.log('btn delete: ' + params.getUrl);
             action = "delete";
             $.ajax({
                 type: "GET",
-                url: `${params.getUrl}/${id}`, 
+                url: `${params.getUrl}/${id}`,
                 dataType: "json",
                 beforeSend: function () {
                     btn.start();
@@ -249,7 +249,7 @@
     };
 
     obj.success = function (data, status, xhr) {
-        
+
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");

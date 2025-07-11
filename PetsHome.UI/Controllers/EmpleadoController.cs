@@ -62,18 +62,27 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        //public async Task<IActionResult> Detail(int id)
+        //{
+        //    var itemDetail = await _EmpleadoService.DetailAsync(id);
+        //    if (itemDetail != null)
+        //    {
+        //        return AjaxResult(itemDetail, true);
+        //    }
+        //    else
+        //    {
+        //        ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
         public async Task<IActionResult> Detail(int id)
         {
-            var itemDetail = await _EmpleadoService.DetailAsync(id);
-            if (itemDetail != null)
-            {
-                return AjaxResult(itemDetail, true);
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
-            }
+            var mascota = await _EmpleadoService.DetailAsync(id);
+            if (mascota == null)
+                return NotFound();
+
+            return View(mascota);
         }
 
 

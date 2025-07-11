@@ -68,12 +68,12 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="id">El ID del Empleado.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles del Empleado.</returns>
-        public async Task<EmpleadoViewModel> DetailAsync(int id)
+        public async Task<EmpleadoDetailViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Empleados_DetailResult mappedResult = await _empleadoRepository.DetailAsync(id);
-                return _mapper.Map<EmpleadoViewModel>(mappedResult);
+                return _mapper.Map<EmpleadoDetailViewModel>(mappedResult);
             }
             catch (Exception error)
             {
