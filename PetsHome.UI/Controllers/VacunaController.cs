@@ -52,16 +52,14 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var itemDetail = await _vacunaService.DetailAsync(id);
-            if (itemDetail != null)
-            {
-                return Json(new { item = itemDetail, success = true });
-            }
-            else
+            var resultado = await _vacunaService.DetailAsync(id);
+            if (resultado == null)
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
+
+            return View(resultado);
         }
 
 

@@ -77,7 +77,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Vacunas_DetailResult, VacunaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Vacunas_FindResult, VacunaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Vacunas_ListResult, VacunaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Voluntarios_DetailResult, VoluntarioViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Voluntarios_DetailResult, VoluntarioDetailViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Voluntarios_FindResult, VoluntarioViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Voluntarios_ListResult, VoluntarioViewModel>().ReverseMap();
             CreateMap<PR_Albergue_EmpleadosCargos_DeleteResult, EmpleadoCargoViewModel>().ReverseMap();

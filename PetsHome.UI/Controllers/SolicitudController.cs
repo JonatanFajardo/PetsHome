@@ -63,16 +63,14 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var itemDetail = await _SolicitudService.DetailAsync(id);
-            if (itemDetail != null)
-            {
-                return View("Detail", itemDetail);
-            }
-            else
+            var resultado = await _SolicitudService.DetailAsync(id);
+            if (resultado == null)
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
+
+            return View(resultado);
         }
 
         public async Task<IActionResult> Add(SolicitudViewModel model)

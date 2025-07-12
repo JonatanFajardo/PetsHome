@@ -1,0 +1,148 @@
+﻿/* Gradiente personalizado */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+/* Avatar y estado */
+.avatar-container {
+    position: relative;
+}
+
+.avatar-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.avatar-status {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid white;
+}
+
+/* Secciones y títulos */
+.section-title {
+    color: #495057;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.info-section {
+    margin-bottom: 1.5rem;
+}
+
+.info-group {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid #007bff;
+}
+
+/* Items de información */
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+.info-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+    min-width: 140px;
+}
+
+.info-value {
+    color: #212529;
+    font-size: 0.9rem;
+    text-align: right;
+    flex: 1;
+}
+
+/* Badges personalizados */
+.badge-outline-primary {
+    color: #007bff;
+    border: 1px solid #007bff;
+    background: transparent;
+}
+
+/* Efectos hover */
+.card {
+    transition: all 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+.info-item:hover {
+    background: rgba(0, 123, 255, 0.05);
+    border-radius: 0.25rem;
+    margin: 0 -0.5rem;
+    padding: 0.75rem 0.5rem;
+}
+
+/* Responsividad */
+
+
+/* Botones */
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Footer */
+.card-footer {
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+/* Texto blanco transparente */
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+
+/* Tarjetas de estadísticas */
+.stat-card {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Efectos hover */
+.card {
+    transition: all 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    

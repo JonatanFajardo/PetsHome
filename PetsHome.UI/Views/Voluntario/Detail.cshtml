@@ -1,9 +1,240 @@
-﻿
+﻿@model VoluntarioDetailViewModel
 @{
 
     ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var hoy = DateTime.Today;
+    var edad = hoy.Year - Model.per_FechaNacimiento.Year;
+    if (Model.per_FechaNacimiento.Date > hoy.AddYears(-edad)) edad--;
+
 }
 
-<h1>Detail</h1>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-container position-relative">
+                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-heart text-success fa-2x"></i>
+                                </div>
+                                <div class="avatar-status bg-warning"></div>
+                            </div>
+                        </div>
+                      @*   <div class="col">
+                            <h4 class="mb-1 text-white font-weight-bold">@Model.per_PrimerNombre @Model.per_ApellidoPaterno</h4>
+                            <div class="mb-2">
+                                <span class="badge badge-light text-success px-3 py-1">
+                                    <i class="fas fa-hands-helping mr-1"></i>Voluntario
+                                </span>
+                                <span class="badge @Model.RecurrenteClase ml-2">
+                                    <i class="fas fa-@(Model.vol_Recurrente ? "check-circle" : "clock") mr-1"></i>
+                                    @Model.RecurrenteTexto
+                                </span>
+                            </div>
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-envelope mr-1"></i>@Model.per_Correo
+                            </p>
+                        </div> *@
+                        <div class="col-auto">
+                            <div class="text-center">
+                                <div class="display-4 font-weight-bold text-white">@Model.vol_HorasTrabajadas</div>
+                                <small class="text-white-50">Horas Trabajadas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Información Personal -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-user-circle text-primary mr-2"></i>Información Personal
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">ID Voluntario:</span>
+                                        <span class="info-value badge badge-outline-primary">VOL-@Model.vol_Id.ToString("D4")</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Primer Nombre:</span>
+                                        <span class="info-value">@Model.per_PrimerNombre</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Segundo Nombre:</span>
+                                        <span class="info-value">@Model.per_SegundoNombre</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Apellido Paterno:</span>
+                                        <span class="info-value">@Model.per_ApellidoPaterno</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Apellido Materno:</span>
+                                        <span class="info-value">@Model.per_ApellidoMaterno</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Identidad:</span>
+                                        <span class="info-value">@Model.per_Identidad</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha de Nacimiento:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-calendar-alt text-muted mr-1"></i>
+                                            @Model.per_FechaNacimiento.ToString("dd/MM/yyyy")
+                                            <small class="text-white ml-2">(@edad años)</small>
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Domicilio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-map-marker-alt text-muted mr-1"></i>
+                                            @Model.per_Domicilio
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Teléfono:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-phone text-muted mr-1"></i>
+                                            @Model.per_Telefono
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Correo:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-envelope text-muted mr-1"></i>
+                                            @Model.per_Correo
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Voluntariado -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-heart text-danger mr-2"></i>Información de Voluntariado
+                                </h6>
+                                <div class="info-group">
+                            @*         <div class="info-item">
+                                        <span class="info-label">Horas Trabajadas:</span>
+                                        <span class="info-value">
+                                            <span class="badge @Model.HorasClase">
+                                                <i class="fas fa-clock mr-1"></i>@Model.HorasTexto
+                                            </span>
+                                        </span>
+                                    </div> *@
+
+                                  @*   <div class="info-item">
+                                        <span class="info-label">Voluntario Recurrente:</span>
+                                        <span class="info-value">
+                                            <span class="badge @Model.RecurrenteClase">
+                                                <i class="fas fa-@(Model.vol_Recurrente ? "check-circle" : "times-circle") mr-1"></i>
+                                                @Model.RecurrenteTexto
+                                            </span>
+                                        </span>
+                                    </div> *@
+
+                                    <div class="info-item">
+                                        <span class="info-label">Promedio Horas/Mes:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-chart-line text-muted mr-1"></i>
+                                            @(Model.vol_Recurrente ? (Model.vol_HorasTrabajadas / 12.0).ToString("F1") : "N/A") hrs
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Estadísticas Rápidas -->
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-chart-bar text-info mr-2"></i>Estadísticas
+                                </h6>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="stat-card bg-primary text-white">
+                                            <div class="stat-number">@Model.vol_HorasTrabajadas</div>
+                                            <div class="stat-label">Horas Totales</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="stat-card bg-success text-white">
+                                            <div class="stat-number">@Model.per_FechaNacimiento</div>
+                                            <div class="stat-label">Años</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-history text-info mr-2"></i>Información de Auditoría
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Usuario Creación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user-plus text-muted mr-1"></i>
+                                            @Model.UsuarioCreacion
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Creación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-plus-circle text-muted mr-1"></i>
+                                            @Model.per_FechaCrea.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Usuario Modificación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user-edit text-muted mr-1"></i>
+                                            @(Model.UsuarioModificacion?.ToString() ?? "N/A")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Modificación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-edit text-muted mr-1"></i>
+                                            @(Model.per_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                Última actualización: @(Model.per_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

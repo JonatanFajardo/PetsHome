@@ -78,11 +78,14 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var mascota = await _EmpleadoService.DetailAsync(id);
-            if (mascota == null)
-                return NotFound();
+            var resultado = await _EmpleadoService.DetailAsync(id);
+            if (resultado == null)
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
 
-            return View(mascota);
+            return View(resultado);
         }
 
 

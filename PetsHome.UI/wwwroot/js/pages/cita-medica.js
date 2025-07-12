@@ -20,6 +20,19 @@ var CitaMedica = (function () {
                 // Configuración de headers con mejoras visuales
                 var header = [ 
                     {
+                        FieldName: "masc_Id",
+                        DisplayName: "Id",
+                        //Width: "200px",
+
+                        Align: "center",
+                        Sortable: true,
+                        Searchable: true,
+
+                        Render: function (data) {
+                            return `<span class="fw-bold text-secondary">${data ?? 'N/A'}</span>`;
+                        }
+                    },
+                    {
                         FieldName: "masc_Nombre",
                         DisplayName: "👤 Nombre de la Mascota",
                         //Width: "200px",

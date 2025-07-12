@@ -56,12 +56,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<VoluntarioViewModel> DetailAsync(int id)
+        public async Task<VoluntarioDetailViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Voluntarios_DetailResult mappedResult = await _voluntarioRepository.DetailAsync(id);
-                return _mapper.Map<VoluntarioViewModel>(mappedResult);
+                return _mapper.Map<VoluntarioDetailViewModel>(mappedResult);
             }
             catch (Exception error)
             {
