@@ -38,7 +38,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "RTN")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(14)]
+        [StringLength(15)]
         public string refg_RTN { get; set; }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(8)]
+        [StringLength(9)]
         public string refg_Telefono { get; set; }
 
         /// <summary>
@@ -63,6 +63,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Departamento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string depto_Id { get; set; }
+        public string depto_Descripcion { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del municipio del refugio.
@@ -70,6 +71,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Municipio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string mpio_Id { get; set; }
+        public string mpio_Descripcion { get; set; }
 
         /// <summary>
         /// Obtiene o establece información adicional sobre el refugio.
@@ -83,6 +85,11 @@ namespace PetsHome.Business.Models
         /// Obtiene o establece si el refugio está activo.
         /// </summary>
         public bool refg_EsActivo { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece si el refugio está activo.
+        /// </summary>
+        public string EsActivo { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea el refugio.

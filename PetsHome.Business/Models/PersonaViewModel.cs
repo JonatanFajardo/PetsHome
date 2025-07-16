@@ -17,8 +17,8 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Identidad")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [MaxLength(13, ErrorMessage = "Ingrese solamente 13 dígitos")]
-        [MinLength(13, ErrorMessage = "El mínimo de dígitos es 13")]
+        [MaxLength(15, ErrorMessage = "Ingrese solamente 13 dígitos")]
+        [MinLength(15, ErrorMessage = "El mínimo de dígitos es 13")]
         public string per_Identidad { get; set; }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Teléfono")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(8, ErrorMessage = "Ingrese solamente 8 dígitos")]
-        [MinLength(8, ErrorMessage = "El mínimo de dígitos es 8")]
+        [StringLength(9, ErrorMessage = "Ingrese solamente 8 dígitos")]
+        [MinLength(9, ErrorMessage = "El mínimo de dígitos es 8")]
         public string per_Telefono { get; set; }
 
         /// <summary>

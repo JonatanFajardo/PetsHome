@@ -71,12 +71,12 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="id">Identificador de la mascota.</param>
         /// <returns>Un objeto MascotaViewModel que contiene los detalles de la mascota.</returns>
-        public async Task<MascotaViewModel> DetailAsync(int id)
+        public async Task<MascotaDetailViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Mascotas_DetailResult mappedResult = await _mascotaRepository.DetailAsync(id);
-                return _mapper.Map<MascotaViewModel>(mappedResult);
+                return _mapper.Map<MascotaDetailViewModel>(mappedResult);
             }
             catch (Exception error)
             {

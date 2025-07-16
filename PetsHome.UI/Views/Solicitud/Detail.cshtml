@@ -4,115 +4,212 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de empleado</h3>
-        </div>
-
-        <div class="card-body">
-
-            <!--Datos Solicitante-->
-            < class="card">
-            <div class="card-body">
-                <!--Titulo-->
-                <h5 class="card-title">Datos de Solicitante</h5>
-
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Identidad-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Identidad</label>
-                        <input class="form-control" asp-for="sol_Identidad" type="text" />
-                    </div>
-                    <!--Campo Nombres-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Nombres</label>
-                        <input class="form-control" asp-for="sol_Nombres" type="text" />
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-container position-relative">
+                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-paw text-primary fa-2x"></i>
+                                </div>
+                                <div class="avatar-status bg-success"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="mb-1 text-white font-weight-bold">@Model.sol_Nombres @Model.sol_Apellidos</h4>
+                            <div class="mb-2">
+                                <span class="badge badge-light text-primary px-3 py-1">
+                                    <i class="fas fa-id-card mr-1"></i>@Model.sol_Identidad
+                                </span>
+                            </div>
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-envelope mr-1"></i>@Model.sol_Correo
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Apellidos-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Apellidos</label>
-                        <input class="form-control" asp-for="sol_Apellidos" type="text" />
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Información del Solicitante -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-user text-primary mr-2"></i>Información del Solicitante
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">ID Solicitud:</span>
+                                        <span class="info-value badge badge-outline-primary">@Model.sol_Id</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Identidad:</span>
+                                        <span class="info-value">@Model.sol_Identidad</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Nombres:</span>
+                                        <span class="info-value">@Model.sol_Nombres</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Apellidos:</span>
+                                        <span class="info-value">@Model.sol_Apellidos</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Teléfono:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-phone text-muted mr-1"></i>
+                                            @Model.sol_Telefono
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Correo:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-envelope text-muted mr-1"></i>
+                                            @Model.sol_Correo
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de la Mascota -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-paw text-success mr-2"></i>Información de la Mascota
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">ID Mascota:</span>
+                                        <span class="info-value badge badge-outline-success">@Model.masc_Id</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Imagen:</span>
+                                        <div class="info-value">
+                                            <img src="@Model.masc_Imagen" alt="@Model.masc_Nombre" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                                        </div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Nombre:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-heart text-muted mr-1"></i>
+                                            @Model.masc_Nombre
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Estado:</span>
+                                        <span class="info-value badge @(Model.masc_EsAdoptado ? "badge-success" : "badge-warning") text-white">
+                                            @(Model.masc_EsAdoptado ? "Adoptado" : "Disponible")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Raza:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-dog text-muted mr-1"></i>
+                                            @Model.raza_Descripcion
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Albergue:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-home text-muted mr-1"></i>
+                                            @Model.refg_Nombre
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!--Campo Teléfono-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Teléfono</label>
-                        <input class="form-control" asp-for="sol_Telefono" type="text" />
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-history text-warning mr-2"></i>Información de Auditoría
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info-group">
+                                            <div class="info-item">
+                                                <span class="info-label">Creado por:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-user text-muted mr-1"></i>
+                                                    @Model.sol_NombreUsuarioCrea
+                                                </span>
+                                            </div>
+
+                                            <div class="info-item">
+                                                <span class="info-label">Fecha Creación:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-plus-circle text-muted mr-1"></i>
+                                                    @Model.sol_FechaCrea.ToString("dd/MM/yyyy HH:mm")
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info-group">
+                                            <div class="info-item">
+                                                <span class="info-label">Modificado por:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-user-edit text-muted mr-1"></i>
+                                                    @(Model.sol_NombreUsuarioModifica ?? "N/A")
+                                                </span>
+                                            </div>
+
+                                            <div class="info-item">
+                                                <span class="info-label">Fecha Modificación:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-edit text-muted mr-1"></i>
+                                                    @(Model.sol_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Correo Electrónico-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Correo Electrónico</label>
-                        <input class="form-control" asp-for="sol_Correo" type="text" />
-                    </div>
-                    <!--Campo Fecha de Solicitud-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Fecha de Solicitud</label>
-                        <input class="form-control" asp-for="sol_FechaCrea" type="text" />
+                <div class="card-footer bg-light">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm ml-2">
+                                <i class="fas fa-print mr-1"></i>Imprimir
+                            </button>
+                            <button class="btn btn-outline-success btn-sm ml-2">
+                                <i class="fas fa-check mr-1"></i>Aprobar
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm ml-2">
+                                <i class="fas fa-times mr-1"></i>Rechazar
+                            </button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                Última actualización: @(Model.sol_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!--Datos de mascota-->
-            <div class="card">
-                <div class="card-body">
-                    <!--Titulo-->
-                    <div class="form-row justify-content-between">
-                        <h5 class="card-title">Datos de la mascota</h5>
-                    </div>
-
-                    <!--Titulo-->
-                    <h5 class="card-title">Datos de empleado</h5>
-
-                    <!--Fila-->
-                    <div class="form-row">
-                        <!--Campo Imagen-->
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Imagen</label>
-                            <input class="form-control" asp-for="masc_Imagen" type="text" />
-                        </div>
-                        <!--Campo masc_Nombre-->
-                        <div class="form-group col-md-6">
-                            <label class="control-label">masc_Nombre</label>
-                            <input class="form-control" asp-for="masc_Nombre" type="text" />
-                        </div>
-                    </div>
-
-                    <!--Fila-->
-                    <div class="form-row">
-                        <!--Campo Adoptado-->
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Adoptado</label>
-                            <input class="form-control" asp-for="masc_EsAdoptado" type="text" />
-                        </div>
-                        <!--Campo Raza-->
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Raza</label>
-                            <input class="form-control" asp-for="raza_Descripcion" type="text" />
-                        </div>
-                    </div>
-
-                    <!--Fila-->
-                    <div class="form-row">
-                        <!--Campo Refugio-->
-                        <div class="form-group col-md-6">
-                            <label class="control-label">Refugio</label>
-                            <input class="form-control" asp-for="refg_Nombre" type="text" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

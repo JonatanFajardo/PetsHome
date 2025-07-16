@@ -1,7 +1,270 @@
-﻿@model MascotaViewModel
+﻿@model MascotaDetailViewModel
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-hola
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-container position-relative">
+                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
+                                    @if (Model.masc_Imagen?.Length > 0)
+                                    {
+                                        <img src="@Model.masc_Imagen" alt="@Model.masc_Nombre" class="avatar-image rounded-circle" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-paw text-primary fa-2x"></i>
+                                    }
+                                </div>
+                                <div class="avatar-status bg-success"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="mb-1 text-white font-weight-bold">@Model.masc_Nombre</h4>
+                            <div class="mb-2">
+                                <span class="badge badge-light text-primary px-3 py-1">
+                                    <i class="fas fa-heart mr-1"></i>@Model.raza_Descripcion
+                                </span>
+                                @if (Model.masc_EsAdoptado)
+                                {
+                                    <span class="badge badge-success px-3 py-1 ml-2">
+                                        <i class="fas fa-home mr-1"></i>Adoptado
+                                    </span>
+                                }
+                                else if (Model.masc_EsReservado)
+                                {
+                                    <span class="badge badge-warning px-3 py-1 ml-2">
+                                        <i class="fas fa-clock mr-1"></i>Reservado
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-info px-3 py-1 ml-2">
+                                        <i class="fas fa-hand-holding-heart mr-1"></i>Disponible
+                                    </span>
+                                }
+                            </div>
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-map-marker-alt mr-1"></i>@Model.refg_Nombre
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Información Básica -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-info-circle text-primary mr-2"></i>Información Básica
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">ID:</span>
+                                        <span class="info-value badge badge-outline-primary">@Model.masc_Id</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Nombre:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-tag text-muted mr-1"></i>
+                                            @Model.masc_Nombre
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Raza:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-dna text-muted mr-1"></i>
+                                            @Model.raza_Descripcion
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Edad:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-birthday-cake text-muted mr-1"></i>
+                                            @Model.masc_Edad años
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Sexo:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-@(Model.masc_Sexo == "M" ? "mars" : "venus") text-muted mr-1"></i>
+                                            @(Model.masc_Sexo == "M" ? "Macho" : "Hembra")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Peso:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-weight text-muted mr-1"></i>
+                                            @Model.masc_Peso kg
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Color:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-palette text-muted mr-1"></i>
+                                            @Model.masc_Color
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del Refugio y Estado -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-home text-success mr-2"></i>Información del Refugio
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Albergue:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-building text-muted mr-1"></i>
+                                            @Model.refg_Nombre
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Procedencia:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-route text-muted mr-1"></i>
+                                            @Model.proc_Descripcion
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Estado:</span>
+                                        <span class="info-value">
+                                            @if (Model.masc_EsAdoptado)
+                                            {
+                                                <span class="badge badge-success">
+                                                    <i class="fas fa-home mr-1"></i>Adoptado
+                                                </span>
+                                            }
+                                            else if (Model.masc_EsReservado)
+                                            {
+                                                <span class="badge badge-warning">
+                                                    <i class="fas fa-clock mr-1"></i>Reservado
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-info">
+                                                    <i class="fas fa-hand-holding-heart mr-1"></i>Disponible para Adopción
+                                                </span>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section mt-4">
+                                <h6 class="section-title">
+                                    <i class="fas fa-history text-warning mr-2"></i>Información de Auditoría
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Registrado por:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user text-muted mr-1"></i>
+                                            @Model.masc_NombreUsuarioCrea
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Registro:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-plus-circle text-muted mr-1"></i>
+                                            @Model.masc_FechaCrea.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Modificado por:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user-edit text-muted mr-1"></i>
+                                            @(Model.masc_NombreUsuarioModifica ?? "N/A")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Modificación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-edit text-muted mr-1"></i>
+                                            @(Model.masc_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historia de la Mascota -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-book text-info mr-2"></i>Historia de @Model.masc_Nombre
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <div class="info-value">
+                                            <div class="bg-light p-3 rounded">
+                                                <i class="fas fa-quote-left text-muted mr-2"></i>
+                                                @Model.masc_Historia
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm ml-2">
+                                <i class="fas fa-print mr-1"></i>Imprimir
+                            </button>
+                            @if (!Model.masc_EsAdoptado && !Model.masc_EsReservado)
+                            {
+                                <button class="btn btn-outline-success btn-sm ml-2">
+                                    <i class="fas fa-hand-holding-heart mr-1"></i>Adoptar
+                                </button>
+                                <button class="btn btn-outline-warning btn-sm ml-2">
+                                    <i class="fas fa-clock mr-1"></i>Reservar
+                                </button>
+                            }
+                            <button class="btn btn-outline-info btn-sm ml-2">
+                                <i class="fas fa-camera mr-1"></i>Galería
+                            </button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                Última actualización: @(Model.masc_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

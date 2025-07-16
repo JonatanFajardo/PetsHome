@@ -79,7 +79,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string UsuarioCreacion { get; set; }
+        public string masc_NombreUsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -89,7 +89,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string UsuarioModificacion { get; set; }
+        public string masc_NombreUsuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.

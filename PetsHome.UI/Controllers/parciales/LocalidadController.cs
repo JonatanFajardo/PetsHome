@@ -29,6 +29,18 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        public async Task<IActionResult> DetailDepartamento(int id)
+        {
+            var resultado = await _departamentoService.DetailAsync(id);
+            if (resultado == null)
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+
+            return View(resultado);
+        }
+
         public async Task<IActionResult> ListMunicipios(int id)
         {
             var listMunicipios = await _municipioService.ListIdAsync(id);

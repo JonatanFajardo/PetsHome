@@ -3,6 +3,7 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -26,12 +27,7 @@ namespace PetsHome.UI.Controllers
         {
             return View();
         }
-
-        public IActionResult Detail()
-        {
-            return View();
-        }
-
+  
         public async Task<IActionResult> List()
         {
             var itemListing = await _SolicitudService.ListAsync();
@@ -74,10 +70,13 @@ namespace PetsHome.UI.Controllers
         }
 
         public async Task<IActionResult> Add(SolicitudViewModel model)
-        {
+        { 
+            // Eliminar guiones y espacios
+            model.sol_Identidad = model.sol_Identidad.Replace("-", "").Replace(" ", "");
+            model.sol_Telefono = model.sol_Telefono.Replace("-", "").Replace(" ", "");
 
             if (!model.isEdit)
-            {
+            { 
                 Boolean createdItem = await _SolicitudService.AddAsync(model);
                 if (createdItem)
                     goto ErrorResult;

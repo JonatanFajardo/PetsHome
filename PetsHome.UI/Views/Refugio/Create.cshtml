@@ -35,22 +35,34 @@
                             <span class="text-danger" asp-validation-for="refg_Ubicacion"></span>
                         </div>
                     </div>
+                    <!-- Campo Identidad -->
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" asp-for="refg_RTN">RTN</label>
+                            <label class="form-label" asp-for="refg_RTN" for="Identidad">Identidad</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-file-invoice-dollar"></i></span>
-                                <input class="form-control" asp-for="refg_RTN" type="number" placeholder="Número de RTN" />
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                <input class="form-control" asp-for="refg_RTN" type="text"
+                                       id="identidadInput"
+                                       placeholder="0000-0000-00000"
+                                       maxlength="15"
+                                       pattern="[0-9]{4}-[0-9]{4}-[0-9]{5}" />
                             </div>
                             <span class="text-danger" asp-validation-for="refg_RTN"></span>
                         </div>
                     </div>
+                    <!-- Campo Telefono -->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" asp-for="refg_Telefono">Teléfono</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                <input class="form-control" asp-for="refg_Telefono" type="number" placeholder="Número de teléfono" />
+                                <input class="form-control"
+                                       asp-for="refg_Telefono"
+                                       type="text"
+                                       id="telefonoInput"
+                                       placeholder="0000-0000"
+                                       maxlength="9"
+                                       pattern="[0-9]{4}-[0-9]{4}" />
                             </div>
                             <span class="text-danger" asp-validation-for="refg_Telefono"></span>
                         </div>
@@ -152,5 +164,6 @@
 
 @section Scripts{
 <script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+<script src="~/js/helpers-custom/Input-formatter.js"></script>
+<script src="~/js/helpers-custom/image-Extension.js"></script>
 }

@@ -127,12 +127,12 @@ namespace PetsHome.Business.Models
         /// <summary>
         /// Obtiene o establece un valor que indica si la mascota ha sido adoptada.
         /// </summary>
-        public bool? masc_EsAdoptado { get; set; }
+        public bool masc_EsAdoptado { get; set; }
 
         /// <summary>
         /// Obtiene o establece un valor que indica si la mascota ha sido reservada.
         /// </summary>
-        public bool? masc_EsReservado { get; set; }
+        public bool masc_EsReservado { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea la mascota.
@@ -159,7 +159,7 @@ namespace PetsHome.Business.Models
         /// Obtiene o establece el nombre del usuario que crea la mascota.
         /// </summary>
         [Display(Name = "Usuario creación")]
-        public string? NombreUsuarioCrea { get; set; }
+        public string? masc_NombreUsuarioCrea { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que modifica la mascota.

@@ -21,7 +21,8 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Identidad")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(13)]
+        [MinLength(15, ErrorMessage = "La identidad debe tener al menos 13 caracteres")]
+        [StringLength(15, ErrorMessage = "La identidad no debe exceder los 13 caracteres")]
         public string sol_Identidad { get; set; }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(8)]
+        [StringLength(9)]
         public string sol_Telefono { get; set; }
 
         /// <summary>

@@ -45,12 +45,16 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public int depto_Id { get; set; }
-        
+
+        public string depto_Descripcion { get; set; }
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public int mpio_Id { get; set; }
-        
+
+        public string mpio_Descripcion { get; set; }
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
@@ -64,7 +68,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string UsuarioCreacion { get; set; }
+        public string refg_NombreUsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -74,7 +78,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string UsuarioModificacion { get; set; }
+        public string refg_NombreUsuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.

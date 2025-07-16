@@ -70,6 +70,9 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(VoluntarioViewModel model)
         {
+            // Eliminar guiones y espacios
+            model.per.per_Identidad = model.per.per_Identidad.Replace("-", "").Replace(" ", "");
+            model.per.per_Telefono = model.per.per_Telefono.Replace("-", "").Replace(" ", "");
             if (!model.isEdit)
             {
                 Boolean createdItem = await _VoluntarioService.AddAsync(model);
