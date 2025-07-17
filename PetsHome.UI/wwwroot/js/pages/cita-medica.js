@@ -20,16 +20,15 @@ var CitaMedica = (function () {
                 // Configuración de headers con mejoras visuales
                 var header = [ 
                     {
-                        FieldName: "masc_Id",
+                        FieldName: "medic_Id",
                         DisplayName: "Id",
-                        //Width: "200px",
-
                         Align: "center",
                         Sortable: true,
                         Searchable: true,
-
                         Render: function (data) {
-                            return `<span class="fw-bold text-secondary">${data ?? 'N/A'}</span>`;
+                            // Convertir a string y manejar casos especiales
+                            const id = data?.toString() || 'N/A';
+                            return `<span class="fw-bold text-secondary">${id}</span>`;
                         }
                     },
                     {
@@ -46,26 +45,26 @@ var CitaMedica = (function () {
                                     </div>`;
                         }
                     },
-                    {
-                        FieldName: "medic_FechaConsulta",
-                        DisplayName: "📅 Fecha de Consulta",
-                        //Width: "150px",
-                        Align: "center",
-                        Sortable: true,
-                        Render: function (data) {
-                            if (!data) return '<span class="text-muted">Sin fecha</span>';
-                            const fecha = new Date(data);
-                            const fechaFormateada = fecha.toLocaleDateString('es-ES', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric'
-                            });
-                            return `<div class="date-cell">
-                                        <i class="far fa-calendar-alt text-info me-2"></i>
-                                        <span class="fw-medium">${fechaFormateada}</span>
-                                    </div>`;
-                        }
-                    },
+                    //{
+                    //    FieldName: "medic_FechaConsulta",
+                    //    DisplayName: "📅 Fecha de Consulta",
+                    //    //Width: "150px",
+                    //    Align: "center",
+                    //    Sortable: true,
+                    //    Render: function (data) {
+                    //        if (!data) return '<span class="text-muted">Sin fecha</span>';
+                    //        const fecha = new Date(data);
+                    //        const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                    //            day: '2-digit',
+                    //            month: '2-digit',
+                    //            year: 'numeric'
+                    //        });
+                    //        return `<div class="date-cell">
+                    //                    <i class="far fa-calendar-alt text-info me-2"></i>
+                    //                    <span class="fw-medium">${fechaFormateada}</span>
+                    //                </div>`;
+                    //    }
+                    //},
                     {
                         FieldName: "medic_TipoConsulta",
                         DisplayName: "🏥 Tipo de Consulta",

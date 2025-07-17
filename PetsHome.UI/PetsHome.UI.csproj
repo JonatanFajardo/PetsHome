@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
-    <Content Remove="Views\CitaMedica\Detail.cshtml" />
     <Content Remove="wwwroot\js\components\datatable\datatable - Copia.catalogs.init.js" />
   </ItemGroup>
 

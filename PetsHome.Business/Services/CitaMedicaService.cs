@@ -72,12 +72,12 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="id">Identificador del registro del historial médico.</param>
         /// <returns>Un objeto HistorialMedicoViewModel que contiene los detalles del registro del historial médico.</returns>
-        public async Task<CitaMedicaViewModel> DetailAsync(int id)
+        public async Task<CitaMedicaDetailViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_CitaMedica_DetailResult mappedResult = await _historialmedicoRepository.DetailAsync(id);
-                return _mapper.Map<CitaMedicaViewModel>(mappedResult);
+                return _mapper.Map<CitaMedicaDetailViewModel>(mappedResult);
             }
             catch (Exception error)
             {
