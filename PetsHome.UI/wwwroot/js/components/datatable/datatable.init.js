@@ -147,7 +147,13 @@ var datatable = (function () {
                 }
             });
 
-            var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
+            var exportColumns = [];
+            for (var i = 0; i < header.length; i++) {
+                if (header[i].ExportVisible !== false) {
+                    exportColumns.push(i);
+                }
+            }
+            var exportOptions = { columns: exportColumns, orthogonal: "export" };
             var table = $('#datatable').DataTable({
                 responsive: true,
                 serverSide: true,
@@ -173,6 +179,7 @@ var datatable = (function () {
                         extend: "pdfHtml5",
                         title: "Exportar a PDF",
                         text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
+                        filename: 'Reporte_' + new Date().toISOString().slice(0, 10),
                         className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
@@ -180,6 +187,7 @@ var datatable = (function () {
                         extend: "excelHtml5",
                         title: "Exportar a EXCEL",
                         text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                        filename: 'Reporte_' + new Date().toISOString().slice(0, 10),
                         className: "btn btn-secondary",
                         exportOptions: exportOptions
                     }, 
@@ -385,6 +393,17 @@ var datatable = (function () {
 
             });
 
+            // O si prefieres una función más dinámica:
+            function getExportFilename(extension) {
+                var today = new Date();
+                var dateStr = today.getFullYear() + '-' +
+                    String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(today.getDate()).padStart(2, '0');
+                var timeStr = String(today.getHours()).padStart(2, '0') + '' +
+                    String(today.getMinutes()).padStart(2, '0');
+
+                return 'MiReporte_' + dateStr + '_' + timeStr;
+            }
             //Estilos para los botones
             const sheet = new CSSStyleSheet();
             sheet.insertRule('.dt-buttons { text-align: end !important; width: 100%; }');
@@ -445,9 +464,9 @@ var datatable = (function () {
         });
 
         /**
-  * DataTableProgress - Sistema completo de progreso para DataTables
-  * Maneja estados: init, ajax_start, ajax_send, ajax_response, processing, complete, error
-  */
+          * DataTableProgress - Sistema completo de progreso para DataTables
+          * Maneja estados: init, ajax_start, ajax_send, ajax_response, processing, complete, error
+          */
 
         var DataTableProgress = (function () {
             'use strict';
@@ -1209,358 +1228,6 @@ var datatable = (function () {
         })();
 
 
-      
-        // Funciones auxiliares para el manejo de errores
-        function validateAndProcessResponse(response) {
-            // Validar estructura básica
-            if (typeof response !== 'object') {
-                throw new Error('La respuesta no es un objeto válido');
-            }
-
-            // Diferentes formatos de respuesta que puede manejar
-            var processedResponse = {
-                data: [],
-                recordsTotal: 0,
-                recordsFiltered: 0
-            };
-
-            // Caso 1: Respuesta directa con array de datos
-            if (Array.isArray(response)) {
-                processedResponse.data = response;
-                processedResponse.recordsTotal = response.length;
-                processedResponse.recordsFiltered = response.length;
-            }
-            // Caso 2: Respuesta con estructura DataTable estándar
-            else if (response.data && Array.isArray(response.data)) {
-                processedResponse.data = response.data;
-                processedResponse.recordsTotal = response.recordsTotal || response.data.length;
-                processedResponse.recordsFiltered = response.recordsFiltered || response.data.length;
-            }
-            // Caso 3: Respuesta con diferentes nombres de propiedades
-            else if (response.items && Array.isArray(response.items)) {
-                processedResponse.data = response.items;
-                processedResponse.recordsTotal = response.total || response.items.length;
-                processedResponse.recordsFiltered = response.filtered || response.items.length;
-            }
-            // Caso 4: Error en la respuesta del servidor
-            else if (response.error) {
-                throw new Error('Error del servidor: ' + response.error);
-            }
-            // Caso 5: Respuesta inesperada
-            else {
-                console.warn('Estructura de respuesta inesperada:', response);
-                // Intentar extraer datos de cualquier propiedad que sea un array
-                var arrayProp = Object.keys(response).find(key => Array.isArray(response[key]));
-                if (arrayProp) {
-                    processedResponse.data = response[arrayProp];
-                    processedResponse.recordsTotal = response[arrayProp].length;
-                    processedResponse.recordsFiltered = response[arrayProp].length;
-                } else {
-                    throw new Error('No se encontraron datos válidos en la respuesta');
-                }
-            }
-
-            // Validar que cada elemento tenga las propiedades esperadas
-            if (processedResponse.data.length > 0) {
-                var firstItem = processedResponse.data[0];
-                if (typeof firstItem !== 'object') {
-                    throw new Error('Los elementos de datos no son objetos válidos');
-                }
-            }
-
-            return processedResponse;
-        }
-
-        function showUserError(message, statusCode) {
-            // Prioridad de notificaciones: SweetAlert2 > Toastr > Bootstrap Toast > Alert nativo
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al cargar datos',
-                    html: `
-                <div class="text-left">
-                    <p><strong>Problema:</strong> Ocurrió un problema al cargar los datos</p>
-                    <p><strong>Detalle:</strong> ${message}</p>
-                    ${statusCode ? `<p><small class="text-muted">Código de error: ${statusCode}</small></p>` : ''}
-                </div>
-            `,
-                    confirmButtonText: 'Reintentar',
-                    confirmButtonColor: '#3085d6',
-                    showCancelButton: true,
-                    cancelButtonText: 'Cerrar',
-                    cancelButtonColor: '#d33',
-                    width: '500px',
-                    customClass: {
-                        popup: 'swal-error-popup'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Recargar la tabla
-                        if (window.dataTable && typeof window.dataTable.ajax.reload === 'function') {
-                            window.dataTable.ajax.reload();
-                        } else {
-                            location.reload();
-                        }
-                    }
-                });
-            } else if (typeof toastr !== 'undefined') {
-                toastr.error(
-                    `Ocurrió un problema al cargar los datos: ${message}`,
-                    'Error de Carga',
-                    {
-                        timeOut: 0,
-                        extendedTimeOut: 0,
-                        closeButton: true,
-                        progressBar: true,
-                        positionClass: 'toast-top-right',
-                        iconClass: 'toast-error-custom'
-                    }
-                );
-            } else if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
-                // Bootstrap 5 Toast
-                var toastId = 'toast-' + Date.now();
-                var toastHtml = `
-            <div id="${toastId}" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                <div class="toast-header bg-danger text-white">
-                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <rect width="100%" height="100%" fill="#dc3545"></rect>
-                        <text x="50%" y="50%" fill="white" text-anchor="middle" dy=".3em">⚠</text>
-                    </svg>
-                    <strong class="me-auto">Error al cargar datos</strong>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    <strong>Problema:</strong> Ocurrió un problema al cargar los datos<br>
-                    <small>${message}</small>
-                    ${statusCode ? `<br><small class="text-muted">Código: ${statusCode}</small>` : ''}
-                </div>
-            </div>
-        `;
-
-                // Crear contenedor de toasts si no existe
-                if (!$('#toast-container').length) {
-                    $('body').append('<div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>');
-                }
-
-                $('#toast-container').append(toastHtml);
-                var toast = new bootstrap.Toast($('#' + toastId));
-                toast.show();
-
-                // Limpiar toast después de cerrarse
-                $('#' + toastId).on('hidden.bs.toast', function () {
-                    $(this).remove();
-                });
-
-            } else {
-                // Fallback a alert nativo con más información
-                var alertMessage = `❌ ERROR AL CARGAR DATOS\n\n`;
-                alertMessage += `Problema: Ocurrió un problema al cargar los datos\n`;
-                alertMessage += `Detalle: ${message}\n`;
-                if (statusCode) {
-                    alertMessage += `Código de error: ${statusCode}\n`;
-                }
-                alertMessage += `\n¿Deseas reintentar?`;
-
-                if (confirm(alertMessage)) {
-                    // Recargar la tabla
-                    if (window.dataTable && typeof window.dataTable.ajax.reload === 'function') {
-                        window.dataTable.ajax.reload();
-                    } else {
-                        location.reload();
-                    }
-                }
-            }
-        }
-
-        // Función adicional para mostrar notificación en la tabla misma
-        function showTableError(message) {
-            // Buscar el contenedor de la tabla
-            var tableContainer = $('.dataTables_wrapper');
-            if (tableContainer.length) {
-                // Remover alertas anteriores
-                tableContainer.find('.alert-danger').remove();
-
-                // Crear alerta dentro del contenedor
-                var alertHtml = `
-            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                <strong>Error al cargar datos:</strong> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-
-                tableContainer.prepend(alertHtml);
-
-                // Auto-remover después de 10 segundos
-                setTimeout(function () {
-                    tableContainer.find('.alert-danger').fadeOut(500, function () {
-                        $(this).remove();
-                    });
-                }, 10000);
-            }
-        }
-
-        // Función para mostrar estado de "Sin datos" personalizado
-        function showNoDataMessage(tableId, message) {
-            var table = $('#' + tableId);
-            if (table.length) {
-                var noDataHtml = `
-            <div class="text-center p-4">
-                <div class="mb-3">
-                    <i class="fas fa-database fa-3x text-muted"></i>
-                </div>
-                <h5 class="text-muted">Sin datos disponibles</h5>
-                <p class="text-muted">${message || 'No se encontraron registros para mostrar'}</p>
-                <button class="btn btn-primary btn-sm" onclick="location.reload()">
-                    <i class="fas fa-sync-alt me-1"></i> Recargar
-                </button>
-            </div>
-        `;
-
-                table.find('tbody').html(`<tr><td colspan="100%" class="text-center">${noDataHtml}</td></tr>`);
-            }
-        }
-
-        function logErrorToServer(errorData) {
-            // Opcional: Enviar errores a servidor para análisis
-            try {
-                $.ajax({
-                    url: '/api/log-error', // Ajusta la URL según tu backend
-                    type: 'POST',
-                    data: JSON.stringify(errorData),
-                    contentType: 'application/json',
-                    timeout: 5000,
-                    success: function () {
-                        console.log('Error logged to server');
-                    },
-                    error: function () {
-                        console.warn('Could not log error to server');
-                    }
-                });
-            } catch (e) {
-                console.warn('Error logging failed:', e);
-            }
-        }
-
-        // Funciones de loading (implementa según tu UI)
-        function showLoading() {
-            // Mostrar spinner o indicador de carga
-            $('.dataTables_processing').show();
-            // O usar tu sistema de loading personalizado
-        }
-
-        function hideLoading() {
-            // Ocultar spinner o indicador de carga
-            $('.dataTables_processing').hide();
-        }
-
-        // Función específica para notificar problemas de carga de datos
-        function showDataLoadError(errorMessage, statusCode) {
-            // Notificación flotante específica para errores de carga
-            if (typeof Swal !== 'undefined') {
-                // Toast de SweetAlert2 (menos intrusivo)
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 8000,
-                    timerProgressBar: true,
-                    background: '#f8d7da',
-                    color: '#721c24',
-                    iconColor: '#721c24',
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                });
-
-                Toast.fire({
-                    icon: 'error',
-                    title: '⚠️ Problema al cargar datos',
-                    html: `<small>${errorMessage}</small>`
-                });
-
-            } else if (typeof toastr !== 'undefined') {
-                toastr.warning(
-                    `Ocurrió un problema al cargar los datos desde el servidor`,
-                    '⚠️ Error de Carga de Datos',
-                    {
-                        timeOut: 8000,
-                        closeButton: true,
-                        progressBar: true,
-                        positionClass: 'toast-bottom-right',
-                        iconClass: 'toast-warning'
-                    }
-                );
-            }
-        }
-
-        // Función para crear notificaciones personalizadas en la página
-        function createCustomNotification(type, title, message, duration = 5000) {
-            // Crear contenedor de notificaciones si no existe
-            if (!$('#custom-notifications').length) {
-                $('body').append(`
-            <div id="custom-notifications" 
-                 style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 350px;">
-            </div>
-        `);
-            }
-
-            var notificationId = 'notification-' + Date.now();
-            var iconClass = '';
-            var bgClass = '';
-
-            switch (type) {
-                case 'error':
-                    iconClass = 'fas fa-exclamation-circle';
-                    bgClass = 'bg-danger';
-                    break;
-                case 'warning':
-                    iconClass = 'fas fa-exclamation-triangle';
-                    bgClass = 'bg-warning';
-                    break;
-                case 'info':
-                    iconClass = 'fas fa-info-circle';
-                    bgClass = 'bg-info';
-                    break;
-                case 'success':
-                    iconClass = 'fas fa-check-circle';
-                    bgClass = 'bg-success';
-                    break;
-            }
-
-            var notificationHtml = `
-        <div id="${notificationId}" class="alert alert-dismissible fade show ${bgClass} text-white mb-2" 
-             style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideInRight 0.3s ease-out;">
-            <div class="d-flex align-items-start">
-                <i class="${iconClass} me-2 mt-1"></i>
-                <div class="flex-grow-1">
-                    <strong class="d-block">${title}</strong>
-                    <small>${message}</small>
-                </div>
-                <button type="button" class="btn-close btn-close-white ms-2" 
-                        onclick="$('#${notificationId}').fadeOut(300, function(){ $(this).remove(); })">
-                </button>
-            </div>
-            <div class="progress mt-2" style="height: 3px;">
-                <div class="progress-bar bg-white" style="width: 100%; animation: shrinkWidth ${duration}ms linear;"></div>
-            </div>
-        </div>
-    `;
-
-            $('#custom-notifications').append(notificationHtml);
-
-            // Auto-remover
-            setTimeout(function () {
-                $('#' + notificationId).fadeOut(300, function () {
-                    $(this).remove();
-                });
-            }, duration);
-
-            return notificationId;
-        }
-
-
         //Eliminamos la agrupaciond de los botones.
         $(function () {
             $(".dt-buttons").removeClass("btn-group");
@@ -1568,59 +1235,6 @@ var datatable = (function () {
         });
 
     };
-
-    //obj.RedirectNew = function (tabla) {
-    //    $(function () {
-    //        window.location = '/' + tabla + '/Agregar';
-
-    //    })
-    //}
-
-    // Sistema de progreso para DataTable
-    function showError(errorMessage, errorDetails) {
-        if (!progressContainer) {
-            return;
-        }
-
-        // Asegurar que el container sea visible
-        progressContainer.slideDown(300);
-
-        // Cambiar estilos a error
-        progressBar.removeClass('bg-primary bg-success progress-bar-animated').addClass('bg-danger');
-        progressText.text('❌ ' + errorMessage);
-
-        if (errorDetails) {
-            $('#datatable-progress-details').text(errorDetails).show();
-        }
-
-        // Mostrar botón de reintentar
-        var retryButton = `
-        <button id="datatable-progress-retry" class="btn btn-sm btn-primary ms-2">
-            <i class="fas fa-redo me-1"></i>Reintentar
-        </button>
-    `;
-
-        if (!$('#datatable-progress-retry').length) {
-            $('#datatable-progress-cancel').after(retryButton);
-
-            $('#datatable-progress-retry').on('click', function () {
-                // Recargar la tabla
-                if (window.dataTable && typeof window.dataTable.ajax.reload === 'function') {
-                    window.dataTable.ajax.reload();
-                } else {
-                    location.reload();
-                }
-            });
-        }
-
-        $('#datatable-progress-retry').show();
-        $('#datatable-progress-cancel').text('Cerrar').show();
-
-        // Auto-ocultar después de 15 segundos (aumenté el tiempo para errores)
-        setTimeout(function () {
-            hideProgress();
-        }, 15000);
-    }
 
 
     /**
@@ -1658,6 +1272,11 @@ var datatable = (function () {
                 columnConfig.visible = false;
             }
 
+            // Configurar exportación de columna (por defecto true)
+            columnConfig.exportOptions = {
+                columns: _header[i].ExportVisible !== false
+            };
+
             // Entra si se desea indicar un ancho especifico
             // CORREGIDO: Cambiar Size por Width para que coincida con tu configuración
             if (_header[i].Width != undefined) {
@@ -1675,6 +1294,9 @@ var datatable = (function () {
             targets: i,
             className: "text-center",
             width: 80,
+            exportOptions: {
+                columns: false // La columna de acciones no se exporta por defecto
+            },
             render: function (data, type, row) {
                 botones = "";
                 var head = _header[0].FieldName;
@@ -1691,10 +1313,416 @@ var datatable = (function () {
         return head;
     };
 
-
-
-
     return obj;
 }());
 
+
+
+
+
+// Funciones auxiliares para el manejo de errores
+function validateAndProcessResponse(response) {
+    // Validar estructura básica
+    if (typeof response !== 'object') {
+        throw new Error('La respuesta no es un objeto válido');
+    }
+
+    // Diferentes formatos de respuesta que puede manejar
+    var processedResponse = {
+        data: [],
+        recordsTotal: 0,
+        recordsFiltered: 0
+    };
+
+    // Caso 1: Respuesta directa con array de datos
+    if (Array.isArray(response)) {
+        processedResponse.data = response;
+        processedResponse.recordsTotal = response.length;
+        processedResponse.recordsFiltered = response.length;
+    }
+    // Caso 2: Respuesta con estructura DataTable estándar
+    else if (response.data && Array.isArray(response.data)) {
+        processedResponse.data = response.data;
+        processedResponse.recordsTotal = response.recordsTotal || response.data.length;
+        processedResponse.recordsFiltered = response.recordsFiltered || response.data.length;
+    }
+    // Caso 3: Respuesta con diferentes nombres de propiedades
+    else if (response.items && Array.isArray(response.items)) {
+        processedResponse.data = response.items;
+        processedResponse.recordsTotal = response.total || response.items.length;
+        processedResponse.recordsFiltered = response.filtered || response.items.length;
+    }
+    // Caso 4: Error en la respuesta del servidor
+    else if (response.error) {
+        throw new Error('Error del servidor: ' + response.error);
+    }
+    // Caso 5: Respuesta inesperada
+    else {
+        console.warn('Estructura de respuesta inesperada:', response);
+        // Intentar extraer datos de cualquier propiedad que sea un array
+        var arrayProp = Object.keys(response).find(key => Array.isArray(response[key]));
+        if (arrayProp) {
+            processedResponse.data = response[arrayProp];
+            processedResponse.recordsTotal = response[arrayProp].length;
+            processedResponse.recordsFiltered = response[arrayProp].length;
+        } else {
+            throw new Error('No se encontraron datos válidos en la respuesta');
+        }
+    }
+
+    // Validar que cada elemento tenga las propiedades esperadas
+    if (processedResponse.data.length > 0) {
+        var firstItem = processedResponse.data[0];
+        if (typeof firstItem !== 'object') {
+            throw new Error('Los elementos de datos no son objetos válidos');
+        }
+    }
+
+    return processedResponse;
+}
+
+function showUserError(message, statusCode) {
+    // Prioridad de notificaciones: SweetAlert2 > Toastr > Bootstrap Toast > Alert nativo
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al cargar datos',
+            html: `
+                <div class="text-left">
+                    <p><strong>Problema:</strong> Ocurrió un problema al cargar los datos</p>
+                    <p><strong>Detalle:</strong> ${message}</p>
+                    ${statusCode ? `<p><small class="text-muted">Código de error: ${statusCode}</small></p>` : ''}
+                </div>
+            `,
+            confirmButtonText: 'Reintentar',
+            confirmButtonColor: '#3085d6',
+            showCancelButton: true,
+            cancelButtonText: 'Cerrar',
+            cancelButtonColor: '#d33',
+            width: '500px',
+            customClass: {
+                popup: 'swal-error-popup'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Recargar la tabla
+                if (window.dataTable && typeof window.dataTable.ajax.reload === 'function') {
+                    window.dataTable.ajax.reload();
+                } else {
+                    location.reload();
+                }
+            }
+        });
+    } else if (typeof toastr !== 'undefined') {
+        toastr.error(
+            `Ocurrió un problema al cargar los datos: ${message}`,
+            'Error de Carga',
+            {
+                timeOut: 0,
+                extendedTimeOut: 0,
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-right',
+                iconClass: 'toast-error-custom'
+            }
+        );
+    } else if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+        // Bootstrap 5 Toast
+        var toastId = 'toast-' + Date.now();
+        var toastHtml = `
+            <div id="${toastId}" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="toast-header bg-danger text-white">
+                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#dc3545"></rect>
+                        <text x="50%" y="50%" fill="white" text-anchor="middle" dy=".3em">⚠</text>
+                    </svg>
+                    <strong class="me-auto">Error al cargar datos</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <strong>Problema:</strong> Ocurrió un problema al cargar los datos<br>
+                    <small>${message}</small>
+                    ${statusCode ? `<br><small class="text-muted">Código: ${statusCode}</small>` : ''}
+                </div>
+            </div>
+        `;
+
+        // Crear contenedor de toasts si no existe
+        if (!$('#toast-container').length) {
+            $('body').append('<div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>');
+        }
+
+        $('#toast-container').append(toastHtml);
+        var toast = new bootstrap.Toast($('#' + toastId));
+        toast.show();
+
+        // Limpiar toast después de cerrarse
+        $('#' + toastId).on('hidden.bs.toast', function () {
+            $(this).remove();
+        });
+
+    } else {
+        // Fallback a alert nativo con más información
+        var alertMessage = `❌ ERROR AL CARGAR DATOS\n\n`;
+        alertMessage += `Problema: Ocurrió un problema al cargar los datos\n`;
+        alertMessage += `Detalle: ${message}\n`;
+        if (statusCode) {
+            alertMessage += `Código de error: ${statusCode}\n`;
+        }
+        alertMessage += `\n¿Deseas reintentar?`;
+
+        if (confirm(alertMessage)) {
+            // Recargar la tabla
+            if (window.dataTable && typeof window.dataTable.ajax.reload === 'function') {
+                window.dataTable.ajax.reload();
+            } else {
+                location.reload();
+            }
+        }
+    }
+}
+
+// Función adicional para mostrar notificación en la tabla misma
+function showTableError(message) {
+    // Buscar el contenedor de la tabla
+    var tableContainer = $('.dataTables_wrapper');
+    if (tableContainer.length) {
+        // Remover alertas anteriores
+        tableContainer.find('.alert-danger').remove();
+
+        // Crear alerta dentro del contenedor
+        var alertHtml = `
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Error al cargar datos:</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+
+        tableContainer.prepend(alertHtml);
+
+        // Auto-remover después de 10 segundos
+        setTimeout(function () {
+            tableContainer.find('.alert-danger').fadeOut(500, function () {
+                $(this).remove();
+            });
+        }, 10000);
+    }
+}
+
+// Función para mostrar estado de "Sin datos" personalizado
+function showNoDataMessage(tableId, message) {
+    var table = $('#' + tableId);
+    if (table.length) {
+        var noDataHtml = `
+            <div class="text-center p-4">
+                <div class="mb-3">
+                    <i class="fas fa-database fa-3x text-muted"></i>
+                </div>
+                <h5 class="text-muted">Sin datos disponibles</h5>
+                <p class="text-muted">${message || 'No se encontraron registros para mostrar'}</p>
+                <button class="btn btn-primary btn-sm" onclick="location.reload()">
+                    <i class="fas fa-sync-alt me-1"></i> Recargar
+                </button>
+            </div>
+        `;
+
+        table.find('tbody').html(`<tr><td colspan="100%" class="text-center">${noDataHtml}</td></tr>`);
+    }
+}
+
+function logErrorToServer(errorData) {
+    // Opcional: Enviar errores a servidor para análisis
+    try {
+        $.ajax({
+            url: '/api/log-error', // Ajusta la URL según tu backend
+            type: 'POST',
+            data: JSON.stringify(errorData),
+            contentType: 'application/json',
+            timeout: 5000,
+            success: function () {
+                console.log('Error logged to server');
+            },
+            error: function () {
+                console.warn('Could not log error to server');
+            }
+        });
+    } catch (e) {
+        console.warn('Error logging failed:', e);
+    }
+}
+
+// Funciones de loading (implementa según tu UI)
+function showLoading() {
+    // Mostrar spinner o indicador de carga
+    $('.dataTables_processing').show();
+    // O usar tu sistema de loading personalizado
+}
+
+function hideLoading() {
+    // Ocultar spinner o indicador de carga
+    $('.dataTables_processing').hide();
+}
+
+// Función específica para notificar problemas de carga de datos
+function showDataLoadError(errorMessage, statusCode) {
+    // Notificación flotante específica para errores de carga
+    if (typeof Swal !== 'undefined') {
+        // Toast de SweetAlert2 (menos intrusivo)
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 8000,
+            timerProgressBar: true,
+            background: '#f8d7da',
+            color: '#721c24',
+            iconColor: '#721c24',
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'error',
+            title: '⚠️ Problema al cargar datos',
+            html: `<small>${errorMessage}</small>`
+        });
+
+    } else if (typeof toastr !== 'undefined') {
+        toastr.warning(
+            `Ocurrió un problema al cargar los datos desde el servidor`,
+            '⚠️ Error de Carga de Datos',
+            {
+                timeOut: 8000,
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-bottom-right',
+                iconClass: 'toast-warning'
+            }
+        );
+    }
+}
+
+// Función para crear notificaciones personalizadas en la página
+function createCustomNotification(type, title, message, duration = 5000) {
+    // Crear contenedor de notificaciones si no existe
+    if (!$('#custom-notifications').length) {
+        $('body').append(`
+            <div id="custom-notifications" 
+                 style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 350px;">
+            </div>
+        `);
+    }
+
+    var notificationId = 'notification-' + Date.now();
+    var iconClass = '';
+    var bgClass = '';
+
+    switch (type) {
+        case 'error':
+            iconClass = 'fas fa-exclamation-circle';
+            bgClass = 'bg-danger';
+            break;
+        case 'warning':
+            iconClass = 'fas fa-exclamation-triangle';
+            bgClass = 'bg-warning';
+            break;
+        case 'info':
+            iconClass = 'fas fa-info-circle';
+            bgClass = 'bg-info';
+            break;
+        case 'success':
+            iconClass = 'fas fa-check-circle';
+            bgClass = 'bg-success';
+            break;
+    }
+
+    var notificationHtml = `
+        <div id="${notificationId}" class="alert alert-dismissible fade show ${bgClass} text-white mb-2" 
+             style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideInRight 0.3s ease-out;">
+            <div class="d-flex align-items-start">
+                <i class="${iconClass} me-2 mt-1"></i>
+                <div class="flex-grow-1">
+                    <strong class="d-block">${title}</strong>
+                    <small>${message}</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white ms-2" 
+                        onclick="$('#${notificationId}').fadeOut(300, function(){ $(this).remove(); })">
+                </button>
+            </div>
+            <div class="progress mt-2" style="height: 3px;">
+                <div class="progress-bar bg-white" style="width: 100%; animation: shrinkWidth ${duration}ms linear;"></div>
+            </div>
+        </div>
+    `;
+
+    $('#custom-notifications').append(notificationHtml);
+
+    // Auto-remover
+    setTimeout(function () {
+        $('#' + notificationId).fadeOut(300, function () {
+            $(this).remove();
+        });
+    }, duration);
+
+    return notificationId;
+}
+
+
+
+
+//obj.RedirectNew = function (tabla) {
+//    $(function () {
+//        window.location = '/' + tabla + '/Agregar';
+
+//    })
+//}
+
+// Sistema de progreso para DataTable
+function showError(errorMessage, errorDetails) {
+    if (!progressContainer) {
+        return;
+    }
+
+    // Asegurar que el container sea visible
+    progressContainer.slideDown(300);
+
+    // Cambiar estilos a error
+    progressBar.removeClass('bg-primary bg-success progress-bar-animated').addClass('bg-danger');
+    progressText.text('❌ ' + errorMessage);
+
+    if (errorDetails) {
+        $('#datatable-progress-details').text(errorDetails).show();
+    }
+
+    // Mostrar botón de reintentar
+    var retryButton = `
+        <button id="datatable-progress-retry" class="btn btn-sm btn-primary ms-2">
+            <i class="fas fa-redo me-1"></i>Reintentar
+        </button>
+    `;
+
+    if (!$('#datatable-progress-retry').length) {
+        $('#datatable-progress-cancel').after(retryButton);
+
+        $('#datatable-progress-retry').on('click', function () {
+            // Recargar la tabla
+            if (window.dataTable && typeof window.dataTable.ajax.reload === 'function') {
+                window.dataTable.ajax.reload();
+            } else {
+                location.reload();
+            }
+        });
+    }
+
+    $('#datatable-progress-retry').show();
+    $('#datatable-progress-cancel').text('Cerrar').show();
+
+    // Auto-ocultar después de 15 segundos (aumenté el tiempo para errores)
+    setTimeout(function () {
+        hideProgress();
+    }, 15000);
+}
 

@@ -8,8 +8,6 @@ var Mascota = (function () {
             // Nombre | Tamaño/AutoWidth | Visibilidad
             console.log(Direction.listUrl);
             header = [
-
-            
                     {
                         FieldName: 'masc_Id',
                         DisplayName: '#️⃣ ID',
@@ -30,6 +28,7 @@ var Mascota = (function () {
                         Align: 'center',
                         Visibility: true,
                         Sortable: true,
+                        ExportVisible: false,
                         Render: function (data) {
                             return `<div class="code-cell">
                         <i class="fas fa-barcode text-info me-2"></i>
@@ -44,6 +43,7 @@ var Mascota = (function () {
                         Align: 'center',
                         Visibility: true,
                         Sortable: false,
+                        ExportVisible: false,
                         Render: function (data) {
                             if (!data) {
                                 return `<div class="image-cell">
