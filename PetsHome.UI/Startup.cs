@@ -60,7 +60,7 @@ namespace PetsHome.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=citamedica}/{action=index}/{id?}");
+                    pattern: "{controller=CitaMedica}/{action=create}/{id?}");
             });
         }
     }
