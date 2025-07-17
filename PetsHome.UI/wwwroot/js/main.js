@@ -284,3 +284,11 @@ function InnerHTMLCard(title, body, footer, idPadre) {
     container.innerHTML += content;
 
 }
+
+
+//boton de imprimir en las paginas de detalle
+$(document).ready(function () {
+    $('#btnImprimir').click(function () {
+        window.print();
+    });
+});
