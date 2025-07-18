@@ -1,0 +1,29 @@
+/* CSS simple para el sidebar toggle */
+
+/* Sidebar visible por defecto */
+.sidebar-wrapper {
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+}
+
+/* Sidebar oculto cuando tiene la clase sidebar-hidden */
+.sidebar-wrapper.sidebar-hidden {
+    transform: translateX(-100%);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .sidebar-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1000;
+        background: white;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    
+    .sidebar-wrapper.sidebar-hidden {
+        transform: translateX(-100%);
+    }
+}
