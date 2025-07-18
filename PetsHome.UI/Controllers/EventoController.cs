@@ -62,7 +62,7 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var resultado = await _RefugioService.DetailAsync(id);
+            var resultado = await _EventoService.DetailAsync(id);
             if (resultado == null)
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);

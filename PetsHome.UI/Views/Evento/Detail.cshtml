@@ -1,8 +1,374 @@
 ﻿@model EventoViewModel
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Detalle del Evento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Detail</h1>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-container position-relative">
+                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-calendar-alt text-primary fa-2x"></i>
+                                </div>
+                                <div class="avatar-status bg-success"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="mb-1 text-white font-weight-bold">@Model.eve_Descripcion</h4>
+                            <div class="mb-2">
+                                <span class="badge badge-light text-primary px-3 py-1">
+                                    <i class="fas fa-home mr-1"></i>@Model.refg_Nombre
+                                </span>
+                                <span class="badge badge-info px-3 py-1 ml-2">
+                                    <i class="fas fa-calendar mr-1"></i>@Model.eve_Fecha.ToString("dd/MM/yyyy")
+                                </span>
+                            </div>
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-clock mr-1"></i>
+                                @Model.eve_HoraInicio.ToString(@"hh\:mm") - @Model.eve_HoraFinal.ToString(@"hh\:mm")
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Información Básica del Evento -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-info-circle text-primary mr-2"></i>Información del Evento
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">ID:</span>
+                                        <span class="info-value badge badge-outline-primary">@Model.eve_Id</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Descripción:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-tag text-muted mr-1"></i>
+                                            @Model.eve_Descripcion
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-calendar-day text-muted mr-1"></i>
+                                            @Model.eve_Fecha.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Hora Inicio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-clock text-muted mr-1"></i>
+                                            @Model.eve_HoraInicio.ToString(@"hh\:mm")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Hora Final:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-clock text-muted mr-1"></i>
+                                            @Model.eve_HoraFinal.ToString(@"hh\:mm")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Duración:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-stopwatch text-muted mr-1"></i>
+                                            @{
+                                                var duracion = Model.eve_HoraFinal.Subtract(Model.eve_HoraInicio);
+                                                var horas = (int)duracion.TotalHours;
+                                                var minutos = duracion.Minutes;
+                                            }
+                                            @if (horas > 0) { @horas @(horas == 1 ? "hora" : "horas") }
+                                            @if (minutos > 0) { @minutos @(minutos == 1 ? "minuto" : "minutos") }
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del Refugio y Auditoría -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-home text-success mr-2"></i>Información del Refugio
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Refugio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-building text-muted mr-1"></i>
+                                            @Model.refg_Nombre
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">ID Refugio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-hashtag text-muted mr-1"></i>
+                                            @Model.refg_Id
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section mt-4">
+                                <h6 class="section-title">
+                                    <i class="fas fa-history text-warning mr-2"></i>Información de Auditoría
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Creado por:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user text-muted mr-1"></i>
+                                            @(Model.emp_NombreUsuarioCrea ?? "N/A")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Creación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-plus-circle text-muted mr-1"></i>
+                                            @Model.emp_FechaCrea.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Modificado por:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user-edit text-muted mr-1"></i>
+                                            @(Model.emp_NombreUsuarioModifica ?? "N/A")
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha Modificación:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-edit text-muted mr-1"></i>
+                                            @(Model.emp_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado y Detalles del Evento -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-calendar-check text-info mr-2"></i>Estado del Evento
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <div class="info-value">
+                                            <div class="bg-light p-3 rounded">
+                                                @{
+                                                    var ahora = DateTime.Now;
+                                                    var fechaEvento = Model.eve_Fecha;
+                                                    var horaInicio = fechaEvento.Date.Add(Model.eve_HoraInicio);
+                                                    var horaFinal = fechaEvento.Date.Add(Model.eve_HoraFinal);
+                                                }
+                                                
+                                                @if (ahora < horaInicio)
+                                                {
+                                                    <span class="badge badge-info px-3 py-2">
+                                                        <i class="fas fa-clock mr-1"></i>Próximamente
+                                                    </span>
+                                                    <span class="ml-2 text-muted">
+                                                        @{
+                                                            var tiempoRestante = horaInicio.Subtract(ahora);
+                                                            if (tiempoRestante.Days > 0)
+                                                            {
+                                                                <span>En @tiempoRestante.Days @(tiempoRestante.Days == 1 ? "día" : "días")</span>
+                                                            }
+                                                            else if (tiempoRestante.Hours > 0)
+                                                            {
+                                                                <span>En @tiempoRestante.Hours @(tiempoRestante.Hours == 1 ? "hora" : "horas")</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>En @tiempoRestante.Minutes minutos</span>
+                                                            }
+                                                        }
+                                                    </span>
+                                                }
+                                                else if (ahora >= horaInicio && ahora <= horaFinal)
+                                                {
+                                                    <span class="badge badge-success px-3 py-2">
+                                                        <i class="fas fa-play mr-1"></i>En Curso
+                                                    </span>
+                                                    <span class="ml-2 text-muted">
+                                                        Termina en @{
+                                                            var tiempoRestante = horaFinal.Subtract(ahora);
+                                                            if (tiempoRestante.Hours > 0)
+                                                            {
+                                                                <span>@tiempoRestante.Hours @(tiempoRestante.Hours == 1 ? "hora" : "horas")</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>@tiempoRestante.Minutes minutos</span>
+                                                            }
+                                                        }
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-secondary px-3 py-2">
+                                                        <i class="fas fa-check mr-1"></i>Finalizado
+                                                    </span>
+                                                    <span class="ml-2 text-muted">
+                                                        Terminó el @horaFinal.ToString("dd/MM/yyyy 'a las' HH:mm")
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light no-print">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="/Evento/Find/@Model.eve_Id" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </a>
+                            <button id="btnImprimir" class="btn btn-outline-secondary btn-sm ml-2">
+                                <i class="fas fa-print mr-1"></i>Imprimir
+                            </button>
+                            <a href="/Evento/Index" class="btn btn-outline-info btn-sm ml-2">
+                                <i class="fas fa-list mr-1"></i>Volver al Listado
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                Última actualización: @(Model.emp_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('btnImprimir').addEventListener('click', function() {
+    window.print();
+});
+</script>
+
+<style>
+.avatar-container {
+    width: 60px;
+    height: 60px;
+}
+
+.avatar-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+}
+
+.avatar-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.info-section {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #6c757d;
+    min-width: 140px;
+}
+
+.info-value {
+    flex-grow: 1;
+    text-align: right;
+    font-weight: 500;
+}
+
+.badge-outline-primary {
+    color: #007bff;
+    border: 1px solid #007bff;
+    background-color: transparent;
+}
+
+@@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .card-header {
+        background: #f8f9fa !important;
+        color: #212529 !important;
+    }
+}
+
+@@media (max-width: 768px) {
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .info-value {
+        text-align: left;
+    }
+    
+    .info-label {
+        min-width: auto;
+    }
+}
+</style>
