@@ -840,7 +840,13 @@ var datatableCatalogs = (function () {
      * @param {any} header
      */
     obj.createDatatable = function (listUrl, header) {
-        var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
+        var exportColumns = [];
+        for (var i = 0; i < header.length; i++) {
+            if (header[i].ExportVisible !== false) {
+                exportColumns.push(i);
+            }
+        }
+        var exportOptions = { columns: exportColumns, orthogonal: "export" };
         $('#datatable').DataTable({
             responsive: true,
             serverSide: true, 
@@ -865,6 +871,7 @@ var datatableCatalogs = (function () {
                     extend: "pdfHtml5",
                     title: "Exportar a PDF",
                     text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
+                    filename: 'Reporte_' + new Date().toISOString().slice(0, 10),
                     className: "btn btn-secondary",
                     exportOptions: exportOptions
                 },
@@ -872,25 +879,11 @@ var datatableCatalogs = (function () {
                     extend: "excelHtml5",
                     title: "Exportar a EXCEL",
                     text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                    filename: 'Reporte_' + new Date().toISOString().slice(0, 10),
                     className: "btn btn-secondary",
                     exportOptions: exportOptions
                 },
                 {
-
-                    //attr: 
-                    //    'data-toggle': "modal",
-                    //    'data-target': "#edit-modal"
-                    //},
-                    //text: 'Nuevo',
-                    //class: "btn btn-primary",
-                    //attr: {
-                    //    title: "Añadir nuevo elemento",
-                    //    id: "add-btn",
-                    //    //onclick: "nuevo()",
-                    //    'data-toggle': "modal",
-                    //    'data-target': "#edit-modal"
-                    //    /*onclick: "nuevo()"*/
-                    //}
                     attr: {
                         title: "Añadir nuevo elemento",
                         id: "add-btn",
@@ -900,15 +893,6 @@ var datatableCatalogs = (function () {
                         'data-target': "#edit-modal"
                     },
                     text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
-
-
-                    //text: 'Nuevo <i class="mdi mdi-plus-thick"></i>',
-                    //className: "btn btn-success",
-                    //attr: {
-                    //    title: "Añadir componente nuevo",
-                    //    onclick: "Modal()"
-                    //}
-
                 }
             ],
             ajax: function (data, callback, settings) {
@@ -1044,6 +1028,11 @@ var datatableCatalogs = (function () {
         sheet.insertRule('.dt-buttons { text-align: end !important; width: 100%; }');
         sheet.insertRule('.dt-buttons button { padding: 0.75rem margin-buttom:15px; !important; }');
         document.adoptedStyleSheets = [sheet];
+
+        //Eliminamos la agrupaciond de los botones.
+        $(function () {
+            $(".dt-buttons").removeClass("btn-group");
+        });
     }
 
     /**
@@ -1118,41 +1107,62 @@ var datatableCatalogs = (function () {
     obj.dataHeader = function (header) {
         var _header = header;
         head = [];
-
-
         var i = 0;
         for (i; i < _header.length; i++) {
-
-
-            head.push({
+            var columnConfig = {
                 targets: i,
                 data: _header[i].FieldName
+            };
 
-            })
+            // Aplicar función Render personalizada si existe
+            if (_header[i].Render && typeof _header[i].Render === 'function') {
+                columnConfig.render = _header[i].Render;
+            }
+
+            // Aplicar alineación, por defecto a la izquierda
+            columnConfig.className = 'text-left';
+
+            if (_header[i].Align) {
+                columnConfig.className =
+                    _header[i].Align === 'center' ? 'text-center' :
+                        _header[i].Align === 'right' ? 'text-right' :
+                            'text-left';
+            }
 
             // Entra si se desea deshabilitar la columna
-            if (_header[i].Visibility == false || _header[i].Visibility != undefined) {
-                head[i]['visible'] = false
+            if (header[i].Visibility == false) {
+                columnConfig.visible = false;
             }
 
+            // Configurar exportación de columna (por defecto true)
+            columnConfig.exportOptions = {
+                columns: _header[i].ExportVisible !== false
+            };
+
             // Entra si se desea indicar un ancho especifico
-            if (_header[i].Size != undefined) {
-                head[i]['width'] = _header[i].Size
+            // CORREGIDO: Cambiar Size por Width para que coincida con tu configuración
+            if (_header[i].Width != undefined) {
+                columnConfig.width = _header[i].Width;
             }
-            //console.log();
+            // También mantener compatibilidad con Size si existe
+            else if (_header[i].Size != undefined) {
+                columnConfig.width = _header[i].Size;
+            }
+
+            head.push(columnConfig);
         }
-        console.log(head);
 
         head.push({
             targets: i,
             className: "text-center",
+            width: 80,
+            exportOptions: {
+                columns: false // La columna de acciones no se exporta por defecto
+            },
             render: function (data, type, row) {
                 botones = "";
                 var head = _header[0].FieldName;
                 if (type == "display") {
-                    //botones += '<button class="btn btn-soft-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="fa-thin fa-pen-to-square"></i></span></button>';
-                    //botones += '<button class="btn btn-soft-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="fa-thin fa-trash"></i></span></button>';
-                    //botones += '<button class="btn btn-secondary btn-sm" href="/Usuarios/Editar/1"><i class="mdi mdi-square-edit-outline"></i></button>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row[head] + '" class="bs-tooltip edit-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
                 }
