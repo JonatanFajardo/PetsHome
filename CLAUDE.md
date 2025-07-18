@@ -81,3 +81,28 @@ The application follows a 4-layer architecture:
 - DataTables for data grids
 - Custom JavaScript files per functional area in `wwwroot/js/pages/`
 - SCSS source files compiled to CSS
+
+
+### Pantallas Grandes
+Las siguientes views se consideran "pantallas grandes" y utilizan `components/datatable/datatable.init.js`:
+- adopcion
+- citamedica
+- empleado
+- evento
+- mascota
+- refugio
+- solicitud
+- voluntario
+
+**Archivo común**: `components/datatable/datatable.init.js` - Configuración estándar para DataTables
+
+
+### Pantallas Catalogo
+Las siguientes views se consideran "pantallas catalogo" y utilizan `components/datatable/datatable.catalogs.init.js`:
+- Categoria
+- EmpleadosCargo
+- Procedencia
+- Raza
+- Vacuna
+
+**Archivo común**: `components/datatable/datatable.catalogs.init.js` - Configuración estándar para DataTables

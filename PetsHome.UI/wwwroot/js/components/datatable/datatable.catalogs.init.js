@@ -847,7 +847,7 @@ var datatableCatalogs = (function () {
             }
         }
         var exportOptions = { columns: exportColumns, orthogonal: "export" };
-        $('#datatable').DataTable({
+        var table = $('#datatable').DataTable({
             responsive: true,
             serverSide: true, 
             deferRender: true,
@@ -1023,6 +1023,17 @@ var datatableCatalogs = (function () {
 
         });
 
+        // O si prefieres una función más dinámica:
+        function getExportFilename(extension) {
+            var today = new Date();
+            var dateStr = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0');
+            var timeStr = String(today.getHours()).padStart(2, '0') + '' +
+                String(today.getMinutes()).padStart(2, '0');
+
+            return 'MiReporte_' + dateStr + '_' + timeStr;
+        }
         //Estilos para los botones
         const sheet = new CSSStyleSheet();
         sheet.insertRule('.dt-buttons { text-align: end !important; width: 100%; }');
@@ -1036,11 +1047,10 @@ var datatableCatalogs = (function () {
     }
 
     /**
-     * Configura el datatable.
+     * Configura el datatable usando la misma configuración que las pantallas grandes.
      * */
     obj.config = function () {
-
-        //configuraciones
+        //configuraciones - Copiadas exactamente de datatable.init.js
         $.extend(true, $.fn.dataTable.defaults, {
             dom: '<"row"<"col-sm-12 col-md-1"l><"col-sm-12 col-md-4"f><"col-sm-12 col-md-7 d-flex justify-content-end"B>>' +
                 '<"row"<"col-sm-12"t>>' +
