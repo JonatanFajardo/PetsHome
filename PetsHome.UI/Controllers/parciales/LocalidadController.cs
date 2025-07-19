@@ -4,6 +4,7 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -79,8 +80,24 @@ namespace PetsHome.UI.Controllers
                 Boolean createdItem = await _departamentoService.AddAsync(model);
                 if (createdItem)
                     goto ErrorResult;
+                
+                // Buscar el departamento recién creado para obtener su ID
+                var departamentosList = await _departamentoService.ListAsync();
+                var departamentoCreado = departamentosList
+                    .Where(d => d.depto_Codigo == model.depto_Codigo && d.depto_Descripcion == model.depto_Descripcion)
+                    .OrderByDescending(d => d.depto_Id)
+                    .FirstOrDefault();
+                
                 ShowAlert("Insertado", AlertMessageType.Success);
-                return RedirectToAction("EditDepartamentos");
+                
+                if (departamentoCreado != null)
+                {
+                    return RedirectToAction("EditDepartamentos", routeValues: new { id = departamentoCreado.depto_Id });
+                }
+                else
+                {
+                    return RedirectToAction("EditDepartamentos");
+                }
             }
             else
             {
