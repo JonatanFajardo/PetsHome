@@ -1,0 +1,247 @@
+@model List<PetsHome.Business.Models.ReporteMascotasPorRaza>
+@{
+    ViewBag.Title = "Reporte de Mascotas por Raza";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/reportes.css" rel="stylesheet" />
+}
+
+<div class="layout-top-spacing">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3><i class="fas fa-dog"></i> Mascotas por Raza</h3>
+                    <p class="page-meta">Distribución de mascotas según su raza</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Index", "Reportes")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </a>
+                    <button class="btn btn-primary" onclick="exportChart()">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Gráfico -->
+        <div class="col-xl-8 col-lg-12">
+            <div class="widget widget-chart-two">
+                <div class="widget-heading">
+                    <h5>Distribución por Raza</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="chart-container" style="height: 400px;">
+                        <canvas id="chartMascotasPorRaza"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="col-xl-4 col-lg-12">
+            <div class="widget widget-stats">
+                <div class="widget-heading">
+                    <h5>Estadísticas Generales</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="stats-summary">
+                        <div class="stat-item">
+                            <div class="stat-icon bg-primary">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>@Model.Sum(m => m.Cantidad)</h4>
+                                <p>Total de Mascotas</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-icon bg-success">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>@Model.Sum(m => m.Adoptadas)</h4>
+                                <p>Mascotas Adoptadas</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-icon bg-info">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>@Model.Sum(m => m.Disponibles)</h4>
+                                <p>Disponibles</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-icon bg-warning">
+                                <i class="fas fa-list"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>@Model.Count</h4>
+                                <p>Razas Diferentes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla Detallada -->
+    <div class="row">
+        <div class="col-12">
+            <div class="widget widget-table-one">
+                <div class="widget-heading">
+                    <h5>Detalle por Raza</h5>
+                    <div class="task-action">
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleTable()">
+                            <i class="fas fa-table"></i> Alternar Vista
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="tableMascotasPorRaza">
+                            <thead>
+                                <tr>
+                                    <th>Raza</th>
+                                    <th class="text-center">Total</th>
+                                    <th class="text-center">Adoptadas</th>
+                                    <th class="text-center">Disponibles</th>
+                                    <th class="text-center">% Adopción</th>
+                                    <th class="text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var raza in Model)
+                                {
+                                    var porcentajeAdopcion = raza.Cantidad > 0 ? Math.Round((decimal)raza.Adoptadas / raza.Cantidad * 100, 1) : 0;
+                                    var estadoClase = porcentajeAdopcion >= 70 ? "badge-success" : 
+                                                     porcentajeAdopcion >= 40 ? "badge-warning" : "badge-danger";
+                                    var estadoTexto = porcentajeAdopcion >= 70 ? "Excelente" : 
+                                                     porcentajeAdopcion >= 40 ? "Bueno" : "Necesita atención";
+                                    
+                                    <tr>
+                                        <td>
+                                            <div class="race-info">
+                                                <strong>@raza.Raza</strong>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary">@raza.Cantidad</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success">@raza.Adoptadas</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-info">@raza.Disponibles</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>@porcentajeAdopcion%</strong>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @estadoClase">@estadoTexto</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const mascotasPorRazaData = @Html.Raw(Json.Serialize(Model));
+        
+        $(document).ready(function() {
+            initMascotasPorRazaChart();
+            initDataTable();
+        });
+
+        function initMascotasPorRazaChart() {
+            const ctx = document.getElementById('chartMascotasPorRaza').getContext('2d');
+            
+            const data = {
+                labels: mascotasPorRazaData.map(item => item.raza),
+                datasets: [{
+                    label: 'Total',
+                    data: mascotasPorRazaData.map(item => item.cantidad),
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF',
+                        '#4BC0C0', '#FF6384'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const item = mascotasPorRazaData[context.dataIndex];
+                                    return `${context.label}: ${context.parsed} mascotas (${item.adoptadas} adoptadas, ${item.disponibles} disponibles)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initDataTable() {
+            $('#tableMascotasPorRaza').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                },
+                "pageLength": 10,
+                "order": [[1, "desc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [5] }
+                ]
+            });
+        }
+
+        function toggleTable() {
+            $('#tableMascotasPorRaza').closest('.widget').toggle();
+        }
+
+        function exportChart() {
+            const canvas = document.getElementById('chartMascotasPorRaza');
+            const url = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'mascotas-por-raza.png';
+            link.href = url;
+            link.click();
+        }
+    </script>
+}

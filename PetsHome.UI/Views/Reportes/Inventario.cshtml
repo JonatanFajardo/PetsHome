@@ -1,0 +1,273 @@
+@model List<PetsHome.Business.Models.ReporteInventario>
+@{
+    ViewBag.Title = "Reporte de Inventario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/reportes.css" rel="stylesheet" />
+}
+
+<div class="layout-top-spacing">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3><i class="fas fa-boxes"></i> Reporte de Inventario</h3>
+                    <p class="page-meta">Control de stock y valorización del inventario</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Index", "Reportes")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </a>
+                    <button class="btn btn-primary" onclick="exportTable()">
+                        <i class="fas fa-download"></i> Exportar Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas de Inventario -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-cubes text-primary"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count</h6>
+                            <p class="name">Total Items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-exclamation-triangle text-danger"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(i => i.EstadoStock == "Crítico")</h6>
+                            <p class="name">Stock Crítico</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-chart-line text-warning"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(i => i.EstadoStock == "Bajo")</h6>
+                            <p class="name">Stock Bajo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-dollar-sign text-success"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">$@(Model.Sum(i => i.ValorTotal).ToString("N0"))</h6>
+                            <p class="name">Valor Total</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Inventario -->
+    <div class="row">
+        <div class="col-12">
+            <div class="widget widget-table-one">
+                <div class="widget-heading">
+                    <h5>Detalle de Inventario</h5>
+                    <div class="task-action">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                <i class="fas fa-filter"></i> Filtrar
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item filter-option" href="#" data-filter="all">Todos</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="critico">Solo Críticos</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="bajo">Stock Bajo</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="normal">Stock Normal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="tableInventario">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th class="text-center">Categoría</th>
+                                    <th class="text-center">Stock Actual</th>
+                                    <th class="text-center">Stock Mínimo</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Costo Unitario</th>
+                                    <th class="text-center">Valor Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    var estadoClase = item.EstadoStock == "Crítico" ? "badge-danger" :
+                                                     item.EstadoStock == "Bajo" ? "badge-warning" : "badge-success";
+                                    
+                                    <tr data-estado="@item.EstadoStock.ToLower()">
+                                        <td>
+                                            <div class="item-info">
+                                                <div class="item-icon">
+                                                    <i class="fas fa-box"></i>
+                                                </div>
+                                                <div class="item-details">
+                                                    <strong>@item.NombreItem</strong>
+                                                    <small class="text-muted">ID: @item.ItemId</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-info">@item.Categoria</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary badge-lg">@item.StockActual</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="text-muted">@item.StockMinimo</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @estadoClase">@item.EstadoStock</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>$@item.CostoUnitario.ToString("N2")</strong>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong class="text-success">$@item.ValorTotal.ToString("N2")</strong>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            initInventarioTable();
+            initFilters();
+        });
+
+        function initInventarioTable() {
+            $('#tableInventario').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                },
+                "pageLength": 25,
+                "order": [[4, "asc"], [2, "asc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [4] },
+                    { "type": "num", "targets": [2, 3, 5, 6] }
+                ],
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        className: 'btn btn-danger btn-sm'
+                    }
+                ]
+            });
+        }
+
+        function initFilters() {
+            $('.filter-option').on('click', function(e) {
+                e.preventDefault();
+                const filter = $(this).data('filter');
+                const table = $('#tableInventario').DataTable();
+                
+                switch(filter) {
+                    case 'all':
+                        table.columns().search('').draw();
+                        break;
+                    case 'critico':
+                        table.column(4).search('Crítico').draw();
+                        break;
+                    case 'bajo':
+                        table.column(4).search('Bajo').draw();
+                        break;
+                    case 'normal':
+                        table.column(4).search('Normal').draw();
+                        break;
+                }
+            });
+        }
+
+        function exportTable() {
+            $('#tableInventario').DataTable().button('.buttons-excel').trigger();
+        }
+    </script>
+
+    <style>
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            color: white;
+            font-size: 16px;
+        }
+
+        .item-details strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .item-details small {
+            font-size: 11px;
+            color: #a0aec0;
+        }
+    </style>
+}

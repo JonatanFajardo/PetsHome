@@ -38,6 +38,10 @@ namespace PetsHome.Business
             services.AddScoped<SolicitudRepository>();
             services.AddScoped<VacunaRepository>();
             services.AddScoped<VoluntarioRepository>();
+            services.AddScoped<ReportesRepository>();
+
+            // Registrar DbContext para reportes que requieren acceso directo a la base de datos
+            services.AddScoped<PetsHomeDbContext>();
 
             //https://www.it-swarm.dev/es/c%23/obtencion-de-url-absolutas-utilizando-asp.net-core/1053425403/
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
@@ -74,6 +78,7 @@ namespace PetsHome.Business
             services.AddScoped<SolicitudService>();
             services.AddScoped<VacunaService>();
             services.AddScoped<VoluntarioService>();
+            services.AddScoped<ReportesService>();
 
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>

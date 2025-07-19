@@ -1,0 +1,323 @@
+@model List<PetsHome.Business.Models.ReporteSaludMascotas>
+@{
+    ViewBag.Title = "Reporte de Salud de Mascotas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/reportes.css" rel="stylesheet" />
+}
+
+<div class="layout-top-spacing">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3><i class="fas fa-heartbeat"></i> Salud de Mascotas</h3>
+                    <p class="page-meta">Estado médico y seguimiento de la salud de las mascotas</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Index", "Reportes")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </a>
+                    <button class="btn btn-primary" onclick="exportTable()">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas de Salud -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-paw text-primary"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count</h6>
+                            <p class="name">Total Mascotas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-shield-alt text-success"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(m => m.VacunasAlDia)</h6>
+                            <p class="name">Vacunas al Día</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-calendar-check text-info"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(m => m.UltimaCitaMedica.HasValue && m.UltimaCitaMedica.Value >= DateTime.Now.AddMonths(-3))</h6>
+                            <p class="name">Revisiones Recientes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(m => !m.UltimaCitaMedica.HasValue || m.UltimaCitaMedica.Value < DateTime.Now.AddMonths(-6))</h6>
+                            <p class="name">Requieren Atención</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Salud de Mascotas -->
+    <div class="row">
+        <div class="col-12">
+            <div class="widget widget-table-one">
+                <div class="widget-heading">
+                    <h5>Estado de Salud por Mascota</h5>
+                    <div class="task-action">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                <i class="fas fa-filter"></i> Filtrar
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item filter-option" href="#" data-filter="all">Todas</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="vacunas-ok">Vacunas al día</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="vacunas-atrasadas">Vacunas atrasadas</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item filter-option" href="#" data-filter="atencion">Requieren atención</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="reciente">Revisión reciente</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="tableSaludMascotas">
+                            <thead>
+                                <tr>
+                                    <th>Mascota</th>
+                                    <th class="text-center">Refugio</th>
+                                    <th class="text-center">Última Cita</th>
+                                    <th class="text-center">Total Citas</th>
+                                    <th class="text-center">Estado de Salud</th>
+                                    <th class="text-center">Vacunas</th>
+                                    <th class="text-center">Prioridad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var mascota in Model)
+                                {
+                                    var diasSinCita = mascota.UltimaCitaMedica.HasValue ? 
+                                                     (DateTime.Now - mascota.UltimaCitaMedica.Value).Days : 
+                                                     999;
+                                    
+                                    var prioridad = !mascota.UltimaCitaMedica.HasValue || diasSinCita > 180 ? "Alta" :
+                                                   diasSinCita > 90 ? "Media" : "Baja";
+                                    
+                                    var prioridadClase = prioridad == "Alta" ? "badge-danger" :
+                                                        prioridad == "Media" ? "badge-warning" : "badge-success";
+                                    
+                                    var vacunasClase = mascota.VacunasAlDia ? "badge-success" : "badge-danger";
+                                    var vacunasTexto = mascota.VacunasAlDia ? "Al día" : "Atrasadas";
+                                    
+                                    <tr data-vacunas="@(mascota.VacunasAlDia ? "ok" : "atrasadas")" 
+                                        data-atencion="@(prioridad == "Alta" ? "si" : "no")"
+                                        data-reciente="@(diasSinCita <= 30 ? "si" : "no")">
+                                        <td>
+                                            <div class="pet-info">
+                                                <div class="pet-avatar">
+                                                    <i class="fas fa-paw"></i>
+                                                </div>
+                                                <div class="pet-details">
+                                                    <strong>@mascota.NombreMascota</strong>
+                                                    <small class="text-muted">@mascota.Raza</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-info">@mascota.Refugio</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (mascota.UltimaCitaMedica.HasValue)
+                                            {
+                                                <span class="date-badge">@mascota.UltimaCitaMedica.Value.ToString("dd/MM/yyyy")</span>
+                                                @if (diasSinCita > 90)
+                                                {
+                                                    <br><small class="text-warning">Hace @diasSinCita días</small>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">Sin citas</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary">@mascota.TotalCitas</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (!string.IsNullOrEmpty(mascota.EstadoSalud) && mascota.EstadoSalud != "Sin información")
+                                            {
+                                                var estadoClase = mascota.EstadoSalud.ToLower().Contains("bueno") ? "badge-success" :
+                                                                 mascota.EstadoSalud.ToLower().Contains("regular") ? "badge-warning" : "badge-secondary";
+                                                <span class="badge @estadoClase">@mascota.EstadoSalud</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No registrado</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @vacunasClase">@vacunasTexto</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @prioridadClase">@prioridad</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            initSaludMascotasTable();
+            initFilters();
+        });
+
+        function initSaludMascotasTable() {
+            $('#tableSaludMascotas').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                },
+                "pageLength": 25,
+                "order": [[6, "desc"], [2, "desc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [6] },
+                    { "type": "date", "targets": [2] }
+                ],
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        className: 'btn btn-danger btn-sm'
+                    }
+                ]
+            });
+        }
+
+        function initFilters() {
+            $('.filter-option').on('click', function(e) {
+                e.preventDefault();
+                const filter = $(this).data('filter');
+                const table = $('#tableSaludMascotas').DataTable();
+                
+                // Limpiar filtros previos
+                $.fn.dataTable.ext.search.length = 0;
+                
+                switch(filter) {
+                    case 'all':
+                        table.columns().search('').draw();
+                        break;
+                    case 'vacunas-ok':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return $(table.row(dataIndex).node()).data('vacunas') === 'ok';
+                        });
+                        break;
+                    case 'vacunas-atrasadas':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return $(table.row(dataIndex).node()).data('vacunas') === 'atrasadas';
+                        });
+                        break;
+                    case 'atencion':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return $(table.row(dataIndex).node()).data('atencion') === 'si';
+                        });
+                        break;
+                    case 'reciente':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return $(table.row(dataIndex).node()).data('reciente') === 'si';
+                        });
+                        break;
+                }
+                
+                table.draw();
+            });
+        }
+
+        function exportTable() {
+            $('#tableSaludMascotas').DataTable().button('.buttons-excel').trigger();
+        }
+    </script>
+
+    <style>
+        .pet-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pet-avatar {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            font-size: 16px;
+        }
+
+        .pet-details strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .pet-details small {
+            font-size: 11px;
+            color: #a0aec0;
+        }
+    </style>
+}

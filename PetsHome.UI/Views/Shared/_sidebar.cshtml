@@ -188,10 +188,37 @@
 
                 <!-- Reportes -->
                 <li class="menu">
-                    <div class="dropdown-toggle">
-                        <i class="fas fa-chart-bar"></i>
-                        @Html.ActionLink("Reportes", "Index", "Reportes")
-                    </div>
+                    <a href="#Reportes" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reportes</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Reportes" data-parent="#accordionExample">
+                        <li>
+                            @Html.ActionLink("Dashboard General", "Index", "Reportes")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Mascotas por Raza", "MascotasPorRaza", "Reportes")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Voluntarios", "Voluntarios", "Reportes")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Inventario", "Inventario", "Reportes")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Salud Mascotas", "SaludMascotas", "Reportes")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Eventos", "Eventos", "Reportes")
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- Donaciones -->

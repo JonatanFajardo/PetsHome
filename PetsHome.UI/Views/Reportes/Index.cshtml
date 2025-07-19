@@ -1,0 +1,427 @@
+@model PetsHome.Business.Models.ReportesDashboardViewModel
+@{
+    ViewBag.Title = "Dashboard de Reportes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/reportes.css" rel="stylesheet" />
+}
+
+<div class="layout-top-spacing">
+    <!-- Header del Dashboard -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3><i class="fas fa-chart-line"></i> Dashboard de Reportes</h3>
+                    <p class="page-meta">Análisis y estadísticas del refugio PetsHome</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i> Actualizar
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-excel"></i> Excel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas Principales -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-paw text-primary"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.TotalMascotas</h6>
+                            <p class="name">Total Mascotas</p>
+                        </div>
+                    </div>
+                    <div class="w-chart">
+                        <div class="metric-detail">
+                            <span class="text-success">@Model.MascotasDisponibles disponibles</span>
+                            <span class="text-info">@Model.MascotasAdoptadas adoptadas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-heart text-success"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.PorcentajeAdopciones%</h6>
+                            <p class="name">Tasa de Adopción</p>
+                        </div>
+                    </div>
+                    <div class="w-chart">
+                        <div class="metric-detail">
+                            <span class="text-success">@Model.MascotasAdoptadas adopciones exitosas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-stethoscope text-warning"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.CitasMedicasPendientes</h6>
+                            <p class="name">Citas Pendientes</p>
+                        </div>
+                    </div>
+                    <div class="w-chart">
+                        <div class="metric-detail">
+                            <span class="text-warning">Requieren atención</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-users text-info"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.VoluntariosActivos</h6>
+                            <p class="name">Voluntarios Activos</p>
+                        </div>
+                    </div>
+                    <div class="w-chart">
+                        <div class="metric-detail">
+                            <span class="text-info">@Model.EventosEsteMes eventos este mes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficas de Análisis -->
+    <div class="row">
+        <!-- Gráfica de Mascotas por Raza -->
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+            <div class="widget widget-chart-one">
+                <div class="widget-heading">
+                    <h5>Mascotas por Raza</h5>
+                    <div class="task-action">
+                        <a href="@Url.Action("MascotasPorRaza", "Reportes")" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye"></i> Ver Detalle
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="chart-container">
+                        <canvas id="chartMascotasPorRaza"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfica de Adopciones por Mes -->
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+            <div class="widget widget-chart-one">
+                <div class="widget-heading">
+                    <h5>Adopciones por Mes</h5>
+                    <div class="task-action">
+                        <a href="@Url.Action("AdopcionesPorMes", "Reportes")" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye"></i> Ver Detalle
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="chart-container">
+                        <canvas id="chartAdopcionesPorMes"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfica de Citas Médicas y Enlaces Rápidos -->
+    <div class="row">
+        <!-- Gráfica de Citas Médicas por Tipo -->
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
+            <div class="widget widget-chart-one">
+                <div class="widget-heading">
+                    <h5>Citas Médicas por Tipo</h5>
+                    <div class="task-action">
+                        <a href="@Url.Action("SaludMascotas", "Reportes")" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye"></i> Ver Salud Mascotas
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="chart-container">
+                        <canvas id="chartCitasMedicasPorTipo"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enlaces Rápidos a Reportes -->
+        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <div class="widget widget-four">
+                <div class="widget-heading">
+                    <h5>Accesos Rápidos</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="quick-actions">
+                        <a href="@Url.Action("Voluntarios", "Reportes")" class="quick-action-item">
+                            <div class="action-icon bg-primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="action-text">
+                                <h6>Voluntarios</h6>
+                                <p>Participación y actividad</p>
+                            </div>
+                        </a>
+
+                        <a href="@Url.Action("Inventario", "Reportes")" class="quick-action-item">
+                            <div class="action-icon bg-warning">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div class="action-text">
+                                <h6>Inventario</h6>
+                                <p>Stock y suministros</p>
+                            </div>
+                        </a>
+
+                        <a href="@Url.Action("Eventos", "Reportes")" class="quick-action-item">
+                            <div class="action-icon bg-success">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="action-text">
+                                <h6>Eventos</h6>
+                                <p>Actividades del refugio</p>
+                            </div>
+                        </a>
+
+                        <a href="@Url.Action("SaludMascotas", "Reportes")" class="quick-action-item">
+                            <div class="action-icon bg-info">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="action-text">
+                                <h6>Salud Mascotas</h6>
+                                <p>Estado médico general</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- Chart.js desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Datos para los gráficos
+        const mascotasPorRazaData = @Html.Raw(Json.Serialize(Model.MascotasPorRaza)) || [];
+        const adopcionesPorMesData = @Html.Raw(Json.Serialize(Model.AdopcionesPorMes)) || [];
+        const citasMedicasPorTipoData = @Html.Raw(Json.Serialize(Model.CitasMedicasPorTipo)) || [];
+
+        console.log('Datos de mascotas por raza:', mascotasPorRazaData);
+        console.log('Datos de adopciones por mes:', adopcionesPorMesData);
+        console.log('Datos de citas médicas por tipo:', citasMedicasPorTipoData);
+
+        // Variables globales para los gráficos
+        let chartMascotasPorRaza, chartAdopcionesPorMes, chartCitasMedicasPorTipo;
+
+        // Inicializar dashboard cuando el documento esté listo
+        $(document).ready(function() {
+            console.log('Inicializando dashboard...');
+            initDashboardCharts();
+        });
+
+        function initDashboardCharts() {
+            try {
+                // Inicializar gráfico de mascotas por raza
+                if (mascotasPorRazaData && mascotasPorRazaData.length > 0) {
+                    initMascotasPorRazaChart();
+                } else {
+                    document.getElementById('chartMascotasPorRaza').style.display = 'none';
+                    document.querySelector('#chartMascotasPorRaza').closest('.widget-content').innerHTML = '<p class="text-center text-muted">No hay datos disponibles</p>';
+                }
+
+                // Inicializar gráfico de adopciones por mes
+                if (adopcionesPorMesData && adopcionesPorMesData.length > 0) {
+                    initAdopcionesPorMesChart();
+                } else {
+                    document.getElementById('chartAdopcionesPorMes').style.display = 'none';
+                    document.querySelector('#chartAdopcionesPorMes').closest('.widget-content').innerHTML = '<p class="text-center text-muted">No hay datos disponibles</p>';
+                }
+
+                // Inicializar gráfico de citas médicas por tipo
+                if (citasMedicasPorTipoData && citasMedicasPorTipoData.length > 0) {
+                    initCitasMedicasPorTipoChart();
+                } else {
+                    document.getElementById('chartCitasMedicasPorTipo').style.display = 'none';
+                    document.querySelector('#chartCitasMedicasPorTipo').closest('.widget-content').innerHTML = '<p class="text-center text-muted">No hay datos disponibles</p>';
+                }
+
+                console.log('Dashboard inicializado correctamente');
+            } catch (error) {
+                console.error('Error al inicializar el dashboard:', error);
+            }
+        }
+
+        function initMascotasPorRazaChart() {
+            const ctx = document.getElementById('chartMascotasPorRaza');
+            if (!ctx) return;
+
+            const data = {
+                labels: mascotasPorRazaData.map(item => item.raza || 'Sin raza'),
+                datasets: [{
+                    label: 'Mascotas',
+                    data: mascotasPorRazaData.map(item => item.cantidad || 0),
+                    backgroundColor: [
+                        '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
+                        '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F',
+                        '#BB8FCE', '#85C1E9'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            };
+
+            chartMascotasPorRaza = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const item = mascotasPorRazaData[context.dataIndex];
+                                    const percentage = ((context.parsed / context.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                    return `${context.label}: ${context.parsed} mascotas (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initAdopcionesPorMesChart() {
+            const ctx = document.getElementById('chartAdopcionesPorMes');
+            if (!ctx) return;
+
+            const data = {
+                labels: adopcionesPorMesData.map(item => `${item.mes} ${item.año}`),
+                datasets: [{
+                    label: 'Adopciones',
+                    data: adopcionesPorMesData.map(item => item.cantidad || 0),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            };
+
+            chartAdopcionesPorMes = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initCitasMedicasPorTipoChart() {
+            const ctx = document.getElementById('chartCitasMedicasPorTipo');
+            if (!ctx) return;
+
+            const data = {
+                labels: citasMedicasPorTipoData.map(item => item.tipoConsulta || 'Sin tipo'),
+                datasets: [{
+                    label: 'Citas',
+                    data: citasMedicasPorTipoData.map(item => item.cantidad || 0),
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                    ],
+                    borderWidth: 0
+                }]
+            };
+
+            chartCitasMedicasPorTipo = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function refreshDashboard() {
+            window.location.reload();
+        }
+    </script>
+}

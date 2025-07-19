@@ -1,0 +1,343 @@
+@model List<PetsHome.Business.Models.ReporteEventos>
+@{
+    ViewBag.Title = "Reporte de Eventos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/reportes.css" rel="stylesheet" />
+}
+
+<div class="layout-top-spacing">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3><i class="fas fa-calendar-alt"></i> Reporte de Eventos</h3>
+                    <p class="page-meta">Actividades y eventos del refugio con participación de voluntarios</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Index", "Reportes")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </a>
+                    <button class="btn btn-primary" onclick="exportTable()">
+                        <i class="fas fa-download"></i> Exportar Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros de Fecha -->
+    <div class="row">
+        <div class="col-12">
+            <div class="widget">
+                <div class="widget-content">
+                    <form method="get" class="form-inline">
+                        <div class="form-group mr-3">
+                            <label for="fechaInicio" class="mr-2">Fecha Inicio:</label>
+                            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" 
+                                   value="@ViewBag.FechaInicio?.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="form-group mr-3">
+                            <label for="fechaFin" class="mr-2">Fecha Fin:</label>
+                            <input type="date" class="form-control" id="fechaFin" name="fechaFin" 
+                                   value="@ViewBag.FechaFin?.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <button type="submit" class="btn btn-primary mr-2">
+                            <i class="fas fa-search"></i> Filtrar
+                        </button>
+                        <a href="@Url.Action("Eventos", "Reportes")" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Limpiar
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas de Eventos -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-calendar text-primary"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count</h6>
+                            <p class="name">Total Eventos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-clock text-success"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(e => e.Estado == "Próximo")</h6>
+                            <p class="name">Próximos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-check-circle text-info"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(e => e.Estado == "Realizado")</h6>
+                            <p class="name">Realizados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-users text-warning"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@(Model.Any() ? Model.Sum(e => e.VoluntariosParticipantes) : 0)</h6>
+                            <p class="name">Total Participaciones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Eventos -->
+    <div class="row">
+        <div class="col-12">
+            <div class="widget widget-table-one">
+                <div class="widget-heading">
+                    <h5>Listado de Eventos</h5>
+                    <div class="task-action">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                <i class="fas fa-filter"></i> Filtrar
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item filter-option" href="#" data-filter="all">Todos</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="proximo">Solo Próximos</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="realizado">Solo Realizados</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="sin-voluntarios">Sin Voluntarios</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="tableEventos">
+                            <thead>
+                                <tr>
+                                    <th>Evento</th>
+                                    <th class="text-center">Fecha y Hora</th>
+                                    <th class="text-center">Voluntarios</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var evento in Model)
+                                {
+                                    var estadoClase = evento.Estado == "Próximo" ? "badge-success" :
+                                                     evento.Estado == "En curso" ? "badge-warning" : "badge-info";
+                                    var fechaFormateada = evento.FechaEvento.ToString("dd/MM/yyyy");
+                                    
+                                    <tr data-estado="@evento.Estado.ToLower()" data-voluntarios="@evento.VoluntariosParticipantes">
+                                        <td>
+                                            <div class="event-info">
+                                                <div class="event-icon">
+                                                    <i class="fas fa-calendar-day"></i>
+                                                </div>
+                                                <div class="event-details">
+                                                    <strong>@evento.NombreEvento</strong>
+                                                    <small class="text-muted">ID: @evento.Id</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="date-time-info">
+                                                <span class="date-badge">@fechaFormateada</span>
+                                                <br>
+                                                <small class="text-muted">
+                                                    @evento.FechaEvento.ToString("HH:mm")
+                                                </small>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (evento.VoluntariosParticipantes > 0)
+                                            {
+                                                <span class="badge badge-primary badge-lg">@evento.VoluntariosParticipantes</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Sin voluntarios</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @estadoClase">@evento.Estado</span>
+                                        </td>
+                                        <td>
+                                            <div class="description-text">
+                                                @if (!string.IsNullOrEmpty(evento.Descripcion) && evento.Descripcion.Length > 50)
+                                                {
+                                                    <span title="@evento.Descripcion">
+                                                        @evento.Descripcion.Substring(0, 50)...
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    @evento.Descripcion
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            initEventosTable();
+            initFilters();
+        });
+
+        function initEventosTable() {
+            $('#tableEventos').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                },
+                "pageLength": 25,
+                "order": [[1, "desc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [3, 4] },
+                    { "type": "date", "targets": [1] }
+                ],
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        className: 'btn btn-danger btn-sm'
+                    }
+                ]
+            });
+        }
+
+        function initFilters() {
+            $('.filter-option').on('click', function(e) {
+                e.preventDefault();
+                const filter = $(this).data('filter');
+                const table = $('#tableEventos').DataTable();
+                
+                // Limpiar filtros previos
+                $.fn.dataTable.ext.search.length = 0;
+                
+                switch(filter) {
+                    case 'all':
+                        table.columns().search('').draw();
+                        break;
+                    case 'proximo':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return $(table.row(dataIndex).node()).data('estado') === 'próximo';
+                        });
+                        break;
+                    case 'realizado':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return $(table.row(dataIndex).node()).data('estado') === 'realizado';
+                        });
+                        break;
+                    case 'sin-voluntarios':
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            return parseInt($(table.row(dataIndex).node()).data('voluntarios')) === 0;
+                        });
+                        break;
+                }
+                
+                table.draw();
+            });
+        }
+
+        function exportTable() {
+            $('#tableEventos').DataTable().button('.buttons-excel').trigger();
+        }
+    </script>
+
+    <style>
+        .event-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .event-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            font-size: 16px;
+        }
+
+        .event-details strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .event-details small {
+            font-size: 11px;
+            color: #a0aec0;
+        }
+
+        .date-time-info {
+            text-align: center;
+        }
+
+        .description-text {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .form-inline .form-group {
+            margin-bottom: 10px;
+        } 
+    </style>
+}

@@ -1,0 +1,284 @@
+@model List<PetsHome.Business.Models.ReporteVoluntarios>
+@{
+    ViewBag.Title = "Reporte de Voluntarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/reportes.css" rel="stylesheet" />
+}
+
+<div class="layout-top-spacing">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3><i class="fas fa-users"></i> Reporte de Voluntarios</h3>
+                    <p class="page-meta">Análisis de participación y actividad de voluntarios</p>
+                </div>
+                <div class="header-actions">
+                    <a href="@Url.Action("Index", "Reportes")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </a>
+                    <button class="btn btn-primary" onclick="exportTable()">
+                        <i class="fas fa-download"></i> Exportar Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas de Voluntarios -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-users text-primary"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count</h6>
+                            <p class="name">Total Voluntarios</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-user-check text-success"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@Model.Count(v => v.Estado == "Activo")</h6>
+                            <p class="name">Voluntarios Activos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-calendar-check text-info"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@(Model.Any() ? Model.Sum(v => v.EventosParticipados) : 0)</h6>
+                            <p class="name">Total Participaciones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-header">
+                        <div class="w-icon">
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <div class="w-info">
+                            <h6 class="value">@(Model.Any() ? Math.Round(Model.Average(v => v.EventosParticipados), 1) : 0)</h6>
+                            <p class="name">Promedio por Voluntario</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Voluntarios -->
+    <div class="row">
+        <div class="col-12">
+            <div class="widget widget-table-one">
+                <div class="widget-heading">
+                    <h5>Detalle de Voluntarios</h5>
+                    <div class="task-action">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                <i class="fas fa-filter"></i> Filtrar
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item filter-option" href="#" data-filter="all">Todos</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="activo">Solo Activos</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="inactivo">Solo Inactivos</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item filter-option" href="#" data-filter="alto">Alta Participación (5+)</a>
+                                <a class="dropdown-item filter-option" href="#" data-filter="bajo">Baja Participación (0-2)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="tableVoluntarios">
+                            <thead>
+                                <tr>
+                                    <th>Voluntario</th>
+                                    <th class="text-center">Contacto</th>
+                                    <th class="text-center">Eventos Participados</th>
+                                    <th class="text-center">Última Participación</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Nivel de Actividad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var voluntario in Model)
+                                {
+                                    var nivelActividad = voluntario.EventosParticipados >= 5 ? "Alto" :
+                                                        voluntario.EventosParticipados >= 3 ? "Medio" : "Bajo";
+                                    var nivelClase = voluntario.EventosParticipados >= 5 ? "badge-success" :
+                                                    voluntario.EventosParticipados >= 3 ? "badge-warning" : "badge-danger";
+                                    var estadoClase = voluntario.Estado == "Activo" ? "badge-success" : "badge-secondary";
+                                    var ultimaParticipacion = voluntario.UltimaParticipacion?.ToString("dd/MM/yyyy") ?? "Nunca";
+                                    
+                                    <tr data-estado="@voluntario.Estado.ToLower()" data-eventos="@voluntario.EventosParticipados">
+                                        <td>
+                                            <div class="volunteer-info">
+                                                <div class="volunteer-avatar">
+                                                    <i class="fas fa-user-circle"></i>
+                                                </div>
+                                                <div class="volunteer-details">
+                                                    <strong>@voluntario.NombreCompleto</strong>
+                                                    <small class="text-muted">ID: @voluntario.Id</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contact-info">
+                                                @if (!string.IsNullOrEmpty(voluntario.Telefono))
+                                                {
+                                                    <div><i class="fas fa-phone text-primary"></i> @voluntario.Telefono</div>
+                                                }
+                                                @if (!string.IsNullOrEmpty(voluntario.Email))
+                                                {
+                                                    <div><i class="fas fa-envelope text-info"></i> @voluntario.Email</div>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary badge-lg">@voluntario.EventosParticipados</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (voluntario.UltimaParticipacion.HasValue)
+                                            {
+                                                <span class="date-badge">@ultimaParticipacion</span>
+                                               @*  @{
+                                                    var diasSinParticipacion = (DateTime.Now - voluntario.UltimaParticipacion.Value).Days;
+                                                }
+                                                @if (diasSinParticipacion > 90)
+                                                {
+                                                    <br><small class="text-warning">Hace @diasSinParticipacion días</small>
+                                                } *@
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Sin participación</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @estadoClase">@voluntario.Estado</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge @nivelClase">@nivelActividad</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            initVoluntariosTable();
+            initFilters();
+        });
+
+        function initVoluntariosTable() {
+            $('#tableVoluntarios').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                },
+                "pageLength": 25,
+                "order": [[2, "desc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [5] },
+                    { "type": "date", "targets": [3] }
+                ],
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        className: 'btn btn-danger btn-sm'
+                    }
+                ]
+            });
+        }
+
+        function initFilters() {
+            $('.filter-option').on('click', function(e) {
+                e.preventDefault();
+                const filter = $(this).data('filter');
+                const table = $('#tableVoluntarios').DataTable();
+                
+                switch(filter) {
+                    case 'all':
+                        table.columns().search('').draw();
+                        break;
+                    case 'activo':
+                        table.column(4).search('Activo').draw();
+                        break;
+                    case 'inactivo':
+                        table.column(4).search('Inactivo').draw();
+                        break;
+                    case 'alto':
+                        // Filtrar por voluntarios con 5+ eventos
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            const eventos = parseInt($(table.row(dataIndex).node()).data('eventos'));
+                            return eventos >= 5;
+                        });
+                        table.draw();
+                        break;
+                    case 'bajo':
+                        // Filtrar por voluntarios con 0-2 eventos
+                        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                            const eventos = parseInt($(table.row(dataIndex).node()).data('eventos'));
+                            return eventos <= 2;
+                        });
+                        table.draw();
+                        break;
+                }
+                
+                // Limpiar filtros personalizados si no son alto/bajo
+                if (filter !== 'alto' && filter !== 'bajo') {
+                    $.fn.dataTable.ext.search.pop();
+                }
+            });
+        }
+
+        function exportTable() {
+            $('#tableVoluntarios').DataTable().button('.buttons-excel').trigger();
+        }
+    </script>
+}
