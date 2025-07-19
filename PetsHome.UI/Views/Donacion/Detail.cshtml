@@ -1,0 +1,309 @@
+@model DonacionViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-container position-relative">
+                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-hand-holding-heart text-primary fa-2x"></i>
+                                </div>
+                                <div class="avatar-status bg-success"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4 class="mb-1 text-white font-weight-bold">Donación #@Model.dona_Id</h4>
+                            <div class="mb-2">
+                                <span class="badge badge-light text-white px-3 py-1">
+                                    <i class="fas fa-gift mr-1"></i>@Model.dona_TipoDonacion
+                                </span>
+                                @if (Model.dona_Estado == "Recibida")
+                                {
+                                    <span class="badge badge-success px-3 py-1 ml-2">
+                                        <i class="fas fa-check mr-1"></i>@Model.dona_Estado
+                                    </span>
+                                }
+                                else if (Model.dona_Estado == "En Proceso")
+                                {
+                                    <span class="badge badge-warning px-3 py-1 ml-2">
+                                        <i class="fas fa-clock mr-1"></i>@Model.dona_Estado
+                                    </span>
+                                }
+                                else if (Model.dona_Estado == "Procesada")
+                                {
+                                    <span class="badge badge-info px-3 py-1 ml-2">
+                                        <i class="fas fa-check-circle mr-1"></i>@Model.dona_Estado
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger px-3 py-1 ml-2">
+                                        <i class="fas fa-times mr-1"></i>@Model.dona_Estado
+                                    </span>
+                                }
+                            </div>
+                            <p class="text-white-50 mb-0">
+                                <i class="fas fa-user mr-1"></i>@Model.dona_NombreDonante
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Información del Donante -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-user text-primary mr-2"></i>Información del Donante
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">ID:</span>
+                                        <span class="info-value badge badge-outline-primary">@Model.dona_Id</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Nombre:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-user text-muted mr-1"></i>
+                                            @Model.dona_NombreDonante
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Teléfono:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-phone text-muted mr-1"></i>
+                                            @Model.dona_TelefonoDonante
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Email:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-envelope text-muted mr-1"></i>
+                                            @Model.dona_EmailDonante
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de la Donación -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-gift text-success mr-2"></i>Información de la Donación
+                                </h6>
+                                <div class="info-group">
+                                    <div class="info-item">
+                                        <span class="info-label">Tipo:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-tag text-muted mr-1"></i>
+                                            @Model.dona_TipoDonacion
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Fecha:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-calendar text-muted mr-1"></i>
+                                            @Model.dona_FechaDonacion.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </div>
+
+                                    @if (Model.dona_MontoMonetario.HasValue && Model.dona_MontoMonetario > 0)
+                                    {
+                                        <div class="info-item">
+                                            <span class="info-label">Monto:</span>
+                                            <span class="info-value">
+                                                <i class="fas fa-dollar-sign text-muted mr-1"></i>
+                                                @Model.dona_MontoMonetario?.ToString("C")
+                                            </span>
+                                        </div>
+                                    }
+
+                                    @if (Model.dona_ValorEstimado.HasValue && Model.dona_ValorEstimado > 0)
+                                    {
+                                        <div class="info-item">
+                                            <span class="info-label">Valor Estimado:</span>
+                                            <span class="info-value">
+                                                <i class="fas fa-calculator text-muted mr-1"></i>
+                                                @Model.dona_ValorEstimado?.ToString("C")
+                                            </span>
+                                        </div>
+                                    }
+
+                                    <div class="info-item">
+                                        <span class="info-label">Estado:</span>
+                                        <span class="info-value">
+                                            @if (Model.dona_Estado == "Recibida")
+                                            {
+                                                <span class="badge badge-success">
+                                                    <i class="fas fa-check mr-1"></i>@Model.dona_Estado
+                                                </span>
+                                            }
+                                            else if (Model.dona_Estado == "En Proceso")
+                                            {
+                                                <span class="badge badge-warning">
+                                                    <i class="fas fa-clock mr-1"></i>@Model.dona_Estado
+                                                </span>
+                                            }
+                                            else if (Model.dona_Estado == "Procesada")
+                                            {
+                                                <span class="badge badge-info">
+                                                    <i class="fas fa-check-circle mr-1"></i>@Model.dona_Estado
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-danger">
+                                                    <i class="fas fa-times mr-1"></i>@Model.dona_Estado
+                                                </span>
+                                            }
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Refugio:</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-home text-muted mr-1"></i>
+                                            @Model.refg_Nombre
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descripción de Artículos -->
+                    @if (!string.IsNullOrEmpty(Model.dona_DescripcionArticulos))
+                    {
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="info-section">
+                                    <h6 class="section-title">
+                                        <i class="fas fa-list text-info mr-2"></i>Descripción de Artículos
+                                    </h6>
+                                    <div class="info-group">
+                                        <div class="info-item">
+                                            <div class="info-value">
+                                                <div class="bg-light p-3 rounded">
+                                                    <i class="fas fa-quote-left text-muted mr-2"></i>
+                                                    @Model.dona_DescripcionArticulos
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Observaciones -->
+                    @if (!string.IsNullOrEmpty(Model.dona_Observaciones))
+                    {
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="info-section">
+                                    <h6 class="section-title">
+                                        <i class="fas fa-comment text-warning mr-2"></i>Observaciones
+                                    </h6>
+                                    <div class="info-group">
+                                        <div class="info-item">
+                                            <div class="info-value">
+                                                <div class="bg-light p-3 rounded">
+                                                    <i class="fas fa-quote-left text-muted mr-2"></i>
+                                                    @Model.dona_Observaciones
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Información de Auditoría -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="info-section">
+                                <h6 class="section-title">
+                                    <i class="fas fa-history text-warning mr-2"></i>Información de Auditoría
+                                </h6>
+                                <div class="info-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <span class="info-label">Registrado por:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-user text-muted mr-1"></i>
+                                                    @Model.dona_NombreUsuarioCrea
+                                                </span>
+                                            </div>
+
+                                            <div class="info-item">
+                                                <span class="info-label">Fecha Registro:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-plus-circle text-muted mr-1"></i>
+                                                    @Model.dona_FechaCrea.ToString("dd/MM/yyyy HH:mm")
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <span class="info-label">Modificado por:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-user-edit text-muted mr-1"></i>
+                                                    @(Model.dona_NombreUsuarioModifica ?? "N/A")
+                                                </span>
+                                            </div>
+
+                                            <div class="info-item">
+                                                <span class="info-label">Fecha Modificación:</span>
+                                                <span class="info-value">
+                                                    <i class="fas fa-edit text-muted mr-1"></i>
+                                                    @(Model.dona_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light no-print">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="/Donacion/Find/@Model.dona_Id" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </a>
+                            <button id="btnImprimir" class="btn btn-outline-secondary btn-sm ml-2">
+                                <i class="fas fa-print mr-1"></i>Imprimir
+                            </button>
+                            <a href="/Donacion" class="btn btn-outline-info btn-sm ml-2">
+                                <i class="fas fa-arrow-left mr-1"></i>Volver al Listado
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                Última actualización: @(Model.dona_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
