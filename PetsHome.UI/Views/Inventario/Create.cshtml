@@ -1,0 +1,46 @@
+﻿@model InventarioViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>@(Model.inv_Id == 0 ? "Crear" : "Editar") Inventario</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Add" method="post" autocomplete="off"
+                          data-ajax-begin="Catalogs.begin"
+                          data-ajax-success="Catalogs.success"
+                          data-ajax-failure="Catalogs.failure"
+                          data-ajax-complete="Catalogs.complete">
+
+                        <input type="hidden" asp-for="inv_Id" />
+                        <input type="hidden" asp-for="isEdit" value="@(Model.inv_Id > 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="inv_Fecha" class="control-label">Fecha</label>
+                                    <input asp-for="inv_Fecha" class="form-control" type="date" required />
+                                    <span asp-validation-for="inv_Fecha" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="@(Model.inv_Id == 0 ? "Crear" : "Actualizar")" class="btn btn-primary" />
+                            <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

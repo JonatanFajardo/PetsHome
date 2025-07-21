@@ -25,6 +25,7 @@ namespace PetsHome.Business
             services.AddScoped<EntradaRepository>();
             services.AddScoped<EntradasDetalleRepository>();
             services.AddScoped<InventarioRepository>();
+            services.AddScoped<InventariosDetalleRepository>();
             services.AddScoped<ItemRepository>();
             services.AddScoped<RefugioRepository>();
             services.AddScoped<EmpleadoRepository>();
@@ -65,6 +66,7 @@ namespace PetsHome.Business
             services.AddScoped<EntradaService>();
             services.AddScoped<EntradasDetalleService>();
             services.AddScoped<InventarioService>();
+            services.AddScoped<InventariosDetalleService>();
             services.AddScoped<ItemService>();
             services.AddScoped<RefugioService>();
             services.AddScoped<EmpleadoService>();

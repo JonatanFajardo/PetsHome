@@ -1,0 +1,32 @@
+﻿@model InventarioViewModel
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Detalle del Inventario</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">ID:</label>
+                        <p class="form-control-static">@Model.inv_Id</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Fecha:</label>
+                        <p class="form-control-static">@Model.inv_Fecha?.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <a asp-action="Create" asp-route-id="@Model.inv_Id" class="btn btn-primary">Editar</a>
+                <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+            </div>
+        </div>
+    </div>
+</div>

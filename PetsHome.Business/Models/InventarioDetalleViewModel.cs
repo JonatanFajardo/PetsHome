@@ -53,9 +53,21 @@ namespace PetsHome.Business.Models
         /// <summary>
         /// Obtiene o establece el stock actual en el inventario.
         /// </summary>
-        [Display(Name = "")]
+        [Display(Name = "Stock")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? invdet_Stock { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el nombre del inventario para mostrar.
+        /// </summary>
+        [Display(Name = "Inventario")]
+        public string? inventario { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el nombre del item para mostrar.
+        /// </summary>
+        [Display(Name = "Item")]
+        public string? item { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea el detalle de inventario.

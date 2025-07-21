@@ -8,23 +8,27 @@ namespace PetsHome.Common.Entities
     /// <summary>
     /// Entidad que representa la tabla.
     /// </summary>
-    public partial class PR_Inventario_Inventarios_ListResult
+    public partial class PR_Inventario_InventariosDetalles_DetailResult
     {
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int inv_Id { get; set; }
+        public int invdet_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? inv_Fecha { get; set; }
+        public string inventario { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string inv_NombreUsuarioCrea { get; set; }
+        public string item { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime inv_FechaCrea { get; set; }
+        public int? invdet_Existencia { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public int? invdet_Stock { get; set; }
     }
 }

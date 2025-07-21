@@ -3,6 +3,89 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>@(Model.invdet_Id == 0 ? "Crear" : "Editar") Detalle de Inventario</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Add" method="post" autocomplete="off"
+                          data-ajax-begin="Catalogs.begin"
+                          data-ajax-success="Catalogs.success"
+                          data-ajax-failure="Catalogs.failure"
+                          data-ajax-complete="Catalogs.complete">
 
-<h1>Create</h1>
+                        <input type="hidden" asp-for="invdet_Id" />
+                        <input type="hidden" asp-for="isEdit" value="@(Model.invdet_Id > 0)" />
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="inv_Id" class="control-label">Inventario</label>
+                                    <select asp-for="inv_Id" class="form-control" required>
+                                        <option value="">Seleccione un inventario</option>
+                                    </select>
+                                    <span asp-validation-for="inv_Id" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="itm_Id" class="control-label">Item</label>
+                                    <select asp-for="itm_Id" class="form-control" required>
+                                        <option value="">Seleccione un item</option>
+                                    </select>
+                                    <span asp-validation-for="itm_Id" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="invdet_Existencia" class="control-label">Existencia</label>
+                                    <input asp-for="invdet_Existencia" class="form-control" type="number" min="0" required />
+                                    <span asp-validation-for="invdet_Existencia" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="invdet_Stock" class="control-label">Stock</label>
+                                    <input asp-for="invdet_Stock" class="form-control" type="number" min="0" required />
+                                    <span asp-validation-for="invdet_Stock" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="invdet_Entradas" class="control-label">Entradas</label>
+                                    <input asp-for="invdet_Entradas" class="form-control" type="number" min="0" required />
+                                    <span asp-validation-for="invdet_Entradas" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="invdet_Salidas" class="control-label">Salidas</label>
+                                    <input asp-for="invdet_Salidas" class="form-control" type="number" min="0" required />
+                                    <span asp-validation-for="invdet_Salidas" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="@(Model.invdet_Id == 0 ? "Crear" : "Actualizar")" class="btn btn-primary" />
+                            <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

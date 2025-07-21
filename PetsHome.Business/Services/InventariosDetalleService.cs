@@ -1,6 +1,12 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PetsHome.Business.Models;
+using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
@@ -17,77 +23,88 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        //public async Task<List<InventarioDetalleViewModel>> ListAsync()
-        //{
-        //    try
-        //    {
-        //        IEnumerable<PR_Inventario_InventariosDetalles_ListResult> mappedResult = await _inventariosdetalleRepository.ListAsync();
-        //        return _mapper.Map<List<InventariosDetalleViewModel>>(mappedResult.ToList());
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
-        //public async Task<InventariosDetalleViewModel> FindAsync(int id)
-        //{
-        //    try
-        //    {
-        //        PR_Inventario_InventariosDetalles_FindResult mappedResult = await _inventariosdetalleRepository.FindAsync(id);
-        //        return _mapper.Map<InventariosDetalleViewModel>(mappedResult);
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
-        //public async Task<InventariosDetalleViewModel> DetailAsync(int id)
-        //{
-        //    try
-        //    {
-        //        PR_Inventario_InventariosDetalles_DetailResult mappedResult = await _inventariosdetalleRepository.DetailAsync(id);
-        //        return _mapper.Map < InventariosDetalleViewModel >> (mappedResult.ToList());
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
-        //public async Task<Boolean> AddAsync(InventariosDetallViewModel model)
-        //{
-        //    try
-        //    {
-        //        tbInventariosDetalles mappedResult = await _inventariosdetalleRepository.AddAsync(mappedResult);
-        //        return await _mapper.Map<tbInventariosDetalles>(model);
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
-        //public async Task<Boolean> UpdateAsync(InventariosDetallViewModel model)
-        //{
-        //    try
-        //    {
-        //        tbInventariosDetalles mappedResult = await _inventariosdetalleRepository.EditAsync(mappedResult);
-        //        return await _mapper.Map<tbInventariosDetalles>(model);
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
-        //public async Task<Boolean> RemoveAsync(int id)
-        //{
-        //    try
-        //    {
-        //        Boolean mappedResult = await _inventariosdetalleRepository.RemoveAsync(id);
-        //        return mappedResult;
-        //    }
-        //    catch (Exception error)
-        //    {
-        //        throw;
-        //    }
-        //}
+        public async Task<List<InventarioDetalleViewModel>> ListAsync()
+        {
+            try
+            {
+                var mappedResult = await _inventariosdetalleRepository.ListAsync();
+                return _mapper.Map<List<InventarioDetalleViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        public async Task<InventarioDetalleViewModel> FindAsync(int id)
+        {
+            try
+            {
+                var mappedResult = await _inventariosdetalleRepository.FindAsync(id);
+                return _mapper.Map<InventarioDetalleViewModel>(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        public async Task<InventarioDetalleViewModel> DetailAsync(int id)
+        {
+            try
+            {
+                var mappedResult = await _inventariosdetalleRepository.DetailAsync(id);
+                return _mapper.Map<InventarioDetalleViewModel>(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        public async Task<bool> AddAsync(InventarioDetalleViewModel model)
+        {
+            try
+            {
+                tbInventariosDetalles mappedResult = _mapper.Map<tbInventariosDetalles>(model);
+                return await _inventariosdetalleRepository.AddAsync(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return true;
+            }
+        }
+
+        public async Task<bool> UpdateAsync(InventarioDetalleViewModel model)
+        {
+            try
+            {
+                tbInventariosDetalles mappedResult = _mapper.Map<tbInventariosDetalles>(model);
+                return await _inventariosdetalleRepository.EditAsync(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return true;
+            }
+        }
+
+        public async Task<bool> RemoveAsync(int id)
+        {
+            try
+            {
+                bool mappedResult = await _inventariosdetalleRepository.RemoveAsync(id);
+                return mappedResult;
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return true;
+            }
+        }
     }
 }

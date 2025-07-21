@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Compile Remove="Interfaces\Especific\IRazaRepository.cs" />
-    <Compile Remove="Repositories\InventariosDetalleRepository.cs" />
     <Compile Remove="Repositories\PersonaRepository.cs" />
   </ItemGroup>
 
