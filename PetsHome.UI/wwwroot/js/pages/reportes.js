@@ -10,7 +10,6 @@ let chartMascotasPorRaza, chartAdopcionesPorMes, chartCitasMedicasPorTipo;
  * Inicializa el dashboard de reportes
  */
 function initReportesDashboard() {
-    console.log('🎨 Inicializando dashboard de reportes');
     
     // Inicializar gráficos
     if (typeof mascotasPorRazaData !== 'undefined') {
@@ -31,7 +30,6 @@ function initReportesDashboard() {
     // Auto-refresh cada 5 minutos
     setInterval(refreshDashboard, 300000);
     
-    console.log('✅ Dashboard de reportes inicializado');
 }
 
 /**
@@ -267,7 +265,6 @@ function animateMetrics() {
  * Refresca los datos del dashboard
  */
 function refreshDashboard() {
-    console.log('🔄 Refrescando dashboard...');
     
     // Mostrar indicador de carga
     showLoadingIndicator();
@@ -385,7 +382,6 @@ function showSuccessMessage(message) {
     if (typeof toastr !== 'undefined') {
         toastr.success(message);
     } else {
-        console.log('✅ ' + message);
     }
 }
 
@@ -465,5 +461,4 @@ $(document).ready(function() {
         };
     }
     
-    console.log('📊 Módulo de reportes cargado');
 });

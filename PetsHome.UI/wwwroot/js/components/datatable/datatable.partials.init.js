@@ -62,8 +62,6 @@ var datatablePartials = (function () {
                     data: { id: id },
                     dataType: "json",
                     success: function (response) {
-                        console.log('response' + response);
-                        console.log('reponse.data' + response.data);
                         callback(response);
                     },
                 }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -222,10 +220,8 @@ var datatablePartials = (function () {
             // Entra si se desea indicar un ancho especifico
             if (_header[i].Size != undefined) {
                 head[i]['width'] = _header[i].Size
-            }
-            //console.log();
-        }
-        console.log(head);
+            } 
+        } 
 
         head.push({
             targets: i,
@@ -257,9 +253,6 @@ var datatablePartials = (function () {
 
 
 
-$(function () {
-    datatable.init();
-});
 
 
 

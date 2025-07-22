@@ -80,7 +80,7 @@ var datatable = (function () {
     };
 
     obj.failure = function (xhr, status, error) {
-        console.log("Ocurrió  un error.");
+        console.error("Ocurrió  un error.");
     }
 
     obj.complete = function (xhr, status) {
@@ -103,7 +103,6 @@ var datatable = (function () {
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
     obj.init = function (DirectionUrls, header) {
-        console.log("Direccion completa de la url list:" + DirectionUrls.urlList)
         $(function () { 
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
@@ -275,7 +274,6 @@ var datatable = (function () {
                         beforeSend: function (xhr) {
                             DataTableProgress.show('datatable', '#myTableContainer');
                             DataTableProgress.update('ajax_send', 'Iniciando petición AJAX...');
-                            console.log('Enviando petición AJAX...');
                         },
 
                         dataSrc: function (json) {
@@ -291,8 +289,6 @@ var datatable = (function () {
                                     recordCount: Array.isArray(response) ? response.length : (response.data ? response.data.length : 'desconocido')
                                 });
 
-                                console.log('Respuesta recibida:', response);
-                                console.log('Status:', textStatus);
 
                                 DataTableProgress.update('processing', 'Procesando datos recibidos...');
 
@@ -309,7 +305,6 @@ var datatable = (function () {
 
                                 callback(processedResponse);
 
-                                console.log('Datos procesados correctamente');
 
                             } catch (processError) {
                                 console.error('Error procesando respuesta:', processError);
@@ -383,8 +378,6 @@ var datatable = (function () {
                         },
 
                         complete: function (jqXHR, textStatus) {
-                            console.log('Petición AJAX completada:', textStatus);
-                            console.log('Status final:', jqXHR.status);
                         }
                     });
                 },
@@ -415,13 +408,11 @@ var datatable = (function () {
             // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.
             table.on("click", ".edit-btn", function (e) {
                 var getIdEdit = $(this).data("id");
-                console.log(getIdEdit);
                 window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
             });
 
             table.on("click", ".detail-btn", function (e) {
                 var getIdEdit = $(this).data("id");
-                console.log(getIdEdit);
                 window.location = `${DirectionUrls.urlDetail}/${getIdEdit}`;
             });
 
@@ -498,9 +489,6 @@ var datatable = (function () {
                 createNotificationContainer();
                 setupStyles(); // Mantener solo los estilos generales y de notificación
 
-                if (config.showConsoleLog) {
-                    console.log('DataTableProgress inicializado');
-                }
             }
 
             /**
@@ -836,11 +824,9 @@ var datatable = (function () {
              */
             function show(tableId, targetElementSelector) {
                 if (!tableId) {
-                    console.warn('DataTableProgress.show: tableId es requerido');
                     return;
                 }
                 if (!targetElementSelector) {
-                    console.warn('DataTableProgress.show: targetElementSelector es requerido para mostrar el progreso en la tabla.');
                     return;
                 }
 
@@ -855,9 +841,6 @@ var datatable = (function () {
                 // Crear y añadir el contenedor de la barra de progreso a la tabla
                 createTableProgressBar(tableId, targetElementSelector);
 
-                if (config.showConsoleLog) {
-                    console.log(`DataTableProgress.show: ${tableId}`);
-                }
             }
 
             /**
@@ -869,7 +852,6 @@ var datatable = (function () {
             function update(step, message, details) {
                 var tableId = getCurrentTableId();
                 if (!tableId || !activeStates[tableId]) {
-                    console.warn('DataTableProgress.update: No hay estado activo para actualizar.');
                     return;
                 }
 
@@ -885,9 +867,6 @@ var datatable = (function () {
                 // Actualizar UI de la barra de progreso de la tabla
                 updateTableProgressBar(tableId, step, message, details);
 
-                if (config.showConsoleLog) {
-                    console.log(`DataTableProgress.update [${step}]:`, message, details);
-                }
             }
 
             /**
@@ -911,9 +890,6 @@ var datatable = (function () {
 
                 showNotification('error', title, message);
 
-                if (config.showConsoleLog) {
-                    console.error(`DataTableProgress.error: ${title}`, message, details);
-                }
             }
 
             /**
@@ -930,9 +906,6 @@ var datatable = (function () {
                     delete containers.progressBars[tableId]; // Eliminar referencia
                 }
 
-                if (config.showConsoleLog) {
-                    console.log(`DataTableProgress.hide: ${tableId}`);
-                }
             }
 
             /**
@@ -1358,7 +1331,6 @@ function validateAndProcessResponse(response) {
     }
     // Caso 5: Respuesta inesperada
     else {
-        console.warn('Estructura de respuesta inesperada:', response);
         // Intentar extraer datos de cualquier propiedad que sea un array
         var arrayProp = Object.keys(response).find(key => Array.isArray(response[key]));
         if (arrayProp) {
@@ -1541,14 +1513,11 @@ function logErrorToServer(errorData) {
             contentType: 'application/json',
             timeout: 5000,
             success: function () {
-                console.log('Error logged to server');
             },
             error: function () {
-                console.warn('Could not log error to server');
             }
         });
     } catch (e) {
-        console.warn('Error logging failed:', e);
     }
 }
 

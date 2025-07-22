@@ -8,7 +8,6 @@ var Vacuna = (function () {
                 { FieldName: "vac_Descripcion" }
             ];
 
-            console.log('URL configurada:', Direction.listUrl);
 
             // Verificar que la URL sea válida
             if (!Direction.listUrl) {

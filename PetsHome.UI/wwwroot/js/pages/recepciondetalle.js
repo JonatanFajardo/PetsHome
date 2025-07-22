@@ -3,7 +3,6 @@ var RecepcionDetalle = (function () {
     var obj = {};
 
     obj.datatablePartials = function (Direction) {
-        console.log(Direction.listUrl)
         $(function () {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
@@ -81,13 +80,16 @@ var RecepcionDetalle = (function () {
     }
 
     // Función para cargar ítems en dropdown
-    obj.loadItems = function() {
+    obj.loadItems = function(callback) {
         $.get('/RecepcionDetalle/GetItems', function(data) {
             var select = $('#select-item');
             select.empty().append('<option value="">Seleccione un ítem</option>');
             $.each(data, function(index, item) {
                 select.append($('<option>').val(item.value).text(item.text));
             });
+            if (callback && typeof callback === 'function') {
+                callback();
+            }
         });
     }
 

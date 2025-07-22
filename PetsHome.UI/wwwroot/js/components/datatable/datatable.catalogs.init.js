@@ -42,9 +42,6 @@ var datatableCatalogs = (function () {
             createNotificationContainer();
             setupStyles(); // Mantener solo los estilos generales y de notificación
 
-            if (config.showConsoleLog) {
-                console.log('DataTableProgress inicializado');
-            }
         }
 
         /**
@@ -380,11 +377,9 @@ var datatableCatalogs = (function () {
          */
         function show(tableId, targetElementSelector) {
             if (!tableId) {
-                console.warn('DataTableProgress.show: tableId es requerido');
                 return;
             }
             if (!targetElementSelector) {
-                console.warn('DataTableProgress.show: targetElementSelector es requerido para mostrar el progreso en la tabla.');
                 return;
             }
 
@@ -399,9 +394,6 @@ var datatableCatalogs = (function () {
             // Crear y añadir el contenedor de la barra de progreso a la tabla
             createTableProgressBar(tableId, targetElementSelector);
 
-            if (config.showConsoleLog) {
-                console.log(`DataTableProgress.show: ${tableId}`);
-            }
         }
 
         /**
@@ -413,7 +405,6 @@ var datatableCatalogs = (function () {
         function update(step, message, details) {
             var tableId = getCurrentTableId();
             if (!tableId || !activeStates[tableId]) {
-                console.warn('DataTableProgress.update: No hay estado activo para actualizar.');
                 return;
             }
 
@@ -429,9 +420,6 @@ var datatableCatalogs = (function () {
             // Actualizar UI de la barra de progreso de la tabla
             updateTableProgressBar(tableId, step, message, details);
 
-            if (config.showConsoleLog) {
-                console.log(`DataTableProgress.update [${step}]:`, message, details);
-            }
         }
 
         /**
@@ -455,9 +443,6 @@ var datatableCatalogs = (function () {
 
             showNotification('error', title, message);
 
-            if (config.showConsoleLog) {
-                console.error(`DataTableProgress.error: ${title}`, message, details);
-            }
         }
 
         /**
@@ -474,9 +459,6 @@ var datatableCatalogs = (function () {
                 delete containers.progressBars[tableId]; // Eliminar referencia
             }
 
-            if (config.showConsoleLog) {
-                console.log(`DataTableProgress.hide: ${tableId}`);
-            }
         }
 
         /**
@@ -811,7 +793,6 @@ var datatableCatalogs = (function () {
         }
         // Caso 5: Respuesta inesperada
         else {
-            console.warn('Estructura de respuesta inesperada:', response);
             // Intentar extraer datos de cualquier propiedad que sea un array
             var arrayProp = Object.keys(response).find(key => Array.isArray(response[key]));
             if (arrayProp) {
@@ -903,7 +884,6 @@ var datatableCatalogs = (function () {
                     beforeSend: function (xhr) {
                         DataTableProgress.show('datatable', '#myTableContainer');
                         DataTableProgress.update('ajax_send', 'Iniciando petición AJAX...');
-                        console.log('Enviando petición AJAX...');
                     },
 
                     dataSrc: function (json) {
@@ -919,8 +899,6 @@ var datatableCatalogs = (function () {
                                 recordCount: Array.isArray(response) ? response.length : (response.data ? response.data.length : 'desconocido')
                             });
 
-                            console.log('Respuesta recibida:', response);
-                            console.log('Status:', textStatus);
 
                             DataTableProgress.update('processing', 'Procesando datos recibidos...');
 
@@ -937,11 +915,9 @@ var datatableCatalogs = (function () {
 
                             callback(processedResponse);
 
-                            console.log('Datos procesados correctamente');
 
                         } catch (processError) {
                             console.error('Error procesando respuesta:', processError);
-                            console.error('Stack trace:', processError.stack); // Línea agregada para ver el stack trace
 
                             DataTableProgress.error('Error al procesar datos', processError.message);
 
@@ -955,12 +931,6 @@ var datatableCatalogs = (function () {
                     },
 
                     error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('=== ERROR AJAX ===');
-                        console.error('Status:', textStatus);
-                        console.error('Error:', errorThrown);
-                        console.error('Status Code:', jqXHR.status);
-                        console.error('Response Text:', jqXHR.responseText); // Línea agregada para ver la respuesta completa
-                        console.error('Response Headers:', jqXHR.getAllResponseHeaders()); // Línea agregada para ver headers
 
                         var errorMessage = 'Error desconocido';
                         var errorDetails = `Status: ${textStatus}\nCódigo: ${jqXHR.status}\nError: ${errorThrown}`;
@@ -1011,12 +981,9 @@ var datatableCatalogs = (function () {
                     },
 
                     complete: function (jqXHR, textStatus) {
-                        console.log('Petición AJAX completada:', textStatus);
-                        console.log('Status final:', jqXHR.status);
                     }
 
                 }).fail(function (jqXHR, textStatus, error) {
-                    console.log("Error en el envio de la peticion de listado " + jqXHR.responseJSON);
                 });
             },
             columnDefs: obj.dataHeader(header)

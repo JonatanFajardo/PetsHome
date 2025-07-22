@@ -4,7 +4,6 @@ var Evento = (function () {
 
     obj.datatable = function (Direction) {
         $(function () {
-            console.log("ws");
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [

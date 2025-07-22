@@ -6,7 +6,6 @@ var Donacion = (function () {
         $(function () {
             var header = new Array();
             // Nombre | Tamaño/AutoWidth | Visibilidad
-            console.log(Direction.listUrl);
             header = [
                     {
                         FieldName: 'dona_Id',

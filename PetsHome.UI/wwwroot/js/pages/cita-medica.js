@@ -15,7 +15,6 @@ var CitaMedica = (function () {
         }
 
             try {
-                console.log("Inicializando CitaMedica datatable");
 
                 // Configuración de headers con mejoras visuales
                 var header = [ 
@@ -208,7 +207,6 @@ var CitaMedica = (function () {
                 setTimeout(function () {
                     try {
                         datatable.init(Direction, header);
-                        console.log("DataTable inicializado correctamente");
 
                         // Aplicar mejoras visuales adicionales después de la inicialización
                         setTimeout(function () {
