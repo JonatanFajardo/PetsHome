@@ -57,8 +57,9 @@ var datatablePartials = (function () {
             ],
             ajax: function (data, callback, settings) {
                 $.ajax({
-                    url: listUrl + "/" + id,
+                    url: listUrl,
                     type: "GET",
+                    data: { id: id },
                     dataType: "json",
                     success: function (response) {
                         console.log('response' + response);

@@ -27,10 +27,11 @@
 
 @section Scripts{
 
+<script src="~/js/components/datatable/datatable.partials.init.js"></script>
 <script src="~/js/pages/recepciondetalle.js"></script>
 <script>
     RecepcionDetalle.datatablePartials({
-        listUrl: "@Url.Action($"ListByRecepcion")",
+        listUrl: "@Url.Action("ListByRecepcion", "RecepcionDetalle")",
         id: @Model.recep_Id
     });
 </script>

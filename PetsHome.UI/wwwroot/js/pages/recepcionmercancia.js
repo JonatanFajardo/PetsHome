@@ -102,133 +102,74 @@ var RecepcionMercancia = (function () {
             default: return 'secondary';
         }
     }
+     
+    //// Función para validar formulario de recepción
+    //obj.validarFormulario = function() {
+    //    var fecha = $('input[name="recep_Fecha"]').val();
+    //    var tipo = $('select[name="recep_TipoRecepcion"]').val();
+    //    var refugio = $('select[name="refg_Id"]').val();
+    //    var descripcion = $('textarea[name="recep_Descripcion"]').val();
 
-    obj.datatablePartials = function (Direction) {
-        // Validar que Direction tenga las URLs necesarias
-        if (!Direction || !Direction.listUrl) {
-            console.error('RecepcionMercancia.datatablePartials: Direction.listUrl es requerido', Direction);
-            return;
-        }
+    //    if (!fecha) {
+    //        alert('La fecha es requerida');
+    //        return false;
+    //    }
 
-        // Asegurar que la URL incluya el controlador
-        var fullUrl = Direction.listUrl;
-        if (!fullUrl.startsWith('/RecepcionDetalle/')) {
-            fullUrl = '/RecepcionDetalle' + (fullUrl.startsWith('/') ? fullUrl : '/' + fullUrl);
-        }
+    //    if (!tipo) {
+    //        alert('El tipo de recepción es requerido');
+    //        return false;
+    //    }
 
-        console.log('Inicializando datatablePartials con:', Direction);
+    //    if (!refugio) {
+    //        alert('El refugio es requerido');
+    //        return false;
+    //    }
 
-        // Esperar a que el DOM esté completamente listo
-        $(document).ready(function() {
-            // Usar setTimeout para asegurar que todos los elementos estén renderizados
-            setTimeout(function() {
-                // Verificar que el elemento tabla existe y está visible
-                var tableElement = $('#datatable');
-                if (tableElement.length === 0) {
-                    console.error('Elemento #datatable no encontrado en el DOM');
-                    return;
-                }
+    //    if (!descripcion.trim()) {
+    //        alert('La descripción es requerida');
+    //        return false;
+    //    }
 
-                // Verificar que datatablePartials está disponible
-                if (typeof datatablePartials === 'undefined') {
-                    console.error('datatablePartials no está disponible. Verifique que datatable.partials.init.js esté cargado.');
-                    return;
-                }
+    //    return true;
+    //}
 
-                // Destruir DataTable existente si existe para evitar conflictos
-                if ($.fn.DataTable.isDataTable('#datatable')) {
-                    tableElement.DataTable().destroy();
-                    tableElement.empty();
-                }
+    //// Función para limpiar formulario
+    //obj.limpiarFormulario = function() {
+    //    $('input[name="recep_Fecha"]').val('');
+    //    $('select[name="recep_TipoRecepcion"]').val('');
+    //    $('select[name="refg_Id"]').val('');
+    //    $('input[name="recep_NumeroDocumento"]').val('');
+    //    $('input[name="recep_OrigenId"]').val('');
+    //    $('textarea[name="recep_Descripcion"]').val('');
+    //}
 
-                var header = [
-                    { FieldName: 'itm_Codigo', DisplayName: 'Código' },
-                    { FieldName: 'itm_Descripcion', DisplayName: 'Ítem' },
-                    { FieldName: 'recdet_Cantidad', DisplayName: 'Cantidad' },
-                    { FieldName: 'recdet_PrecioUnitario', DisplayName: 'Precio Unit.' },
-                    { FieldName: 'valorTotal', DisplayName: 'Valor Total' },
-                    { FieldName: 'recdet_FechaVencimiento', DisplayName: 'Vencimiento' },
-                    { FieldName: 'recdet_NumeroLote', DisplayName: 'No. Lote' }
-                ];
+    //// Función para autocompletar campos según el tipo de recepción
+    //obj.configurarTipoRecepcion = function() {
+    //    $('select[name="recep_TipoRecepcion"]').on('change', function() {
+    //        var tipo = $(this).val();
+    //        var numeroDocLabel = $('label[for="recep_NumeroDocumento"]');
+    //        var origenLabel = $('label[for="recep_OrigenId"]');
 
-                try {
-                    datatablePartials.initPartials(fullUrl, Direction.id, header);
-                    console.log('DataTable inicializado correctamente con URL:', fullUrl);
-                } catch (error) {
-                    console.error('Error al inicializar DataTable:', error);
-                }
-            }, 100); // Delay de 100ms para asegurar renderizado completo
-        });
-    }
-
-
-    // Función para validar formulario de recepción
-    obj.validarFormulario = function() {
-        var fecha = $('input[name="recep_Fecha"]').val();
-        var tipo = $('select[name="recep_TipoRecepcion"]').val();
-        var refugio = $('select[name="refg_Id"]').val();
-        var descripcion = $('textarea[name="recep_Descripcion"]').val();
-
-        if (!fecha) {
-            alert('La fecha es requerida');
-            return false;
-        }
-
-        if (!tipo) {
-            alert('El tipo de recepción es requerido');
-            return false;
-        }
-
-        if (!refugio) {
-            alert('El refugio es requerido');
-            return false;
-        }
-
-        if (!descripcion.trim()) {
-            alert('La descripción es requerida');
-            return false;
-        }
-
-        return true;
-    }
-
-    // Función para limpiar formulario
-    obj.limpiarFormulario = function() {
-        $('input[name="recep_Fecha"]').val('');
-        $('select[name="recep_TipoRecepcion"]').val('');
-        $('select[name="refg_Id"]').val('');
-        $('input[name="recep_NumeroDocumento"]').val('');
-        $('input[name="recep_OrigenId"]').val('');
-        $('textarea[name="recep_Descripcion"]').val('');
-    }
-
-    // Función para autocompletar campos según el tipo de recepción
-    obj.configurarTipoRecepcion = function() {
-        $('select[name="recep_TipoRecepcion"]').on('change', function() {
-            var tipo = $(this).val();
-            var numeroDocLabel = $('label[for="recep_NumeroDocumento"]');
-            var origenLabel = $('label[for="recep_OrigenId"]');
-
-            switch(tipo) {
-                case 'Compra':
-                    numeroDocLabel.text('Número de Factura');
-                    origenLabel.text('ID Proveedor');
-                    break;
-                case 'Donación':
-                    numeroDocLabel.text('Número de Recibo');
-                    origenLabel.text('ID Donante');
-                    break;
-                case 'Transferencia':
-                    numeroDocLabel.text('Número de Transferencia');
-                    origenLabel.text('ID Refugio Origen');
-                    break;
-                default:
-                    numeroDocLabel.text('Número de Documento');
-                    origenLabel.text('ID Origen');
-                    break;
-            }
-        });
-    }
+    //        switch(tipo) {
+    //            case 'Compra':
+    //                numeroDocLabel.text('Número de Factura');
+    //                origenLabel.text('ID Proveedor');
+    //                break;
+    //            case 'Donación':
+    //                numeroDocLabel.text('Número de Recibo');
+    //                origenLabel.text('ID Donante');
+    //                break;
+    //            case 'Transferencia':
+    //                numeroDocLabel.text('Número de Transferencia');
+    //                origenLabel.text('ID Refugio Origen');
+    //                break;
+    //            default:
+    //                numeroDocLabel.text('Número de Documento');
+    //                origenLabel.text('ID Origen');
+    //                break;
+    //        }
+    //    });
+    //}
 
     return obj;
 

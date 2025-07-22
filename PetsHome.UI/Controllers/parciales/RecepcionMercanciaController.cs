@@ -152,7 +152,7 @@ namespace PetsHome.UI.Controllers
             
         }
 
-        [HttpGet("ListByRecepcion")]
+        [HttpGet("ListByRecepcion/{id}")]
         public async Task<JsonResult> ListByRecepcion(int id)
         {
             try
