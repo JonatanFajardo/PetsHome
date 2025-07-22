@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -13,15 +14,18 @@ namespace PetsHome.UI.Controllers
     public class RecepcionMercanciaController : BaseController
     {
         private readonly RecepcionMercanciaService _recepcionService;
+        private readonly RecepcionesDetallesService _recepcionDetalleService;
         private readonly RefugioService _refugioService;
         private readonly IMapper _mapper;
 
         public RecepcionMercanciaController(
             RecepcionMercanciaService recepcionService,
+            RecepcionesDetallesService recepcionesDetallesService,
             RefugioService refugioService,
             IMapper mapper)
         {
             _recepcionService = recepcionService;
+            _recepcionDetalleService = recepcionesDetallesService;
             _refugioService = refugioService;
             _mapper = mapper;
         }
@@ -43,14 +47,15 @@ namespace PetsHome.UI.Controllers
             return View(resultado);
         }
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> EditRecepciones(int id)
         {
             if (id == 0)
             {
                 var model = new RecepcionMercanciaViewModel();
                 model.recep_Id = id;
                 model.recep_Fecha = DateTime.Now;
-                return View(nameof(Create), model);
+                var drop = Dropdown(model);
+                return View(nameof(EditRecepciones), drop);
             }
             else
             {
@@ -61,56 +66,46 @@ namespace PetsHome.UI.Controllers
                     return RedirectToAction("Index");
                 }
 
-                return View(nameof(Create), model);
+                var dropdown = Dropdown(model);
+                return View("EditRecepciones", dropdown);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(RecepcionMercanciaViewModel model)
+        public async Task<IActionResult> Add(RecepcionMercanciaViewModel model)
         {
-            try
+            if (!model.isEdit)
             {
-                if (!ModelState.IsValid)
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Warning);
-                    return View(model);
-                }
+                Boolean createdItem = await _recepcionService.AddAsync(model);
+                if (createdItem)
+                    goto ErrorResult;
 
-                bool resultado = false;
+                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
 
-                if (model.isEdit)
-                {
-                    resultado = await _recepcionService.UpdateAsync(model);
-                    if (resultado)
-                    {
-                        ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
-                    }
-                }
-                else
-                {
-                    resultado = await _recepcionService.AddAsync(model);
-                    if (resultado)
-                    {
-                        ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
-                    }
-                }
+                // Buscar la recepción recién creada para obtener su ID
+                var recepcionesList = await _recepcionService.ListAsync();
+                var recepcionCreada = recepcionesList
+                    .Where(r => r.recep_Descripcion == model.recep_Descripcion && r.recep_Fecha == model.recep_Fecha)
+                    .OrderByDescending(r => r.recep_Id)
+                    .FirstOrDefault();
 
-                if (resultado)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return View(model);
-                }
+                return recepcionCreada != null
+                    ? RedirectToAction("EditRecepciones", new { id = recepcionCreada.recep_Id })
+                    : RedirectToAction("EditRecepciones");
             }
-            catch (Exception)
+            else
             {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return View(model);
+                Boolean updatedItem = await _recepcionService.UpdateAsync(model);
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
+                return RedirectToAction("EditRecepciones", new { id = model.recep_Id });
             }
+
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
         [HttpPost]
@@ -157,6 +152,20 @@ namespace PetsHome.UI.Controllers
             
         }
 
+        [HttpGet("ListByRecepcion")]
+        public async Task<JsonResult> ListByRecepcion(int id)
+        {
+            try
+            {
+                var itemListing = await _recepcionDetalleService.ListByRecepcionAsync(id);
+
+                return Json(new { data = itemListing });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message, success = false });
+            }
+        }
         [HttpGet]
         public async Task<JsonResult> GetById(int id)
         {
@@ -187,5 +196,17 @@ namespace PetsHome.UI.Controllers
         }
 
         #endregion
+
+        /// <summary>
+        /// Cargamos Dropdown
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public RecepcionMercanciaViewModel Dropdown(RecepcionMercanciaViewModel model)
+        {
+            model.LoadDropDownList(Dropdownlist.LoadTipoRecepcion(), _refugioService.RefugioDropdown());
+            return model;
+        }
+
     }
 }

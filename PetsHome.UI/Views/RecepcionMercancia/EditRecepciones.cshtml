@@ -1,0 +1,43 @@
+@model RecepcionMercanciaViewModel
+@{
+    ViewData["Title"] = "EditRecepciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        @if (Model.recep_Id == 0)
+        {
+            //Redirige a la vista para crear
+            <div class="col-md-12">
+                <partial name="RecepcionMercancia" model="@Model">
+            </div>
+        }
+        else
+        {
+            //Redirige a la vista para editar
+            <div class="col-md-12">
+                <partial name="RecepcionMercancia" model="@Model">
+                <div class="card mt-3">
+                    <partial name="RecepcionDetalles" model="@Model">
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+
+<script src="~/js/pages/recepciondetalle.js"></script>
+<script>
+    RecepcionDetalle.datatablePartials({
+        listUrl: "@Url.Action($"ListByRecepcion")",
+        id: @Model.recep_Id
+    });
+</script>
+<script>
+    // Catalogs.configure({
+    //     displayName: "detalle",
+    //     getUrl: "@Url.Action($"FindDetalle")"
+    // });
+</script>
+}

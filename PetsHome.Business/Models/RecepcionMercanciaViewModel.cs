@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PetsHome.Common.InternalEntities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -112,5 +115,31 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
+
+        #region Dropdown
+
+        /// <summary>
+        /// Obtiene o establece la lista desplegable de tipos de recepción.
+        /// </summary>
+        public SelectList tipoRecepcionList { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece la lista desplegable de refugios.
+        /// </summary>
+        public SelectList refugioList { get; set; }
+
+        /// <summary>
+        /// Carga las listas desplegables con los datos proporcionados.
+        /// </summary>
+        /// <param name="tipoRecepcionDropdownResults">Resultados de la lista desplegable de tipos de recepción.</param>
+        /// <param name="refugioDropdownResults">Resultados de la lista desplegable de refugios.</param>
+        public void LoadDropDownList(IEnumerable<Dropdown> tipoRecepcionDropdownResults,
+                                    IEnumerable<RefugioViewModel> refugioDropdownResults)
+        {
+            tipoRecepcionList = new SelectList(tipoRecepcionDropdownResults, "Value", "Text");
+            refugioList = new SelectList(refugioDropdownResults, "refg_Id", "refg_Nombre");
+        }
+
+        #endregion Dropdown
     }
 }

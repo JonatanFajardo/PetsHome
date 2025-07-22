@@ -236,7 +236,7 @@ var datatable = (function () {
 
                     // Validaciones previas
                     if (!DirectionUrls || !DirectionUrls.urlList) {
-                        console.error('DirectionUrls.urlList no está definido');
+                        console.error('DirectionUrls.urlList no está definido: ' + DirectionUrls.urlList);
 
                         DataTableProgress.error('Error de configuración', 'La URL para cargar datos no está configurada');
 

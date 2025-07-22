@@ -3,6 +3,12 @@ var RecepcionMercancia = (function () {
     var obj = {};
 
     obj.datatable = function (Direction) {
+        // Validar que Direction tenga las URLs necesarias
+        if (!Direction || !Direction.urlList) {
+            console.error('RecepcionMercancia.datatable: Direction.urlList es requerido', Direction);
+            return;
+        }
+        
         $(function () {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
@@ -97,19 +103,64 @@ var RecepcionMercancia = (function () {
         }
     }
 
-    obj.datatableCatalogs = function (Direction) {
-        $(function () {
-            var header = new Array();
-            //Nombre | Tamaño/AutoWidth | Visibilidad
-            header = [
-                {FieldName: "recep_Id"},
-                {FieldName: "recep_Fecha"},
-                {FieldName: "recep_TipoRecepcion"},
-                {FieldName: "refg_Id"}
-            ];
-            datatable.init(Direction, header);
-        })
+    obj.datatablePartials = function (Direction) {
+        // Validar que Direction tenga las URLs necesarias
+        if (!Direction || !Direction.listUrl) {
+            console.error('RecepcionMercancia.datatablePartials: Direction.listUrl es requerido', Direction);
+            return;
+        }
+
+        // Asegurar que la URL incluya el controlador
+        var fullUrl = Direction.listUrl;
+        if (!fullUrl.startsWith('/RecepcionDetalle/')) {
+            fullUrl = '/RecepcionDetalle' + (fullUrl.startsWith('/') ? fullUrl : '/' + fullUrl);
+        }
+
+        console.log('Inicializando datatablePartials con:', Direction);
+
+        // Esperar a que el DOM esté completamente listo
+        $(document).ready(function() {
+            // Usar setTimeout para asegurar que todos los elementos estén renderizados
+            setTimeout(function() {
+                // Verificar que el elemento tabla existe y está visible
+                var tableElement = $('#datatable');
+                if (tableElement.length === 0) {
+                    console.error('Elemento #datatable no encontrado en el DOM');
+                    return;
+                }
+
+                // Verificar que datatablePartials está disponible
+                if (typeof datatablePartials === 'undefined') {
+                    console.error('datatablePartials no está disponible. Verifique que datatable.partials.init.js esté cargado.');
+                    return;
+                }
+
+                // Destruir DataTable existente si existe para evitar conflictos
+                if ($.fn.DataTable.isDataTable('#datatable')) {
+                    tableElement.DataTable().destroy();
+                    tableElement.empty();
+                }
+
+                var header = [
+                    { FieldName: 'itm_Codigo', DisplayName: 'Código' },
+                    { FieldName: 'itm_Descripcion', DisplayName: 'Ítem' },
+                    { FieldName: 'recdet_Cantidad', DisplayName: 'Cantidad' },
+                    { FieldName: 'recdet_PrecioUnitario', DisplayName: 'Precio Unit.' },
+                    { FieldName: 'valorTotal', DisplayName: 'Valor Total' },
+                    { FieldName: 'recdet_FechaVencimiento', DisplayName: 'Vencimiento' },
+                    { FieldName: 'recdet_NumeroLote', DisplayName: 'No. Lote' }
+                ];
+
+                try {
+                    datatablePartials.initPartials(fullUrl, Direction.id, header);
+                    console.log('DataTable inicializado correctamente con URL:', fullUrl);
+                } catch (error) {
+                    console.error('Error al inicializar DataTable:', error);
+                }
+            }, 100); // Delay de 100ms para asegurar renderizado completo
+        });
     }
+
 
     // Función para validar formulario de recepción
     obj.validarFormulario = function() {

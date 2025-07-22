@@ -116,6 +116,8 @@ namespace PetsHome.Business.Extensions
             CreateMap<SP_tbRecepcionesMercancia_List, RecepcionMercanciaViewModel>().ReverseMap();
             CreateMap<SP_tbSalidas_Detail, RecepcionMercanciaViewModel>().ReverseMap();
             CreateMap<SP_tbSalidas_Find, RecepcionMercanciaViewModel>().ReverseMap();
+            CreateMap<tbRecepcionesDetalles, RecepcionDetalleViewModel>().ReverseMap();
+            CreateMap<tbRecepcionesMercancia, RecepcionMercanciaViewModel>().ReverseMap();
 
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();

@@ -1,0 +1,102 @@
+@model RecepcionMercanciaViewModel
+<!-- Card-->
+<div class="card">
+    <div class="card-header">
+        @if (Model.recep_Id == 0)
+        {
+            <h3>Agregar recepción de mercancía</h3>
+        }
+        else
+        {
+            <h3>Editar recepción de mercancía</h3>
+        }
+    </div>
+
+    <div class="card-body">
+        <form asp-controller="RecepcionMercancia" asp-action="Add" class="col-md-10" autocomplete="off">
+            <input class="form-control" asp-for="recep_Id" type="hidden" />
+            <input type="hidden" asp-for="isEdit" value="@(Model.recep_Id > 0)" />
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="recep_Fecha" class="control-label required">Fecha</label>
+                        <input asp-for="recep_Fecha" class="form-control" type="date" required />
+                        <span asp-validation-for="recep_Fecha" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="recep_TipoRecepcion" class="control-label required">Tipo de Recepción</label>
+                        <select asp-for="recep_TipoRecepcion" asp-items="Model.tipoRecepcionList" class="form-control" required>
+                            <option value="">-- Seleccionar Tipo --</option>
+                        </select>
+                        <span asp-validation-for="recep_TipoRecepcion" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="recep_NumeroDocumento" class="control-label">Número de Documento</label>
+                        <input asp-for="recep_NumeroDocumento" class="form-control" placeholder="Ej: Factura #001234" />
+                        <span asp-validation-for="recep_NumeroDocumento" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="refg_Id" class="control-label required">Refugio</label>
+                        <select asp-for="refg_Id" asp-items="Model.refugioList" class="form-control" required>
+                            <option value="">-- Seleccionar Refugio --</option>
+                        </select>
+                        <span asp-validation-for="refg_Id" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="recep_OrigenId" class="control-label">ID Origen</label>
+                        <input asp-for="recep_OrigenId" class="form-control" type="number" placeholder="ID del proveedor o origen" />
+                        <span asp-validation-for="recep_OrigenId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="recep_Descripcion" class="control-label required">Descripción</label>
+                        <textarea asp-for="recep_Descripcion" class="form-control" rows="3" placeholder="Descripción detallada de la recepción" required></textarea>
+                        <span asp-validation-for="recep_Descripcion" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @if (Model.recep_Id == 0)
+                    {
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar cambios</button>
+                    }
+                    <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+                    @if (Model.recep_Id > 0)
+                    {
+                        <a asp-action="Detail" asp-route-id="@Model.recep_Id" class="btn btn-info">Ver Detalle</a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages/recepcionmercancia.js"></script>
+}

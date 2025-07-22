@@ -65,8 +65,61 @@ var datatablePartials = (function () {
                         console.log('reponse.data' + response.data);
                         callback(response);
                     },
-                }).fail(function (jqXHR, textStatus, error) {
-                    console.log("Error en el envio de la peticion de listado " + jqXHR.responseJSON);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.error('=== ERROR AJAX ===');
+                    console.error('Status:', textStatus);
+                    console.error('Error:', errorThrown);
+                    console.error('Status Code:', jqXHR.status);
+                    console.error('Response Text:', jqXHR.responseText);
+                    console.error('Response Headers:', jqXHR.getAllResponseHeaders());
+
+                    var errorMessage = 'Error desconocido';
+                    var errorDetails = `Status: ${textStatus}\nCódigo: ${jqXHR.status}\nError: ${errorThrown}`;
+
+                    // Determinar mensaje de error
+                    switch (textStatus) {
+                        case 'timeout':
+                            errorMessage = 'La petición tardó demasiado tiempo';
+                            break;
+                        case 'error':
+                            switch (jqXHR.status) {
+                                case 0:
+                                    errorMessage = 'Sin conexión al servidor';
+                                    break;
+                                case 401:
+                                    errorMessage = 'Sesión expirada';
+                                    break;
+                                case 403:
+                                    errorMessage = 'Acceso denegado';
+                                    break;
+                                case 404:
+                                    errorMessage = 'Recurso no encontrado';
+                                    break;
+                                case 500:
+                                    errorMessage = 'Error interno del servidor';
+                                    break;
+                                default:
+                                    errorMessage = `Error del servidor (${jqXHR.status})`;
+                            }
+                            break;
+                        case 'parsererror':
+                            errorMessage = 'Error en formato de respuesta';
+                            break;
+                        default:
+                            errorMessage = `Error: ${textStatus}`;
+                    }
+
+                    // Mostrar error al usuario
+                    console.error('Error procesado:', errorMessage);
+                    console.error('Detalles del error:', errorDetails);
+                    
+                    // Llamar callback con datos vacíos
+                    callback({
+                        data: [],
+                        recordsTotal: 0,
+                        recordsFiltered: 0,
+                        error: errorMessage
+                    });
                 });
             },
             columnDefs: obj.dataHeader(header)
@@ -129,7 +182,7 @@ var datatablePartials = (function () {
      * @param {Object} listUrl Direccion al que se enviaran los datos
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
-    obj.init = function (listUrl, id, header) {
+    obj.initPartials = function (listUrl, id, header) {
         this.config();
         this.createDatatable(listUrl, id, header);
     };
@@ -161,9 +214,9 @@ var datatablePartials = (function () {
             })
 
             // Entra si se desea deshabilitar la columna
-            if (_header[i].Visibility == false || _header[i].Visibility != undefined) {
-                head[i]['visible'] = false
-            }
+            //if (_header[i].Visibility == false) {
+            //    head[i]['visible'] = false
+            //}
 
             // Entra si se desea indicar un ancho especifico
             if (_header[i].Size != undefined) {

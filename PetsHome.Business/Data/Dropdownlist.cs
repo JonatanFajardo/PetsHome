@@ -20,5 +20,21 @@ namespace PetsHome.Business.Data
             };
             return lista;
         }
+
+        /// <summary>
+        /// Conjunto de datos de tipos de recepción.
+        /// </summary>
+        /// <returns>listado de tipos de recepción</returns>
+        public static IEnumerable<Dropdown> LoadTipoRecepcion()
+        {
+            List<Dropdown> lista = new List<Dropdown>() {
+                new Dropdown(){Value = "Compra", Text = "Compra"},
+                new Dropdown(){Value = "Donación", Text = "Donación"},
+                new Dropdown(){Value = "Transferencia", Text = "Transferencia"},
+                new Dropdown(){Value = "Devolución", Text = "Devolución"},
+                new Dropdown(){Value = "Otro", Text = "Otro"}
+            };
+            return lista;
+        }
     }
 }
