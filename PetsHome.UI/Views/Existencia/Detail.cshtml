@@ -1,0 +1,274 @@
+@model ExistenciaViewModel
+@{
+    ViewData["Title"] = "Detalle de Existencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h3>Detalle de Existencia</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">ID:</label>
+                        <p class="form-control-static">@Model.exist_Id</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Estado del Stock:</label>
+                        <p class="form-control-static">
+                            <span class="badge badge-@Model.ColorEstado badge-pill px-3 py-2">
+                                @Model.EstadoStock
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            <h5 class="text-info">Información del Ítem</h5>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Código:</label>
+                        <p class="form-control-static">@Model.itm_Codigo</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Ítem:</label>
+                        <p class="form-control-static">@Model.itm_Descripcion</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Categoría:</label>
+                        <p class="form-control-static">@Model.cat_Descripcion</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Refugio:</label>
+                        <p class="form-control-static">@Model.refg_Nombre</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            <h5 class="text-info">Control de Stock</h5>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h2 class="text-@Model.ColorEstado">@Model.exist_Stock</h2>
+                            <p class="card-text">Stock Actual</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h2 class="text-warning">@Model.exist_StockMinimo</h2>
+                            <p class="card-text">Stock Mínimo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h2 class="text-info">@Model.exist_StockMaximo</h2>
+                            <p class="card-text">Stock Máximo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gráfico de barras visual -->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <label class="control-label font-weight-bold">Indicador Visual:</label>
+                    <div class="progress" style="height: 30px;">
+                        @{
+                            var porcentajeActual = Model.exist_StockMaximo > 0 ? (double)Model.exist_Stock / Model.exist_StockMaximo * 100 : 0;
+                            var porcentajeMinimo = Model.exist_StockMaximo > 0 ? (double)Model.exist_StockMinimo / Model.exist_StockMaximo * 100 : 0;
+                        }
+                        <div class="progress-bar bg-@Model.ColorEstado" role="progressbar" 
+                             style="width: @(porcentajeActual)%" 
+                             aria-valuenow="@Model.exist_Stock" 
+                             aria-valuemin="0" 
+                             aria-valuemax="@Model.exist_StockMaximo">
+                            @Model.exist_Stock / @Model.exist_StockMaximo
+                        </div>
+                    </div>
+                   @*  <small class="text-muted">
+                        Línea mínima en @(porcentajeMinimo:F1)% (@Model.exist_StockMinimo unidades)
+                    </small> *@
+                </div>
+            </div>
+            
+            @if (Model.StockBajo)
+            {
+                <div class="alert alert-warning mt-3" role="alert">
+                    <h6><i class="fas fa-exclamation-triangle"></i> Stock Bajo</h6>
+                    <p class="mb-0">Este ítem está por debajo del stock mínimo recomendado. 
+                    Se recomienda realizar una recepción de mercancía para reponer el inventario.</p>
+                </div>
+            }
+            else if (Model.exist_Stock == 0)
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    <h6><i class="fas fa-times-circle"></i> Sin Stock</h6>
+                    <p class="mb-0">Este ítem no tiene existencias disponibles. 
+                    Es necesario realizar una recepción de mercancía urgente.</p>
+                </div>
+            }
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Última Actualización:</label>
+                        <p class="form-control-static">@Model.exist_FechaActualizacion.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Usuario Creación:</label>
+                        <p class="form-control-static">@Model.exist_NombreUsuarioCrea</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group mt-4">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver al listado
+                </a>
+                <button type="button" class="btn btn-warning" onclick="openUpdateStockModal()">
+                    <i class="fas fa-edit"></i> Actualizar Stock
+                </button>
+                <a asp-controller="RecepcionMercancia" asp-action="Create" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Nueva Recepción
+                </a>
+                <a asp-controller="Salida" asp-action="Create" class="btn btn-danger">
+                    <i class="fas fa-minus"></i> Nueva Salida
+                </a>
+                <button type="button" class="btn btn-info" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update Stock-->
+<div class="modal fade" id="update-stock-modal" tabindex="-1" role="dialog" aria-labelledby="updateStockModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Actualizar Stock - @Model.itm_Descripcion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Stock Actual:</label>
+                            <input type="number" class="form-control" value="@Model.exist_Stock" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nuevo-stock">Nuevo Stock: *</label>
+                            <input type="number" class="form-control" id="nuevo-stock" min="0" value="@Model.exist_Stock" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <strong>Advertencia:</strong> Esta acción actualizará directamente el stock. 
+                    Para registrar movimientos apropiados, use las funciones de Recepciones o Salidas.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="updateStock()">Actualizar Stock</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openUpdateStockModal() {
+            $('#update-stock-modal').modal('show');
+        }
+
+        function updateStock() {
+            var nuevoStock = $('#nuevo-stock').val();
+
+            if (!nuevoStock || nuevoStock < 0) {
+                alert('Por favor ingrese un stock válido.');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("UpdateStock", "Existencia")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    ItemId: @Model.itm_Id,
+                    RefugioId: @Model.refg_Id,
+                    NuevoStock: parseInt(nuevoStock)
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        $('#update-stock-modal').modal('hide');
+                        location.reload(); // Recargar la página para mostrar los cambios
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Error al actualizar el stock.');
+                }
+            });
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .form-control-static {
+            padding-top: 7px;
+            padding-bottom: 7px;
+            margin-bottom: 0;
+            min-height: 34px;
+        }
+        
+        .font-weight-bold {
+            font-weight: 600;
+        }
+        
+        .badge-pill {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        
+        .card h2 {
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+        
+    </style>
+}

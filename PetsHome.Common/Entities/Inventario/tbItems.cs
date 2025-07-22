@@ -11,6 +11,10 @@ namespace PetsHome.Common.Entities
         {
             tbEntradasDetalles = new HashSet<tbEntradasDetalles>();
             tbInventariosDetalles = new HashSet<tbInventariosDetalles>();
+            tbRecepcionesDetalles = new HashSet<tbRecepcionesDetalles>();
+            tbSalidasDetalles = new HashSet<tbSalidasDetalles>();
+            tbExistencias = new HashSet<tbExistencias>();
+            tbMovimientos = new HashSet<tbMovimientos>();
         }
 
         /// <summary>
@@ -46,5 +50,9 @@ namespace PetsHome.Common.Entities
         public virtual tbUsuarios itm_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbEntradasDetalles> tbEntradasDetalles { get; set; }
         public virtual ICollection<tbInventariosDetalles> tbInventariosDetalles { get; set; }
+        public virtual ICollection<tbRecepcionesDetalles> tbRecepcionesDetalles { get; set; }
+        public virtual ICollection<tbSalidasDetalles> tbSalidasDetalles { get; set; }
+        public virtual ICollection<tbExistencias> tbExistencias { get; set; }
+        public virtual ICollection<tbMovimientos> tbMovimientos { get; set; }
     }
 }

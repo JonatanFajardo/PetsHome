@@ -56,24 +56,28 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Inventario" data-parent="#accordionExample">
                         <li>
-                            
-                            @Html.ActionLink("Stock General", "Index", "Inventario")
+                            <i class="fas fa-boxes text-info"></i>
+                            @Html.ActionLink("Control de Existencias", "Index", "Existencia")
                         </li>
                         <li>
-                            
-                            @Html.ActionLink("Detalle de Stock", "Index", "InventariosDetalle")
+                            <i class="fas fa-arrow-down text-success"></i>
+                            @Html.ActionLink("Recepciones de Mercancía", "Index", "RecepcionMercancia")
                         </li>
                         <li>
-                            
-                            @Html.ActionLink("Entradas", "Index", "Entrada")
+                            <i class="fas fa-arrow-up text-danger"></i>
+                            @Html.ActionLink("Salidas de Inventario", "Index", "Salida")
                         </li>
                         <li>
-                            
-                            @Html.ActionLink("Detalle de Entradas", "Index", "EntradasDetalle")
+                            <i class="fas fa-chart-line text-primary"></i>
+                            @Html.ActionLink("Reportes de Inventario", "Reportes", "Existencia")
                         </li>
                         <li>
-                            
+                            <i class="fas fa-cube text-secondary"></i>
                             @Html.ActionLink("Artículos", "Index", "Item")
+                        </li>
+                        <li>
+                            <i class="fas fa-tags text-warning"></i>
+                            @Html.ActionLink("Categorías", "Index", "Categoria")
                         </li>
                     </ul>
                 </li>
@@ -93,23 +97,19 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Administracion" data-parent="#accordionExample">
                         <li>
-                            
+                            <i class="fas fa-user-tie text-primary"></i>
                             @Html.ActionLink("Cargos de Empleados", "Index", "EmpleadosCargo")
                         </li>
                         <li>
-                            
+                            <i class="fas fa-home text-success"></i>
                             @Html.ActionLink("Refugios", "Index", "Refugio")
                         </li>
                         <li>
-                            
+                            <i class="fas fa-map-marker-alt text-info"></i>
                             @Html.ActionLink("Localidades", "Index", "localidad")
                         </li>
                         <li>
-                            
-                            @Html.ActionLink("Categorías", "Index", "Categoria")
-                        </li>
-                        <li>
-                            
+                            <i class="fas fa-calendar-plus text-warning"></i>
                             @Html.ActionLink("Eventos", "Index", "Evento")
                         </li>
                     </ul>
@@ -201,21 +201,27 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Reportes" data-parent="#accordionExample">
                         <li>
+                            <i class="fas fa-tachometer-alt text-primary"></i>
                             @Html.ActionLink("Dashboard General", "Index", "Reportes")
                         </li>
                         <li>
+                            <i class="fas fa-dog text-brown"></i>
                             @Html.ActionLink("Mascotas por Raza", "MascotasPorRaza", "Reportes")
                         </li>
                         <li>
+                            <i class="fas fa-hands-helping text-info"></i>
                             @Html.ActionLink("Voluntarios", "Voluntarios", "Reportes")
                         </li>
                         <li>
-                            @Html.ActionLink("Inventario", "Inventario", "Reportes")
+                            <i class="fas fa-chart-bar text-success"></i>
+                            @Html.ActionLink("Analytics de Inventario", "Reportes", "Existencia")
                         </li>
                         <li>
+                            <i class="fas fa-heart text-danger"></i>
                             @Html.ActionLink("Salud Mascotas", "SaludMascotas", "Reportes")
                         </li>
                         <li>
+                            <i class="fas fa-calendar-alt text-warning"></i>
                             @Html.ActionLink("Eventos", "Eventos", "Reportes")
                         </li>
                     </ul>

@@ -4,51 +4,51 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetsHome.Business.Models
 {
-    public partial class SalidaViewModel
+    public partial class RecepcionMercanciaViewModel
     {
         /// <summary>
-        /// Obtiene o establece el ID de la salida.
+        /// Obtiene o establece el ID de la recepción de mercancía.
         /// </summary>
         [Key]
-        [Display(Name = "Id Salida")]
-        public int sal_Id { get; set; }
+        [Display(Name = "Id Recepción")]
+        public int recep_Id { get; set; }
 
         /// <summary>
-        /// Obtiene o establece la descripción de la salida.
+        /// Obtiene o establece la descripción de la recepción.
         /// </summary>
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(500, ErrorMessage = "El campo {0} no puede exceder {1} caracteres")]
-        public string sal_Descripcion { get; set; }
+        public string recep_Descripcion { get; set; }
 
         /// <summary>
-        /// Obtiene o establece la fecha de la salida.
+        /// Obtiene o establece la fecha de la recepción.
         /// </summary>
         [Display(Name = "Fecha")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [Column(TypeName = "datetime")]
-        public DateTime? sal_Fecha { get; set; }
+        public DateTime? recep_Fecha { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el tipo de salida.
+        /// Obtiene o establece el tipo de recepción.
         /// </summary>
-        [Display(Name = "Tipo de Salida")]
+        [Display(Name = "Tipo de Recepción")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50, ErrorMessage = "El campo {0} no puede exceder {1} caracteres")]
-        public string sal_TipoSalida { get; set; }
+        public string recep_TipoRecepcion { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el ID del destino.
+        /// Obtiene o establece el ID del origen.
         /// </summary>
-        [Display(Name = "Destino")]
-        public int? sal_DestinoId { get; set; }
+        [Display(Name = "Origen")]
+        public int? recep_OrigenId { get; set; }
 
         /// <summary>
         /// Obtiene o establece el número de documento.
         /// </summary>
         [Display(Name = "Número de Documento")]
         [StringLength(100, ErrorMessage = "El campo {0} no puede exceder {1} caracteres")]
-        public string sal_NumeroDocumento { get; set; }
+        public string recep_NumeroDocumento { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del refugio.
@@ -64,37 +64,40 @@ namespace PetsHome.Business.Models
         public string? refg_Nombre { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el ID del usuario que crea la salida.
+        /// Obtiene o establece el ID del usuario que crea la recepción.
         /// </summary>
-        public int? sal_UsuarioCrea { get; set; }
+        public int? recep_UsuarioCrea { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el nombre del usuario que crea la salida.
+        /// Obtiene o establece el nombre del usuario que crea la recepción.
         /// </summary>
         [Display(Name = "Usuario creación")]
-        public string? sal_NombreUsuarioCrea { get; set; }
+        public string? recep_NombreUsuarioCrea { get; set; }
 
         /// <summary>
-        /// Obtiene o establece la fecha de creación de la salida.
+        /// Obtiene o establece la fecha de creación de la recepción.
         /// </summary>
-        public DateTime sal_FechaCrea { get; set; }
+        public DateTime recep_FechaCrea { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el ID del usuario que modifica la salida.
+        /// Obtiene o establece el ID del usuario que modifica la recepción.
         /// </summary>
-        public int? sal_UsuarioModifica { get; set; }
+        public int? recep_UsuarioModifica { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el nombre del usuario que modifica la salida.
+        /// Obtiene o establece el nombre del usuario que modifica la recepción.
         /// </summary>
         [Display(Name = "Usuario modificación")]
-        public string? sal_NombreUsuarioModifica { get; set; }
+        public string? recep_NombreUsuarioModifica { get; set; }
 
         /// <summary>
-        /// Obtiene o establece la fecha de modificación de la salida.
+        /// Obtiene o establece la fecha de modificación de la recepción.
         /// </summary>
         [Display(Name = "Fecha modificación")]
-        public DateTime? sal_FechaModifica { get; set; }
+        public DateTime? recep_FechaModifica { get; set; }
+        public int CantidadItems { get; set; }
+        public decimal TotalProductos { get; set; }
+        public string TipoRecepcionDescripcion { get; set; }
 
         /// <summary>
         /// Indica si el formulario se está editando.
@@ -103,7 +106,7 @@ namespace PetsHome.Business.Models
         {
             get
             {
-                if (this.sal_Id == 0)
+                if (this.recep_Id == 0)
                     return false;
                 else
                     return true;

@@ -1,0 +1,120 @@
+@model RecepcionMercanciaViewModel
+@{
+    ViewData["Title"] = "Recepción de Mercancía";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>@(Model.recep_Id == 0 ? "Crear" : "Editar") Recepción de Mercancía</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" autocomplete="off"
+                          data-ajax-begin="Catalogs.begin"
+                          data-ajax-success="Catalogs.success"
+                          data-ajax-failure="Catalogs.failure"
+                          data-ajax-complete="Catalogs.complete">
+
+                        <input type="hidden" asp-for="recep_Id" />
+                        <input type="hidden" asp-for="isEdit" value="@(Model.recep_Id > 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="recep_Fecha" class="control-label">Fecha *</label>
+                                    <input asp-for="recep_Fecha" class="form-control" type="date" required />
+                                    <span asp-validation-for="recep_Fecha" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="recep_TipoRecepcion" class="control-label">Tipo de Recepción *</label>
+                                    <select asp-for="recep_TipoRecepcion" class="form-control" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="Compra">Compra</option>
+                                        <option value="Donación">Donación</option>
+                                        <option value="Transferencia">Transferencia</option>
+                                        <option value="Devolución">Devolución</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                    <span asp-validation-for="recep_TipoRecepcion" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="recep_NumeroDocumento" class="control-label">Número de Documento</label>
+                                    <input asp-for="recep_NumeroDocumento" class="form-control" placeholder="Ej: Factura #001234" />
+                                    <span asp-validation-for="recep_NumeroDocumento" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="refg_Id" class="control-label">Refugio *</label>
+                                    <select asp-for="refg_Id" class="form-control" id="select-refugio" required>
+                                        <option value="">Seleccione un refugio</option>
+                                    </select>
+                                    <span asp-validation-for="refg_Id" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="recep_OrigenId" class="control-label">ID Origen</label>
+                                    <input asp-for="recep_OrigenId" class="form-control" type="number" placeholder="ID del proveedor o origen" />
+                                    <span asp-validation-for="recep_OrigenId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="recep_Descripcion" class="control-label">Descripción *</label>
+                                    <textarea asp-for="recep_Descripcion" class="form-control" rows="3" placeholder="Descripción detallada de la recepción" required></textarea>
+                                    <span asp-validation-for="recep_Descripcion" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="@(Model.recep_Id == 0 ? "Crear" : "Actualizar")" class="btn btn-primary" />
+                            <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+                            @if (Model.recep_Id > 0)
+                            {
+                                <a asp-action="Detail" asp-route-id="@Model.recep_Id" class="btn btn-info">Ver Detalle</a>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Cargar refugios
+            $.get('@Url.Action("GetRefugios")', function(data) {
+                var select = $('#select-refugio');
+                $.each(data, function(index, item) {
+                    select.append($('<option>').val(item.value).text(item.text));
+                });
+                
+                // Si está editando, seleccionar el refugio actual
+                @if (Model.refg_Id > 0)
+                {
+                    <text>select.val(@Model.refg_Id);</text>
+                }
+            });
+        });
+    </script>
+}

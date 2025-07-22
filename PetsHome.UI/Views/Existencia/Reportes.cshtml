@@ -1,0 +1,417 @@
+@{
+    ViewData["Title"] = "Reportes de Existencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h3>Reportes y Análisis de Existencias</h3>
+        </div>
+        <div class="card-body">
+            
+            <!-- Resumen General -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
+                        <div class="card-body text-center">
+                            <h4 id="total-items">-</h4>
+                            <p class="card-text">Total Ítems</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body text-center">
+                            <h4 id="items-stock-bajo">-</h4>
+                            <p class="card-text">Stock Bajo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger">
+                        <div class="card-body text-center">
+                            <h4 id="items-sin-stock">-</h4>
+                            <p class="card-text">Sin Stock</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-info">
+                        <div class="card-body text-center">
+                            <h4 id="valor-total">-</h4>
+                            <p class="card-text">Valor Total</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros de Reportes -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Filtros de Consulta</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filtro-refugio">Refugio:</label>
+                                        <select class="form-control" id="filtro-refugio">
+                                            <option value="">Todos los refugios</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filtro-categoria">Categoría:</label>
+                                        <select class="form-control" id="filtro-categoria">
+                                            <option value="">Todas las categorías</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filtro-estado">Estado del Stock:</label>
+                                        <select class="form-control" id="filtro-estado">
+                                            <option value="">Todos los estados</option>
+                                            <option value="sinstock">Sin Stock</option>
+                                            <option value="stockbajo">Stock Bajo</option>
+                                            <option value="stocknormal">Stock Normal</option>
+                                            <option value="stockalto">Stock Alto</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">
+                                        <i class="fas fa-filter"></i> Aplicar Filtros
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="limpiarFiltros()">
+                                        <i class="fas fa-times"></i> Limpiar
+                                    </button>
+                                    <button type="button" class="btn btn-success" onclick="exportarExcel()">
+                                        <i class="fas fa-file-excel"></i> Exportar Excel
+                                    </button>
+                                    <button type="button" class="btn btn-info" onclick="exportarPDF()">
+                                        <i class="fas fa-file-pdf"></i> Exportar PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Stock por Categoría -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Stock por Categoría</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="chart-categorias" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Estado del Stock</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="chart-estados" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Existencias Filtradas -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Existencias Detalladas</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped dt-responsive nowrap" id="tabla-reportes">
+                                    <thead class="text-center bg-secondary text-white">
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Ítem</th>
+                                            <th>Categoría</th>
+                                            <th>Refugio</th>
+                                            <th>Stock Actual</th>
+                                            <th>Stock Mínimo</th>
+                                            <th>Stock Máximo</th>
+                                            <th>Estado</th>
+                                            <th>Valor Unitario</th>
+                                            <th>Valor Total</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alertas y Recomendaciones -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Alertas y Recomendaciones</h6>
+                        </div>
+                        <div class="card-body" id="alertas-container">
+                            <div class="text-center">
+                                <i class="fas fa-spinner fa-spin"></i> Cargando alertas...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        var chartCategorias, chartEstados;
+        
+        $(document).ready(function() {
+            cargarDatos();
+            cargarFiltros();
+            inicializarGraficos();
+            inicializarTabla();
+        });
+
+        function cargarDatos() {
+            // Cargar resumen general
+            $.get('@Url.Action("List", "Existencia")', function(data) {
+                if (data.data) {
+                    actualizarResumen(data.data);
+                    generarAlertas(data.data);
+                }
+            });
+        }
+
+        function cargarFiltros() {
+            // Cargar refugios
+            $.get('@Url.Action("GetRefugios", "Existencia")', function(data) {
+                var select = $('#filtro-refugio');
+                $.each(data, function(index, item) {
+                    select.append($('<option>').val(item.value).text(item.text));
+                });
+            });
+
+            // Aquí se cargarían las categorías
+            // $.get('@Url.Action("GetCategorias", "Categoria")', function(data) { ... });
+        }
+
+        function actualizarResumen(existencias) {
+            var totalItems = existencias.length;
+            var stockBajo = existencias.filter(e => e.exist_Stock <= e.exist_StockMinimo).length;
+            var sinStock = existencias.filter(e => e.exist_Stock === 0).length;
+            var valorTotal = existencias.reduce((sum, e) => sum + (e.exist_Stock * (e.itm_Precio || 0)), 0);
+
+            $('#total-items').text(totalItems);
+            $('#items-stock-bajo').text(stockBajo);
+            $('#items-sin-stock').text(sinStock);
+            $('#valor-total').text('$' + valorTotal.toLocaleString('es-CO'));
+        }
+
+        function inicializarGraficos() {
+            // Gráfico de categorías
+            var ctxCategorias = document.getElementById('chart-categorias').getContext('2d');
+            chartCategorias = new Chart(ctxCategorias, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Alimento', 'Medicina', 'Suministros', 'Otros'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#28a745', '#17a2b8', '#ffc107', '#6c757d']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Gráfico de estados
+            var ctxEstados = document.getElementById('chart-estados').getContext('2d');
+            chartEstados = new Chart(ctxEstados, {
+                type: 'bar',
+                data: {
+                    labels: ['Sin Stock', 'Stock Bajo', 'Stock Normal', 'Stock Alto'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#dc3545', '#ffc107', '#28a745', '#17a2b8']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        }
+
+        function inicializarTabla() {
+            $('#tabla-reportes').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("List", "Existencia")',
+                    "type": "GET",
+                    "dataSrc": "data"
+                },
+                "columns": [
+                    { "data": "itm_Codigo" },
+                    { "data": "itm_Descripcion" },
+                    { "data": "cat_Descripcion" },
+                    { "data": "refg_Nombre" },
+                    { 
+                        "data": "exist_Stock",
+                        "className": "text-center"
+                    },
+                    { 
+                        "data": "exist_StockMinimo",
+                        "className": "text-center"
+                    },
+                    { 
+                        "data": "exist_StockMaximo",
+                        "className": "text-center"
+                    },
+                    { 
+                        "data": null,
+                        "render": function(data, type, row) {
+                            var estado = getEstadoStock(row.exist_Stock, row.exist_StockMinimo, row.exist_StockMaximo);
+                            var color = getColorEstado(estado);
+                            return '<span class="badge badge-' + color + '">' + estado + '</span>';
+                        },
+                        "className": "text-center"
+                    },
+                    { 
+                        "data": "itm_Precio",
+                        "render": function(data) {
+                            return '$' + (data || 0).toLocaleString('es-CO');
+                        },
+                        "className": "text-right"
+                    },
+                    { 
+                        "data": null,
+                        "render": function(data, type, row) {
+                            var total = row.exist_Stock * (row.itm_Precio || 0);
+                            return '$' + total.toLocaleString('es-CO');
+                        },
+                        "className": "text-right"
+                    }
+                ],
+                "order": [[4, "asc"]], // Ordenar por stock actual
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+                }
+            });
+        }
+
+        function getEstadoStock(stock, minimo, maximo) {
+            if (stock === 0) return "Sin Stock";
+            if (stock <= minimo) return "Stock Bajo";
+            if (stock >= maximo) return "Stock Alto";
+            return "Stock Normal";
+        }
+
+        function getColorEstado(estado) {
+            switch(estado) {
+                case "Sin Stock": return "danger";
+                case "Stock Bajo": return "warning";
+                case "Stock Alto": return "info";
+                default: return "success";
+            }
+        }
+
+        function generarAlertas(existencias) {
+            var alertasHtml = '';
+            var sinStock = existencias.filter(e => e.exist_Stock === 0);
+            var stockBajo = existencias.filter(e => e.exist_Stock > 0 && e.exist_Stock <= e.exist_StockMinimo);
+
+            if (sinStock.length > 0) {
+                alertasHtml += '<div class="alert alert-danger">';
+                alertasHtml += '<h6><i class="fas fa-times-circle"></i> Ítems Sin Stock (' + sinStock.length + ')</h6>';
+                alertasHtml += '<ul class="mb-0">';
+                sinStock.slice(0, 5).forEach(function(item) {
+                    alertasHtml += '<li>' + item.itm_Descripcion + ' - ' + item.refg_Nombre + '</li>';
+                });
+                if (sinStock.length > 5) {
+                    alertasHtml += '<li>... y ' + (sinStock.length - 5) + ' más</li>';
+                }
+                alertasHtml += '</ul></div>';
+            }
+
+            if (stockBajo.length > 0) {
+                alertasHtml += '<div class="alert alert-warning">';
+                alertasHtml += '<h6><i class="fas fa-exclamation-triangle"></i> Ítems con Stock Bajo (' + stockBajo.length + ')</h6>';
+                alertasHtml += '<ul class="mb-0">';
+                stockBajo.slice(0, 5).forEach(function(item) {
+                    alertasHtml += '<li>' + item.itm_Descripcion + ' (' + item.exist_Stock + '/' + item.exist_StockMinimo + ') - ' + item.refg_Nombre + '</li>';
+                });
+                if (stockBajo.length > 5) {
+                    alertasHtml += '<li>... y ' + (stockBajo.length - 5) + ' más</li>';
+                }
+                alertasHtml += '</ul></div>';
+            }
+
+            if (alertasHtml === '') {
+                alertasHtml = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Todos los ítems tienen stock adecuado.</div>';
+            }
+
+            $('#alertas-container').html(alertasHtml);
+        }
+
+        function aplicarFiltros() {
+            // Aquí se implementaría la lógica de filtros
+            $('#tabla-reportes').DataTable().ajax.reload();
+        }
+
+        function limpiarFiltros() {
+            $('#filtro-refugio').val('');
+            $('#filtro-categoria').val('');
+            $('#filtro-estado').val('');
+            aplicarFiltros();
+        }
+
+        function exportarExcel() {
+            // Implementar exportación a Excel
+            alert('Funcionalidad de exportación a Excel pendiente de implementación');
+        }
+
+        function exportarPDF() {
+            // Implementar exportación a PDF
+            window.print();
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .card h4 {
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+        
+        .badge {
+            font-size: 0.875rem;
+        }
+        
+      
+    </style>
+}

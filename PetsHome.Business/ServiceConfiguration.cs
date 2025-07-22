@@ -41,6 +41,9 @@ namespace PetsHome.Business
             services.AddScoped<VoluntarioRepository>();
             services.AddScoped<ReportesRepository>();
             services.AddScoped<DonacionRepository>();
+            services.AddScoped<SalidasRepository>();
+            services.AddScoped<RecepcionesMercanciaRepository>();
+            services.AddScoped<ExistenciasRepository>();
 
             // Registrar DbContext para reportes que requieren acceso directo a la base de datos
             services.AddScoped<PetsHomeDbContext>();
@@ -83,6 +86,9 @@ namespace PetsHome.Business
             services.AddScoped<VoluntarioService>();
             services.AddScoped<ReportesService>();
             services.AddScoped<DonacionService>();
+            services.AddScoped<SalidaService>();
+            services.AddScoped<RecepcionMercanciaService>();
+            services.AddScoped<ExistenciasService>();
 
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>

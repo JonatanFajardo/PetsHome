@@ -1,0 +1,130 @@
+@model RecepcionMercanciaViewModel
+@{
+    ViewData["Title"] = "Detalle de Recepción";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Detalle de Recepción de Mercancía</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">ID:</label>
+                        <p class="form-control-static">@Model.recep_Id</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Fecha:</label>
+                        <p class="form-control-static">@Model.recep_Fecha?.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Tipo de Recepción:</label>
+                        <p class="form-control-static">@Model.recep_TipoRecepcion</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Número de Documento:</label>
+                        <p class="form-control-static">@(string.IsNullOrEmpty(Model.recep_NumeroDocumento) ? "N/A" : Model.recep_NumeroDocumento)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Refugio:</label>
+                        <p class="form-control-static">@Model.refg_Nombre</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">ID Origen:</label>
+                        <p class="form-control-static">@(Model.recep_OrigenId?.ToString() ?? "N/A")</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Descripción:</label>
+                        <p class="form-control-static">@Model.recep_Descripcion</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Usuario Creación:</label>
+                        <p class="form-control-static">@Model.recep_NombreUsuarioCrea</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Fecha Creación:</label>
+                        <p class="form-control-static">@Model.recep_FechaCrea.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+            
+            @if (Model.recep_FechaModifica.HasValue)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Usuario Modificación:</label>
+                            <p class="form-control-static">@Model.recep_NombreUsuarioModifica</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Fecha Modificación:</label>
+                            <p class="form-control-static">@Model.recep_FechaModifica?.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            <div class="form-group mt-4">
+                <a asp-action="Create" asp-route-id="@Model.recep_Id" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver al listado
+                </a>
+                <button type="button" class="btn btn-info" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .form-control-static {
+            padding-top: 7px;
+            padding-bottom: 7px;
+            margin-bottom: 0;
+            min-height: 34px;
+        }
+        
+        .font-weight-bold {
+            font-weight: 600;
+        }
+        
+    </style>
+}

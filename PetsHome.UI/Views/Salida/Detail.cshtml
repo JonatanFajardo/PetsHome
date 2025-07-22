@@ -1,0 +1,165 @@
+@model SalidaViewModel
+@{
+    ViewData["Title"] = "Detalle de Salida";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h3>Detalle de Salida de Inventario</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">ID:</label>
+                        <p class="form-control-static">@Model.sal_Id</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Fecha:</label>
+                        <p class="form-control-static">@Model.sal_Fecha?.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Tipo de Salida:</label>
+                        <p class="form-control-static">
+                            <span class="badge badge-pill badge-@(GetBadgeColor(Model.sal_TipoSalida))">
+                                @Model.sal_TipoSalida
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Número de Documento:</label>
+                        <p class="form-control-static">@(string.IsNullOrEmpty(Model.sal_NumeroDocumento) ? "N/A" : Model.sal_NumeroDocumento)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Refugio:</label>
+                        <p class="form-control-static">@Model.refg_Nombre</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">ID Destino:</label>
+                        <p class="form-control-static">@(Model.sal_DestinoId?.ToString() ?? "N/A")</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Descripción:</label>
+                        <p class="form-control-static">@Model.sal_Descripcion</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Usuario Creación:</label>
+                        <p class="form-control-static">@Model.sal_NombreUsuarioCrea</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label font-weight-bold">Fecha Creación:</label>
+                        <p class="form-control-static">@Model.sal_FechaCrea.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+            
+            @if (Model.sal_FechaModifica.HasValue)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Usuario Modificación:</label>
+                            <p class="form-control-static">@Model.sal_NombreUsuarioModifica</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label font-weight-bold">Fecha Modificación:</label>
+                            <p class="form-control-static">@Model.sal_FechaModifica?.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            <div class="alert alert-warning mt-3" role="alert">
+                <h6><i class="fas fa-exclamation-triangle"></i> Importante</h6>
+                <p class="mb-0">Esta salida ha afectado el stock del inventario. Para consultar el estado actual de existencias, 
+                visite la sección de <a href="/Existencias" class="alert-link">Control de Existencias</a>.</p>
+            </div>
+            
+            <div class="form-group mt-4">
+                <a asp-action="Create" asp-route-id="@Model.sal_Id" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver al listado
+                </a>
+                <button type="button" class="btn btn-info" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <a href="/Existencias" class="btn btn-warning">
+                    <i class="fas fa-boxes"></i> Ver Existencias
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string GetBadgeColor(string tipoSalida)
+    {
+        return tipoSalida switch
+        {
+            "Consumo" => "success",
+            "Donación" => "info",
+            "Transferencia" => "primary",
+            "Pérdida" => "danger",
+            "Vencimiento" => "warning",
+            "Rotura" => "dark",
+            _ => "secondary"
+        };
+    }
+}
+
+@section Styles {
+    <style>
+        .form-control-static {
+            padding-top: 7px;
+            padding-bottom: 7px;
+            margin-bottom: 0;
+            min-height: 34px;
+        }
+        
+        .font-weight-bold {
+            font-weight: 600;
+        }
+        
+        .badge-pill {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        
+    </style>
+}

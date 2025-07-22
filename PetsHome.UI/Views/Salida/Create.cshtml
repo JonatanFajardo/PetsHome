@@ -1,0 +1,148 @@
+@model SalidaViewModel
+@{
+    ViewData["Title"] = "Salida de Inventario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>@(Model.sal_Id == 0 ? "Crear" : "Editar") Salida de Inventario</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" autocomplete="off"
+                          data-ajax-begin="Catalogs.begin"
+                          data-ajax-success="Catalogs.success"
+                          data-ajax-failure="Catalogs.failure"
+                          data-ajax-complete="Catalogs.complete">
+
+                        <input type="hidden" asp-for="sal_Id" />
+                        <input type="hidden" asp-for="isEdit" value="@(Model.sal_Id > 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="sal_Fecha" class="control-label">Fecha *</label>
+                                    <input asp-for="sal_Fecha" class="form-control" type="date" required />
+                                    <span asp-validation-for="sal_Fecha" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="sal_TipoSalida" class="control-label">Tipo de Salida *</label>
+                                    <select asp-for="sal_TipoSalida" class="form-control" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="Consumo">Consumo</option>
+                                        <option value="Donación">Donación</option>
+                                        <option value="Transferencia">Transferencia</option>
+                                        <option value="Pérdida">Pérdida</option>
+                                        <option value="Vencimiento">Vencimiento</option>
+                                        <option value="Rotura">Rotura</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                    <span asp-validation-for="sal_TipoSalida" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="sal_NumeroDocumento" class="control-label">Número de Documento</label>
+                                    <input asp-for="sal_NumeroDocumento" class="form-control" placeholder="Ej: Vale #001234" />
+                                    <span asp-validation-for="sal_NumeroDocumento" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="refg_Id" class="control-label">Refugio *</label>
+                                    <select asp-for="refg_Id" class="form-control" id="select-refugio" required>
+                                        <option value="">Seleccione un refugio</option>
+                                    </select>
+                                    <span asp-validation-for="refg_Id" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="sal_DestinoId" class="control-label">ID Destino</label>
+                                    <input asp-for="sal_DestinoId" class="form-control" type="number" placeholder="ID del área o destino" />
+                                    <span asp-validation-for="sal_DestinoId" class="text-danger"></span>
+                                    <small class="form-text text-muted">ID del área de consumo, refugio destino, etc.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="sal_Descripcion" class="control-label">Descripción *</label>
+                                    <textarea asp-for="sal_Descripcion" class="form-control" rows="3" placeholder="Descripción detallada de la salida" required></textarea>
+                                    <span asp-validation-for="sal_Descripcion" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alert de validación de stock -->
+                        <div class="alert alert-info" role="alert">
+                            <h6><i class="fas fa-info-circle"></i> Información Importante</h6>
+                            <ul class="mb-0">
+                                <li>El sistema validará automáticamente la disponibilidad de stock antes de procesar la salida.</li>
+                                <li>Asegúrese de que existan suficientes existencias de los ítems a dar salida.</li>
+                                <li>El stock se actualizará automáticamente al confirmar la salida.</li>
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="@(Model.sal_Id == 0 ? "Crear" : "Actualizar")" class="btn btn-danger" />
+                            <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+                            @if (Model.sal_Id > 0)
+                            {
+                                <a asp-action="Detail" asp-route-id="@Model.sal_Id" class="btn btn-info">Ver Detalle</a>
+                            }
+                            <button type="button" class="btn btn-warning" onclick="verificarStock()">
+                                <i class="fas fa-search"></i> Verificar Stock
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Cargar refugios
+            $.get('@Url.Action("GetRefugios")', function(data) {
+                var select = $('#select-refugio');
+                $.each(data, function(index, item) {
+                    select.append($('<option>').val(item.value).text(item.text));
+                });
+                
+                // Si está editando, seleccionar el refugio actual
+                @if (Model.refg_Id > 0)
+                {
+                    <text>select.val(@Model.refg_Id);</text>
+                }
+            });
+        });
+        
+        function verificarStock() {
+            var refugioId = $('#select-refugio').val();
+            if (!refugioId) {
+                alert('Por favor seleccione un refugio primero.');
+                return;
+            }
+            
+            // Aquí se implementaría la verificación de stock
+            // Esto requeriría una implementación más avanzada con detalles de ítems
+            alert('Funcionalidad de verificación de stock disponible en la versión completa con detalles de ítems.');
+        }
+    </script>
+}

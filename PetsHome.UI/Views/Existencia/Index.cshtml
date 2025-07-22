@@ -1,0 +1,172 @@
+@model ExistenciaViewModel
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Control de Existencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var filterType = ViewData["FilterType"]?.ToString() ?? "";
+}
+<div class="container">
+    @* Filtros rápidos *@
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Filtros Rápidos</h6>
+                    <div class="btn-group" role="group">
+                        <a href="@Url.Action("Index")" class="btn @(string.IsNullOrEmpty(filterType) ? "btn-primary" : "btn-outline-primary")">
+                            <i class="fas fa-boxes"></i> Todas las Existencias
+                        </a>
+                        <a href="@Url.Action("StockBajo")" class="btn @(filterType == "stockbajo" ? "btn-warning" : "btn-outline-warning")">
+                            <i class="fas fa-exclamation-triangle"></i> Stock Bajo
+                        </a>
+                        <a href="@Url.Action("SinStock")" class="btn @(filterType == "sinstock" ? "btn-danger" : "btn-outline-danger")">
+                            <i class="fas fa-times-circle"></i> Sin Stock
+                        </a>
+                        <a href="@Url.Action("Reportes")" class="btn btn-outline-info">
+                            <i class="fas fa-chart-bar"></i> Reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Listado *@
+    <div class="card">
+        <div class="card-header">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped dt-responsive nowrap" id="datatable">
+                    <thead class="text-center bg-info text-white">
+                        <tr>
+                            <th>Id</th>
+                            <th>Código Ítem</th>
+                            <th>Ítem</th>
+                            <th>Categoría</th>
+                            <th>Refugio</th>
+                            <th>Stock Actual</th>
+                            <th>Stock Mínimo</th>
+                            <th>Stock Máximo</th>
+                            <th>Estado</th>
+                            <th>Última Actualización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update Stock-->
+    <div class="modal fade" id="update-stock-modal" tabindex="-1" role="dialog" aria-labelledby="updateStockModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStockModalLabel">Actualizar Stock</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="update-stock-form">
+                        <input type="hidden" id="modal-item-id">
+                        <input type="hidden" id="modal-refugio-id">
+                        
+                        <div class="form-group">
+                            <label for="modal-item-name">Ítem:</label>
+                            <input type="text" class="form-control" id="modal-item-name" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="modal-refugio-name">Refugio:</label>
+                            <input type="text" class="form-control" id="modal-refugio-name" readonly>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="modal-stock-actual">Stock Actual:</label>
+                                    <input type="number" class="form-control" id="modal-stock-actual" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="modal-nuevo-stock">Nuevo Stock: *</label>
+                                    <input type="number" class="form-control" id="modal-nuevo-stock" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <strong>Advertencia:</strong> Esta acción actualizará directamente el stock. 
+                            Para registrar movimientos apropiados, use las funciones de Recepciones o Salidas.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="updateStock()">Actualizar Stock</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal -->
+</div>
+@section Scripts {
+<script src="~/js/pages/existencia.js"></script>
+<script>
+    var currentFilterType = '@filterType';
+    
+    Existencia.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlUpdateStock: "@Url.Action("UpdateStock")"
+    });
+
+    function openUpdateStockModal(itemId, refugioId, itemName, refugioName, stockActual) {
+        $('#modal-item-id').val(itemId);
+        $('#modal-refugio-id').val(refugioId);
+        $('#modal-item-name').val(itemName);
+        $('#modal-refugio-name').val(refugioName);
+        $('#modal-stock-actual').val(stockActual);
+        $('#modal-nuevo-stock').val(stockActual);
+        $('#update-stock-modal').modal('show');
+    }
+
+    function updateStock() {
+        var itemId = $('#modal-item-id').val();
+        var refugioId = $('#modal-refugio-id').val();
+        var nuevoStock = $('#modal-nuevo-stock').val();
+
+        if (!nuevoStock || nuevoStock < 0) {
+            alert('Por favor ingrese un stock válido.');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("UpdateStock")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                ItemId: parseInt(itemId),
+                RefugioId: parseInt(refugioId),
+                NuevoStock: parseInt(nuevoStock)
+            }),
+            success: function(response) {
+                if (response.success) {
+                    $('#update-stock-modal').modal('hide');
+                    $('#datatable').DataTable().ajax.reload();
+                    alert('Stock actualizado correctamente.');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('Error al actualizar el stock.');
+            }
+        });
+    }
+</script>
+}
