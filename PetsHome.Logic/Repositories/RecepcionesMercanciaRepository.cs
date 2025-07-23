@@ -13,7 +13,7 @@ namespace PetsHome.Logic.Repositories
     {
         public async Task<IEnumerable<SP_tbRecepcionesMercancia_List>> ListAsync()
         {
-            const string sqlQuery = "[Inventario].[SP_tbRecepcionesMercancia_List]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_List]";
             return await DbApp.Select<SP_tbRecepcionesMercancia_List>(sqlQuery);
         }
 
@@ -36,7 +36,7 @@ namespace PetsHome.Logic.Repositories
         public async Task<Boolean> AddAsync(tbRecepcionesMercancia entity)
         {
             entity.recep_UsuarioCrea = 1;
-            const string sqlQuery = "[Inventario].[SP_tbRecepcionesMercancia_Insert]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@recep_Descripcion", entity.recep_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@recep_Fecha", entity.recep_Fecha, DbType.DateTime, ParameterDirection.Input);
@@ -51,7 +51,7 @@ namespace PetsHome.Logic.Repositories
         public async Task<Boolean> EditAsync(tbRecepcionesMercancia entity)
         {
             entity.recep_UsuarioModifica = 1;
-            const string sqlQuery = "[Inventario].[SP_tbRecepcionesMercancia_Update]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@recep_Id", entity.recep_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@recep_Descripcion", entity.recep_Descripcion, DbType.String, ParameterDirection.Input);
@@ -66,7 +66,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_RecepcionesMercancia_Delete]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@recep_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

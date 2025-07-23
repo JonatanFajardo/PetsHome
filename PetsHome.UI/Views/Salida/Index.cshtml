@@ -16,12 +16,10 @@
                     <thead class="text-center bg-danger text-white">
                         <tr>
                             <th>Id</th>
-                            <th>Fecha</th>
+                            <th>Descripcion</th>
                             <th>Tipo Salida</th>
-                            <th>Número Documento</th>
                             <th>Refugio</th>
-                            <th>Usuario Creación</th>
-                            <th>Fecha Creación</th>
+                            <th>Fecha</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -70,13 +68,14 @@
     <!-- Fin Modal -->
 </div>
 @section Scripts {
+    <script src="~/js/components/datatable/datatable.init.js"></script>
 <script src="~/js/pages/salida.js"></script>
 <script>
     Salida.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
-        urlInsert: "@Url.Action("Create")",
-        urlUpdate: "@Url.Action("Create")"
+        urlInsert: "@Url.Action("EditSalidas")",
+        urlUpdate: "@Url.Action("EditSalidas")"
     });
 </script>
 }

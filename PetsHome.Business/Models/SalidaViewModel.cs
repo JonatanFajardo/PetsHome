@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PetsHome.Business.Data;
+using PetsHome.Common.InternalEntities;
 
 namespace PetsHome.Business.Models
 {
@@ -109,5 +113,31 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
+
+        #region Dropdown
+
+        /// <summary>
+        /// Lista desplegable de tipos de salida.
+        /// </summary>
+        public SelectList tipoSalidaList { get; set; }
+
+        /// <summary>
+        /// Lista desplegable de refugios.
+        /// </summary>
+        public SelectList refugioList { get; set; }
+
+        /// <summary>
+        /// Carga las listas desplegables para los formularios.
+        /// </summary>
+        /// <param name="tipoSalidaDropdownResults">Resultados de la lista desplegable de tipos de salida.</param>
+        /// <param name="refugioDropdownResults">Resultados de la lista desplegable de refugios.</param>
+        public void LoadDropDownList(IEnumerable<Dropdown> tipoSalidaDropdownResults,
+                                    IEnumerable<RefugioViewModel> refugioDropdownResults)
+        {
+            tipoSalidaList = new SelectList(tipoSalidaDropdownResults, "Value", "Text");
+            refugioList = new SelectList(refugioDropdownResults, "refg_Id", "refg_Nombre");
+        }
+
+        #endregion Dropdown
     }
 }

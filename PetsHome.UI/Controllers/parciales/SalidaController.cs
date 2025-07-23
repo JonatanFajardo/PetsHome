@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -43,14 +44,15 @@ namespace PetsHome.UI.Controllers
             return View(resultado);
         }
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> EditSalidas(int id)
         {
             if (id == 0)
             {
                 var model = new SalidaViewModel();
                 model.sal_Id = id;
                 model.sal_Fecha = DateTime.Now;
-                return View(nameof(Create), model);
+                var drop = Dropdown(model);
+                return View(nameof(EditSalidas), drop);
             }
             else
             {
@@ -61,56 +63,46 @@ namespace PetsHome.UI.Controllers
                     return RedirectToAction("Index");
                 }
 
-                return View(nameof(Create), model);
+                var dropdown = Dropdown(model);
+                return View("EditSalidas", dropdown);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SalidaViewModel model)
+        public async Task<IActionResult> Add(SalidaViewModel model)
         {
-            try
+            if (!model.isEdit)
             {
-                if (!ModelState.IsValid)
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Warning);
-                    return View(model);
-                }
+                Boolean createdItem = await _salidaService.AddAsync(model);
+                if (createdItem)
+                    goto ErrorResult;
 
-                bool resultado = false;
+                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
 
-                if (model.isEdit)
-                {
-                    resultado = await _salidaService.UpdateAsync(model);
-                    if (resultado)
-                    {
-                        ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
-                    }
-                }
-                else
-                {
-                    resultado = await _salidaService.AddAsync(model);
-                    if (resultado)
-                    {
-                        ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
-                    }
-                }
+                // Buscar la salida recién creada para obtener su ID
+                var salidasList = await _salidaService.ListAsync();
+                var salidaCreada = salidasList
+                    .Where(s => s.sal_Descripcion == model.sal_Descripcion && s.sal_Fecha == model.sal_Fecha)
+                    .OrderByDescending(s => s.sal_Id)
+                    .FirstOrDefault();
 
-                if (resultado)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return View(model);
-                }
+                return salidaCreada != null
+                    ? RedirectToAction("EditSalidas", new { id = salidaCreada.sal_Id })
+                    : RedirectToAction("EditSalidas");
             }
-            catch (Exception)
+            else
             {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return View(model);
+                Boolean updatedItem = await _salidaService.UpdateAsync(model);
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
+                return RedirectToAction("EditSalidas", new { id = model.sal_Id });
             }
+
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
         [HttpPost]
@@ -201,6 +193,17 @@ namespace PetsHome.UI.Controllers
         }
 
         #endregion
+
+        /// <summary>
+        /// Cargamos Dropdown
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public SalidaViewModel Dropdown(SalidaViewModel model)
+        {
+            model.LoadDropDownList(Dropdownlist.LoadTipoSalida(), _refugioService.RefugioDropdown());
+            return model;
+        }
     }
 
     public class VerificarStockRequest

@@ -36,5 +36,23 @@ namespace PetsHome.Business.Data
             };
             return lista;
         }
+
+        /// <summary>
+        /// Conjunto de datos de tipos de salida.
+        /// </summary>
+        /// <returns>listado de tipos de salida</returns>
+        public static IEnumerable<Dropdown> LoadTipoSalida()
+        {
+            List<Dropdown> lista = new List<Dropdown>() {
+                new Dropdown(){Value = "Consumo", Text = "Consumo"},
+                new Dropdown(){Value = "Donación", Text = "Donación"},
+                new Dropdown(){Value = "Transferencia", Text = "Transferencia"},
+                new Dropdown(){Value = "Pérdida", Text = "Pérdida"},
+                new Dropdown(){Value = "Vencimiento", Text = "Vencimiento"},
+                new Dropdown(){Value = "Rotura", Text = "Rotura"},
+                new Dropdown(){Value = "Otro", Text = "Otro"}
+            };
+            return lista;
+        }
     }
 }

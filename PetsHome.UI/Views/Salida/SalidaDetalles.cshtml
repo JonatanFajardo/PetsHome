@@ -1,0 +1,140 @@
+@model SalidaViewModel
+
+<div class="card">
+    <div class="card-header">
+        <div class="row space-between">
+            <div class="col-md-9"><h3>Detalles de la Salida</h3></div>
+            <div class="col-md-3"><button class="btn btn-danger mdi mdi-plus-circle-outline float-right" id="add-detalle-btn">  Agregar</button></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="datatable">
+            <thead class="text-center bg-danger text-white">
+                <tr>
+                    <th>Ítem</th>
+                    <th>Codigo</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Valor Total</th>
+                    <th>Motivo</th>
+                    <th>Stock Disponible</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!--Modal para crear y editar detalles de salida-->
+<div class="modal" tabindex="-1" id="edit-detalle-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddDetalle" asp-controller="SalidaDetalle" method="post" autocomplete="off">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="detalle-id" name="saldet_Id" value="0" />
+                <input type="hidden" id="salida-id" name="sal_Id" value="@Model.sal_Id" />
+                <input type="hidden" id="refugio-id" name="refg_Id" value="@Model.refg_Id" />
+                <input type="hidden" id="is-edit" name="isEdit" value="false" />
+                
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label required">Ítem</label>
+                                <select id="select-item" name="itm_Id" class="form-control" required>
+                                    <option value="">Seleccione un ítem</option>
+                                </select>
+                                <span class="text-danger" id="itm_Id_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label required">Cantidad</label>
+                                <input type="number" step="1" id="detalle-cantidad" name="saldet_Cantidad" class="form-control" required />
+                                <span class="text-danger" id="cantidad_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label required">Precio Unitario</label>
+                                <input type="number" step="0.01" id="detalle-precio" name="saldet_PrecioUnitario" class="form-control" required />
+                                <span class="text-danger" id="precio_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Motivo</label>
+                                <input type="text" id="detalle-motivo" name="saldet_Motivo" class="form-control" maxlength="200" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Stock Disponible</label>
+                                <input type="number" id="detalle-stock" name="StockDisponible" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Valor Total</label>
+                                <input type="number" step="0.01" id="detalle-total" name="valorTotal" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning d-none" id="stock-warning">
+                        <strong>Advertencia:</strong> La cantidad solicitada excede el stock disponible.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Fin Modal-->
+
+<!-- Modal Delete-->
+<div class="modal" id="delete-detalle-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="RemoveDetalle" asp-controller="SalidaDetalle" method="post" autocomplete="off">
+                <input type="hidden" id="delete-detalle-id" name="saldet_Id">
+                <input type="hidden" id="delete-sal-id" name="sal_Id" value="@Model.sal_Id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este detalle de salida?</p>
+                                <div class="alert alert-warning">
+                                    <strong>Advertencia:</strong> Esta acción revertirá el stock al inventario.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal -->

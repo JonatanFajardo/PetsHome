@@ -1,0 +1,50 @@
+@model SalidaViewModel
+@{
+    ViewData["Title"] = "Editar Salida";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+<div class="container">
+    <div class="row">
+        @if (Model.sal_Id == 0)
+        {
+            //Redirige a la vista para crear
+            <div class="col-md-12">
+                <partial name="Salida" model="@Model">
+            </div>
+        }
+        else
+        {
+            //Redirige a la vista para editar
+            <div class="col-md-12">
+                <partial name="Salida" model="@Model">
+                    <div class="card mt-3">
+                        <partial name="SalidaDetalles" model="@Model">
+                    </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/js/components/datatable/datatable.partials.init.js"></script>
+    <script src="~/js/pages/salidadetalle.js"></script>
+    <script>
+        SalidaDetalle.datatablePartials({
+            listUrl: "@Url.Action("ListBySalida", "SalidaDetalle")",
+            id: @Model.sal_Id
+        });
+
+        // Inicializar event handlers
+        SalidaDetalle.initEventHandlers();
+    </script>
+    <script>
+        Catalogs.configure({
+            displayName: "detalle",
+            getUrl: "@Url.Action("FindDetalle", "SalidaDetalle")"
+        });
+    </script>
+}

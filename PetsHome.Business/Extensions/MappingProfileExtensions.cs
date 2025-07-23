@@ -114,10 +114,17 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Donaciones_ListResult, DonacionViewModel>().ReverseMap();
             CreateMap<tbDonaciones, DonacionViewModel>().ReverseMap();
             CreateMap<SP_tbRecepcionesMercancia_List, RecepcionMercanciaViewModel>().ReverseMap();
-            CreateMap<SP_tbSalidas_Detail, RecepcionMercanciaViewModel>().ReverseMap();
-            CreateMap<SP_tbSalidas_Find, RecepcionMercanciaViewModel>().ReverseMap();
+            CreateMap<PR_tbSalidas_Detail, SalidaViewModel>().ReverseMap();
+            CreateMap<PR_tbSalidas_Find, SalidaViewModel>().ReverseMap();
             CreateMap<tbRecepcionesDetalles, RecepcionDetalleViewModel>().ReverseMap();
             CreateMap<tbRecepcionesMercancia, RecepcionMercanciaViewModel>().ReverseMap();
+
+            // Mappings para Salidas
+            CreateMap<PR_tbSalidas_List, SalidaViewModel>().ReverseMap();
+            CreateMap<PR_tbSalidas_Detail, SalidaViewModel>().ReverseMap();
+            CreateMap<PR_tbSalidas_Find, SalidaViewModel>().ReverseMap();
+            CreateMap<tbSalidas, SalidaViewModel>().ReverseMap();
+            CreateMap<tbSalidasDetalles, SalidaDetalleViewModel>().ReverseMap();
 
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
@@ -125,7 +132,6 @@ namespace PetsHome.Business.Extensions
 
             ////CreateMap<tbHistorialMedico_Vacunas, HistorialMedico_VacunaViewModel>().ReverseMap();
             ////CreateMap<tbEventos_tbVoluntarios, Eventos_tbVoluntarioViewModel>().ReverseMap();
-            ////CreateMap<tbSalida, SalidaViewModel>().ReverseMap();
             ////CreateMap<tbSubmenu, SubmenuViewModel>().ReverseMap();
             ////CreateMap<tbSubmenu_tbModpan, Submenu_tbModpanViewModel>().ReverseMap();
             ////Departamento

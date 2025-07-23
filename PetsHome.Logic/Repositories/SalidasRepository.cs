@@ -11,10 +11,10 @@ namespace PetsHome.Logic.Repositories
 {
     public class SalidasRepository : IGenericRepository<tbSalidas>
     {
-        public async Task<IEnumerable<SP_tbSalidas_List>> ListAsync()
+        public async Task<IEnumerable<PR_tbSalidas_List>> ListAsync()
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Salidas_List]";
-            return await DbApp.Select<SP_tbSalidas_List>(sqlQuery);
+            return await DbApp.Select<PR_tbSalidas_List>(sqlQuery);
         }
 
         public async Task<dynamic> FindAsync(int id)
@@ -66,7 +66,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Salidas_Delete]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_Salidas_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@sal_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

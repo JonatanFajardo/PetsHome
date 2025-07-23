@@ -62,6 +62,7 @@ var datatablePartials = (function () {
                     data: { id: id },
                     dataType: "json",
                     success: function (response) {
+                        console.log("hi")
                         callback(response);
                     },
                 }).fail(function (jqXHR, textStatus, errorThrown) {

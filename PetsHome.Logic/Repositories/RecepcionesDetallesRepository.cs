@@ -13,7 +13,7 @@ namespace PetsHome.Logic.Repositories
     {
         public async Task<IEnumerable<tbRecepcionesDetalles>> ListByRecepcionAsync(int recepcionId)
         {
-            const string sqlQuery = "[Inventario].[SP_tbRecepcionesDetalles_ByRecepcion]";
+            const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesDetalles_ByRecepcion]";
             var parameter = new DynamicParameters();
             parameter.Add("@recep_Id", recepcionId, DbType.Int32, ParameterDirection.Input);
             return await DbApp.SelectById<tbRecepcionesDetalles>(sqlQuery, parameter);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PetsHome.Common.Entities
 {
-    public class SP_tbSalidas_Detail
+    public class PR_tbSalidas_Detail
     {
         public int sal_Id { get; set; }
         public string sal_Descripcion { get; set; }
