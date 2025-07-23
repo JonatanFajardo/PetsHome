@@ -41,7 +41,7 @@ namespace PetsHome.UI.Controllers
 
             return View(resultado);
         }
-
+        [HttpGet]
         public async Task<IActionResult> ListMunicipios(int id)
         {
             var listMunicipios = await _municipioService.ListIdAsync(id);

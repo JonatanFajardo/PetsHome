@@ -36,8 +36,9 @@
             </div>
             <form asp-action="AddDetalle" asp-controller="RecepcionDetalle" method="post" autocomplete="off">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" id="detalle-id" name="recdet_Id" />
+                <input type="hidden" id="detalle-id" name="recdet_Id" value="0" />
                 <input type="hidden" id="recepcion-id" name="recep_Id" value="@Model.recep_Id" />
+                <input type="hidden" id="is-edit" name="isEdit" value="false" />
                 
                 <div class="modal-body">
                     <div class="form-row">

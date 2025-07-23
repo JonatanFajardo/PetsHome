@@ -34,11 +34,14 @@
         listUrl: "@Url.Action("ListByRecepcion", "RecepcionDetalle")",
         id: @Model.recep_Id
     });
+    
+    // Inicializar event handlers
+    RecepcionDetalle.initEventHandlers();
 </script>
 <script>
     Catalogs.configure({
         displayName: "detalle",
-        getUrl: "@Url.Action($"FindDetalle")"
+        getUrl: "@Url.Action("FindDetalle", "RecepcionDetalle")"
     });
 </script>
 }
