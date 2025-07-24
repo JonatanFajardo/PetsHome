@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using PetsHome.Business;
 using PetsHome.Business.Models;
 using PetsHome.UI.Middleware;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace PetsHome.UI
 {
@@ -27,6 +30,28 @@ namespace PetsHome.UI
             services.AddBusinessLogic();
             services.Configure<MascotaViewModel>(Configuration.GetSection("Filepath"));
 
+            // Configuración de autenticación
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+                    options.SlidingExpiration = true;
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                });
+
+            // Configuración de sesión
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(8);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            });
 
             services.AddHttpClient();
             services.AddHttpContextAccessor();
@@ -48,19 +73,19 @@ namespace PetsHome.UI
 
             app.UseMiddleware<DropDownErrorMiddleware>();
 
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=citamedica}/{action=index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

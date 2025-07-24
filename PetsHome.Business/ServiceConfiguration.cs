@@ -7,6 +7,7 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Services;
 using PetsHome.DataAccess;
 using PetsHome.Logic.Repositories;
+using PetsHome.Logic.Interfaces.Especific;
 
 namespace PetsHome.Business
 {
@@ -46,6 +47,7 @@ namespace PetsHome.Business
             services.AddScoped<RecepcionesMercanciaRepository>();
             services.AddScoped<RecepcionesDetallesRepository>();
             services.AddScoped<ExistenciasRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
 
             // Registrar DbContext para reportes que requieren acceso directo a la base de datos
             services.AddScoped<PetsHomeDbContext>();
@@ -93,6 +95,7 @@ namespace PetsHome.Business
             services.AddScoped<RecepcionMercanciaService>();
             services.AddScoped<RecepcionesDetallesService>();
             services.AddScoped<ExistenciasService>();
+            services.AddScoped<AuthService>();
 
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>

@@ -1,0 +1,137 @@
+@model PetsHome.Business.Models.RegistroUsuarioViewModel
+@{
+    ViewData["Title"] = "Registrar Usuario";
+    var roles = ViewBag.Roles as List<PetsHome.Common.Entities.PR_Seguridad_Roles_ListResult>;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-12 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <h4>Registrar Nuevo Usuario</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area-normal">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Emp_Id" class="form-label"></label>
+                                <select asp-for="Emp_Id" class="form-control" id="empleadoDropdown">
+                                    <option value="">Seleccione un empleado</option>
+                                </select>
+                                <span asp-validation-for="Emp_Id" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Usu_Nombre" class="form-label"></label>
+                                <input asp-for="Usu_Nombre" class="form-control" placeholder="Ingrese el nombre de usuario" />
+                                <span asp-validation-for="Usu_Nombre" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Contrasena" class="form-label"></label>
+                                <input asp-for="Contrasena" class="form-control" placeholder="Ingrese la contraseña" />
+                                <span asp-validation-for="Contrasena" class="text-danger"></span>
+                                <small class="form-text text-muted">
+                                    Mínimo 6 caracteres.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ConfirmarContrasena" class="form-label"></label>
+                                <input asp-for="ConfirmarContrasena" class="form-control" placeholder="Confirme la contraseña" />
+                                <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Rol_Id" class="form-label"></label>
+                                <select asp-for="Rol_Id" class="form-control">
+                                    <option value="">Seleccione un rol</option>
+                                    @if (roles != null)
+                                    {
+                                        @foreach (var rol in roles)
+                                        {
+                                            <option value="@rol.Rol_Id">@rol.Rol_Descripcion</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="Rol_Id" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-2"></i>
+                            Registrar Usuario
+                        </button>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ml-2">
+                            <i class="fas fa-times mr-2"></i>
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8 col-12">
+        <div class="alert alert-info">
+            <h6><i class="fas fa-info-circle mr-2"></i>Información</h6>
+            <ul class="mb-0">
+                <li><strong>Solo administradores</strong> pueden registrar nuevos usuarios</li>
+                <li>Cada empleado puede tener <strong>solo un usuario</strong> asignado</li>
+                <li>El nombre de usuario debe ser <strong>único</strong> en el sistema</li>
+                <li>La contraseña debe tener al menos <strong>6 caracteres</strong></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Cargar dropdown de empleados
+            loadEmpleadosDropdown();
+        });
+
+        function loadEmpleadosDropdown() {
+            $.ajax({
+                url: '@Url.Action("GetEmpleadosDropdown", "Empleado")', // Asumiendo que existe este endpoint
+                type: 'GET',
+                success: function(data) {
+                    var dropdown = $('#empleadoDropdown');
+                    dropdown.empty();
+                    dropdown.append('<option value="">Seleccione un empleado</option>');
+                    
+                    $.each(data, function(index, item) {
+                        dropdown.append('<option value="' + item.value + '">' + item.text + '</option>');
+                    });
+                },
+                error: function() {
+                    console.error('Error al cargar empleados');
+                }
+            });
+        }
+    </script>
+}

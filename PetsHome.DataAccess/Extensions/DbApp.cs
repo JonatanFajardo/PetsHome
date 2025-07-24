@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PetsHome.DataAccess.Extensions
+namespace PetsHome.DataAccess.Extensions 
 {
     /// <summary>
     /// Clase que contiene los métodos para la conexión a la base de datos.

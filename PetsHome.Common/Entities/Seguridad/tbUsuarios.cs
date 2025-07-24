@@ -7,60 +7,18 @@ namespace PetsHome.Common.Entities
 {
     public partial class tbUsuarios
     {
-        public tbUsuarios()
-        {
-            tbAdopciones = new HashSet<tbAdopciones>();
-            tbCategorias = new HashSet<tbCategorias>();
-            tbDepartamentos = new HashSet<tbDepartamentos>();
-            tbEmpleadosCargos = new HashSet<tbEmpleadosCargos>();
-            tbEntradas = new HashSet<tbEntradas>();
-            tbEntradasDetalles = new HashSet<tbEntradasDetalles>();
-            tbEventos = new HashSet<tbEventos>();
-            tbHistorialMedico = new HashSet<tbCitaMedica>();
-            tbInventarios = new HashSet<tbInventarios>();
-            tbInventariosDetalles = new HashSet<tbInventariosDetalles>();
-            tbItems = new HashSet<tbItems>();
-            tbMascotas = new HashSet<tbMascotas>();
-            tbMunicipios = new HashSet<tbMunicipios>();
-            tbPersonas = new HashSet<tbPersonas>();
-            tbProcedencias = new HashSet<tbProcedencias>();
-            tbRazas = new HashSet<tbRazas>();
-            tbRefugios = new HashSet<tbRefugios>();
-            tbSolicitudes = new HashSet<tbSolicitudes>();
-            tbVacunas = new HashSet<tbVacunas>();
-        }
-
         public int usu_Id { get; set; }
         public int Emp_Id { get; set; }
         public string Usu_Nombre { get; set; }
-        public int? Con_Id { get; set; }
-        public int? Usu_ContrasenaRecuperacion { get; set; }
+        public string Usu_PasswordHash { get; set; }
         public int Rol_Id { get; set; }
         public string Usu_Ip { get; set; }
-        public bool? Usu_EsActivo { get; set; }
-        public bool? Usu_Suspendido { get; set; }
-        public bool? Usu_EsEliminado { get; set; }
-        public DateTime? Usu_FechaCreacion { get; set; }
+        public bool Usu_EsActivo { get; set; }
+        public bool Usu_Suspendido { get; set; }
+        public bool Usu_EsEliminado { get; set; }
+        public DateTime Usu_FechaCreacion { get; set; }
         public DateTime? Usu_fechaModificacion { get; set; }
 
-        public virtual ICollection<tbAdopciones> tbAdopciones { get; set; }
-        public virtual ICollection<tbCategorias> tbCategorias { get; set; }
-        public virtual ICollection<tbDepartamentos> tbDepartamentos { get; set; }
-        public virtual ICollection<tbEmpleadosCargos> tbEmpleadosCargos { get; set; }
-        public virtual ICollection<tbEntradas> tbEntradas { get; set; }
-        public virtual ICollection<tbEntradasDetalles> tbEntradasDetalles { get; set; }
-        public virtual ICollection<tbEventos> tbEventos { get; set; }
-        public virtual ICollection<tbCitaMedica> tbHistorialMedico { get; set; }
-        public virtual ICollection<tbInventarios> tbInventarios { get; set; }
-        public virtual ICollection<tbInventariosDetalles> tbInventariosDetalles { get; set; }
-        public virtual ICollection<tbItems> tbItems { get; set; }
-        public virtual ICollection<tbMascotas> tbMascotas { get; set; }
-        public virtual ICollection<tbMunicipios> tbMunicipios { get; set; }
-        public virtual ICollection<tbPersonas> tbPersonas { get; set; }
-        public virtual ICollection<tbProcedencias> tbProcedencias { get; set; }
-        public virtual ICollection<tbRazas> tbRazas { get; set; }
-        public virtual ICollection<tbRefugios> tbRefugios { get; set; }
-        public virtual ICollection<tbSolicitudes> tbSolicitudes { get; set; }
-        public virtual ICollection<tbVacunas> tbVacunas { get; set; }
+        public virtual tbRoles Rol { get; set; }
     }
 }

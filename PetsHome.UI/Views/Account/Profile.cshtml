@@ -1,0 +1,117 @@
+@model PetsHome.Business.Models.UsuarioViewModel
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="row">
+    <div class="col-lg-8 col-12 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <h4>Mi Perfil</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area-normal">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Usu_Nombre">Usuario</label>
+                                <input asp-for="Usu_Nombre" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Emp_NombreCompleto">Nombre Completo</label>
+                                <input asp-for="Emp_NombreCompleto" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Rol_Descripcion">Rol</label>
+                                <input asp-for="Rol_Descripcion" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Usu_Ip">Última IP</label>
+                                <input asp-for="Usu_Ip" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Usu_FechaCreacion">Fecha de Creación</label>
+                                <input value="@Model.Usu_FechaCreacion?.ToString("dd/MM/yyyy HH:mm")" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Usu_fechaModificacion">Última Modificación</label>
+                                <input value="@Model.Usu_fechaModificacion?.ToString("dd/MM/yyyy HH:mm")" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <input value="@(Model.Usu_EsActivo == true ? "Activo" : "Inactivo")" 
+                                       class="form-control @(Model.Usu_EsActivo == true ? "text-success" : "text-danger")" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Suspendido</label>
+                                <input value="@(Model.Usu_Suspendido == true ? "Sí" : "No")" 
+                                       class="form-control @(Model.Usu_Suspendido == true ? "text-danger" : "text-success")" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <a asp-action="ChangePassword" class="btn btn-warning">
+                            <i class="fas fa-key mr-2"></i>
+                            Cambiar Contraseña
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ml-2">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Volver
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-12 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <h4>Información de Seguridad</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area-normal">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle mr-2"></i>Recomendaciones</h6>
+                    <ul class="mb-0">
+                        <li>Cambia tu contraseña regularmente</li>
+                        <li>No compartas tu usuario con terceros</li>
+                        <li>Cierra sesión al terminar</li>
+                        <li>Usa contraseñas seguras</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
