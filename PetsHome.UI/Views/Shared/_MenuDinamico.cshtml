@@ -1,6 +1,6 @@
 @model PetsHome.Business.Models.MenuViewModel
 
-<ul class="list-unstyled menu-categories">
+<ul class="list-unstyled menu-categories" id="accordionExample">
     <!-- Dashboard siempre visible para usuarios autenticados -->
     <li class="menu">
         <div class="dropdown-toggle">
@@ -11,16 +11,18 @@
 
     @if (Model != null && Model.MenuItems != null && Model.MenuItems.Any())
     {
-        @foreach (var item in Model.MenuItems.OrderBy(m => m.Mod_Orden))
+        @foreach (var modulo in Model.MenuItems.Where(m => m.TieneAcceso).OrderBy(m => m.Mod_Orden))
         {
-            @if (item.PuedeCrear || item.PuedeEditar || item.PuedeEliminar)
+            var tieneSubmodulos = modulo.SubModulos.Any() || modulo.PuedeCrear || modulo.PuedeEditar || modulo.PuedeEliminar;
+            
+            @if (tieneSubmodulos)
             {
                 <!-- Módulo con submenú -->
                 <li class="menu">
-                    <a href="#@item.Mod_Nombre" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#modulo_@modulo.Mod_Id" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
-                            <i class="@item.Mod_Icono"></i>
-                            <span>@item.Mod_Descripcion</span>
+                            <i class="@modulo.Mod_Icono"></i>
+                            <span>@modulo.Mod_Nombre</span>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
@@ -28,23 +30,38 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled" id="@item.Mod_Nombre" data-parent="#accordionExample">
-                        <li>
-                            <i class="fas fa-list text-info"></i>
-                            @Html.ActionLink("Ver Lista", "Index", item.Mod_Nombre.ToLower())
-                        </li>
-                        @if (item.PuedeCrear)
+                    <ul class="collapse submenu list-unstyled" id="modulo_@modulo.Mod_Id" data-parent="#accordionExample">
+                        @* Mostrar URL principal del módulo si existe *@
+                        @if (!string.IsNullOrEmpty(modulo.Mod_Url))
+                        {
+                            <li>
+                                <i class="@modulo.Mod_Icono text-info"></i>
+                                <a href="@modulo.Mod_Url">@modulo.Mod_Descripcion</a>
+                            </li>
+                        }
+                        
+                        @* Mostrar submódulos reales de la base de datos *@
+                        @foreach (var submodulo in modulo.SubModulos.OrderBy(s => s.Mod_Orden))
+                        {
+                            <li>
+                                <i class="@submodulo.Mod_Icono"></i>
+                                <a href="@submodulo.Mod_Url">@submodulo.Mod_Nombre</a>
+                            </li>
+                        }
+                        
+                        @* Opciones estándar basadas en permisos *@
+                        @if (modulo.PuedeCrear)
                         {
                             <li>
                                 <i class="fas fa-plus text-success"></i>
-                                @Html.ActionLink("Crear Nuevo", "Create", item.Mod_Nombre.ToLower())
+                                @Html.ActionLink("Crear Nuevo", "Create", modulo.Mod_Nombre.ToLower())
                             </li>
                         }
-                        @if (item.Permisos.Contains("EXPORT"))
+                        @if (modulo.Permisos.Contains("EXPORT"))
                         {
                             <li>
                                 <i class="fas fa-download text-warning"></i>
-                                @Html.ActionLink("Exportar", "Export", item.Mod_Nombre.ToLower())
+                                @Html.ActionLink("Exportar", "Export", modulo.Mod_Nombre.ToLower())
                             </li>
                         }
                     </ul>
@@ -55,11 +72,15 @@
                 <!-- Módulo simple sin submenú -->
                 <li class="menu">
                     <div class="dropdown-toggle">
-                        <i class="@item.Mod_Icono"></i>
-                        @Html.ActionLink(item.Mod_Descripcion, "Index", item.Mod_Nombre.ToLower())
-                        <span class="badge badge-info" title="Permisos: @string.Join(", ", item.Permisos)">
-                            @item.Permisos.Count
-                        </span>
+                        <i class="@modulo.Mod_Icono"></i>
+                        @if (!string.IsNullOrEmpty(modulo.Mod_Url))
+                        {
+                            <a href="@modulo.Mod_Url">@modulo.Mod_Descripcion</a>
+                        }
+                        else
+                        {
+                            @Html.ActionLink(modulo.Mod_Descripcion, "Index", modulo.Mod_Nombre.ToLower())
+                        }
                     </div>
                 </li>
             }
@@ -75,100 +96,119 @@
         </li>
     }
 
-        <!-- Separador -->
-        <li class="nav-header">ADMINISTRACIÓN</li>
-
-        <!-- Gestión de Usuarios (solo para administradores) -->
-        @if (Model != null && Model.MenuItems.Any(m => m.Mod_Nombre == "USUARIOS"))
-        {
-            <li class="nav-item menu-open">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-users-cog"></i>
-                    <p>
-                        Administración
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/account/register" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Crear Usuario</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/permisos/gestionpermisos" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Gestión de Permisos</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/permisos/modulos" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Gestión de Módulos</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        }
-
-        <!-- Información del Usuario -->
-        <li class="nav-header">USUARIO</li>
-        <li class="nav-item">
-            <a href="/account/profile" class="nav-link">
-                <i class="nav-icon fas fa-user"></i>
-                <p>Mi Perfil</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/account/changepassword" class="nav-link">
-                <i class="nav-icon fas fa-key"></i>
-                <p>Cambiar Contraseña</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/account/logout" class="nav-link">
-                <i class="nav-icon fas fa-sign-out-alt text-danger"></i>
-                <p>Cerrar Sesión</p>
-            </a>
-        </li>
-    </ul>
-</nav>
-
-@if (Model != null && !string.IsNullOrEmpty(Model.RolDescripcion))
-{
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
-            <span class="d-block text-sm text-muted">Rol: @Model.RolDescripcion</span>
+    <!-- Información del Usuario -->
+    <li class="menu">
+        <div class="dropdown-toggle">
+            <i class="fas fa-user-circle"></i>
+            @Html.ActionLink("Mi Perfil", "Profile", "Account")
         </div>
-    </div>
-}
+    </li>
+    
+    <li class="menu">
+        <div class="dropdown-toggle">
+            <i class="fas fa-sliders-h"></i>
+            @Html.ActionLink("Configuración", "Settings", "Account")
+        </div>
+    </li>
+    
+    <li class="menu">
+        <div class="dropdown-toggle">
+            <i class="fas fa-sign-out-alt"></i>
+            @Html.ActionLink("Cerrar Sesión", "Logout", "Account")
+        </div>
+    </li>
+</ul>
 
 <script>
-// Marcar como activo el elemento del menú actual
 $(document).ready(function() {
-    var currentPath = window.location.pathname.toLowerCase();
+    console.log('🔧 Inicializando menú dinámico con Bootstrap collapse');
     
-    $('.nav-link').each(function() {
+    // Marcar como activo el elemento del menú actual
+    var currentPath = window.location.pathname.toLowerCase();
+    console.log('📍 Ruta actual:', currentPath);
+    
+    // Marcar enlaces activos
+    $('.submenu a, .dropdown-toggle a').each(function() {
         var href = $(this).attr('href');
-        if (href && href !== '#' && href !== '/') {
-            if (currentPath.startsWith(href.toLowerCase())) {
-                $(this).addClass('active');
-                // Si es un submenú, también activar el padre
-                $(this).closest('.nav-treeview').siblings('a').addClass('active');
-                $(this).closest('.nav-item').addClass('menu-open');
-            }
-        } else if (href === '/' && currentPath === '/') {
+        if (href && href !== '#' && href !== '/' && href.toLowerCase() === currentPath) {
             $(this).addClass('active');
+            // Si es un submenú, también expandir el padre
+            var parentCollapse = $(this).closest('.submenu');
+            if (parentCollapse.length) {
+                parentCollapse.addClass('show');
+                parentCollapse.siblings('a').addClass('active');
+                console.log('🎯 Menú expandido:', parentCollapse.attr('id'));
+            }
         }
     });
     
-    // Cargar información adicional del menú via AJAX si es necesario
-    loadMenuData();
+    // Manejar clicks en dropdown-toggle para Bootstrap collapse
+    $('.dropdown-toggle[data-toggle="collapse"]').on('click', function(e) {
+        e.preventDefault();
+        var target = $(this).attr('href');
+        console.log('🖱️ Click en dropdown:', target);
+        
+        // Toggle del collapse
+        $(target).collapse('toggle');
+        
+        // Rotar ícono
+        $(this).find('.feather-chevron-right').toggleClass('rotate-90');
+    });
+    
+    // Eventos de Bootstrap collapse
+    $('.collapse').on('show.bs.collapse', function () {
+        console.log('📂 Expandiendo:', $(this).attr('id'));
+        $(this).siblings('a').find('.feather-chevron-right').addClass('rotate-90');
+    });
+    
+    $('.collapse').on('hide.bs.collapse', function () {
+        console.log('📁 Colapsando:', $(this).attr('id'));
+        $(this).siblings('a').find('.feather-chevron-right').removeClass('rotate-90');
+    });
+    
+    console.log('✅ Menú dinámico inicializado');
 });
-
-function loadMenuData() {
-    // Esta función se puede usar para cargar datos adicionales del menú
-    // Por ejemplo, contadores, notificaciones, etc.
-}
 </script>
+
+<style>
+/* Estilos adicionales para el menú dinámico */
+.feather-chevron-right {
+    transition: transform 0.3s ease;
+}
+
+.feather-chevron-right.rotate-90 {
+    transform: rotate(90deg);
+}
+
+.submenu {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.submenu li {
+    padding: 5px 0;
+}
+
+.submenu li a {
+    color: #a1a2b5;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.submenu li a:hover,
+.submenu li a.active {
+    background-color: #4361ee;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.dropdown-toggle.active {
+    background-color: #1b2e4b;
+    color: #ffffff;
+    border-radius: 4px;
+}
+</style>

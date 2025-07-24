@@ -30,5 +30,6 @@ namespace PetsHome.Logic.Interfaces.Especific
         
         // Para menús dinámicos
         Task<List<PR_Seguridad_MenuUsuario_ListResult>> GetMenuUsuarioAsync(int usuarioId);
+        Task<List<PR_Seguridad_MenuUsuarioCompleto_ListResult>> GetMenuUsuarioCompletoAsync(int usuarioId);
     }
 }

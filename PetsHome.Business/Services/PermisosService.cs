@@ -253,30 +253,49 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                var menuItems = await _permisosRepository.GetMenuUsuarioAsync(usuarioId);
+                var menuItemsCompleto = await _permisosRepository.GetMenuUsuarioCompletoAsync(usuarioId);
 
-                if (!menuItems.Any())
+                if (!menuItemsCompleto.Any())
                 {
                     return new ServiceResult { Success = false, Message = "Usuario sin permisos asignados" };
+                }
+
+                // Convertir a MenuItemViewModel
+                var todosLosItems = menuItemsCompleto.Select(mi => new MenuItemViewModel
+                {
+                    Mod_Id = mi.Mod_Id,
+                    Mod_Nombre = mi.Mod_Nombre,
+                    Mod_Descripcion = mi.Mod_Descripcion,
+                    Mod_Icono = mi.Mod_Icono,
+                    Mod_Url = mi.Mod_Url,
+                    Mod_Orden = mi.Mod_Orden ?? 0,
+                    Permisos = !string.IsNullOrEmpty(mi.Permisos) ? mi.Permisos.Split(',').ToList() : new List<string>(),
+                    TieneAcceso = true,
+                    PuedeCrear = !string.IsNullOrEmpty(mi.Permisos) && mi.Permisos.Contains("CREATE"),
+                    PuedeEditar = !string.IsNullOrEmpty(mi.Permisos) && mi.Permisos.Contains("UPDATE"),
+                    PuedeEliminar = !string.IsNullOrEmpty(mi.Permisos) && mi.Permisos.Contains("DELETE"),
+                    TipoItem = mi.TipoItem,
+                    Mod_Padre = mi.Mod_Padre
+                }).ToList();
+
+                // Separar módulos principales de submódulos
+                var modulosPrincipales = todosLosItems.Where(m => m.TipoItem == "MODULE").OrderBy(m => m.Mod_Orden).ToList();
+                var submodulos = todosLosItems.Where(m => m.TipoItem == "SUBMODULE").ToList();
+
+                // Asignar submódulos a sus módulos padre
+                foreach (var modulo in modulosPrincipales)
+                {
+                    modulo.SubModulos = submodulos
+                        .Where(s => s.Mod_Padre == modulo.Mod_Id)
+                        .OrderBy(s => s.Mod_Orden)
+                        .ToList();
                 }
 
                 var menuViewModel = new MenuViewModel
                 {
                     UsuarioNombre = "", // Se puede obtener del contexto
-                    RolDescripcion = menuItems.First().Rol_Descripcion,
-                    MenuItems = menuItems.Select(mi => new MenuItemViewModel
-                    {
-                        Mod_Nombre = mi.Mod_Nombre,
-                        Mod_Descripcion = mi.Mod_Descripcion,
-                        Mod_Icono = mi.Mod_Icono,
-                        Mod_Url = mi.Mod_Url,
-                        Mod_Orden = mi.Mod_Orden ?? 0,
-                        Permisos = !string.IsNullOrEmpty(mi.Permisos) ? mi.Permisos.Split(',').ToList() : new List<string>(),
-                        TieneAcceso = true,
-                        PuedeCrear = !string.IsNullOrEmpty(mi.Permisos) && mi.Permisos.Contains("CREATE"),
-                        PuedeEditar = !string.IsNullOrEmpty(mi.Permisos) && mi.Permisos.Contains("UPDATE"),
-                        PuedeEliminar = !string.IsNullOrEmpty(mi.Permisos) && mi.Permisos.Contains("DELETE")
-                    }).OrderBy(mi => mi.Mod_Orden).ToList()
+                    RolDescripcion = menuItemsCompleto.First().Rol_Descripcion,
+                    MenuItems = modulosPrincipales
                 };
 
                 return new ServiceResult { Success = true, Data = menuViewModel };

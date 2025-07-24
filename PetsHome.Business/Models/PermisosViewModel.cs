@@ -95,6 +95,7 @@ namespace PetsHome.Business.Models
 
     public class MenuItemViewModel
     {
+        public int Mod_Id { get; set; }
         public string Mod_Nombre { get; set; }
         public string Mod_Descripcion { get; set; }
         public string Mod_Icono { get; set; }
@@ -105,6 +106,9 @@ namespace PetsHome.Business.Models
         public bool PuedeCrear { get; set; }
         public bool PuedeEditar { get; set; }
         public bool PuedeEliminar { get; set; }
+        public string TipoItem { get; set; } = "MODULE"; // MODULE o SUBMODULE
+        public int Mod_Padre { get; set; } = 0; // ID del módulo padre
+        public List<MenuItemViewModel> SubModulos { get; set; } = new List<MenuItemViewModel>();
     }
 
     public class MenuViewModel

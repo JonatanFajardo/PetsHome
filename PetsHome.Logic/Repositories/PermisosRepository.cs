@@ -254,5 +254,21 @@ namespace PetsHome.Logic.Repositories
                 return new List<PR_Seguridad_MenuUsuario_ListResult>();
             }
         }
+
+        public async Task<List<PR_Seguridad_MenuUsuarioCompleto_ListResult>> GetMenuUsuarioCompletoAsync(int usuarioId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@usu_Id", usuarioId);
+
+                var result = await DbApp.SelectById<PR_Seguridad_MenuUsuarioCompleto_ListResult>("PR_Seguridad_MenuUsuarioCompleto_List", parameters);
+                return result.ToList();
+            }
+            catch
+            {
+                return new List<PR_Seguridad_MenuUsuarioCompleto_ListResult>();
+            }
+        }
     }
 }

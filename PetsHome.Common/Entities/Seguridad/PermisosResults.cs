@@ -65,6 +65,22 @@ namespace PetsHome.Common.Entities
         public string Permisos { get; set; } // STRING_AGG de permisos disponibles
     }
 
+    public class PR_Seguridad_MenuUsuarioCompleto_ListResult
+    {
+        public int usu_Id { get; set; }
+        public int Rol_Id { get; set; }
+        public string Rol_Descripcion { get; set; }
+        public int Mod_Id { get; set; }
+        public string Mod_Nombre { get; set; }
+        public string Mod_Descripcion { get; set; }
+        public string Mod_Icono { get; set; }
+        public string Mod_Url { get; set; }
+        public int? Mod_Orden { get; set; }
+        public string Permisos { get; set; } // STRING_AGG de permisos disponibles
+        public string TipoItem { get; set; } // MODULE o SUBMODULE
+        public int Mod_Padre { get; set; } // ID del módulo padre para submódulos
+    }
+
     public class PR_Seguridad_ModuloInsertResult
     {
         public int Mod_Id { get; set; }
