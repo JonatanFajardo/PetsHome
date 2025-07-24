@@ -2,11 +2,13 @@
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("ADOPCIONES", "READ")]
     public class AdopcionController : BaseController
     {
         private readonly AdopcionService _AdopcionService;

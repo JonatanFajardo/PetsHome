@@ -5,6 +5,7 @@ using PetsHome.Business.Services;
 using PetsHome.Common.Entities;
 using PetsHome.Common.InternalEntities;
 using PetsHome.Logic.Repositories;
+using PetsHome.UI.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("CITAS_MEDICAS", "READ")]
     public class CitaMedicaController : BaseController
     {
         private readonly CitaMedicaService _HistorialMedicoService;

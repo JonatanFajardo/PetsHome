@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace PetsHome.UI.Controllers
     /// <summary>
     /// Controller para la gestión de reportes del sistema PetsHome
     /// </summary>
+    [Permission("REPORTES", "READ")]
     public class ReportesController : BaseController
     {
         private readonly ReportesService _reportesService;

@@ -2,12 +2,14 @@
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("SOLICITUDES", "READ")]
     public class SolicitudController : BaseController
     {
         private readonly SolicitudService _SolicitudService;

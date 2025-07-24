@@ -1,0 +1,174 @@
+@model PetsHome.Business.Models.MenuViewModel
+
+<ul class="list-unstyled menu-categories">
+    <!-- Dashboard siempre visible para usuarios autenticados -->
+    <li class="menu">
+        <div class="dropdown-toggle">
+            <i class="fas fa-tachometer-alt"></i>
+            @Html.ActionLink("Dashboard", "Index", "Home")
+        </div>
+    </li>
+
+    @if (Model != null && Model.MenuItems != null && Model.MenuItems.Any())
+    {
+        @foreach (var item in Model.MenuItems.OrderBy(m => m.Mod_Orden))
+        {
+            @if (item.PuedeCrear || item.PuedeEditar || item.PuedeEliminar)
+            {
+                <!-- Módulo con submenú -->
+                <li class="menu">
+                    <a href="#@item.Mod_Nombre" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="@item.Mod_Icono"></i>
+                            <span>@item.Mod_Descripcion</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="@item.Mod_Nombre" data-parent="#accordionExample">
+                        <li>
+                            <i class="fas fa-list text-info"></i>
+                            @Html.ActionLink("Ver Lista", "Index", item.Mod_Nombre.ToLower())
+                        </li>
+                        @if (item.PuedeCrear)
+                        {
+                            <li>
+                                <i class="fas fa-plus text-success"></i>
+                                @Html.ActionLink("Crear Nuevo", "Create", item.Mod_Nombre.ToLower())
+                            </li>
+                        }
+                        @if (item.Permisos.Contains("EXPORT"))
+                        {
+                            <li>
+                                <i class="fas fa-download text-warning"></i>
+                                @Html.ActionLink("Exportar", "Export", item.Mod_Nombre.ToLower())
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <!-- Módulo simple sin submenú -->
+                <li class="menu">
+                    <div class="dropdown-toggle">
+                        <i class="@item.Mod_Icono"></i>
+                        @Html.ActionLink(item.Mod_Descripcion, "Index", item.Mod_Nombre.ToLower())
+                        <span class="badge badge-info" title="Permisos: @string.Join(", ", item.Permisos)">
+                            @item.Permisos.Count
+                        </span>
+                    </div>
+                </li>
+            }
+        }
+    }
+    else
+    {
+        <li class="menu">
+            <div class="dropdown-toggle">
+                <i class="fas fa-exclamation-triangle text-warning"></i>
+                <span>Sin permisos asignados</span>
+            </div>
+        </li>
+    }
+
+        <!-- Separador -->
+        <li class="nav-header">ADMINISTRACIÓN</li>
+
+        <!-- Gestión de Usuarios (solo para administradores) -->
+        @if (Model != null && Model.MenuItems.Any(m => m.Mod_Nombre == "USUARIOS"))
+        {
+            <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-users-cog"></i>
+                    <p>
+                        Administración
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/account/register" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Crear Usuario</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/permisos/gestionpermisos" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Gestión de Permisos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/permisos/modulos" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Gestión de Módulos</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        <!-- Información del Usuario -->
+        <li class="nav-header">USUARIO</li>
+        <li class="nav-item">
+            <a href="/account/profile" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Mi Perfil</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/account/changepassword" class="nav-link">
+                <i class="nav-icon fas fa-key"></i>
+                <p>Cambiar Contraseña</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/account/logout" class="nav-link">
+                <i class="nav-icon fas fa-sign-out-alt text-danger"></i>
+                <p>Cerrar Sesión</p>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+@if (Model != null && !string.IsNullOrEmpty(Model.RolDescripcion))
+{
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info">
+            <span class="d-block text-sm text-muted">Rol: @Model.RolDescripcion</span>
+        </div>
+    </div>
+}
+
+<script>
+// Marcar como activo el elemento del menú actual
+$(document).ready(function() {
+    var currentPath = window.location.pathname.toLowerCase();
+    
+    $('.nav-link').each(function() {
+        var href = $(this).attr('href');
+        if (href && href !== '#' && href !== '/') {
+            if (currentPath.startsWith(href.toLowerCase())) {
+                $(this).addClass('active');
+                // Si es un submenú, también activar el padre
+                $(this).closest('.nav-treeview').siblings('a').addClass('active');
+                $(this).closest('.nav-item').addClass('menu-open');
+            }
+        } else if (href === '/' && currentPath === '/') {
+            $(this).addClass('active');
+        }
+    });
+    
+    // Cargar información adicional del menú via AJAX si es necesario
+    loadMenuData();
+});
+
+function loadMenuData() {
+    // Esta función se puede usar para cargar datos adicionales del menú
+    // Por ejemplo, contadores, notificaciones, etc.
+}
+</script>

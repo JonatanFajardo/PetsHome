@@ -1,296 +1,153 @@
 ﻿<!-- BEGIN SIDEBAR -->
 <div class="sidebar-wrapper sidebar-theme">
-
-
     <nav id="sidebar">
-        <!-- Sección Principal -->
+        <!-- Sección Principal con Menú Dinámico -->
         <div class="nav-section">
-            <div class="nav-section-title">PRINCIPAL</div>
-            <ul class="list-unstyled menu-categories">
-                <!-- Dashboard -->
-                <li class="menu">
-                    <div class="dropdown-toggle">
-                        <i class="fas fa-home"></i>
-                        @Html.ActionLink("Dashboard", "Index", "Home")
-                        <span class="badge badge-primary">5</span>
-                    </div>
-                </li>
-
-                <!-- Gestión de Usuarios -->
-                <li class="menu">
-                    <a href="#Cuenta" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <i class="fas fa-users"></i>
-                            <span>Gestión de Usuarios</span>
+            <div class="nav-section-title">SISTEMA PETSHOME</div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <!-- Menú dinámico basado en permisos del usuario -->
+                <div class="dynamic-menu-container">
+                    @await Component.InvokeAsync("MenuDinamico")
+                </div>
+            }
+            else
+            {
+                <!-- Menú para usuarios no autenticados -->
+                <ul class="list-unstyled menu-categories">
+                    <li class="menu">
+                        <div class="dropdown-toggle">
+                            <i class="fas fa-sign-in-alt"></i>
+                            @Html.ActionLink("Iniciar Sesión", "Login", "Account")
                         </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Cuenta" data-parent="#accordionExample">
-                        <li>
-                            
-                            @Html.ActionLink("Empleados", "Index", "Empleado")
-                        </li>
-                        <li>
-                            
-                            @Html.ActionLink("Voluntarios", "Index", "Voluntario")
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Control de Inventario -->
-                <li class="menu">
-                    <a href="#Inventario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <i class="fas fa-boxes-stacked"></i>
-                            <span>Control de Inventario</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Inventario" data-parent="#accordionExample">
-                        <li>
-                            <i class="fas fa-boxes text-info"></i>
-                            @Html.ActionLink("Control de Existencias", "Index", "Existencia")
-                        </li>
-                        <li>
-                            <i class="fas fa-arrow-down text-success"></i>
-                            @Html.ActionLink("Recepciones de Mercancía", "Index", "RecepcionMercancia")
-                        </li>
-                        <li>
-                            <i class="fas fa-arrow-up text-danger"></i>
-                            @Html.ActionLink("Salidas de Inventario", "Index", "Salida")
-                        </li>
-                        <li>
-                            <i class="fas fa-chart-line text-primary"></i>
-                            @Html.ActionLink("Reportes de Inventario", "Reportes", "Existencia")
-                        </li>
-                        <li>
-                            <i class="fas fa-cube text-secondary"></i>
-                            @Html.ActionLink("Artículos", "Index", "Item")
-                        </li>
-                        <li>
-                            <i class="fas fa-tags text-warning"></i>
-                            @Html.ActionLink("Categorías", "Index", "Categoria")
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Administración -->
-                <li class="menu">
-                    <a href="#Administracion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <i class="fas fa-cog"></i>
-                            <span>Administración</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Administracion" data-parent="#accordionExample">
-                        <li>
-                            <i class="fas fa-user-tie text-primary"></i>
-                            @Html.ActionLink("Cargos de Empleados", "Index", "EmpleadosCargo")
-                        </li>
-                        <li>
-                            <i class="fas fa-home text-success"></i>
-                            @Html.ActionLink("Refugios", "Index", "Refugio")
-                        </li>
-                        <li>
-                            <i class="fas fa-map-marker-alt text-info"></i>
-                            @Html.ActionLink("Localidades", "Index", "localidad")
-                        </li>
-                        <li>
-                            <i class="fas fa-calendar-plus text-warning"></i>
-                            @Html.ActionLink("Eventos", "Index", "Evento")
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Centro de Adopciones -->
-                <li class="menu">
-                    <a href="#Adopcion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <i class="fas fa-heart"></i>
-                            <span>Centro de Adopciones</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Adopcion" data-parent="#accordionExample">
-                        <li>
-                            
-                            @Html.ActionLink("Mascotas", "Index", "Mascota")
-                            <span class="badge badge-success">12</span>
-                        </li>
-                        <li>
-                            
-                            @Html.ActionLink("Adopciones", "Index", "Adopcion")
-                        </li>
-                        <li>
-                            
-                            @Html.ActionLink("Solicitudes", "Index", "Solicitud")
-                            <span class="badge badge-warning">3</span>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Sección Gestión -->
-        <div class="nav-section">
-            <div class="nav-section-title">GESTIÓN</div>
-            <ul class="list-unstyled menu-categories" id="accordionExample">
-                <!-- Centro Médico -->
-                <li class="menu">
-                    <a href="#Medicamento" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <i class="fas fa-stethoscope"></i>
-                            <span>Centro Médico</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Medicamento" data-parent="#accordionExample">
-                        <li>
-                            
-                            @Html.ActionLink("Vacunas", "Index", "Vacuna")
-                        </li>
-                        <li>
-                            
-                            @Html.ActionLink("Citas Médicas", "Index", "CitaMedica")
-                            <span class="badge badge-danger">!</span>
-                        </li>
-                        <li>
-                            
-                            @Html.ActionLink("Procedencia", "Index", "Procedencia")
-                        </li>
-                        <li>
-                            
-                            @Html.ActionLink("Razas", "Index", "Raza")
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Reportes -->
-                <li class="menu">
-                    <a href="#Reportes" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Reportes</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Reportes" data-parent="#accordionExample">
-                        <li>
-                            <i class="fas fa-tachometer-alt text-primary"></i>
-                            @Html.ActionLink("Dashboard General", "Index", "Reportes")
-                        </li>
-                        <li>
-                            <i class="fas fa-dog text-brown"></i>
-                            @Html.ActionLink("Mascotas por Raza", "MascotasPorRaza", "Reportes")
-                        </li>
-                        <li>
-                            <i class="fas fa-hands-helping text-info"></i>
-                            @Html.ActionLink("Voluntarios", "Voluntarios", "Reportes")
-                        </li>
-                        <li>
-                            <i class="fas fa-chart-bar text-success"></i>
-                            @Html.ActionLink("Analytics de Inventario", "Reportes", "Existencia")
-                        </li>
-                        <li>
-                            <i class="fas fa-heart text-danger"></i>
-                            @Html.ActionLink("Salud Mascotas", "SaludMascotas", "Reportes")
-                        </li>
-                        <li>
-                            <i class="fas fa-calendar-alt text-warning"></i>
-                            @Html.ActionLink("Eventos", "Eventos", "Reportes")
-                        </li>
-                    </ul>
-                </li>
-
-               
-                <!-- Donaciones -->
-                <li class="menu">
-                    <div class="dropdown-toggle">
-                        <i class="fas fa-home"></i>
-                        @Html.ActionLink("Donaciones", "Index", "Donacion")
-                        <span class="badge badge-primary">5</span>
-
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Sección Configuración -->
-        <div class="nav-section">
-            <div class="nav-section-title">CONFIGURACIÓN</div>
-            <ul class="list-unstyled menu-categories">
-                <!-- Perfil -->
-                <li class="menu">
-                    <div class="dropdown-toggle">
-                        <i class="fas fa-user-circle"></i>
-                        @Html.ActionLink("Mi Perfil", "Profile", "Account")
-                    </div>
-                </li>
-
-                <!-- Configuración -->
-                <li class="menu">
-                    <div class="dropdown-toggle">
-                        <i class="fas fa-sliders-h"></i>
-                        @Html.ActionLink("Configuración", "Settings", "Account")
-                    </div>
-                </li>
-
-                <!-- Cerrar Sesión -->
-                <li class="menu">
-                    <div class="dropdown-toggle">
-                        <i class="fas fa-sign-out-alt"></i>
-                        @Html.ActionLink("Cerrar Sesión", "Logout", "Account")
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            }
         </div>
     </nav>
 
-    <!-- Footer del Sidebar con Info del Usuario -->
-    <div class="sidebar-footer">
-        <div class="user-info">
-            <div class="user-avatar">
-                @if (!string.IsNullOrEmpty(ViewBag.UserAvatar))
-                {
-                    <img src="@ViewBag.UserAvatar" alt="Avatar">
-                }
-                else
-                {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <!-- Footer del Sidebar con Info del Usuario -->
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
                     <div class="avatar-placeholder">
                         <i class="fas fa-user"></i>
                     </div>
-                }
-            </div>
-            <div class="user-details">
-                <span class="user-name">@ViewBag.UserName</span>
-                <span class="user-role">@ViewBag.UserRole</span>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">@User.Identity.Name</span>
+                    <span class="user-role">@User.FindFirst("RolDescripcion")?.Value</span>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 <!-- END SIDEBAR -->
+
+<style>
+/* Estilos para adaptar el menú dinámico al tema existente */
+.dynamic-menu-container .nav {
+    padding: 0;
+}
+
+.dynamic-menu-container .nav-link {
+    color: #a1a2b5;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    transition: all 0.3s ease;
+}
+
+.dynamic-menu-container .nav-link:hover {
+    background-color: #1b2e4b;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.dynamic-menu-container .nav-link.active {
+    background-color: #4361ee;
+    color: #ffffff;
+}
+
+.dynamic-menu-container .nav-icon {
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.dynamic-menu-container .nav-treeview {
+    padding-left: 0;
+    margin-left: 30px;
+}
+
+.dynamic-menu-container .nav-treeview .nav-link {
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+.dynamic-menu-container .badge {
+    margin-left: auto;
+}
+
+.nav-header {
+    color: #888ea8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 15px 20px 5px;
+    margin-top: 15px;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background-color: #0e1726;
+    border-top: 1px solid #1b2e4b;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #4361ee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.user-role {
+    color: #888ea8;
+    font-size: 0.75rem;
+}
+</style>

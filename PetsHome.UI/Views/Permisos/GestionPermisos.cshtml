@@ -1,0 +1,235 @@
+@model PetsHome.Business.Models.GestionPermisosViewModel
+@{
+    ViewData["Title"] = "Gestión de Permisos";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Gestión de Permisos</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item active">Gestión de Permisos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Asignación de Permisos por Rol</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="formPermisos">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="rolSelect" class="form-label">Seleccionar Rol:</label>
+                                    <select id="rolSelect" class="form-control" onchange="cargarPermisosRol()">
+                                        @foreach (var rol in Model.RolesDropdown)
+                                        {
+                                            <option value="@rol.Value" selected="@(rol.Value == Model.Rol_Id)">@rol.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-8 d-flex align-items-end">
+                                    <button type="button" class="btn btn-primary" onclick="guardarPermisos()">
+                                        <i class="fas fa-save"></i> Guardar Permisos
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        <strong>Rol Actual:</strong> @Model.Rol_Descripcion
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="modulosContainer">
+                                @if (Model.Modulos != null && Model.Modulos.Any())
+                                {
+                                    <div class="row">
+                                        @foreach (var modulo in Model.Modulos.OrderBy(m => m.Mod_Nombre))
+                                        {
+                                            <div class="col-md-6 col-lg-4 mb-4">
+                                                <div class="card @(modulo.TieneAcceso ? "border-success" : "border-secondary")">
+                                                    <div class="card-header @(modulo.TieneAcceso ? "bg-success text-white" : "bg-secondary text-white")">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input modulo-check" 
+                                                                   type="checkbox" 
+                                                                   id="modulo_@modulo.Mod_Id" 
+                                                                   data-modulo-id="@modulo.Mod_Id"
+                                                                   @(modulo.TieneAcceso ? "checked" : "")
+                                                                   onchange="toggleModulo(@modulo.Mod_Id)">
+                                                            <label class="form-check-label fw-bold" for="modulo_@modulo.Mod_Id">
+                                                                <i class="@modulo.Mod_Icono"></i> @modulo.Mod_Nombre
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body" id="permisos_@modulo.Mod_Id" style="@(modulo.TieneAcceso ? "" : "display: none;")">
+                                                        <p class="card-text text-muted mb-3">@modulo.Mod_Descripcion</p>
+                                                        <div class="row">
+                                                            @foreach (var permiso in modulo.Permisos)
+                                                            {
+                                                                <div class="col-6 mb-2">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input permiso-check" 
+                                                                               type="checkbox" 
+                                                                               id="permiso_@(modulo.Mod_Id)_@permiso.Per_Id"
+                                                                               data-modulo-id="@modulo.Mod_Id" 
+                                                                               data-permiso-id="@permiso.Per_Id"
+                                                                               @(permiso.Seleccionado ? "checked" : "")>
+                                                                        <label class="form-check-label small" for="permiso_@(modulo.Mod_Id)_@permiso.Per_Id">
+                                                                            @permiso.Per_Nombre
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        @if (!modulo.Permisos.Any())
+                                                        {
+                                                            <p class="text-muted small">No hay permisos configurados</p>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        No hay módulos configurados para este rol.
+                                    </div>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function cargarPermisosRol() {
+    const rolId = document.getElementById('rolSelect').value;
+    if (rolId) {
+        window.location.href = '@Url.Action("GestionPermisos", "Permisos")?rolId=' + rolId;
+    }
+}
+
+function toggleModulo(moduloId) {
+    const checkbox = document.getElementById('modulo_' + moduloId);
+    const permisosDiv = document.getElementById('permisos_' + moduloId);
+    const card = checkbox.closest('.card');
+    
+    if (checkbox.checked) {
+        permisosDiv.style.display = 'block';
+        card.classList.remove('border-secondary');
+        card.classList.add('border-success');
+        card.querySelector('.card-header').classList.remove('bg-secondary');
+        card.querySelector('.card-header').classList.add('bg-success');
+    } else {
+        permisosDiv.style.display = 'none';
+        card.classList.remove('border-success');
+        card.classList.add('border-secondary');
+        card.querySelector('.card-header').classList.remove('bg-success');
+        card.querySelector('.card-header').classList.add('bg-secondary');
+        
+        // Desmarcar todos los permisos del módulo
+        const permisosCheckboxes = permisosDiv.querySelectorAll('.permiso-check');
+        permisosCheckboxes.forEach(cb => cb.checked = false);
+    }
+}
+
+function guardarPermisos() {
+    const rolId = document.getElementById('rolSelect').value;
+    const modulos = [];
+    
+    // Recopilar información de módulos y permisos
+    document.querySelectorAll('.modulo-check').forEach(moduloCheck => {
+        const moduloId = moduloCheck.dataset.moduloId;
+        const tieneAcceso = moduloCheck.checked;
+        
+        const permisos = [];
+        document.querySelectorAll(`.permiso-check[data-modulo-id="${moduloId}"]`).forEach(permisoCheck => {
+            permisos.push({
+                Per_Id: parseInt(permisoCheck.dataset.permisoId),
+                Seleccionado: permisoCheck.checked
+            });
+        });
+        
+        modulos.push({
+            Mod_Id: parseInt(moduloId),
+            TieneAcceso: tieneAcceso,
+            Permisos: permisos
+        });
+    });
+    
+    const data = {
+        Rol_Id: parseInt(rolId),
+        Modulos: modulos
+    };
+    
+    // Mostrar loading
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+    btn.disabled = true;
+    
+    fetch('@Url.Action("GuardarPermisos", "Permisos")', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: result.message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: result.message
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al guardar los permisos'
+        });
+    })
+    .finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+}
+</script>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

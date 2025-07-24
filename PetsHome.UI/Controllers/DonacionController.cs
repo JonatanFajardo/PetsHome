@@ -3,11 +3,13 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using PetsHome.Business.Helpers;
+using PetsHome.UI.Attributes;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("DONACIONES", "READ")]
     public class DonacionController : BaseController
     {
         private readonly DonacionService _donacionService;

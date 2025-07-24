@@ -2,11 +2,13 @@
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("VOLUNTARIOS", "READ")]
     public class VoluntarioController : BaseController
     {
         private readonly VoluntarioService _VoluntarioService;

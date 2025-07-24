@@ -6,11 +6,13 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("MASCOTAS", "READ")]
     public class MascotaController : BaseController
     {
         private readonly MascotaService _mascotaService;
@@ -31,6 +33,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [Permission("MASCOTAS", "CREATE")]
         public IActionResult Create()
         {
             var model = new MascotaViewModel();
@@ -56,6 +59,7 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
+        [Permission("MASCOTAS", "UPDATE")]
         public async Task<IActionResult> Find(int id)
         {
             if (id != 0)
@@ -99,6 +103,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Permission("MASCOTAS", "DELETE")]
         public async Task<IActionResult> Remove(int masc_Id)
         {
             Boolean deletedItem = await _mascotaService.RemoveAsync(masc_Id);

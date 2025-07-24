@@ -2,11 +2,13 @@
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Permission("EMPLEADOS", "READ")]
     public class EmpleadoController : BaseController
     {
         private readonly EmpleadoService _EmpleadoService;
@@ -26,6 +28,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [Permission("EMPLEADOS", "CREATE")]
         public async Task<IActionResult> Create()
         {
             var model = new EmpleadoViewModel();
@@ -47,6 +50,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Permission("EMPLEADOS", "UPDATE")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _EmpleadoService.FindAsync(id);
