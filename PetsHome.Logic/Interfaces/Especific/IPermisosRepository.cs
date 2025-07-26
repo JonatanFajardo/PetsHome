@@ -31,5 +31,35 @@ namespace PetsHome.Logic.Interfaces.Especific
         // Para menús dinámicos
         Task<List<PR_Seguridad_MenuUsuario_ListResult>> GetMenuUsuarioAsync(int usuarioId);
         Task<List<PR_Seguridad_MenuUsuarioCompleto_ListResult>> GetMenuUsuarioCompletoAsync(int usuarioId);
+        
+        // ===== NUEVAS FUNCIONES PARA TABLAS EXTENDIDAS =====
+        
+        // Componentes
+        Task<List<PR_Seguridad_Componentes_ListResult>> GetComponentesAsync();
+        Task<bool> CreateComponenteAsync(string descripcion);
+        Task<bool> UpdateComponenteAsync(int compId, string descripcion);
+        Task<bool> DeleteComponenteAsync(int compId);
+        
+        // Módulos Pantallas
+        Task<List<PR_Seguridad_ModulosPantallas_ListResult>> GetModulosPantallasAsync(int? modId = null);
+        Task<bool> CreateModuloPantallaAsync(int modId, string descripcion, string url, string icono, int? orden);
+        Task<bool> UpdateModuloPantallaAsync(int modptId, int modId, string descripcion, string url, string icono, int? orden, bool activo);
+        Task<bool> DeleteModuloPantallaAsync(int modptId);
+        
+        // Rol Módulos Pantallas
+        Task<List<PR_Seguridad_RolModulosPantallas_ListResult>> GetRolModulosPantallasAsync(int? rolId = null);
+        Task<bool> AsignarPantallaRolAsync(int modptId, int rolId);
+        Task<bool> RemoverPantallaRolAsync(int modptId, int rolId);
+        Task<bool> AsignarMultiplesPantallasRolAsync(int rolId, string modptIds);
+        Task<bool> RemoverMultiplesPantallasRolAsync(int rolId, string modptIds);
+        
+        // Roles Usuarios
+        Task<List<PR_Seguridad_RolesUsuarios_ListResult>> GetRolesUsuariosAsync(int? usuId = null);
+        Task<bool> AsignarRolUsuarioAsync(int rolId, int usuId);
+        Task<bool> RemoverRolUsuarioAsync(int rolId, int usuId);
+        
+        // Menús extendidos
+        Task<List<PR_Seguridad_PantallasPorUsuario_ListResult>> GetPantallasPorUsuarioAsync(int usuId);
+        Task<bool> VerificarAccesoPantallaAsync(int usuId, int modptId);
     }
 }

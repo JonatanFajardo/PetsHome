@@ -12,6 +12,8 @@ namespace PetsHome.Common.Entities
             tbUsuarios = new HashSet<tbUsuarios>();
             tbRolModulos = new HashSet<tbRolModulos>();
             tbRolModuloPermisos = new HashSet<tbRolModuloPermisos>();
+            tbRolModulosPantallas = new HashSet<tbRolModulosPantallas>();
+            tbRolesUsuarios = new HashSet<tbRolesUsuarios>();
         }
 
         public int Rol_Id { get; set; }
@@ -24,5 +26,7 @@ namespace PetsHome.Common.Entities
         public virtual ICollection<tbUsuarios> tbUsuarios { get; set; }
         public virtual ICollection<tbRolModulos> tbRolModulos { get; set; }
         public virtual ICollection<tbRolModuloPermisos> tbRolModuloPermisos { get; set; }
+        public virtual ICollection<tbRolModulosPantallas> tbRolModulosPantallas { get; set; }
+        public virtual ICollection<tbRolesUsuarios> tbRolesUsuarios { get; set; }
     }
 }

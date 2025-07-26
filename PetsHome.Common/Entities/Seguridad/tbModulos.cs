@@ -11,6 +11,7 @@ namespace PetsHome.Common.Entities
         {
             tbRolModulos = new HashSet<tbRolModulos>();
             tbRolModuloPermisos = new HashSet<tbRolModuloPermisos>();
+            tbModulosPantallas = new HashSet<tbModulosPantallas>();
         }
 
         public int Mod_Id { get; set; }
@@ -21,8 +22,11 @@ namespace PetsHome.Common.Entities
         public int? Mod_Orden { get; set; }
         public bool Mod_EsActivo { get; set; }
         public DateTime Mod_FechaCreacion { get; set; }
+        public int comp_Id { get; set; }
 
+        public virtual tbComponentes Componente { get; set; }
         public virtual ICollection<tbRolModulos> tbRolModulos { get; set; }
         public virtual ICollection<tbRolModuloPermisos> tbRolModuloPermisos { get; set; }
+        public virtual ICollection<tbModulosPantallas> tbModulosPantallas { get; set; }
     }
 }

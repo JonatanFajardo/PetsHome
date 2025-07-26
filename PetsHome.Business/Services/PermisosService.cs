@@ -307,5 +307,440 @@ namespace PetsHome.Business.Services
         }
 
         #endregion
+
+        #region Servicios Extendidos para Nuevas Tablas
+
+        #region Componentes
+
+        public async Task<ServiceResult> GetComponentesAsync()
+        {
+            try
+            {
+                var componentes = await _permisosRepository.GetComponentesAsync();
+                var componentesViewModel = componentes.Select(c => new ComponenteViewModel
+                {
+                    comp_Id = c.comp_Id,
+                    comp_Descripcion = c.comp_Descripcion
+                }).ToList();
+
+                return new ServiceResult { Success = true, Data = componentesViewModel };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener componentes: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> CreateComponenteAsync(ComponenteViewModel modelo)
+        {
+            try
+            {
+                var created = await _permisosRepository.CreateComponenteAsync(modelo.comp_Descripcion);
+
+                if (created)
+                {
+                    return new ServiceResult { Success = true, Message = "Componente creado exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al crear el componente" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al crear componente: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> UpdateComponenteAsync(ComponenteViewModel modelo)
+        {
+            try
+            {
+                var updated = await _permisosRepository.UpdateComponenteAsync(
+                    modelo.comp_Id, modelo.comp_Descripcion);
+
+                if (updated)
+                {
+                    return new ServiceResult { Success = true, Message = "Componente actualizado exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al actualizar el componente" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al actualizar componente: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> DeleteComponenteAsync(int compId)
+        {
+            try
+            {
+                var deleted = await _permisosRepository.DeleteComponenteAsync(compId);
+
+                if (deleted)
+                {
+                    return new ServiceResult { Success = true, Message = "Componente eliminado exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al eliminar el componente" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al eliminar componente: {ex.Message}" };
+            }
+        }
+
+        #endregion
+
+        #region Módulos Pantallas
+
+        public async Task<ServiceResult> GetModulosPantallasAsync(int? modId = null)
+        {
+            try
+            {
+                var pantallas = await _permisosRepository.GetModulosPantallasAsync(modId);
+                var pantallasViewModel = pantallas.Select(p => new ModuloPantallaViewModel
+                {
+                    modpt_Id = p.modpt_Id,
+                    mod_Id = p.mod_Id,
+                    modpt_Descripcion = p.modpt_Descripcion,
+                    modpt_Url = p.modpt_Url,
+                    modpt_Icono = p.modpt_Icono,
+                    modpt_Orden = p.modpt_Orden,
+                    modpt_EsActivo = p.modpt_EsActivo,
+                    Mod_Nombre = p.Mod_Nombre,
+                    Mod_Descripcion = p.Mod_Descripcion,
+                    comp_Descripcion = p.comp_Descripcion
+                }).ToList();
+
+                return new ServiceResult { Success = true, Data = pantallasViewModel };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener pantallas: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> CreateModuloPantallaAsync(ModuloPantallaViewModel modelo)
+        {
+            try
+            {
+                var created = await _permisosRepository.CreateModuloPantallaAsync(
+                    modelo.mod_Id, modelo.modpt_Descripcion, modelo.modpt_Url, 
+                    modelo.modpt_Icono, modelo.modpt_Orden);
+
+                if (created)
+                {
+                    return new ServiceResult { Success = true, Message = "Pantalla creada exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al crear la pantalla" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al crear pantalla: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> UpdateModuloPantallaAsync(ModuloPantallaViewModel modelo)
+        {
+            try
+            {
+                var updated = await _permisosRepository.UpdateModuloPantallaAsync(
+                    modelo.modpt_Id, modelo.mod_Id, modelo.modpt_Descripcion, 
+                    modelo.modpt_Url, modelo.modpt_Icono, modelo.modpt_Orden, modelo.modpt_EsActivo);
+
+                if (updated)
+                {
+                    return new ServiceResult { Success = true, Message = "Pantalla actualizada exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al actualizar la pantalla" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al actualizar pantalla: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> DeleteModuloPantallaAsync(int modptId)
+        {
+            try
+            {
+                var deleted = await _permisosRepository.DeleteModuloPantallaAsync(modptId);
+
+                if (deleted)
+                {
+                    return new ServiceResult { Success = true, Message = "Pantalla eliminada exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al eliminar la pantalla" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al eliminar pantalla: {ex.Message}" };
+            }
+        }
+
+        #endregion
+
+        #region Gestión de Permisos por Pantallas
+
+        public async Task<ServiceResult> GetRolModulosPantallasAsync(int? rolId = null)
+        {
+            try
+            {
+                var asignaciones = await _permisosRepository.GetRolModulosPantallasAsync(rolId);
+                var asignacionesViewModel = asignaciones.Select(a => new RolModuloPantallaViewModel
+                {
+                    rolpt_Id = a.rolpt_Id,
+                    modpt_Id = a.modpt_Id,
+                    rol_Id = a.rol_Id,
+                    rolpt_FechaAsignacion = a.rolpt_FechaAsignacion,
+                    modpt_Descripcion = a.modpt_Descripcion,
+                    modpt_Url = a.modpt_Url,
+                    Mod_Nombre = a.Mod_Nombre,
+                    Rol_Descripcion = a.Rol_Descripcion
+                }).ToList();
+
+                return new ServiceResult { Success = true, Data = asignacionesViewModel };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener asignaciones: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> AsignarPantallaRolAsync(int modptId, int rolId)
+        {
+            try
+            {
+                var assigned = await _permisosRepository.AsignarPantallaRolAsync(modptId, rolId);
+
+                if (assigned)
+                {
+                    return new ServiceResult { Success = true, Message = "Pantalla asignada al rol exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al asignar pantalla al rol" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al asignar pantalla: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> RemoverPantallaRolAsync(int modptId, int rolId)
+        {
+            try
+            {
+                var removed = await _permisosRepository.RemoverPantallaRolAsync(modptId, rolId);
+
+                if (removed)
+                {
+                    return new ServiceResult { Success = true, Message = "Pantalla removida del rol exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al remover pantalla del rol" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al remover pantalla: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> AsignacionMasivaPantallasAsync(AsignacionMasivaViewModel modelo)
+        {
+            try
+            {
+                var pantallasIds = string.Join(",", modelo.PantallasIds);
+                bool result;
+
+                if (modelo.Operacion == "ASIGNAR")
+                {
+                    result = await _permisosRepository.AsignarMultiplesPantallasRolAsync(modelo.Rol_Id, pantallasIds);
+                }
+                else
+                {
+                    result = await _permisosRepository.RemoverMultiplesPantallasRolAsync(modelo.Rol_Id, pantallasIds);
+                }
+
+                if (result)
+                {
+                    var mensaje = modelo.Operacion == "ASIGNAR" ? "Pantallas asignadas" : "Pantallas removidas";
+                    return new ServiceResult { Success = true, Message = $"{mensaje} exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error en la operación masiva" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error en asignación masiva: {ex.Message}" };
+            }
+        }
+
+        #endregion
+
+        #region Gestión de Roles por Usuario
+
+        public async Task<ServiceResult> GetRolesUsuariosAsync(int? usuId = null)
+        {
+            try
+            {
+                var rolesUsuarios = await _permisosRepository.GetRolesUsuariosAsync(usuId);
+                var rolesUsuariosViewModel = rolesUsuarios.Select(ru => new RolUsuarioViewModel
+                {
+                    rol_usu_Id = ru.rol_usu_Id,
+                    rol_Id = ru.rol_Id,
+                    usu_Id = ru.usu_Id,
+                    rol_usu_FechaAsignacion = ru.rol_usu_FechaAsignacion,
+                    Rol_Descripcion = ru.Rol_Descripcion,
+                    Usu_Nombre = ru.Usu_Nombre,
+                    Emp_NombreCompleto = ru.Emp_NombreCompleto
+                }).ToList();
+
+                return new ServiceResult { Success = true, Data = rolesUsuariosViewModel };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener roles de usuarios: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> AsignarRolUsuarioAsync(int rolId, int usuId)
+        {
+            try
+            {
+                var assigned = await _permisosRepository.AsignarRolUsuarioAsync(rolId, usuId);
+
+                if (assigned)
+                {
+                    return new ServiceResult { Success = true, Message = "Rol asignado al usuario exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al asignar rol al usuario" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al asignar rol: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> RemoverRolUsuarioAsync(int rolId, int usuId)
+        {
+            try
+            {
+                var removed = await _permisosRepository.RemoverRolUsuarioAsync(rolId, usuId);
+
+                if (removed)
+                {
+                    return new ServiceResult { Success = true, Message = "Rol removido del usuario exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al remover rol del usuario" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al remover rol: {ex.Message}" };
+            }
+        }
+
+        #endregion
+
+        #region Menús Extendidos
+
+        public async Task<ServiceResult> GetMenuExtendidoUsuarioAsync(int usuarioId)
+        {
+            try
+            {
+                var pantallasUsuario = await _permisosRepository.GetPantallasPorUsuarioAsync(usuarioId);
+
+                if (!pantallasUsuario.Any())
+                {
+                    return new ServiceResult { Success = false, Message = "Usuario sin permisos de pantallas asignados" };
+                }
+
+                var menuExtendido = new MenuExtendidoViewModel();
+
+                // Agrupar por componentes
+                var componentesAgrupados = pantallasUsuario
+                    .GroupBy(p => new { p.comp_Id, p.comp_Descripcion })
+                    .Select(c => new ComponenteMenuViewModel
+                    {
+                        comp_Id = c.Key.comp_Id,
+                        comp_Descripcion = c.Key.comp_Descripcion,
+                        Modulos = c.GroupBy(m => new { m.mod_Id, m.Mod_Nombre, m.Mod_Descripcion, m.Mod_Icono, m.Mod_Orden })
+                            .Select(m => new ModuloMenuExtendidoViewModel
+                            {
+                                Mod_Id = m.Key.mod_Id,
+                                Mod_Nombre = m.Key.Mod_Nombre,
+                                Mod_Descripcion = m.Key.Mod_Descripcion,
+                                Mod_Icono = m.Key.Mod_Icono,
+                                Mod_Orden = m.Key.Mod_Orden,
+                                TieneAcceso = true,
+                                Permisos = !string.IsNullOrEmpty(m.First().Permisos) ? 
+                                          m.First().Permisos.Split(',').ToList() : new List<string>(),
+                                PuedeCrear = !string.IsNullOrEmpty(m.First().Permisos) && m.First().Permisos.Contains("CREATE"),
+                                PuedeEditar = !string.IsNullOrEmpty(m.First().Permisos) && m.First().Permisos.Contains("UPDATE"),
+                                PuedeEliminar = !string.IsNullOrEmpty(m.First().Permisos) && m.First().Permisos.Contains("DELETE"),
+                                Pantallas = m.Select(p => new PantallaMenuViewModel
+                                {
+                                    modpt_Id = p.modpt_Id,
+                                    modpt_Descripcion = p.modpt_Descripcion,
+                                    modpt_Url = p.modpt_Url,
+                                    modpt_Icono = p.modpt_Icono,
+                                    modpt_Orden = p.modpt_Orden,
+                                    TieneAcceso = true
+                                }).OrderBy(p => p.modpt_Orden).ToList()
+                            }).OrderBy(m => m.Mod_Orden).ToList()
+                    }).ToList();
+
+                menuExtendido.Componentes = componentesAgrupados;
+
+                return new ServiceResult { Success = true, Data = menuExtendido };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener menú extendido: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> VerificarAccesoPantallaAsync(int usuId, int modptId)
+        {
+            try
+            {
+                var tieneAcceso = await _permisosRepository.VerificarAccesoPantallaAsync(usuId, modptId);
+                return new ServiceResult { Success = true, Data = tieneAcceso };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al verificar acceso: {ex.Message}" };
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

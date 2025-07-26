@@ -7,6 +7,11 @@ namespace PetsHome.Common.Entities
 {
     public partial class tbUsuarios
     {
+        public tbUsuarios()
+        {
+            tbRolesUsuarios = new HashSet<tbRolesUsuarios>();
+        }
+
         public int usu_Id { get; set; }
         public int Emp_Id { get; set; }
         public string Usu_Nombre { get; set; }
@@ -18,7 +23,13 @@ namespace PetsHome.Common.Entities
         public bool Usu_EsEliminado { get; set; }
         public DateTime Usu_FechaCreacion { get; set; }
         public DateTime? Usu_fechaModificacion { get; set; }
+        public string usu_ImagenPerfil { get; set; }
+        public bool? usu_Logueado { get; set; }
+        public DateTime? usu_UltimoAcceso { get; set; }
+        public int? usu_IntentosFallidos { get; set; }
+        public DateTime? usu_FechaBloqueo { get; set; }
 
         public virtual tbRoles Rol { get; set; }
+        public virtual ICollection<tbRolesUsuarios> tbRolesUsuarios { get; set; }
     }
 }

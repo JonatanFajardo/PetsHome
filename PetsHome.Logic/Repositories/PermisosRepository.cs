@@ -270,5 +270,321 @@ namespace PetsHome.Logic.Repositories
                 return new List<PR_Seguridad_MenuUsuarioCompleto_ListResult>();
             }
         }
+
+        // ===== IMPLEMENTACIÓN DE NUEVAS FUNCIONES =====
+
+        #region Componentes
+
+        public async Task<List<PR_Seguridad_Componentes_ListResult>> GetComponentesAsync()
+        {
+            try
+            {
+                var result = await DbApp.Select<PR_Seguridad_Componentes_ListResult>("Seguridad.PR_Seguridad_Componentes_List");
+                return result.ToList();
+            }
+            catch
+            {
+                return new List<PR_Seguridad_Componentes_ListResult>();
+            }
+        }
+
+        public async Task<bool> CreateComponenteAsync(string descripcion)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@comp_Descripcion", descripcion);
+
+                return await DbApp.Insert("Seguridad.PR_Seguridad_Componentes_Insert", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateComponenteAsync(int compId, string descripcion)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@comp_Id", compId);
+                parameters.Add("@comp_Descripcion", descripcion);
+
+                return await DbApp.Update("Seguridad.PR_Seguridad_Componentes_Update", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteComponenteAsync(int compId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@comp_Id", compId);
+
+                return await DbApp.Delete("Seguridad.PR_Seguridad_Componentes_Delete", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Módulos Pantallas
+
+        public async Task<List<PR_Seguridad_ModulosPantallas_ListResult>> GetModulosPantallasAsync(int? modId = null)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                if (modId.HasValue)
+                    parameters.Add("@mod_Id", modId.Value);
+
+                var result = await DbApp.SelectById<PR_Seguridad_ModulosPantallas_ListResult>("Seguridad.PR_Seguridad_ModulosPantallas_List", parameters);
+                return result.ToList();
+            }
+            catch
+            {
+                return new List<PR_Seguridad_ModulosPantallas_ListResult>();
+            }
+        }
+
+        public async Task<bool> CreateModuloPantallaAsync(int modId, string descripcion, string url, string icono, int? orden)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@mod_Id", modId);
+                parameters.Add("@modpt_Descripcion", descripcion);
+                parameters.Add("@modpt_Url", url);
+                parameters.Add("@modpt_Icono", icono);
+                parameters.Add("@modpt_Orden", orden);
+
+                return await DbApp.Insert("Seguridad.PR_Seguridad_ModulosPantallas_Insert", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateModuloPantallaAsync(int modptId, int modId, string descripcion, string url, string icono, int? orden, bool activo)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@modpt_Id", modptId);
+                parameters.Add("@mod_Id", modId);
+                parameters.Add("@modpt_Descripcion", descripcion);
+                parameters.Add("@modpt_Url", url);
+                parameters.Add("@modpt_Icono", icono);
+                parameters.Add("@modpt_Orden", orden);
+                parameters.Add("@modpt_EsActivo", activo);
+
+                return await DbApp.Update("Seguridad.PR_Seguridad_ModulosPantallas_Update", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteModuloPantallaAsync(int modptId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@modpt_Id", modptId);
+
+                return await DbApp.Delete("Seguridad.PR_Seguridad_ModulosPantallas_Delete", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Rol Módulos Pantallas
+
+        public async Task<List<PR_Seguridad_RolModulosPantallas_ListResult>> GetRolModulosPantallasAsync(int? rolId = null)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                if (rolId.HasValue)
+                    parameters.Add("@rol_Id", rolId.Value);
+
+                var result = await DbApp.SelectById<PR_Seguridad_RolModulosPantallas_ListResult>("Seguridad.PR_Seguridad_RolModulosPantallas_List", parameters);
+                return result.ToList();
+            }
+            catch
+            {
+                return new List<PR_Seguridad_RolModulosPantallas_ListResult>();
+            }
+        }
+
+        public async Task<bool> AsignarPantallaRolAsync(int modptId, int rolId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@modpt_Id", modptId);
+                parameters.Add("@rol_Id", rolId);
+
+                return await DbApp.Insert("Seguridad.PR_Seguridad_RolModulosPantallas_Insert", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoverPantallaRolAsync(int modptId, int rolId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@modpt_Id", modptId);
+                parameters.Add("@rol_Id", rolId);
+
+                return await DbApp.Delete("Seguridad.PR_Seguridad_RolModulosPantallas_Delete", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AsignarMultiplesPantallasRolAsync(int rolId, string modptIds)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@rol_Id", rolId);
+                parameters.Add("@modpt_Ids", modptIds);
+
+                return await DbApp.Insert("Seguridad.PR_Seguridad_AsignarPantallasRol", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoverMultiplesPantallasRolAsync(int rolId, string modptIds)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@rol_Id", rolId);
+                parameters.Add("@modpt_Ids", modptIds);
+
+                return await DbApp.Delete("Seguridad.PR_Seguridad_RemoverPantallasRol", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Roles Usuarios
+
+        public async Task<List<PR_Seguridad_RolesUsuarios_ListResult>> GetRolesUsuariosAsync(int? usuId = null)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                if (usuId.HasValue)
+                    parameters.Add("@usu_Id", usuId.Value);
+
+                var result = await DbApp.SelectById<PR_Seguridad_RolesUsuarios_ListResult>("Seguridad.PR_Seguridad_RolesUsuarios_List", parameters);
+                return result.ToList();
+            }
+            catch
+            {
+                return new List<PR_Seguridad_RolesUsuarios_ListResult>();
+            }
+        }
+
+        public async Task<bool> AsignarRolUsuarioAsync(int rolId, int usuId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@rol_Id", rolId);
+                parameters.Add("@usu_Id", usuId);
+
+                return await DbApp.Insert("Seguridad.PR_Seguridad_RolesUsuarios_Insert", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoverRolUsuarioAsync(int rolId, int usuId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@rol_Id", rolId);
+                parameters.Add("@usu_Id", usuId);
+
+                return await DbApp.Delete("Seguridad.PR_Seguridad_RolesUsuarios_Delete", parameters);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Menús Extendidos
+
+        public async Task<List<PR_Seguridad_PantallasPorUsuario_ListResult>> GetPantallasPorUsuarioAsync(int usuId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@usu_Id", usuId);
+
+                var result = await DbApp.SelectById<PR_Seguridad_PantallasPorUsuario_ListResult>("Seguridad.PR_Seguridad_MenuUsuarioCompleto_V2", parameters);
+                return result.ToList();
+            }
+            catch
+            {
+                return new List<PR_Seguridad_PantallasPorUsuario_ListResult>();
+            }
+        }
+
+        public async Task<bool> VerificarAccesoPantallaAsync(int usuId, int modptId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@usu_Id", usuId);
+                parameters.Add("@modpt_Id", modptId);
+
+                var result = await DbApp.Select<int>("Seguridad.PR_Seguridad_VerificarAccesoPantalla", parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 }
