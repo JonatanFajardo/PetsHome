@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PetsHome.Business;
 using PetsHome.Business.Models;
+using PetsHome.UI.Middleware;
 
 namespace PetsHome.UI
 {
@@ -34,6 +35,9 @@ namespace PetsHome.UI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Middleware global de manejo de errores
+            //app.UseMiddleware<ErrorHandlerMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();// permite que se muestre el error en la pantalla
