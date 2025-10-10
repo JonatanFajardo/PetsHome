@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("SOLICITUDES", "READ")]
+    [SessionManagerAttribute("Listado de solicitudes")]
     public class SolicitudController : BaseController
     {
         private readonly SolicitudService _SolicitudService;

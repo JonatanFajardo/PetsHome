@@ -4,6 +4,7 @@ using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [SessionManagerAttribute("Listado de salidas")]
     public class SalidaController : BaseController
     {
         private readonly SalidaService _salidaService;

@@ -4,12 +4,14 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using PetsHome.Logic.Repositories;
+using PetsHome.UI.Attributes;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [SessionManagerAttribute("Listado de existencias")]
     public class ExistenciaController : BaseController
     {
         private readonly ExistenciasService _existenciasService;

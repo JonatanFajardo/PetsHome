@@ -235,5 +235,60 @@ namespace PetsHome.DataAccess.Extensions
                 return resultSql;
             }
         }
+
+        /// <summary>
+        /// Ejecuta consultas múltiples en una sola operación (para procedimientos que retornan múltiples result sets).
+        /// </summary>
+        /// <param name="sqlQuery">La consulta SQL.</param>
+        /// <param name="parameters">Los parámetros de la consulta.</param>
+        /// <returns>Un objeto SqlMapper.GridReader para leer múltiples result sets.</returns>
+        public static async Task<SqlMapper.GridReader> QueryMultipleAsync(string sqlQuery, DynamicParameters parameters)
+        {
+            var database = new SqlConnection(PetsHomeDbContext.ConnectionString);
+            try
+            {
+                await database.OpenAsync();
+                var result = await database.QueryMultipleAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception)
+            {
+                database?.Close();
+                database?.Dispose();
+                throw;
+            }
+            // No cerrar la conexión aquí porque el GridReader la necesita
+            // La conexión se cerrará cuando se dispose el GridReader
+        }
+
+        /// <summary>
+        /// Método alternativo para ejecutar múltiples consultas sin usar GridReader - más compatible con el patrón existente
+        /// </summary>
+        /// <param name="sqlQuery">La consulta SQL.</param>
+        /// <param name="parameters">Los parámetros de la consulta.</param>
+        /// <returns>Una función que acepta un delegado para procesar los resultados.</returns>
+        public static async Task<T> ExecuteMultipleAsync<T>(string sqlQuery, DynamicParameters parameters, Func<SqlMapper.GridReader, Task<T>> readerProcessor)
+        {
+            using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                try
+                {
+                    await database.OpenAsync();
+                    using (var multi = await database.QueryMultipleAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure))
+                    {
+                        return await readerProcessor(multi);
+                    }
+                }
+                catch (Exception)
+                {
+                    return default(T);
+                }
+                finally
+                {
+                    database?.Close();
+                    database?.Dispose();
+                }
+            }
+        }
     }
 }

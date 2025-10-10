@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Services;
 using PetsHome.DataAccess;
+using PetsHome.DataAccess.Repositories;
 using PetsHome.Logic.Repositories;
 using PetsHome.Logic.Interfaces.Especific;
 
@@ -49,6 +50,10 @@ namespace PetsHome.Business
             services.AddScoped<ExistenciasRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IPermisosRepository, PermisosRepository>();
+
+            // Repositorios estilo AHM para compatibilidad
+            services.AddScoped<UsuarioRepositoryAHM>();
+            services.AddScoped<RolesRepositoryAHM>();
 
             // Registrar DbContext para reportes que requieren acceso directo a la base de datos
             services.AddScoped<PetsHomeDbContext>();
@@ -98,6 +103,9 @@ namespace PetsHome.Business
             services.AddScoped<ExistenciasService>();
             services.AddScoped<AuthService>();
             services.AddScoped<PermisosService>();
+            
+            // Servicios estilo AHM para compatibilidad
+            services.AddScoped<HelpersServicesAHM>();
 
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>

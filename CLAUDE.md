@@ -106,3 +106,40 @@ Las siguientes views se consideran "pantallas catalogo" y utilizan `components/d
 - Vacuna
 
 **Archivo común**: `components/datatable/datatable.catalogs.init.js` - Configuración estándar para DataTables
+
+## Nomenclatura y Convenciones
+
+### Reglas de Nomenclatura
+**IMPORTANTE**: Ser fiel a las nomenclaturas de los nombres de las clases, propiedades y procedimientos ya desarrollados para así nombrar los nuevos.
+
+#### Entidades de Base de Datos
+- Prefijo `tb` para tablas: `tbRecepciones`, `tbRecepcionesDetalles`, `tbItems`, `tbExistencias`
+- Campos con prefijo de tabla: `recep_Id`, `recep_Fecha`, `recdet_Id`, `itm_Codigo`
+- Stored procedures con prefijo `SP_`: `SP_tbRecepciones_List`, `SP_tbSalidas_Detail`
+
+#### ViewModels
+- Sufijo `ViewModel`: `RecepcionMercanciaViewModel`, `RecepcionDetalleViewModel`
+- Propiedades mantienen nombres de entidad: `recep_Id`, `recep_Fecha`, `recdet_Cantidad`
+
+#### Servicios
+- Sufijo `Service`: `RecepcionMercanciaService`, `RecepcionesDetallesService`
+- Métodos estándar: `AddAsync()`, `UpdateAsync()`, `RemoveAsync()`, `FindAsync()`, `ListAsync()`
+
+#### Repositorios
+- Sufijo `Repository`: `RecepcionesMercanciaRepository`, `RecepcionesDetallesRepository`
+- Interfaces con prefijo `I`: `IRecepcionesMercanciaRepository`
+
+#### Controladores
+- Sufijo `Controller`: `RecepcionMercanciaController`, `RecepcionDetalleController`
+- Métodos de acción estándar: `Create()`, `Detail()`, `List()`, `Add()`, `FindDetalle()`
+
+#### Vistas y JavaScript
+- Nombres de archivos coinciden con controlador: `recepcionmercancia.js`, `salida.js`
+- IDs de elementos HTML: `datatable-detalles`, `edit-detalle-modal`, `delete-detalle-modal`
+- Funciones JavaScript: `initDetallesTable()`, `showDetalleModal()`, `calculateTotal()`
+
+#### Patrones Establecidos
+- **Master-Detail**: Seguir patrón de `Localidad` (Departamento/Municipio)
+- **CRUD Operations**: Usar `goto ErrorResult` para manejo de errores
+- **Redirecciones**: `RedirectToAction("Create", new { id = model.Id })` después de guardar
+- **Alertas**: `ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success)`

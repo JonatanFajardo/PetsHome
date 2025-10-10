@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("VOLUNTARIOS", "READ")]
+    [SessionManagerAttribute("Listado de voluntarios")]
     public class VoluntarioController : BaseController
     {
         private readonly VoluntarioService _VoluntarioService;
@@ -24,6 +24,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [SessionManagerAttribute("Registro de voluntarios")]
         public IActionResult Create()
         {
             return View();
@@ -43,6 +44,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [SessionManagerAttribute("Modificar voluntarios")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _VoluntarioService.FindAsync(id);
@@ -98,6 +100,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [SessionManagerAttribute("Eliminar voluntarios")]
         public async Task<IActionResult> Remove(int vol_Id)
         {
             Boolean deletedItem = await _VoluntarioService.RemoveAsync(vol_Id);

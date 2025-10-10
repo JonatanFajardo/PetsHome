@@ -1,277 +1,140 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PetsHome.Business.Extensions;
+using Microsoft.Extensions.Configuration;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Linq;
-using PetsHome.Common.Entities;
+using PetsHome.DataAccess.Repositories;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace PetsHome.UI.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
-        private readonly AuthService _authService;
+        private readonly UsuarioRepositoryAHM _usuarioRepository;
+        private readonly HelpersServicesAHM _helpersServices;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(AuthService authService)
+        public AccountController(
+            UsuarioRepositoryAHM usuarioRepository,
+            HelpersServicesAHM helpersServices,
+            IConfiguration configuration)
         {
-            _authService = authService;
+            _usuarioRepository = usuarioRepository;
+            _configuration = configuration;
+            _helpersServices = helpersServices;
         }
 
-        [HttpGet]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login()
         {
-            // Si ya está autenticado, redirigir al dashboard
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            HttpContext.Session.Remove("pantallas");
+            return View();
+        }
 
-            ViewData["ReturnUrl"] = returnUrl;
+        public IActionResult SinAcceso()
+        {
+            return View();
+        }
+
+        // GET: AccountController
+        public ActionResult Index()
+        {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public IActionResult Login(LoginViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-
-            try
-            {
-                string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0";
-                var result = await _authService.LoginAsync(model, ipAddress);
-
-                if (!result.Success)
-                {
-                    ModelState.AddModelError(string.Empty, result.Message);
-                    return View(model);
-                }
-
-                var usuario = (UsuarioViewModel)result.Data;
-
-                // Crear claims para la autenticación
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, usuario.usu_Id.ToString()),
-                    new Claim(ClaimTypes.Name, usuario.Usu_Nombre),
-                    new Claim("FullName", usuario.Emp_NombreCompleto),
-                    new Claim(ClaimTypes.Role, usuario.Rol_Descripcion),
-                    new Claim("RoleId", usuario.Rol_Id.ToString()),
-                    new Claim("EmployeeId", usuario.Emp_Id.ToString())
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = model.RememberMe,
-                    RedirectUri = returnUrl
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
-                    new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                // Obtener permisos del usuario para la sesión
-                var permissionsResult = await _authService.GetUsuarioPermissionsAsync(usuario.usu_Id);
-                string modulosPermitidos = "";
+                // Generar hash de la contraseña igual que en AHM
+                string hashedPassword = GenerateHash(model.usu_Contraseña);
                 
-                if (permissionsResult.Success)
+                var usuario = _usuarioRepository.Login(hashedPassword, model.usu_NombreUsuario);
+                
+                if (usuario != null)
                 {
-                    var modulos = (List<PR_Seguridad_Usuarios_GetPermissionsResult>)permissionsResult.Data;
-                    modulosPermitidos = string.Join(",", modulos.Select(m => m.Mod_Nombre));
+                    // Cambiar estado a usuario logueado
+                    _usuarioRepository.UsuarioLogIn(usuario.usu_Id);
+                    
+                    // Configurar variables de sesión idénticas a AHM
+                    HttpContext.Session.SetString("usu_NombreUsuario", usuario.usu_NombreUsuario);
+
+                    if (string.IsNullOrEmpty(usuario.usu_ImagenPerfil))
+                    {
+                        HttpContext.Session.SetString("usu_ImagenPerfil", "/images/users/avatar-1.jpg");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("usu_ImagenPerfil", usuario.usu_ImagenPerfil);
+                    }
+
+                    // Obtener pantallas del rol del usuario (igual que AHM)
+                    string pantallas = String.Join(",", _helpersServices.ListadoPantallaForRol(usuario.rol_Id));
+
+                    HttpContext.Session.SetString("pantallas", pantallas);
+                    HttpContext.Session.SetInt32("idUsuario", usuario.usu_Id);
+                    HttpContext.Session.SetInt32("idrol", usuario.rol_Id);
+
+                    return RedirectToAction("Index", "Home");
                 }
-
-                // Guardar información en sesión
-                HttpContext.Session.SetString("modulos", modulosPermitidos);
-                HttpContext.Session.SetString("usuario", usuario.Usu_Nombre);
-                HttpContext.Session.SetString("nombreCompleto", usuario.Emp_NombreCompleto);
-
-                // Log del evento de login
-                EventLogger.Login($"Usuario {usuario.Usu_Nombre} - IP: {ipAddress}");
-
-                ShowAlert("Login exitoso", AlertMessageType.Success);
-
-                // Redirigir a la URL de retorno o al dashboard
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                else
                 {
-                    return Redirect(returnUrl);
+                    ModelState.AddModelError("", "El usuario o contraseña ingresados son incorrectos");
                 }
-
-                return RedirectToAction("Index", "Home");
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Error interno del servidor");
                 return View(model);
             }
+            return View(model);
+        }
+
+        public IActionResult VaciarNoti()
+        {
+            var usuario = HttpContext.Session.GetInt32("idUsuario");
+            
+            // Cambiar estado a usuario deslogueado
+            if (usuario.HasValue)
+            {
+                _usuarioRepository.UsuarioLogOut(Convert.ToInt32(usuario));
+            }
+            
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            string usuario = HttpContext.Session.GetString("usuario") ?? "Desconocido";
-            string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0";
-
-            // Log del evento de logout
-            EventLogger.Logout($"Usuario {usuario} - IP: {ipAddress}");
-
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var usuario = HttpContext.Session.GetInt32("idUsuario");
+            
+            // Cambiar estado a usuario deslogueado
+            if (usuario.HasValue)
+            {
+                _usuarioRepository.UsuarioLogOut(Convert.ToInt32(usuario));
+            }
+            
             HttpContext.Session.Clear();
-
-            ShowAlert("Sesión cerrada correctamente", AlertMessageType.Info);
             return RedirectToAction("Login");
         }
 
-        [HttpGet]
-        public IActionResult AccessDenied()
+        /// <summary>
+        /// Generar hash SHA256 de la contraseña (compatible con AHM)
+        /// </summary>
+        private string GenerateHash(string input)
         {
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Profile()
-        {
-            if (!User.Identity.IsAuthenticated)
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                return RedirectToAction("Login");
-            }
+                // Computar hash - retorna array de bytes
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
-            int usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var result = await _authService.GetUsuarioDetailAsync(usuarioId);
-
-            if (!result.Success)
-            {
-                ShowAlert("Error al cargar el perfil", AlertMessageType.Error);
-                return RedirectToAction("Index", "Home");
-            }
-
-            var usuario = (UsuarioViewModel)result.Data;
-            return View(usuario);
-        }
-
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(CambiarContrasenaViewModel model)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            try
-            {
-                int usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-                var result = await _authService.ChangePasswordAsync(usuarioId, model);
-
-                if (!result.Success)
+                // Convertir array de bytes a string hexadecimal
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
-                    return View(model);
+                    builder.Append(bytes[i].ToString("x2"));
                 }
-
-                ShowAlert("Contraseña cambiada exitosamente", AlertMessageType.Success);
-                return RedirectToAction("Profile");
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Error interno del servidor");
-                return View(model);
+                return builder.ToString();
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Register()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
-            // Solo administradores pueden registrar usuarios
-            if (!User.IsInRole("Administrador"))
-            {
-                return RedirectToAction("AccessDenied");
-            }
-
-            var rolesResult = await _authService.GetRolesAsync();
-            ViewBag.Roles = rolesResult.Data;
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegistroUsuarioViewModel model)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
-            // Solo administradores pueden registrar usuarios
-            if (!User.IsInRole("Administrador"))
-            {
-                return RedirectToAction("AccessDenied");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                var rolesResult = await _authService.GetRolesAsync();
-                ViewBag.Roles = rolesResult.Data;
-                return View(model);
-            }
-
-            try
-            {
-                int usuarioCreacion = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-                string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0";
-
-                var result = await _authService.CreateUsuarioAsync(model, usuarioCreacion, ipAddress);
-
-                if (!result.Success)
-                {
-                    ModelState.AddModelError(string.Empty, result.Message);
-                    var rolesResult = await _authService.GetRolesAsync();
-                    ViewBag.Roles = rolesResult.Data;
-                    return View(model);
-                }
-
-                ShowAlert("Usuario registrado exitosamente", AlertMessageType.Success);
-                return RedirectToAction("Index", "Home");
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Error interno del servidor");
-                var rolesResult = await _authService.GetRolesAsync();
-                ViewBag.Roles = rolesResult.Data;
-                return View(model);
-            }
-        }
     }
 }

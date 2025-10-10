@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("ADOPCIONES", "READ")]
+    [SessionManagerAttribute("Listado de adopciones")]
     public class AdopcionController : BaseController
     {
         private readonly AdopcionService _AdopcionService;
@@ -18,6 +18,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [SessionManagerAttribute("Registrar nueva adopción")]
         public IActionResult Create()
         {
             return View();

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("CITAS_MEDICAS", "READ")]
+    [SessionManagerAttribute("Listado de citas médicas")]
     public class CitaMedicaController : BaseController
     {
         private readonly CitaMedicaService _HistorialMedicoService;
@@ -36,6 +36,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [SessionManagerAttribute("Agendar nueva cita")]
         public async Task<IActionResult> Create()
         {
             var model = new CitaMedicaViewModel();

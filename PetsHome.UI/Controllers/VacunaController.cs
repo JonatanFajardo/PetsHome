@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("VACUNAS", "READ")]
+    [SessionManagerAttribute("Listado de vacunas")]
     public class VacunaController : BaseController
     {
         private readonly VacunaService _vacunaService;

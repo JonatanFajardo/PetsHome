@@ -1,15 +1,269 @@
-﻿<!-- BEGIN SIDEBAR -->
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor contextAccessor
+@{
+    string nombreUsuario = contextAccessor.HttpContext.Session.GetString("usu_NombreUsuario");
+    string imagenPerfil = contextAccessor.HttpContext.Session.GetString("usu_ImagenPerfil");
+    string pantallas = contextAccessor.HttpContext.Session.GetString("pantallas");
+    int? rolId = contextAccessor.HttpContext.Session.GetInt32("idrol");
+    int? usuarioId = contextAccessor.HttpContext.Session.GetInt32("idUsuario");
+    
+    // DEBUG INFO
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+    string debugInfo = $"Auth: {isAuthenticated}, Pantallas: '{pantallas}', Usuario: '{nombreUsuario}'";
+}
+
+<!-- BEGIN SIDEBAR -->
 <div class="sidebar-wrapper sidebar-theme">
     <nav id="sidebar">
-        <!-- Sección Principal con Menú Dinámico -->
+        <!-- Sección Principal con Menú basado en Sesión -->
         <div class="nav-section">
             <div class="nav-section-title">SISTEMA PETSHOME</div>
-            @if (User.Identity.IsAuthenticated)
+            <!-- DEBUG INFO TEMPORAL -->
+            <div style="color: red; font-size: 10px; padding: 5px;">
+                DEBUG: @debugInfo
+            </div>
+
+            @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(pantallas))
             {
-                <!-- Menú dinámico basado en permisos del usuario -->
-                <div class="dynamic-menu-container">
-                    @await Component.InvokeAsync("MenuDinamico")
-                </div>
+                <!-- Hidden inputs para validación y scripts -->
+                <input type="hidden" id="validation-input" value="@rolId" />
+                <input type="hidden" id="validation-Name" value="@nombreUsuario" />
+                <input type="hidden" id="validation-id" value="@usuarioId" />
+                <input type="hidden" id="validacion" value="@usuarioId" />
+
+                <ul class="list-unstyled menu-categories" id="side-menu">
+                    <!-- Dashboard -->
+                    <li class="menu">
+                        <a href="~/Home/Index" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <!-- Seguridad -->
+                    @if (pantallas.Contains("Usuarios") || pantallas.Contains("Roles y Permisos"))
+                    {
+                        <li class="menu">
+                            <a href="#menuSeguridad" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Seguridad</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9,18 15,12 9,6"></polyline></svg>
+                                </div>
+                            </a>
+                            <ul class="collapse submenu list-unstyled" id="menuSeguridad" data-bs-parent="#side-menu">
+                                @if (pantallas.Contains("Usuarios"))
+                                {
+                                    <li id="usuario-li">
+                                        <a id="usuarios" asp-controller="Usuarios" asp-action="Index" onclick="Menu('usuarios')">Usuarios</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Roles y Permisos"))
+                                {
+                                    <li id="roles-li">
+                                        <a id="roles" asp-controller="Roles" asp-action="Index" onclick="Menu('roles')">Roles</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <!-- Gestión de Mascotas -->
+                    @if (pantallas.Contains("Listado de Mascotas") || pantallas.Contains("Lista de Clientes") || pantallas.Contains("Listado de empleados"))
+                    {
+                        <li class="menu">
+                            <a href="#menuMascotas" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <i class="fas fa-paw"></i>
+                                    <span>Gestión de Mascotas</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9,18 15,12 9,6"></polyline></svg>
+                                </div>
+                            </a>
+                            <ul class="collapse submenu list-unstyled" id="menuMascotas" data-bs-parent="#side-menu">
+                                @if (pantallas.Contains("Listado de Mascotas"))
+                                {
+                                    <li id="mascotas-li">
+                                        <a id="mascotas" asp-controller="Mascotas" asp-action="Index" onclick="Menu('mascotas')">Mascotas</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Lista de Clientes"))
+                                {
+                                    <li id="cliente-li">
+                                        <a id="cliente" asp-controller="Clientes" asp-action="Index" onclick="Menu('cliente')">Propietarios</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Listado de empleados"))
+                                {
+                                    <li id="empleado-li">
+                                        <a id="empleado" asp-controller="Empleado" asp-action="Index" onclick="Menu('empleado')">Veterinarios</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <!-- Servicios Veterinarios -->
+                    @if (pantallas.Contains("Lista de Citas") || pantallas.Contains("Lista de Tratamientos") || pantallas.Contains("Lista de Historiales"))
+                    {
+                        <li class="menu">
+                            <a href="#menuServicios" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <i class="fas fa-stethoscope"></i>
+                                    <span>Servicios Veterinarios</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9,18 15,12 9,6"></polyline></svg>
+                                </div>
+                            </a>
+                            <ul class="collapse submenu list-unstyled" id="menuServicios" data-bs-parent="#side-menu">
+                                @if (pantallas.Contains("Lista de Citas"))
+                                {
+                                    <li id="citas-li">
+                                        <a id="citas" asp-controller="Citas" asp-action="Index" onclick="Menu('citas')">Citas</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Lista de Tratamientos"))
+                                {
+                                    <li id="tratamientos-li">
+                                        <a id="tratamientos" asp-controller="Tratamientos" asp-action="Index" onclick="Menu('tratamientos')">Tratamientos</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Lista de Historiales"))
+                                {
+                                    <li id="historiales-li">
+                                        <a id="historiales" asp-controller="Historiales" asp-action="Index" onclick="Menu('historiales')">Historiales Médicos</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <!-- Inventario -->
+                    @if (pantallas.Contains("Lista de Productos") || pantallas.Contains("Lista de Medicamentos") || pantallas.Contains("Listado de proveedor"))
+                    {
+                        <li class="menu">
+                            <a href="#menuInventario" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <i class="fas fa-boxes"></i>
+                                    <span>Inventario</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9,18 15,12 9,6"></polyline></svg>
+                                </div>
+                            </a>
+                            <ul class="collapse submenu list-unstyled" id="menuInventario" data-bs-parent="#side-menu">
+                                @if (pantallas.Contains("Lista de Productos"))
+                                {
+                                    <li id="productos-li">
+                                        <a id="productos" asp-controller="Productos" asp-action="Index" onclick="Menu('productos')">Productos</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Lista de Medicamentos"))
+                                {
+                                    <li id="medicamentos-li">
+                                        <a id="medicamentos" asp-controller="Medicamentos" asp-action="Index" onclick="Menu('medicamentos')">Medicamentos</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Listado de proveedor"))
+                                {
+                                    <li id="proveedor-li">
+                                        <a id="proveedor" asp-controller="Proveedor" asp-action="Index" onclick="Menu('proveedor')">Proveedores</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <!-- Reportes -->
+                    @if (pantallas.Contains("Reporte de Mascotas") || pantallas.Contains("Reporte de Citas") || pantallas.Contains("Reporte de Ventas") || pantallas.Contains("Reporte de Cliente"))
+                    {
+                        <li class="menu">
+                            <a href="#menuReportes" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Reportes</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9,18 15,12 9,6"></polyline></svg>
+                                </div>
+                            </a>
+                            <ul class="collapse submenu list-unstyled" id="menuReportes" data-bs-parent="#side-menu">
+                                @if (pantallas.Contains("Reporte de Mascotas"))
+                                {
+                                    <li id="reporte-mascotas-li">
+                                        <a id="reporte-mascotas" asp-controller="Reports" asp-action="ReporteMascotas" onclick="Menu('reportes')">Mascotas Registradas</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Reporte de Citas"))
+                                {
+                                    <li id="reporte-citas-li">
+                                        <a id="reporte-citas" asp-controller="Reports" asp-action="ReporteCitas" onclick="Menu('reportes')">Citas</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Reporte de Ventas"))
+                                {
+                                    <li id="reporte-ventas-li">
+                                        <a id="reporte-ventas" asp-controller="Reports" asp-action="ReporteVentas" onclick="Menu('reportes')">Ventas</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Reporte de Cliente"))
+                                {
+                                    <li id="reporte-cliente-li">
+                                        <a id="reporte-cliente" asp-controller="Reports" asp-action="ReporteClientes" onclick="Menu('reportes')">Clientes</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <!-- Catálogos -->
+                    @if (pantallas.Contains("Listado de Especies") || pantallas.Contains("Listado de Razas") || pantallas.Contains("Listado Departamentos") || pantallas.Contains("Listado Categorias"))
+                    {
+                        <li class="menu">
+                            <a href="#menuCatalogos" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <i class="fas fa-list"></i>
+                                    <span>Catálogos</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9,18 15,12 9,6"></polyline></svg>
+                                </div>
+                            </a>
+                            <ul class="collapse submenu list-unstyled" id="menuCatalogos" data-bs-parent="#side-menu">
+                                @if (pantallas.Contains("Listado de Especies"))
+                                {
+                                    <li id="especies-li">
+                                        <a id="especies" asp-controller="Especies" asp-action="Index" onclick="Menu('especies')">Especies</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Listado de Razas"))
+                                {
+                                    <li id="razas-li">
+                                        <a id="razas" asp-controller="Razas" asp-action="Index" onclick="Menu('razas')">Razas</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Listado Departamentos"))
+                                {
+                                    <li id="departamento-li">
+                                        <a id="departamento" asp-controller="Departamentos" asp-action="Index" onclick="Menu('departamento')">Departamentos</a>
+                                    </li>
+                                }
+                                @if (pantallas.Contains("Listado Categorias"))
+                                {
+                                    <li id="categorias-li">
+                                        <a id="categorias" asp-controller="Categorias" asp-action="Index" onclick="Menu('categoria')">Categorías</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
             }
             else
             {
@@ -32,19 +286,25 @@
         <div class="sidebar-footer">
             <div class="user-info">
                 <div class="user-avatar">
-                    <div class="avatar-placeholder">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    @if (!string.IsNullOrEmpty(imagenPerfil))
+                    {
+                        <img src="@imagenPerfil" alt="Avatar" class="rounded-circle">
+                    }
+                    else
+                    {
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    }
                 </div>
                 <div class="user-details">
-                    <span class="user-name">@User.Identity.Name</span>
+                    <span class="user-name">@(!string.IsNullOrEmpty(nombreUsuario) ? nombreUsuario : User.Identity.Name)</span>
                     <span class="user-role">@User.FindFirst("RolDescripcion")?.Value</span>
                 </div>
             </div>
         </div>
     }
 </div>
-<!-- END SIDEBAR -->
 
 <style>
 /* Estilos para adaptar el menú dinámico al tema existente */

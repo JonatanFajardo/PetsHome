@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    // Mantener compatibilidad con el sistema anterior pero agregar el nuevo sistema
     [Permission("USUARIOS", "READ")]
+    [ScreenAccessByName("configuracion", registerAccess: true)]
     public class PermisosController : BaseController
     {
         private readonly PermisosService _permisosService;
@@ -721,6 +723,69 @@ namespace PetsHome.UI.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region Nuevos métodos para el sistema de seguridad extendida
+
+        /// <summary>
+        /// Vista para gestionar asignación de roles a usuarios
+        /// </summary>
+        [Permission("USUARIOS", "UPDATE")]
+        public IActionResult GestionRolesUsuarios()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Obtener pantallas disponibles para un usuario
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetPantallasUsuario(int usuarioId)
+        {
+            try
+            {
+                var result = await _authService.GetPantallasPorUsuarioAsync(usuarioId);
+                
+                if (result.Success)
+                {
+                    return Json(new { success = true, data = result.Data });
+                }
+                else
+                {
+                    return Json(new { success = false, message = result.Message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener pantallas del usuario" });
+            }
+        }
+
+        /// <summary>
+        /// Verificar acceso de un usuario a una pantalla específica (nuevo método sin conflicto)
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> VerificarAccesoPantallaExtendido(int usuarioId, int pantallaId)
+        {
+            try
+            {
+                var result = await _authService.VerificarAccesoPantallaAsync(usuarioId, pantallaId);
+                
+                if (result.Success)
+                {
+                    return Json(new { success = true, tieneAcceso = (bool)result.Data });
+                }
+                else
+                {
+                    return Json(new { success = false, message = result.Message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al verificar acceso" });
+            }
+        }
 
         #endregion
     }

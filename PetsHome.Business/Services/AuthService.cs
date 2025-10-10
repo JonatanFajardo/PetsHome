@@ -3,9 +3,11 @@ using PetsHome.Business.Models;
 using PetsHome.Logic.Interfaces.Especific;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace PetsHome.Business.Services
 {
@@ -20,39 +22,25 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResult> LoginAsync(LoginViewModel model, string ipAddress)
+        public async Task<ServiceResult> LoginAsync(LoginViewModel model, string ipAddress, string userAgent = null)
         {
             try
             {
-                if (string.IsNullOrEmpty(model.Usu_Nombre) || string.IsNullOrEmpty(model.Contrasena))
+                if (string.IsNullOrEmpty(model.usu_NombreUsuario) || string.IsNullOrEmpty(model.usu_Contraseña))
                 {
                     return new ServiceResult { Success = false, Message = "Usuario y contraseña son requeridos" };
                 }
 
                 // Hash de la contraseña para comparar (SHA256 simple)
-                string hashedPassword = HashPasswordSimple(model.Contrasena);
+                string hashedPassword = HashPasswordSimple(model.usu_Contraseña);
 
-                var loginResult = await _authRepository.LoginAsync(model.Usu_Nombre, hashedPassword);
+                // Usar el nuevo método de login V2 que maneja bloqueos y auditoría
+                var (loginResult, roles) = await _authRepository.LoginV2Async(model.usu_NombreUsuario, hashedPassword, userAgent, ipAddress);
 
-                if (loginResult == null)
+                if (loginResult == null || loginResult.Resultado == 0)
                 {
-                    return new ServiceResult { Success = false, Message = "Usuario o contraseña incorrectos" };
+                    return new ServiceResult { Success = false, Message = loginResult?.Mensaje ?? "Usuario o contraseña incorrectos" };
                 }
-
-                // Verificar si el usuario está activo
-                if (loginResult.Usu_EsActivo != true)
-                {
-                    return new ServiceResult { Success = false, Message = "Usuario inactivo" };
-                }
-
-                // Verificar si el usuario está suspendido
-                if (loginResult.Usu_Suspendido == true)
-                {
-                    return new ServiceResult { Success = false, Message = "Usuario suspendido" };
-                }
-
-                // Actualizar último acceso
-                await _authRepository.UpdateLastAccessAsync(loginResult.usu_Id, ipAddress);
 
                 var usuarioViewModel = new UsuarioViewModel
                 {
@@ -60,17 +48,24 @@ namespace PetsHome.Business.Services
                     Emp_Id = loginResult.Emp_Id,
                     Usu_Nombre = loginResult.Usu_Nombre,
                     Emp_NombreCompleto = $"{loginResult.Emp_Nombres} {loginResult.Emp_Apellidos}",
-                    Rol_Id = loginResult.Rol_Id,
-                    Rol_Descripcion = loginResult.Rol_Descripcion,
-                    Usu_EsActivo = loginResult.Usu_EsActivo,
-                    Usu_Suspendido = loginResult.Usu_Suspendido
+                    usu_ImagenPerfil = loginResult.usu_ImagenPerfil,
+                    // Para mantener compatibilidad, asignar el primer rol como rol principal
+                    Rol_Id = roles.FirstOrDefault()?.rol_Id ?? 0,
+                    Rol_Descripcion = roles.FirstOrDefault()?.Rol_Descripcion ?? "Sin rol",
+                    // Los nuevos campos se llenarán cuando sea necesario
+                    Usu_EsActivo = true, // Si llegó aquí, está activo
+                    Usu_Suspendido = false
                 };
 
                 return new ServiceResult
                 {
                     Success = true,
-                    Message = "Login exitoso",
-                    Data = usuarioViewModel
+                    Message = loginResult.Mensaje,
+                    Data = new LoginExtendidoResult
+                    {
+                        Usuario = usuarioViewModel,
+                        Roles = roles // Incluir todos los roles del usuario
+                    }
                 };
             }
             catch (Exception ex)
@@ -131,7 +126,7 @@ namespace PetsHome.Business.Services
             try
             {
                 // Validar si el usuario ya existe
-                if (await _authRepository.UsuarioExistsAsync(model.Usu_Nombre))
+                if (await _authRepository.UsuarioExistsAsync(model.usu_NombreUsuario))
                 {
                     return new ServiceResult { Success = false, Message = "El nombre de usuario ya existe" };
                 }
@@ -143,12 +138,12 @@ namespace PetsHome.Business.Services
                 }
 
                 // Generar hash simple de la contraseña
-                string hashedPassword = HashPasswordSimple(model.Contrasena);
+                string hashedPassword = HashPasswordSimple(model.usu_Contraseña);
 
                 // Crear usuario directamente (ya no usamos tabla de contraseñas separada)
                 int usuarioId = await _authRepository.CreateUsuarioAsync(
                     model.Emp_Id, 
-                    model.Usu_Nombre, 
+                    model.usu_NombreUsuario, 
                     hashedPassword, 
                     model.Rol_Id, 
                     ipAddress, 
@@ -236,6 +231,107 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public async Task<ServiceResult> GetPantallasUsuarioAsync(int usuarioId)
+        {
+            try
+            {
+                var pantallas = await _authRepository.GetPantallasUsuarioAsync(usuarioId);
+                if (pantallas == null || !pantallas.Any())
+                {
+                    return new ServiceResult { Success = false, Message = "Usuario sin pantallas asignadas" };
+                }
+
+                return new ServiceResult { Success = true, Data = pantallas };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener pantallas: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> LogoutAsync(int usuarioId, string userAgent = null, string ipAddress = null)
+        {
+            try
+            {
+                // Usar el nuevo método de logout V2 que registra eventos de auditoría
+                var success = await _authRepository.LogoutV2Async(usuarioId, userAgent, ipAddress);
+                
+                if (success)
+                {
+                    return new ServiceResult { Success = true, Message = "Logout exitoso" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al cerrar sesión" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al hacer logout: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> LoadUserPermissionsInSessionAsync(int usuarioId)
+        {
+            try
+            {
+                // Obtener todos los permisos del usuario
+                var permisos = await _authRepository.GetUserPermissionsAsync(usuarioId);
+                
+                // Crear diccionario agrupado por pantalla
+                var permisosPorPantalla = permisos
+                    .GroupBy(p => p.Pantalla)
+                    .ToDictionary(
+                        g => g.Key, 
+                        g => g.Select(p => p.Permiso).ToList()
+                    );
+
+                // Convertir a JSON para almacenar en sesión
+                var permisosJson = JsonConvert.SerializeObject(permisosPorPantalla);
+
+                // Obtener lista simple de pantallas (para compatibilidad con sistema actual)
+                var pantallas = await _authRepository.GetUserPantallasAsync(usuarioId);
+                var pantallasString = string.Join(",", pantallas.Select(p => p.Pantalla));
+
+                return new ServiceResult 
+                { 
+                    Success = true, 
+                    Data = new PermisosSessionResult
+                    {
+                        PermisosJson = permisosJson,
+                        PantallasString = pantallasString,
+                        PermisosPorPantalla = permisosPorPantalla
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al cargar permisos en sesión: {ex.Message}" };
+            }
+        }
+
+        public bool CheckSessionPermission(string permisosJson, string pantalla, string permiso)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(permisosJson) || string.IsNullOrEmpty(pantalla) || string.IsNullOrEmpty(permiso))
+                    return false;
+
+                var permisosPorPantalla = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(permisosJson);
+                
+                if (permisosPorPantalla != null && permisosPorPantalla.ContainsKey(pantalla))
+                {
+                    return permisosPorPantalla[pantalla].Contains(permiso);
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         #region Métodos privados para hash de contraseñas
 
         private string HashPasswordSimple(string password)
@@ -288,6 +384,125 @@ namespace PetsHome.Business.Services
             string saltedPassword = password + salt;
             string hashedInput = HashPassword(saltedPassword);
             return hashedInput.Equals(hash, StringComparison.OrdinalIgnoreCase);
+        }
+
+        #endregion
+
+        #region Métodos para el sistema de seguridad mejorado
+
+        public async Task<ServiceResult> GetPantallasPorUsuarioAsync(int usuarioId)
+        {
+            try
+            {
+                var (componentes, modulos, pantallas) = await _authRepository.GetPantallasPorUsuarioAsync(usuarioId);
+
+                if (!pantallas.Any())
+                {
+                    return new ServiceResult { Success = false, Message = "Usuario sin pantallas asignadas" };
+                }
+
+                var result = new PantallasUsuarioResult
+                {
+                    Componentes = componentes,
+                    Modulos = modulos,
+                    Pantallas = pantallas
+                };
+
+                return new ServiceResult { Success = true, Data = result };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener pantallas del usuario: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> GetPantallasPorRolAsync(int rolId)
+        {
+            try
+            {
+                var (componentes, modulos, pantallas) = await _authRepository.GetPantallasPorRolAsync(rolId);
+
+                var result = new PantallasUsuarioResult
+                {
+                    Componentes = componentes,
+                    Modulos = modulos,
+                    Pantallas = pantallas
+                };
+
+                return new ServiceResult { Success = true, Data = result };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al obtener pantallas del rol: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> AsignarRolUsuarioAsync(int rolId, int usuId)
+        {
+            try
+            {
+                var success = await _authRepository.AsignarRolUsuarioAsync(rolId, usuId);
+
+                if (success)
+                {
+                    return new ServiceResult { Success = true, Message = "Rol asignado exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al asignar el rol o el usuario ya tiene este rol" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al asignar rol: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> RemoverRolUsuarioAsync(int rolId, int usuId)
+        {
+            try
+            {
+                var success = await _authRepository.RemoverRolUsuarioAsync(rolId, usuId);
+
+                if (success)
+                {
+                    return new ServiceResult { Success = true, Message = "Rol removido exitosamente" };
+                }
+                else
+                {
+                    return new ServiceResult { Success = false, Message = "Error al remover el rol" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al remover rol: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> VerificarAccesoPantallaAsync(int usuId, int modptId)
+        {
+            try
+            {
+                var tieneAcceso = await _authRepository.VerificarAccesoPantallaAsync(usuId, modptId);
+                return new ServiceResult { Success = true, Data = tieneAcceso };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al verificar acceso: {ex.Message}" };
+            }
+        }
+
+        public async Task<ServiceResult> RegistrarAccesoPantallaAsync(int usuId, int modptId, string userAgent = null, string ipAddress = null)
+        {
+            try
+            {
+                var success = await _authRepository.RegistrarAccesoPantallaAsync(usuId, modptId, userAgent, ipAddress);
+                return new ServiceResult { Success = success, Message = success ? "Acceso registrado" : "Error al registrar acceso" };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult { Success = false, Message = $"Error al registrar acceso: {ex.Message}" };
+            }
         }
 
         #endregion

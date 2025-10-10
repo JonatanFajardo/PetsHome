@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("REFUGIOS", "READ")]
+    [SessionManagerAttribute("Listado de refugios")]
     public class RefugioController : BaseController
     {
         private readonly RefugioService _RefugioService;

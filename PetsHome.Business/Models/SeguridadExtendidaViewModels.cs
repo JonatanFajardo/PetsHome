@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using PetsHome.Common.Entities;
 
 namespace PetsHome.Business.Models
 {
@@ -280,5 +281,36 @@ namespace PetsHome.Business.Models
         public int TotalModulos { get; set; }
         public int TotalPantallas { get; set; }
         public int TotalUsuariosConAcceso { get; set; }
+    }
+
+    // ===== CLASES DE RESULTADO PARA EVITAR DYNAMIC =====
+    
+    /// <summary>
+    /// Resultado del login extendido con usuarios y roles
+    /// </summary>
+    public class LoginExtendidoResult
+    {
+        public UsuarioViewModel Usuario { get; set; }
+        public List<PR_Seguridad_Usuarios_Login_V2RolesResult> Roles { get; set; }
+    }
+
+    /// <summary>
+    /// Resultado de pantallas por usuario/rol con componentes, módulos y pantallas
+    /// </summary>
+    public class PantallasUsuarioResult
+    {
+        public List<PR_Seguridad_PantallasPorRol_ComponentesResult> Componentes { get; set; }
+        public List<PR_Seguridad_PantallasPorRol_ModulosResult> Modulos { get; set; }
+        public List<PR_Seguridad_PantallasPorRol_PantallasResult> Pantallas { get; set; }
+    }
+
+    /// <summary>
+    /// Resultado de permisos de sesión para evitar reflexión
+    /// </summary>
+    public class PermisosSessionResult
+    {
+        public string PermisosJson { get; set; }
+        public string PantallasString { get; set; }
+        public Dictionary<string, List<string>> PermisosPorPantalla { get; set; }
     }
 }

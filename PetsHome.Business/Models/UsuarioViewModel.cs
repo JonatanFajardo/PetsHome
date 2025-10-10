@@ -35,6 +35,21 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha de Modificación")]
         public DateTime? Usu_fechaModificacion { get; set; }
 
+        [Display(Name = "Imagen de Perfil")]
+        public string usu_ImagenPerfil { get; set; }
+
+        [Display(Name = "Logueado")]
+        public bool? usu_Logueado { get; set; }
+
+        [Display(Name = "Último Acceso")]
+        public DateTime? usu_UltimoAcceso { get; set; }
+
+        [Display(Name = "Intentos Fallidos")]
+        public int? usu_IntentosFallidos { get; set; }
+
+        [Display(Name = "Fecha de Bloqueo")]
+        public DateTime? usu_FechaBloqueo { get; set; }
+
         // Propiedades adicionales para mostrar información relacionada
         [Display(Name = "Empleado")]
         public string Emp_NombreCompleto { get; set; }

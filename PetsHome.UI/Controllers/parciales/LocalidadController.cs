@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Attributes;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [SessionManagerAttribute("Listado de localidades")]
     public class LocalidadController : BaseController
     {
         private readonly MunicipioService _municipioService;

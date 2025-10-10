@@ -10,7 +10,7 @@ namespace PetsHome.UI.Controllers
     /// <summary>
     /// Controller para la gestión de reportes del sistema PetsHome
     /// </summary>
-    [Permission("REPORTES", "READ")]
+    [SessionManagerAttribute("Ver dashboard de reportes")]
     public class ReportesController : BaseController
     {
         private readonly ReportesService _reportesService;

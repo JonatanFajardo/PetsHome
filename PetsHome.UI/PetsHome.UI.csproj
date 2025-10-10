@@ -614,4 +614,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attribute\" />
+  </ItemGroup>
+
 </Project>

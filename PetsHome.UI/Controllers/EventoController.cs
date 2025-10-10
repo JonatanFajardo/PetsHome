@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("EVENTOS", "READ")]
+    [SessionManagerAttribute("Listado de eventos")]
     public class EventoController : BaseController
     {
         private readonly EventoService _EventoService;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("DONACIONES", "READ")]
+    [SessionManagerAttribute("Listado de donaciones")]
     public class DonacionController : BaseController
     {
         private readonly DonacionService _donacionService;

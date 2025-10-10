@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
-    [Permission("INVENTARIO", "READ")]
+    [SessionManagerAttribute("Listado de artículos")]
     public class ItemController : BaseController
     {
         private readonly ItemService _ItemService;
