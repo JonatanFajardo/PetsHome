@@ -33,11 +33,11 @@ namespace PetsHome.DataAccess.Extensions
                     database.Dispose();
                     return result;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     database.Close();
                     database.Dispose();
-                    return null;
+                    throw new Exception($"Error de conexion a la BASE DE DATOS: {e.Message}", e);
                 }
             }
         }
@@ -63,11 +63,11 @@ namespace PetsHome.DataAccess.Extensions
                     database.Dispose();
                     return result;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     database.Close();
                     database.Dispose();
-                    return null;
+                    throw new Exception($"Error de conexion a la BASE DE DATOS: {e.Message}", e);
                 }
             }
         }
@@ -119,11 +119,11 @@ namespace PetsHome.DataAccess.Extensions
                     database.Dispose();
                     return result;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     database.Close();
                     database.Dispose();
-                    return null;
+                    throw new Exception($"Error de conexion a la BASE DE DATOS: {e.Message}", e);
                 }
             }
         }
