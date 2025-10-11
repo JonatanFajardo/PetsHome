@@ -1,6 +1,17 @@
 ﻿<!--  BEGIN SIDEBAR  -->
 <div class="sidebar-wrapper sidebar-theme">
-
+            <ul class="navbar-nav theme-brand flex-row text-center text-white">
+                <li class="nav-item theme-logo text-white">
+                   <i class="fa-solid fa-paw fa-xl"></i>
+                </li>
+                <li class="nav-item theme-text ">
+                    @Html.ActionLink("Petshome", "Index", "Home")
+                </li>
+                <li class="nav-item toggle-sidebar fa-xl">
+                    <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><i class="fa-solid fa-bars"></i></a>
+                </li>
+            </ul>
+            
     <nav id="sidebar">
         @*  <div class="profile-info">
             <figure class="user-cover-image"></figure>
@@ -11,6 +22,7 @@
             </div>
             </div>
             <div class="shadow-bottom"></div>*@
+
         <ul class="list-unstyled menu-categories" id="accordionExample">
 
 
