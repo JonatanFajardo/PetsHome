@@ -108,7 +108,7 @@ var datatable = (function () {
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
                 dom:
-                    "<'row mb-3' <'col-md-4 'B><'col-md-6'f><'col-md-2'l>>" +
+                    "<'row' <'col-md-4 'B><'col-md-6'f><'col-md-2'l>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 order: [],
@@ -323,6 +323,10 @@ var datatable = (function () {
             // Entra si se desea indicar un ancho especifico
             if (_header[i].Size != undefined) {
                 head[i]['width'] = _header[i].Size
+            }
+            // Entra si se desea personalizar el render de la columna
+            if (_header[i].Render != undefined) {
+                head[i]['render'] = _header[i].Render
             }
         }
 

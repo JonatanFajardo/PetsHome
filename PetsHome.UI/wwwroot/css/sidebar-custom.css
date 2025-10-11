@@ -1,0 +1,227 @@
+/* ===========================================
+   SIDEBAR MODERN STYLES - PETSHOME
+   Based on mascotas vanilla reference
+   =========================================== */
+
+/* Modern system font stack */
+.sidebar-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Sidebar Header con gradiente rojo */
+.sidebar-wrapper .navbar-nav.theme-brand {
+    background: linear-gradient(to right, #ef4444, #dc2626) !important;
+    height: 56px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-wrapper .theme-logo {
+    color: white;
+    flex-shrink: 0;
+}
+
+.sidebar-wrapper .theme-text a {
+    color: white !important;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.3s;
+}
+
+.sidebar-wrapper .toggle-sidebar {
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sidebar-wrapper .toggle-sidebar:hover {
+    color: white;
+}
+
+.sidebar-wrapper .sidebarCollapse {
+    color: inherit;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.sidebar-wrapper .sidebarCollapse:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation Items */
+.sidebar-wrapper #sidebar {
+    padding: 16px 0;
+}
+
+.sidebar-wrapper .menu {
+    margin: 0;
+}
+
+.sidebar-wrapper .menu > a,
+.sidebar-wrapper .menu > .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+    position: relative;
+}
+
+.sidebar-wrapper .menu > a:hover,
+.sidebar-wrapper .menu > .dropdown-toggle:hover {
+    background-color: #f9fafb;
+    text-decoration: none;
+}
+
+/* Active menu item */
+.sidebar-wrapper .menu.active > a,
+.sidebar-wrapper .menu.active > .dropdown-toggle,
+.sidebar-wrapper .menu > a.active,
+.sidebar-wrapper .menu > .dropdown-toggle.active {
+    background-color: #f5f3ff;
+    color: red;
+    border-left-color: red;
+}
+
+/* Icon styling */
+.sidebar-wrapper .menu i {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    font-size: 18px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-wrapper .menu svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+/* Collapsed state - rotate arrow */
+.sidebar-wrapper .menu > a[aria-expanded="true"] svg,
+.sidebar-wrapper .menu > .dropdown-toggle[aria-expanded="true"] svg {
+    transform: rotate(90deg);
+}
+
+/* Submenu styling */
+.sidebar-wrapper .submenu {
+    background-color: #f9fafb;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-wrapper .submenu li {
+    list-style: none;
+}
+
+.sidebar-wrapper .submenu li a {
+    display: block;
+    padding: 10px 16px 10px 52px;
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-wrapper .submenu li a:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+    padding-left: 56px;
+}
+
+.sidebar-wrapper .submenu li a.active {
+    color: #7c3aed;
+    background-color: #ede9fe;
+    border-left-color: #7c3aed;
+    font-weight: 500;
+}
+
+/* Collapsed sidebar adjustments */
+.sidebar-wrapper.sidebar-closed .theme-text,
+.sidebar-wrapper.sidebar-closed .menu span {
+    display: none;
+}
+
+.sidebar-wrapper.sidebar-closed .theme-brand {
+    justify-content: center;
+}
+
+.sidebar-wrapper.sidebar-closed .menu > a,
+.sidebar-wrapper.sidebar-closed .menu > .dropdown-toggle {
+    justify-content: center;
+    padding: 12px;
+}
+
+.sidebar-wrapper.sidebar-closed .menu i {
+    margin-right: 0;
+}
+
+/* Smooth transitions */
+.sidebar-wrapper * {
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* Remove default list styles */
+.sidebar-wrapper .menu-categories {
+    padding: 0;
+    margin: 0;
+}
+
+/* Better focus states */
+.sidebar-wrapper a:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(124, 58, 237, 0.3);
+}
+
+/* Scrollbar styling for sidebar */
+.sidebar-wrapper #sidebar {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+}
+
+.sidebar-wrapper #sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-wrapper #sidebar::-webkit-scrollbar-track {
+    background: #f9fafb;
+}
+
+.sidebar-wrapper #sidebar::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 3px;
+}
+
+.sidebar-wrapper #sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar-wrapper .navbar-nav.theme-brand {
+        padding: 0 12px;
+    }
+
+    .sidebar-wrapper .theme-text a {
+        font-size: 14px;
+    }
+}
