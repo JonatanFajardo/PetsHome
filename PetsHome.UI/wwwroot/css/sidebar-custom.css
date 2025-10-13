@@ -1,22 +1,50 @@
 /* ===========================================
    SIDEBAR MODERN STYLES - PETSHOME
-   Based on mascotas vanilla reference
+   Consolidated menu styles with red theme
+   Primary Color: #F00C22
    =========================================== */
+
+/* ========================================
+   1. BASE SIDEBAR STRUCTURE
+   ======================================== */
 
 /* Modern system font stack */
 .sidebar-wrapper {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    width: 255px;
+    position: fixed;
+    z-index: 1030;
+    transition: 0.55s;
+    top: 0px;
+    height: 100vh;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
+    -moz-box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
+    box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
+    border-right: 1px solid #e0e6ed;
 }
 
-/* Sidebar Header con gradiente rojo */
+.sidebar-theme {
+    background: #fff;
+}
+
+/* ========================================
+   2. SIDEBAR HEADER (BRAND)
+   ======================================== */
+
+/* Brand header with red gradient */
 .sidebar-wrapper .navbar-nav.theme-brand {
-    background: linear-gradient(to right, #ef4444, #dc2626) !important;
+    background: linear-gradient(135deg, #F00C22 0%, #c70a1c 100%) !important;
     height: 56px;
     padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px rgba(240, 12, 34, 0.15);
 }
 
 .sidebar-wrapper .theme-logo {
@@ -26,15 +54,20 @@
 
 .sidebar-wrapper .theme-text a {
     color: white !important;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
     transition: opacity 0.3s;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-wrapper .theme-text a:hover {
+    opacity: 0.9;
 }
 
 .sidebar-wrapper .toggle-sidebar {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     cursor: pointer;
     transition: color 0.2s;
 }
@@ -54,150 +87,32 @@
 }
 
 .sidebar-wrapper .sidebarCollapse:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
 }
 
-/* Navigation Items */
+.sidebar-wrapper .sidebarCollapse i {
+    width: 27px;
+    height: 27px;
+    stroke-width: 2px;
+}
+
+/* ========================================
+   3. NAVIGATION CONTAINER
+   ======================================== */
+
 .sidebar-wrapper #sidebar {
     padding: 16px 0;
-}
-
-.sidebar-wrapper .menu {
-    margin: 0;
-}
-
-.sidebar-wrapper .menu > a,
-.sidebar-wrapper .menu > .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    color: #6b7280;
-    text-decoration: none;
-    transition: all 0.2s;
-    border-left: 4px solid transparent;
-    position: relative;
-}
-
-.sidebar-wrapper .menu > a:hover,
-.sidebar-wrapper .menu > .dropdown-toggle:hover {
-    background-color: #f9fafb;
-    text-decoration: none;
-}
-
-/* Active menu item */
-.sidebar-wrapper .menu.active > a,
-.sidebar-wrapper .menu.active > .dropdown-toggle,
-.sidebar-wrapper .menu > a.active,
-.sidebar-wrapper .menu > .dropdown-toggle.active {
-    background-color: #f5f3ff;
-    color: red;
-    border-left-color: red;
-}
-
-/* Icon styling */
-.sidebar-wrapper .menu i {
-    width: 20px;
-    height: 20px;
-    margin-right: 12px;
-    font-size: 18px;
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar-wrapper .menu svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    transition: transform 0.2s;
-}
-
-/* Collapsed state - rotate arrow */
-.sidebar-wrapper .menu > a[aria-expanded="true"] svg,
-.sidebar-wrapper .menu > .dropdown-toggle[aria-expanded="true"] svg {
-    transform: rotate(90deg);
-}
-
-/* Submenu styling */
-.sidebar-wrapper .submenu {
-    background-color: #f9fafb;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-wrapper .submenu li {
-    list-style: none;
-}
-
-.sidebar-wrapper .submenu li a {
-    display: block;
-    padding: 10px 16px 10px 52px;
-    color: #6b7280;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.2s;
-    border-left: 4px solid transparent;
-}
-
-.sidebar-wrapper .submenu li a:hover {
-    background-color: #f3f4f6;
-    color: #374151;
-    padding-left: 56px;
-}
-
-.sidebar-wrapper .submenu li a.active {
-    color: #7c3aed;
-    background-color: #ede9fe;
-    border-left-color: #7c3aed;
-    font-weight: 500;
-}
-
-/* Collapsed sidebar adjustments */
-.sidebar-wrapper.sidebar-closed .theme-text,
-.sidebar-wrapper.sidebar-closed .menu span {
-    display: none;
-}
-
-.sidebar-wrapper.sidebar-closed .theme-brand {
-    justify-content: center;
-}
-
-.sidebar-wrapper.sidebar-closed .menu > a,
-.sidebar-wrapper.sidebar-closed .menu > .dropdown-toggle {
-    justify-content: center;
-    padding: 12px;
-}
-
-.sidebar-wrapper.sidebar-closed .menu i {
-    margin-right: 0;
-}
-
-/* Smooth transitions */
-.sidebar-wrapper * {
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-}
-
-/* Remove default list styles */
-.sidebar-wrapper .menu-categories {
-    padding: 0;
-    margin: 0;
-}
-
-/* Better focus states */
-.sidebar-wrapper a:focus {
-    outline: none;
-    box-shadow: inset 0 0 0 2px rgba(124, 58, 237, 0.3);
-}
-
-/* Scrollbar styling for sidebar */
-.sidebar-wrapper #sidebar {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f9fafb;
 }
 
+.sidebar-wrapper #sidebar * {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Scrollbar styling */
 .sidebar-wrapper #sidebar::-webkit-scrollbar {
     width: 6px;
 }
@@ -215,13 +130,537 @@
     background-color: #9ca3af;
 }
 
-/* Responsive adjustments */
+/* Menu categories container */
+#sidebar ul.menu-categories {
+    position: relative;
+    padding: 20px 0 20px 0;
+    margin: auto;
+    width: 100%;
+    overflow: auto;
+}
+
+.sidebar-wrapper .menu-categories {
+    padding: 0;
+    margin: 0;
+}
+
+/* ========================================
+   4. MENU ITEMS - BASE STYLES
+   ======================================== */
+
+.sidebar-wrapper .menu {
+    margin: 0 15px 3px 15px;
+    transition: 0.3s;
+}
+
+.sidebar-wrapper .menu > a,
+.sidebar-wrapper .menu > .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+    position: relative;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.sidebar-wrapper .menu > a > div,
+.sidebar-wrapper .menu > .dropdown-toggle > div {
+    align-self: center;
+}
+
+.sidebar-wrapper .menu .dropdown-toggle:after {
+    display: none;
+}
+
+.sidebar-wrapper .menu > a:hover,
+.sidebar-wrapper .menu > .dropdown-toggle:hover {
+    background-color: #f9fafb;
+    text-decoration: none;
+    color: #374151;
+}
+
+/* ========================================
+   5. MENU ITEMS - ACTIVE STATE (RED THEME)
+   ======================================== */
+
+/* Active menu item with red accent */
+.sidebar-wrapper .menu.active > a,
+.sidebar-wrapper .menu.active > .dropdown-toggle,
+.sidebar-wrapper .menu > a.active,
+.sidebar-wrapper .menu > .dropdown-toggle.active {
+    background-color: #fff1f2;
+    color: #F00C22;
+    border-left-color: #F00C22;
+}
+
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
+    background: #fff1f2;
+}
+
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg.feather-chevron-right {
+    transform: rotate(90deg);
+}
+
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=false] i {
+    color: #F00C22;
+    stroke-width: 2px;
+}
+
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=false] span {
+    color: #F00C22;
+    font-weight: 600;
+}
+
+/* Active menu item WHEN EXPANDED - keep red background */
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] {
+    background: linear-gradient(135deg, #F00C22 0%, #d70a1e 100%) !important;
+}
+
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] i {
+    color: #fff;
+    stroke-width: 2px;
+}
+
+#sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] span {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ========================================
+   6. MENU ITEMS - EXPANDED STATE
+   ======================================== */
+
+/* Expanded/open menu items with red background */
+#sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] i {
+    color: #fff;
+    fill: rgba(255, 255, 255, 0.28);
+    stroke-width: 2px;
+}
+
+#sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] span {
+    color: #fff;
+    font-weight: 600;
+}
+
+#sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle[aria-expanded=true] {
+    background: var(--primary-color);
+    background: linear-gradient(135deg, #F00C22 0%, #d70a1e 100%);
+}
+
+#sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] svg.feather-chevron-right {
+    transform: rotate(90deg);
+}
+
+/* ========================================
+   7. MENU ICONS
+   ======================================== */
+
+.sidebar-wrapper .menu i {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    font-size: 18px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #888ea8;
+    vertical-align: middle;
+    stroke-width: 1px;
+    fill: rgba(172, 176, 195, 0.25);
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar-wrapper .menu svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+/* Chevron arrow rotation */
+.sidebar-wrapper .menu > a[aria-expanded="true"] svg.feather-chevron-right,
+.sidebar-wrapper .menu > .dropdown-toggle[aria-expanded="true"] svg.feather-chevron-right {
+    transform: rotate(90deg);
+}
+
+#sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
+    vertical-align: middle;
+    margin-right: 0;
+    width: 15px;
+}
+
+#sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle:not([aria-expanded=true]):hover svg:not(.feather-chevron-right),
+#sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle:hover svg:not(.feather-chevron-right) {
+    margin-right: 22px;
+}
+
+/* ========================================
+   8. SUBMENU STYLES
+   ======================================== */
+
+.sidebar-wrapper .submenu {
+    background-color: #f9fafb;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-wrapper .submenu li {
+    list-style: none;
+}
+
+.sidebar-wrapper .submenu li a {
+    display: block;
+    padding: 10px 16px 10px 52px;
+    padding-left: 61px;
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+    position: relative;
+}
+
+/* Submenu bullet points */
+#sidebar ul.menu-categories li.menu ul.submenu > li a:before {
+    content: "";
+    background-color: #d1d5db;
+    position: absolute;
+    height: 3px;
+    width: 3px;
+    top: 22.5px;
+    left: 50px;
+    border-radius: 50%;
+}
+
+.sidebar-wrapper .submenu li a:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+    padding-left: 65px;
+}
+
+#sidebar ul.menu-categories ul.submenu > li a:hover {
+    color: #F00C22;
+}
+
+#sidebar ul.menu-categories ul.submenu > li a:hover:before {
+    background-color: #F00C22 !important;
+}
+
+/* Active submenu item */
+.sidebar-wrapper .submenu li a.active {
+    color: #F00C22;
+    background-color: #fff1f2;
+    border-left-color: #F00C22;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#sidebar ul.menu-categories li.menu ul.submenu > li.active a:before {
+    background-color: #F00C22;
+}
+
+#sidebar ul.menu-categories ul.submenu > li.active a {
+    color: #F00C22;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#sidebar ul.menu-categories ul.submenu li > [aria-expanded=true]:before {
+    background-color: #F00C22 !important;
+}
+
+#sidebar ul.menu-categories ul.submenu li > a[aria-expanded=true] {
+    color: #F00C22;
+    font-size: 14px;
+}
+
+/* ========================================
+   9. SUB-SUBMENU STYLES
+   ======================================== */
+
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a {
+    position: relative;
+    padding: 10px 12px 10px 48px;
+    padding-left: 13px;
+    margin-left: 62px;
+    font-size: 11px;
+    color: #506690;
+}
+
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a {
+    color: #F00C22;
+}
+
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover {
+    color: #F00C22;
+}
+
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover:before {
+    background-color: #F00C22;
+}
+
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:before {
+    content: "";
+    background-color: #515365;
+    position: absolute;
+    top: 15px !important;
+    border-radius: 50%;
+    left: 0;
+}
+
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a:before {
+    background-color: #F00C22;
+}
+
+/* ========================================
+   10. COLLAPSED SIDEBAR STATE
+   ======================================== */
+
+.sidebar-closed > .sidebar-wrapper {
+    width: 54px;
+}
+
+.sidebar-closed #sidebar ul.menu-categories li.menu {
+    margin: 0px 8px;
+}
+
+.sidebar-closed #sidebar ul.menu-categories li.menu > .dropdown-toggle {
+    padding: 11px 7px;
+    transition: 0.6s;
+    position: relative;
+}
+
+.sidebar-closed #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
+    display: none;
+}
+
+.sidebar-closed .sidebar-wrapper.sidebar-closed .theme-text,
+.sidebar-closed .sidebar-wrapper.sidebar-closed .menu span {
+    display: none;
+}
+
+.sidebar-closed .sidebar-wrapper.sidebar-closed .theme-brand {
+    justify-content: center;
+}
+
+.sidebar-closed .sidebar-wrapper.sidebar-closed .menu > a,
+.sidebar-closed .sidebar-wrapper.sidebar-closed .menu > .dropdown-toggle {
+    justify-content: center;
+    padding: 12px;
+}
+
+.sidebar-closed .sidebar-wrapper.sidebar-closed .menu i {
+    margin-right: 0;
+}
+
+/* Hover state when collapsed */
+.sidebar-closed #sidebar:hover ul.menu-categories li.menu {
+    margin: 0px 15px 3px 15px;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover {
+    width: 255px;
+}
+
+.sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories {
+    padding: 20px 0 20px 0;
+}
+
+.sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true]:before {
+    display: none;
+}
+
+.sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
+    display: inline-block;
+}
+
+.sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] i {
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle {
+    padding: 14px 10px;
+    transition: 0.6s;
+}
+
+/* ========================================
+   11. SMOOTH TRANSITIONS
+   ======================================== */
+
+.sidebar-wrapper * {
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* Better focus states */
+.sidebar-wrapper a:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(240, 12, 34, 0.2);
+}
+
+/* ========================================
+   12. RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
 @media (max-width: 768px) {
     .sidebar-wrapper .navbar-nav.theme-brand {
         padding: 0 12px;
     }
 
     .sidebar-wrapper .theme-text a {
-        font-size: 14px;
+        font-size: 16px;
     }
+}
+
+@media (max-width: 991px) {
+    #content {
+        margin-left: 0;
+    }
+
+    #sidebar .theme-brand {
+        border-radius: 0;
+    }
+
+    .sidebar-closed #sidebar .theme-brand {
+        padding: 0.9px 12px 0.9px 24px;
+    }
+
+    .main-container:not(.sbar-open) .sidebar-wrapper,
+    body.alt-menu .sidebar-closed > .sidebar-wrapper {
+        width: 0;
+        left: -52px;
+    }
+
+    .main-container {
+        padding: 0;
+    }
+
+    #sidebar ul.menu-categories.ps {
+        height: calc(100vh - 218px) !important;
+    }
+
+    .sidebar-wrapper {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        z-index: 9999;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -webkit-transform: translate3d(0, 0, 0);
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    #sidebar {
+        height: 100vh !important;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+}
+
+@media (min-width: 992px) {
+    .sidebar-closed #sidebar .theme-brand li.theme-text a {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .md-hidden {
+        display: none;
+    }
+}
+
+/* ========================================
+   13. PERFECT SCROLLBAR INTEGRATION
+   ======================================== */
+
+#sidebar ul.menu-categories.ps {
+    height: calc(100vh - 282px) !important;
+}
+
+#sidebar ul.menu-categories.ps .ps__rail-y:hover {
+    background-color: transparent;
+}
+
+#sidebar ul.menu-categories.ps:hover > .ps__rail-y .ps__thumb-y {
+    background-color: #888ea8;
+}
+
+.sidebar-closed #sidebar:hover ul.menu-categories.ps {
+    height: calc(100vh - 282px) !important;
+}
+
+.sidebar-closed #sidebar ul.menu-categories.ps {
+    height: calc(100vh - 130px) !important;
+}
+
+/* ========================================
+   14. MENU HEADING (IF USED)
+   ======================================== */
+
+.sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: #515365;
+    padding: 20px 0 20px 12px;
+    letter-spacing: 1px;
+}
+
+.sidebar-closed .sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading {
+    padding: 20px 9px 20px 13px;
+}
+
+.sidebar-closed > .sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading span {
+    display: none;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover ul.menu-categories li.menu.menu-heading > .heading {
+    padding: 20px 0 20px 20px;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover ul.menu-categories li.menu.menu-heading > .heading span {
+    display: inline-block;
+}
+
+/* ========================================
+   15. OVERLAY FOR MOBILE
+   ======================================== */
+
+.overlay {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1035 !important;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.overlay.show {
+    display: block;
+    opacity: 0.7;
 }
