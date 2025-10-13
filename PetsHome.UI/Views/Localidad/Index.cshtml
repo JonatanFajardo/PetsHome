@@ -9,46 +9,36 @@
 }
 
 <div class="col-12">
-    <div class="modern-container">
+    <div class="pets-container">
     <!-- Header purpura con todos los controles -->
-    <div class="modern-header-full">
-        <div class="modern-header-content">
-            <div class="modern-title-section">
-                <h2 class="text-white"><i class="fas fa-map mr-2 text-white"></i>Departamentos</h2>
-                <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
+    <div class="pets-header-full">
+        <div class="pets-header-content">
+            <div class="pets-title-section">
+                <h2 class="text-white"><i class="fa-map-marked-alt mr-2 text-white"></i>Gestión de Localidades</h2>
+                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
                     <i class="fas fa-plus mr-2"></i>Nuevo Departamento
                 </button>
             </div>
 
-            <div class="modern-controls">
+            <div class="pets-controls">
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="Buscar...">
+                    <input type="text" id="globalSearch" placeholder="Buscar por nombre o municipio...">
                 </div>
                 <div class="action-buttons">
-                <div class="view-toggle">
-                        <button class="btn-control active" id="tableViewBtn">
+                    <div class="view-toggle">
+                        <button class="btn-control active" id="tableViewBtn" onclick="toggleView('table')">
                             <i class="fas fa-table"></i><span>Tabla</span>
                         </button>
-                        <button class="btn-control btn-disabled" id="gridViewBtn" disabled
-                                data-toggle="tooltip" data-placement="top"
-                                title="Catalogo geografico - mejor en formato tabla">
+                        <button class="btn-control" id="gridViewBtn" onclick="toggleView('grid')">
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
                     </div>
-                    <button class="btn-icon" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i>
+                    <button class="btn-export-datatable" onclick="location.reload()">
+                        Recargar
                     </button>
-                    <div class="export-buttons">
-                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
-                            <i class="fas fa-file-pdf"></i><span>PDF</span>
-                        </button>
-                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
-                            <i class="fas fa-file-excel"></i><span>Excel</span>
-                        </button>
-                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
-                            <i class="fas fa-file-csv"></i><span>CSV</span>
-                        </button>
+                    <div id="export-buttons-container" class="export-buttons-container">
+                        <!-- Los botones de DataTable se moveran aqui -->
                     </div>
                 </div>
             </div>
@@ -56,11 +46,11 @@
     </div>
 
     <!-- Vista de Tabla -->
-    <div id="tableView" class="modern-table-container">
-        <table class="modern-table" id="datatable">
+    <div id="tableView" class="pets-table-container">
+        <table class="pets-table" id="datatable">
             <thead>
                 <tr>
-                    <th width="80">Id</th>
+                    <th width="80">ID</th>
                     <th width="100">Codigo</th>
                     <th>Descripcion</th>
                     <th width="150" class="text-center">Acciones</th>

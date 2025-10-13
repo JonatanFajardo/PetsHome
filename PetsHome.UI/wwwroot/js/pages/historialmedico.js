@@ -1,15 +1,16 @@
-var Adopcion = (function () {
+var HistorialMedico = (function () {
 
     var obj = {};
 
-    obj.datatableCatalogs = function (Direction) {
+    obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
-            //Nombre | Tama�o/AutoWidth | Visibilidad
-            header = [
 
-            ];
-            datatable.init(Direction, header);
+            // TODO: Definir headers según estructura de datos
+            header = [];
+
+            // Usar datatableCatalogs para catálogos simples
+            datatableCatalogs.init(Direction.listUrl, header);
 
             // Mover y personalizar controles después de inicializar
             setTimeout(function () {
@@ -54,8 +55,9 @@ var Adopcion = (function () {
                     $dtButtons.hide();
                 }
             }, 100);
-        })
+        });
     }
+
     return obj;
 
 }());
