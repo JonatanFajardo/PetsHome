@@ -9,24 +9,24 @@
 }
 
 <div class="col-12">
-    <div class="modern-container">
+    <div class="pets-container">
     <!-- Header púrpura con todos los controles -->
-    <div class="modern-header-full">
-        <div class="modern-header-content">
-            <div class="modern-title-section">
-                <h2 class="text-white"><i class="fas fa-hands-helping mr-2 text-white"></i>Voluntarios</h2>
-                <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
+    <div class="pets-header-full">
+        <div class="pets-header-content">
+            <div class="pets-title-section">
+                <h2 class="text-white"><i class="fas fa-hands-helping mr-2 text-white"></i>Gestión de Voluntarios</h2>
+                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
                     <i class="fas fa-plus mr-2"></i>Nuevo Voluntario
                 </button>
             </div>
 
-            <div class="modern-controls">
+            <div class="pets-controls">
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="Buscar...">
+                    <input type="text" id="globalSearch" placeholder="Buscar por nombre, email o teléfono...">
                 </div>
                 <div class="action-buttons">
-                <div class="view-toggle">
+                    <div class="view-toggle">
                         <button class="btn-control active" id="tableViewBtn" onclick="toggleView('table')">
                             <i class="fas fa-table"></i><span>Tabla</span>
                         </button>
@@ -34,19 +34,11 @@
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
                     </div>
-                    <button class="btn-icon" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i>
+                    <button class="btn-export-datatable" onclick="location.reload()">
+                        Recargar
                     </button>
-                    <div class="export-buttons">
-                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
-                            <i class="fas fa-file-pdf"></i><span>PDF</span>
-                        </button>
-                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
-                            <i class="fas fa-file-excel"></i><span>Excel</span>
-                        </button>
-                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
-                            <i class="fas fa-file-csv"></i><span>CSV</span>
-                        </button>
+                    <div id="export-buttons-container" class="export-buttons-container">
+                        <!-- Los botones de DataTable se moveran aqui -->
                     </div>
                 </div>
             </div>
@@ -54,14 +46,14 @@
     </div>
 
     <!-- Vista de Tabla -->
-    <div id="tableView" class="modern-table-container">
-        <table class="modern-table" id="datatable">
+    <div id="tableView" class="pets-table-container">
+        <table class="pets-table" id="datatable">
             <thead>
                 <tr>
-                    <th width="80">Id</th>
+                    <th width="80">ID</th>
+                    <th width="120">Horas</th>
                     <th>Nombre</th>
-                    <th>Email</th>
-                    <th width="120">Teléfono</th>
+                    <th>Identidad</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -71,11 +63,10 @@
         </table>
     </div>
 
-
     <!-- Vista de Cards (oculta por defecto) -->
     <div id="gridView" style="display: none;">
-        <div class="row" id="cardsGrid">
-            <!-- Las tarjetas se generaran dinamicamente -->
+        <div class="row" id="voluntariosGrid">
+            <!-- Las tarjetas se generarán dinámicamente -->
         </div>
     </div>
 
@@ -101,7 +92,7 @@
                         <div class="mb-3">
                             <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
                         </div>
-                        <h5>¿Está seguro de eliminar este registro?</h5>
+                        <h5>¿Está seguro de eliminar este voluntario?</h5>
                         <p class="text-muted">Esta acción no se puede deshacer.</p>
                     </div>
                     <div class="modal-footer justify-content-center border-0">
@@ -120,12 +111,6 @@
 </div>
 
 @section Scripts {
-<script>
-    // Inicializar tooltips
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
 <script src="~/js/pages/voluntario.js"></script>
 <script>
     // Configuración del DataTable
@@ -140,7 +125,6 @@
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();
     });
-
 
     // Alternar entre vista tabla y cards
     function toggleView(view) {
@@ -165,33 +149,32 @@
         var html = '';
 
         if (data.length === 0) {
-            html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron registros</p></div>';
+            html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron voluntarios</p></div>';
         } else {
             data.each(function(row) {
-                var estadoBadge = getEstadoBadge(row.vol_Estado || 'Activo');
                 html += `
                     <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="card-item">
+                        <div class="pet-card">
                             <div style="position: relative;">
-                                <div class="card-item-img">
-                                    <i class="fas fa-user"></i>
+                                <div class="pet-card-img">
+                                    <i class="fas fa-hands-helping"></i>
                                 </div>
-                                <span class="card-badge">#${String(row.vol_Id).padStart(3, '0')}</span>
+                                <span class="pet-badge">#${String(row.vol_Id).padStart(3, '0')}</span>
                             </div>
                             <div class="p-3">
-                                <h5 class="mb-1">${row.vol_Nombre}</h5>
-                                <p class="text-muted small mb-2">${row.vol_Email}</p>
-                                <p class="text-muted mb-2"><i class="fas fa-info-circle mr-2"></i>${row.vol_Telefono}</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    ${estadoBadge}
+                                <h5 class="mb-1">${row.vol_Nombres}</h5>
+                                <p class="text-muted small mb-2">${row.per_Identidad}</p>
+                                <p class="text-muted mb-2"><i class="fas fa-clock mr-2"></i>${row.vol_HorasTrabajadas} horas</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="status-badge status-disponible">Activo</span>
                                     <div>
-                                        <button class="action-btn btn-view" onclick="viewItem(${row.vol_Id})" title="Ver">
+                                        <button class="action-btn btn-view" onclick="viewVoluntario(${row.vol_Id})" title="Ver">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="action-btn btn-edit" onclick="editItem(${row.vol_Id})" title="Editar">
+                                        <button class="action-btn btn-edit" onclick="editVoluntario(${row.vol_Id})" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="action-btn btn-delete" onclick="deleteItem(${row.vol_Id})" title="Eliminar">
+                                        <button class="action-btn btn-delete" onclick="deleteVoluntario(${row.vol_Id})" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -203,67 +186,21 @@
             });
         }
 
-        $('#cardsGrid').html(html);
+        $('#voluntariosGrid').html(html);
     }
 
-    // Funciones para acciones
-    function viewItem(id) {
+    // Funciones para acciones de voluntarios
+    function viewVoluntario(id) {
         window.location.href = '@Url.Action("Detail")' + '/' + id;
     }
 
-    function editItem(id) {
+    function editVoluntario(id) {
         window.location.href = '@Url.Action("Find")' + '/' + id;
     }
 
-    function deleteItem(id) {
+    function deleteVoluntario(id) {
         $('#delete-item-id').val(id);
         $('#delete-modal').modal('show');
-    }
-
-    // Obtener badge segun estado
-    function getEstadoBadge(estado) {
-        var badges = {
-            'Disponible': '<span class="status-badge status-disponible">Disponible</span>',
-            'Adoptado': '<span class="status-badge status-adoptado">Adoptado</span>',
-            'En Tratamiento': '<span class="status-badge status-tratamiento">En Tratamiento</span>',
-            'Activo': '<span class="status-badge status-activo">Activo</span>',
-            'Inactivo': '<span class="status-badge status-inactivo">Inactivo</span>',
-            'Pendiente': '<span class="status-badge status-pendiente">Pendiente</span>',
-            'Aprobado': '<span class="status-badge status-aprobado">Aprobado</span>'
-        };
-        return badges[estado] || badges['Activo'];
-    }
-
-
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
-    }
-
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
-    function exportCSV() {
-        var table = $('#datatable').DataTable();
-        var data = table.rows({ search: 'applied' }).data();
-
-        var csv = 'ID,Nombre,Email,Teléfono,Estado\n';
-        data.each(function(row) {
-            // Implementar según estructura de datos
-            console.log('Exportar CSV - Implementar según datos');
-        });
-
-        var blob = new Blob([csv], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'voluntario_' + new Date().toISOString().slice(0,10) + '.csv';
-        a.click();
     }
 </script>
 }

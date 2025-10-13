@@ -13,7 +13,7 @@ namespace PetsHome.Logic.Repositories
     {
         public async Task<IEnumerable<PR_Refugio_EmpleadosCargos_ListResult>> ListAsync()
         {
-            const string sqlQuery = "[Refugio].[PR_Refugio_EmpleadosCargos_Lis]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_EmpleadosCargos_List]";
             return await DbApp.Select<PR_Refugio_EmpleadosCargos_ListResult>(sqlQuery);
         }
 

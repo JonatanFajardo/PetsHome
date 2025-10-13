@@ -72,7 +72,8 @@ var datatableCatalogs = (function () {
                         callback(response);
                     },
                 }).fail(function (jqXHR, textStatus, error) {
-                    console.log("Error en el envio de la peticion de listado " + jqXHR.responseJSON);
+                    var errorMsg = jqXHR.responseJSON ? JSON.stringify(jqXHR.responseJSON) : (textStatus + ": " + error);
+                    console.log("Error en el envio de la peticion de listado: " + errorMsg);
                 });
             },
             columnDefs: obj.dataHeader(header)
