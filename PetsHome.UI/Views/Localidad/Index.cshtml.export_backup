@@ -1,6 +1,6 @@
-@model RazaViewModel
+@model DepartamentoViewModel
 @{
-    ViewData["Title"] = "Razas";
+    ViewData["Title"] = "Departamentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,13 +10,13 @@
 
 <div class="col-12">
     <div class="modern-container">
-    <!-- Header púrpura con todos los controles -->
+    <!-- Header purpura con todos los controles -->
     <div class="modern-header-full">
         <div class="modern-header-content">
             <div class="modern-title-section">
-                <h2 class="text-white"><i class="fas fa-dog mr-2 text-white"></i>Razas</h2>
+                <h2 class="text-white"><i class="fas fa-map mr-2 text-white"></i>Departamentos</h2>
                 <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
-                    <i class="fas fa-plus mr-2"></i>Nuevo Raza
+                    <i class="fas fa-plus mr-2"></i>Nuevo Departamento
                 </button>
             </div>
 
@@ -32,24 +32,16 @@
                         </button>
                         <button class="btn-control btn-disabled" id="gridViewBtn" disabled
                                 data-toggle="tooltip" data-placement="top"
-                                title="Catalogo simple - mejor visualizacion en tabla compacta">
+                                title="Catalogo geografico - mejor en formato tabla">
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
                     </div>
                     <button class="btn-icon" onclick="location.reload()">
                         <i class="fas fa-sync-alt"></i>
                     </button>
-                    <div class="export-buttons">
-                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
-                            <i class="fas fa-file-pdf"></i><span>PDF</span>
-                        </button>
-                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
-                            <i class="fas fa-file-excel"></i><span>Excel</span>
-                        </button>
-                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
-                            <i class="fas fa-file-csv"></i><span>CSV</span>
-                        </button>
-                    </div>
+                    <button class="btn-secondary-header" onclick="exportCSV()">
+                        <i class="fas fa-download"></i><span>CSV</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -61,13 +53,13 @@
             <thead>
                 <tr>
                     <th width="80">Id</th>
-                    <th>Descripción</th>
-                    <th>Tipo</th>
+                    <th width="100">Codigo</th>
+                    <th>Descripcion</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- DataTable cargará los datos aquí -->
+                <!-- DataTable cargara los datos aqui -->
             </tbody>
         </table>
     </div>
@@ -78,7 +70,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminacion
                     </h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -89,13 +81,13 @@
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
-                    <input type="hidden" asp-for="raza_Id" id="delete-item-id">
+                    <input type="hidden" asp-for="depto_Id" id="delete-item-id">
                     <div class="modal-body text-center py-4">
                         <div class="mb-3">
                             <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
                         </div>
-                        <h5>¿Está seguro de eliminar este registro?</h5>
-                        <p class="text-muted">Esta acción no se puede deshacer.</p>
+                        <h5>Esta seguro de eliminar este registro?</h5>
+                        <p class="text-muted">Esta accion no se puede deshacer.</p>
                     </div>
                     <div class="modal-footer justify-content-center border-0">
                         <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
@@ -119,50 +111,37 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-<script src="~/js/pages/raza.js"></script>
+<script src="~/js/pages/localidad.js"></script>
 <script>
-    // Configuración del DataTable
-    Raza.datatable({
+    // Configuracion del DataTable
+    Localidad.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("Create")",
         urlUpdate: "@Url.Action("Find")"
     });
 
-    // Búsqueda global
+    // Busqueda global
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();
     });
 
-
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
-    }
-
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
+    // Exportar a CSV
     function exportCSV() {
         var table = $('#datatable').DataTable();
         var data = table.rows({ search: 'applied' }).data();
 
-        var csv = 'ID,Descripción,Tipo\n';
+        var csv = 'ID,Codigo,Descripcion\n';
         data.each(function(row) {
-            // Implementar según estructura de datos
-            console.log('Exportar CSV - Implementar según datos');
+            // Implementar segun estructura de datos
+            console.log('Exportar CSV - Implementar segun datos');
         });
 
         var blob = new Blob([csv], { type: 'text/csv' });
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = 'raza_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.download = 'localidad_' + new Date().toISOString().slice(0,10) + '.csv';
         a.click();
     }
 </script>

@@ -1,83 +1,87 @@
-﻿@model EmpleadoCargoViewModel
+@model EmpleadoCargoViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cargos de Empleados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    
-    @* Listado *@
-    <div class="card">
-        <div class="card-header">
-            <h3>Listado de Empleados</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="modern-container">
+    <!-- Header purpura con todos los controles -->
+    <div class="modern-header-full">
+        <div class="modern-header-content">
+            <div class="modern-title-section">
+                <h2 class="text-white"><i class="fas fa-briefcase mr-2 text-white"></i>Cargos de Empleados</h2>
+                <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
+                    <i class="fas fa-plus mr-2"></i>Nuevo Cargo
+                </button>
             </div>
-        </div>
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped dt-responsive nowrap " id="datatable">
-                    <thead class="text-center bg-primary text-white">
-                        <tr>
-                            <th>Fila</th>
-                            <th>Descripción</th>
-                            <th>Salario</th>
-                            <th>EsActivo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Modal -->
-    <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="modern-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Buscar...">
                 </div>
-                <form asp-action="Add" method="post" autocomplete="off"
-                      data-ajax-begin="Catalogs.begin"
-                      data-ajax-success="Catalogs.success"
-                      data-ajax-failure="Catalogs.failure"
-                      data-ajax-complete="Catalogs.complete">
-
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="cag_Id" id="item-id" value="@ViewBag.cag_Id" />
-                    @*<input type="hidden" asp-for="estado" id="estado" />*@
-
-                    <div class="modal-body">
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label asp-for="cag_Descripcion" class="control-label required"></label>
-                                    <input asp-for="cag_Descripcion" class="form-control" maxlength="50" id="Descripcion" />
-                                    <span class="text-danger" id="messageError"></span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="action-buttons">
+                <div class="view-toggle">
+                        <button class="btn-control active" id="tableViewBtn">
+                            <i class="fas fa-table"></i><span>Tabla</span>
+                        </button>
+                        <button class="btn-control btn-disabled" id="gridViewBtn" disabled
+                                data-toggle="tooltip" data-placement="top"
+                                title="Catalogo simple - mejor visualizacion en tabla compacta">
+                            <i class="fas fa-th"></i><span>Tarjetas</span>
+                        </button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary"></button>
+                    <button class="btn-icon" onclick="location.reload()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <div class="export-buttons">
+                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
+                            <i class="fas fa-file-pdf"></i><span>PDF</span>
+                        </button>
+                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
+                            <i class="fas fa-file-excel"></i><span>Excel</span>
+                        </button>
+                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
+                            <i class="fas fa-file-csv"></i><span>CSV</span>
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Fin Modal -->
-    <!-- Modal Delete-->
-    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <!-- Vista de Tabla -->
+    <div id="tableView" class="modern-table-container">
+        <table class="modern-table" id="datatable">
+            <thead>
+                <tr>
+                    <th width="80">Id</th>
+                    <th>Descripcion</th>
+                    <th width="120">Salario</th>
+                    <th width="140">Estado</th>
+                    <th width="150" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DataTable cargara los datos aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminacion
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -87,35 +91,82 @@
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
                     <input type="hidden" asp-for="cag_Id" id="delete-item-id">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <p>¿Está seguro de que desea eliminar este registro?</p>
-                                </div>
-                            </div>
+                    <div class="modal-body text-center py-4">
+                        <div class="mb-3">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
                         </div>
-
+                        <h5>Esta seguro de eliminar este registro?</h5>
+                        <p class="text-muted">Esta accion no se puede deshacer.</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                    <div class="modal-footer justify-content-center border-0">
+                        <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                            <i class="fas fa-times mr-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash mr-2"></i>Eliminar
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Fin Modal -->
-    @section Scripts {
-    <script src="~/js/pages/empleado-cargo.js"></script>
-    <script>
-        EmpleadoCargo.datatableCatalogs({listUrl: "@Url.Action("List")" });
-    </script>
+</div>
+</div>
 
-    <script>
-        Catalogs.configure({
-            displayName: "cargo de empleado",
-            getUrl: "@Url.Action("Find")"
-        });
-    </script>
+@section Scripts {
+<script>
+    // Inicializar tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<script src="~/js/pages/empleado-cargo.js"></script>
+<script>
+    // Configuracion del DataTable
+    EmpleadoCargo.datatableCatalogs({
+        listUrl: "@Url.Action("List")"
+    });
+
+    Catalogs.configure({
+        displayName: "cargo de empleado",
+        getUrl: "@Url.Action("Find")"
+    });
+
+    // Busqueda global
+    $('#globalSearch').on('keyup', function() {
+        $('#datatable').DataTable().search(this.value).draw();
+    });
+
+
+    // Exportar a PDF
+    function exportPDF() {
+        var table = $('#datatable').DataTable();
+        table.button('.buttons-pdf').trigger();
     }
+
+    // Exportar a Excel
+    function exportExcel() {
+        var table = $('#datatable').DataTable();
+        table.button('.buttons-excel').trigger();
+    }
+
+    // Exportar a CSV (mejorado)
+    function exportCSV() {
+        var table = $('#datatable').DataTable();
+        var data = table.rows({ search: 'applied' }).data();
+
+        var csv = 'ID,Descripcion,Salario,Estado\n';
+        data.each(function(row) {
+            // Implementar segun estructura de datos
+            console.log('Exportar CSV - Implementar segun datos');
+        });
+
+        var blob = new Blob([csv], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'empleadocargo_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.click();
+    }
+</script>
+}

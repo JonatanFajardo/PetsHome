@@ -1,6 +1,6 @@
-@model RazaViewModel
+@model VoluntarioViewModel
 @{
-    ViewData["Title"] = "Razas";
+    ViewData["Title"] = "Voluntarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,9 +14,9 @@
     <div class="modern-header-full">
         <div class="modern-header-content">
             <div class="modern-title-section">
-                <h2 class="text-white"><i class="fas fa-dog mr-2 text-white"></i>Razas</h2>
+                <h2 class="text-white"><i class="fas fa-hands-helping mr-2 text-white"></i>Voluntarios</h2>
                 <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
-                    <i class="fas fa-plus mr-2"></i>Nuevo Raza
+                    <i class="fas fa-plus mr-2"></i>Nuevo Voluntario
                 </button>
             </div>
 
@@ -26,30 +26,12 @@
                     <input type="text" id="globalSearch" placeholder="Buscar...">
                 </div>
                 <div class="action-buttons">
-                <div class="view-toggle">
-                        <button class="btn-control active" id="tableViewBtn">
-                            <i class="fas fa-table"></i><span>Tabla</span>
-                        </button>
-                        <button class="btn-control btn-disabled" id="gridViewBtn" disabled
-                                data-toggle="tooltip" data-placement="top"
-                                title="Catalogo simple - mejor visualizacion en tabla compacta">
-                            <i class="fas fa-th"></i><span>Tarjetas</span>
-                        </button>
-                    </div>
                     <button class="btn-icon" onclick="location.reload()">
                         <i class="fas fa-sync-alt"></i>
                     </button>
-                    <div class="export-buttons">
-                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
-                            <i class="fas fa-file-pdf"></i><span>PDF</span>
-                        </button>
-                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
-                            <i class="fas fa-file-excel"></i><span>Excel</span>
-                        </button>
-                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
-                            <i class="fas fa-file-csv"></i><span>CSV</span>
-                        </button>
-                    </div>
+                    <button class="btn-secondary-header" onclick="exportCSV()">
+                        <i class="fas fa-download"></i><span>CSV</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -61,8 +43,10 @@
             <thead>
                 <tr>
                     <th width="80">Id</th>
-                    <th>Descripción</th>
-                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th width="120">Teléfono</th>
+                    <th width="140">Estado</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -89,7 +73,7 @@
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
-                    <input type="hidden" asp-for="raza_Id" id="delete-item-id">
+                    <input type="hidden" asp-for="vol_Id" id="delete-item-id">
                     <div class="modal-body text-center py-4">
                         <div class="mb-3">
                             <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
@@ -113,16 +97,10 @@
 </div>
 
 @section Scripts {
-<script>
-    // Inicializar tooltips
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
-<script src="~/js/pages/raza.js"></script>
+<script src="~/js/pages/voluntario.js"></script>
 <script>
     // Configuración del DataTable
-    Raza.datatable({
+    Voluntario.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("Create")",
@@ -134,25 +112,12 @@
         $('#datatable').DataTable().search(this.value).draw();
     });
 
-
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
-    }
-
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
+    // Exportar a CSV
     function exportCSV() {
         var table = $('#datatable').DataTable();
         var data = table.rows({ search: 'applied' }).data();
 
-        var csv = 'ID,Descripción,Tipo\n';
+        var csv = 'ID,Nombre,Email,Teléfono,Estado\n';
         data.each(function(row) {
             // Implementar según estructura de datos
             console.log('Exportar CSV - Implementar según datos');
@@ -162,7 +127,7 @@
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = 'raza_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.download = 'voluntario_' + new Date().toISOString().slice(0,10) + '.csv';
         a.click();
     }
 </script>

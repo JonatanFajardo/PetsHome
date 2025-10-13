@@ -27,21 +27,29 @@ var datatablePartials = (function () {
                     extend: "collection",
                     text: '<i class="mdi mdi-export"> Exportar</i>',
                     titleAttr: 'Exportar esta tabla',
-                    buttons: [{
-                        extend: "excelHtml5",
-                        text: '<i class="mdi mdi-file-excel"> Excel</i>',
-                        exportOptions: exportOptions
-                    },
-                    {
-                        extend: "csvHtml5",
-                        text: '<i class="mdi mdi-file-excel-outline"> CSV</i>',
-                        exportOptions: exportOptions
-                    },
-                    {
-                        extend: "pdfHtml5",
-                        text: '<i class="mdi mdi-file-pdf"> CSV</i>',
-                        exportOptions: exportOptions
-                    }]
+                    buttons: [
+                        {
+                            title: "Exportar a CSV",
+                            extend: "csvHtml5",
+                            text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                            className: "btn-secondary",
+                            exportOptions: exportOptions
+                        },
+                        {
+                            extend: "pdfHtml5",
+                            title: "Exportar a PDF",
+                            text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
+                            class: "btn btn-secondary",
+                            exportOptions: exportOptions
+                        },
+                        {
+                            extend: "excelHtml5",
+                            title: "Exportar a EXCEL",
+                            text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                            class: "btn btn-secondary",
+                            exportOptions: exportOptions
+                        }
+                    ]
                 },
                 {
                     attr: {

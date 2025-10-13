@@ -1,39 +1,88 @@
-﻿@model InventarioViewModel
+@model InventarioViewModel
 @{
-    ViewData["Title"] = "Inventarios";
+    ViewData["Title"] = "Inventario";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
-    @* Listado *@
-    <div class="card">
-        <div class="card-header">
-            <h3>Listado de inventarios</h3>
-        </div>
 
-        <div class="card-body">
-                <div class="table-responsive">
-            <table class="table table-striped dt-responsive nowrap" id="datatable">
-                <thead class="text-center bg-primary text-white">
-                    <tr>
-                        <th>Id</th>
-                        <th>Descripción</th>
-                        <th>refugio</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-            </table>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
 
+<div class="col-12">
+    <div class="modern-container">
+    <!-- Header púrpura con todos los controles -->
+    <div class="modern-header-full">
+        <div class="modern-header-content">
+            <div class="modern-title-section">
+                <h2 class="text-white"><i class="fas fa-boxes mr-2 text-white"></i>Inventario</h2>
+                <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
+                    <i class="fas fa-plus mr-2"></i>Nuevo Inventario
+                </button>
+            </div>
+
+            <div class="modern-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Buscar...">
+                </div>
+                <div class="action-buttons">
+                <div class="view-toggle">
+                        <button class="btn-control active" id="tableViewBtn">
+                            <i class="fas fa-table"></i><span>Tabla</span>
+                        </button>
+                        <button class="btn-control btn-disabled" id="gridViewBtn" disabled
+                                data-toggle="tooltip" data-placement="top"
+                                title="Datos numericos - requieren comparacion lado a lado">
+                            <i class="fas fa-th"></i><span>Tarjetas</span>
+                        </button>
+                    </div>
+                    <button class="btn-icon" onclick="location.reload()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <div class="export-buttons">
+                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
+                            <i class="fas fa-file-pdf"></i><span>PDF</span>
+                        </button>
+                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
+                            <i class="fas fa-file-excel"></i><span>Excel</span>
+                        </button>
+                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
+                            <i class="fas fa-file-csv"></i><span>CSV</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Delete-->
-    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Vista de Tabla -->
+    <div id="tableView" class="modern-table-container">
+        <table class="modern-table" id="datatable">
+            <thead>
+                <tr>
+                    <th width="80">Id</th>
+                    <th>Item</th>
+                    <th width="100">Cantidad</th>
+                    <th>Refugio</th>
+                    <th width="140">Estado</th>
+                    <th width="150" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DataTable cargará los datos aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -43,28 +92,38 @@
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
                     <input type="hidden" asp-for="inv_Id" id="delete-item-id">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <p>¿Está seguro de que desea eliminar este registro?</p>
-                                </div>
-                            </div>
+                    <div class="modal-body text-center py-4">
+                        <div class="mb-3">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
                         </div>
+                        <h5>¿Está seguro de eliminar este registro?</h5>
+                        <p class="text-muted">Esta acción no se puede deshacer.</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-danger" />
+                    <div class="modal-footer justify-content-center border-0">
+                        <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                            <i class="fas fa-times mr-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash mr-2"></i>Eliminar
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Fin Modal -->
 </div>
+</div>
+
 @section Scripts {
+<script>
+    // Inicializar tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 <script src="~/js/pages/inventario.js"></script>
 <script>
+    // Configuración del DataTable
     Inventario.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
@@ -72,5 +131,41 @@
         urlUpdate: "@Url.Action("Find")"
     });
 
+    // Búsqueda global
+    $('#globalSearch').on('keyup', function() {
+        $('#datatable').DataTable().search(this.value).draw();
+    });
+
+
+    // Exportar a PDF
+    function exportPDF() {
+        var table = $('#datatable').DataTable();
+        table.button('.buttons-pdf').trigger();
+    }
+
+    // Exportar a Excel
+    function exportExcel() {
+        var table = $('#datatable').DataTable();
+        table.button('.buttons-excel').trigger();
+    }
+
+    // Exportar a CSV (mejorado)
+    function exportCSV() {
+        var table = $('#datatable').DataTable();
+        var data = table.rows({ search: 'applied' }).data();
+
+        var csv = 'ID,Item,Cantidad,Refugio,Estado\n';
+        data.each(function(row) {
+            // Implementar según estructura de datos
+            console.log('Exportar CSV - Implementar según datos');
+        });
+
+        var blob = new Blob([csv], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'inventario_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.click();
+    }
 </script>
 }

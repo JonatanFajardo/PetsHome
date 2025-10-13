@@ -1,6 +1,6 @@
-@model RefugioViewModel
+@model AdopcionViewModel
 @{
-    ViewData["Title"] = "Refugios";
+    ViewData["Title"] = "Adopciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,9 +14,9 @@
     <div class="modern-header-full">
         <div class="modern-header-content">
             <div class="modern-title-section">
-                <h2 class="text-white"><i class="fas fa-home mr-2 text-white"></i>Refugios</h2>
+                <h2 class="text-white"><i class="fas fa-heart mr-2 text-white"></i>Adopciones</h2>
                 <button class="btn-nuevo-item" onclick="window.location.href='@Url.Action("Create")'">
-                    <i class="fas fa-plus mr-2"></i>Nuevo Refugio
+                    <i class="fas fa-plus mr-2"></i>Nuevo Adopción
                 </button>
             </div>
 
@@ -37,17 +37,9 @@
                     <button class="btn-icon" onclick="location.reload()">
                         <i class="fas fa-sync-alt"></i>
                     </button>
-                    <div class="export-buttons">
-                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
-                            <i class="fas fa-file-pdf"></i><span>PDF</span>
-                        </button>
-                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
-                            <i class="fas fa-file-excel"></i><span>Excel</span>
-                        </button>
-                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
-                            <i class="fas fa-file-csv"></i><span>CSV</span>
-                        </button>
-                    </div>
+                    <button class="btn-secondary-header" onclick="exportCSV()">
+                        <i class="fas fa-download"></i><span>CSV</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -59,9 +51,10 @@
             <thead>
                 <tr>
                     <th width="80">Id</th>
-                    <th>Nombre</th>
-                    <th>RTN</th>
-                    <th>Ubicación</th>
+                    <th>Mascota</th>
+                    <th>Adoptante</th>
+                    <th width="140">Fecha</th>
+                    <th width="140">Estado</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -96,7 +89,7 @@
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
-                    <input type="hidden" asp-for="refg_Id" id="delete-item-id">
+                    <input type="hidden" asp-for="adop_Id" id="delete-item-id">
                     <div class="modal-body text-center py-4">
                         <div class="mb-3">
                             <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
@@ -126,10 +119,10 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-<script src="~/js/pages/refugio.js"></script>
+<script src="~/js/pages/adopcion.js"></script>
 <script>
     // Configuración del DataTable
-    Refugio.datatable({
+    Adopcion.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("Create")",
@@ -168,30 +161,30 @@
             html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron registros</p></div>';
         } else {
             data.each(function(row) {
-                
+                var estadoBadge = getEstadoBadge(row.adop_Estado || 'Activo');
                 html += `
                     <div class="col-md-6 col-lg-4 col-xl-3">
                         <div class="card-item">
                             <div style="position: relative;">
                                 <div class="card-item-img">
-                                    <i class="fas fa-building"></i>
+                                    <i class="fas fa-handshake"></i>
                                 </div>
-                                <span class="card-badge">#${String(row.refg_Id).padStart(3, '0')}</span>
+                                <span class="card-badge">#${String(row.adop_Id).padStart(3, '0')}</span>
                             </div>
                             <div class="p-3">
-                                <h5 class="mb-1">${row.refg_Nombre}</h5>
-                                <p class="text-muted small mb-2">${row.refg_RTN}</p>
-                                <p class="text-muted mb-2"><i class="fas fa-info-circle mr-2"></i>${row.loca_Descripcion}</p>
+                                <h5 class="mb-1">${row.masc_Nombre}</h5>
+                                <p class="text-muted small mb-2">${row.adop_Fecha}</p>
+                                <p class="text-muted mb-2"><i class="fas fa-info-circle mr-2"></i>${row.adoptante_Nombre}</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
-                                    
+                                    ${estadoBadge}
                                     <div>
-                                        <button class="action-btn btn-view" onclick="viewItem(${row.refg_Id})" title="Ver">
+                                        <button class="action-btn btn-view" onclick="viewItem(${row.adop_Id})" title="Ver">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="action-btn btn-edit" onclick="editItem(${row.refg_Id})" title="Editar">
+                                        <button class="action-btn btn-edit" onclick="editItem(${row.adop_Id})" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="action-btn btn-delete" onclick="deleteItem(${row.refg_Id})" title="Eliminar">
+                                        <button class="action-btn btn-delete" onclick="deleteItem(${row.adop_Id})" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -234,25 +227,12 @@
         return badges[estado] || badges['Activo'];
     }
 
-
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
-    }
-
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
+    // Exportar a CSV
     function exportCSV() {
         var table = $('#datatable').DataTable();
         var data = table.rows({ search: 'applied' }).data();
 
-        var csv = 'ID,Nombre,RTN,Ubicación\n';
+        var csv = 'ID,Mascota,Adoptante,Fecha,Estado\n';
         data.each(function(row) {
             // Implementar según estructura de datos
             console.log('Exportar CSV - Implementar según datos');
@@ -262,7 +242,7 @@
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = 'refugio_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.download = 'adopcion_' + new Date().toISOString().slice(0,10) + '.csv';
         a.click();
     }
 </script>

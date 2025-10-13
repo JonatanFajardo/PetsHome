@@ -39,17 +39,9 @@
                     <button class="btn-icon" onclick="location.reload()">
                         <i class="fas fa-sync-alt"></i>
                     </button>
-                    <div class="export-buttons">
-                        <button class="btn-export btn-export-pdf" onclick="exportPDF()" title="Exportar a PDF">
-                            <i class="fas fa-file-pdf"></i><span>PDF</span>
-                        </button>
-                        <button class="btn-export btn-export-excel" onclick="exportExcel()" title="Exportar a Excel">
-                            <i class="fas fa-file-excel"></i><span>Excel</span>
-                        </button>
-                        <button class="btn-export btn-export-csv" onclick="exportCSV()" title="Exportar a CSV">
-                            <i class="fas fa-file-csv"></i><span>CSV</span>
-                        </button>
-                    </div>
+                    <button class="btn-secondary-header" onclick="exportCSV()">
+                        <i class="fas fa-download"></i><span>CSV</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -134,20 +126,7 @@
         $('#datatable').DataTable().search(this.value).draw();
     });
 
-
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
-    }
-
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
+    // Exportar a CSV
     function exportCSV() {
         var table = $('#datatable').DataTable();
         var data = table.rows({ search: 'applied' }).data();
