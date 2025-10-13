@@ -5,7 +5,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/pets-style.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
 }
 
 <div class="col-12">
@@ -34,12 +34,12 @@
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
                     </div>
-                    <button class="btn-icon" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i>
+                        <button class="btn-export-datatable" onclick="location.reload()">
+                        Recargar
                     </button>
-                    <button class="btn-secondary-header" onclick="exportCSV()">
-                        <i class="fas fa-download"></i><span>CSV</span>
-                    </button>
+                    <div id="export-buttons-container" class="export-buttons-container">
+                        <!-- Los botones de DataTable se moveran aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,24 +215,6 @@
             'En Tratamiento': '<span class="status-badge status-tratamiento">En Tratamiento</span>'
         };
         return badges[estado] || badges['Disponible'];
-    }
-
-    // Exportar a CSV
-    function exportCSV() {
-        var table = $('#datatable').DataTable();
-        var data = table.rows({ search: 'applied' }).data();
-
-        var csv = 'ID,Nombre,Raza,Refugio,Estado\n';
-        data.each(function(row) {
-            csv += `${row.masc_Id},"${row.masc_Nombre}","${row.raza_Descripcion}","${row.refg_Nombre}","${row.masc_Estado || 'Disponible'}"\n`;
-        });
-
-        var blob = new Blob([csv], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'mascotas_' + new Date().toISOString().slice(0,10) + '.csv';
-        a.click();
     }
 </script>
 }

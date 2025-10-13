@@ -156,31 +156,32 @@ var datatable = (function () {
                 //serverSide: true,
                 buttons: [
                     {
-                    text: '<i class="mdi mdi-refresh"> Recargar</i>',
-                    titleAttr: 'Recargar tabla',
-                    action: function (e, dt, config) {
-                        dt.ajax.reload();
-                    }
+                        text: '<i class="mdi mdi-refresh"></i>',
+                        titleAttr: 'Recargar tabla',
+                        className: "btn btn-secondary",
+                        action: function (e, dt, config) {
+                            dt.ajax.reload();
+                        }
                     },
                     {
-                        title: "Exportar a CSV",
                         extend: "csvHtml5",
+                        title: "Exportar a CSV",
                         text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
-                        className: "btn-secondary",
+                        className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
                     {
                         extend: "pdfHtml5",
                         title: "Exportar a PDF",
                         text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
-                        class: "btn btn-secondary",
+                        className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
                     {
                         extend: "excelHtml5",
                         title: "Exportar a EXCEL",
                         text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
-                        class: "btn btn-secondary",
+                        className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
                     {
