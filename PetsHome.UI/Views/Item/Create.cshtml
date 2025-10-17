@@ -1,60 +1,93 @@
-﻿@model ItemViewModel
+@model ItemViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de item</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-box mr-2 text-white"></i>Registro de Item
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del nuevo item</p>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="itm_Id" type="hidden" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Codigo-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Codigo</label>
-                        <input class="form-control" asp-for="itm_Codigo" type="number" />
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+    <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+        <input class="form-control" asp-for="itm_Id" type="hidden" />
+
+        <!-- Datos del Item -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Información del item</h2>
+                <p class="card-description">Datos generales del item</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Código -->
+                    <div class="form-group">
+                        <label asp-for="itm_Codigo">Código</label>
+                        <input class="form-control" asp-for="itm_Codigo" type="number" placeholder="Ingrese el código del item" />
                         <span class="text-danger" asp-validation-for="itm_Codigo"></span>
                     </div>
-                    <!--Campo Descripcion-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Descripcion</label>
-                        <input class="form-control" asp-for="itm_Descripcion" type="text" />
+
+                    <!-- Campo Descripción -->
+                    <div class="form-group">
+                        <label asp-for="itm_Descripcion">Descripción</label>
+                        <input class="form-control" asp-for="itm_Descripcion" type="text" placeholder="Ingrese la descripción" />
                         <span class="text-danger" asp-validation-for="itm_Descripcion"></span>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Categoria-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Categoria</label>
-                        <select class="form-control" asp-for="cat_Id" asp-items="Model.itemList">
-                            <option value="">-- Seleccionar --</option>
-                        </select> 
+
+                    <!-- Campo Categoría -->
+                    <div class="form-group">
+                        <label asp-for="cat_Id">Categoría</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="cat_Id" asp-items="Model.itemList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
                         <span class="text-danger" asp-validation-for="cat_Id"></span>
                     </div>
-                    <!--Campo Precio-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Precio</label>
-                        <input class="form-control" asp-for="itm_Precio" type="text" />
+
+                    <!-- Campo Precio -->
+                    <div class="form-group">
+                        <label asp-for="itm_Precio">Precio</label>
+                        <input class="form-control" asp-for="itm_Precio" type="text" placeholder="Ingrese el precio" />
                         <span class="text-danger" asp-validation-for="itm_Precio"></span>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end">
-                    <a class="btn mr-2 btn btn-secondary" asp-action="Index">Cancelar</a>
-                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
-                </div>
-            </form>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+        </div>
+    </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-<script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/Extensions/image-Extension.js"></script>
 }

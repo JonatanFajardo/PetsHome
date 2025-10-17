@@ -1,80 +1,121 @@
-﻿@model SolicitudViewModel
+@model SolicitudViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de solicitud</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-file-alt mr-2 text-white"></i>Registro de Solicitud
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información de la nueva solicitud</p>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="sol_Id" type="hidden" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Identidad-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Identidad</label>
-                        <input class="form-control" asp-for="sol_Identidad" type="number" />
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+    <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+        <input class="form-control" asp-for="sol_Id" type="hidden" />
+
+        <!-- Datos del Solicitante -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del solicitante</h2>
+                <p class="card-description">Información personal del solicitante</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Identidad -->
+                    <div class="form-group">
+                        <label asp-for="sol_Identidad">Identidad</label>
+                        <input class="form-control" asp-for="sol_Identidad" type="number" placeholder="Ingrese el número de identidad" />
                         <span class="text-danger" asp-validation-for="sol_Identidad"></span>
                     </div>
-                    <!--Campo Nombres-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Nombres</label>
-                        <input class="form-control" asp-for="sol_Nombres" type="text" />
+
+                    <!-- Campo Nombres -->
+                    <div class="form-group">
+                        <label asp-for="sol_Nombres">Nombres</label>
+                        <input class="form-control" asp-for="sol_Nombres" type="text" placeholder="Ingrese los nombres" />
                         <span class="text-danger" asp-validation-for="sol_Nombres"></span>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Apellidos-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Apellidos</label>
-                        <input class="form-control" asp-for="sol_Apellidos" type="text" />
+
+                    <!-- Campo Apellidos -->
+                    <div class="form-group">
+                        <label asp-for="sol_Apellidos">Apellidos</label>
+                        <input class="form-control" asp-for="sol_Apellidos" type="text" placeholder="Ingrese los apellidos" />
                         <span class="text-danger" asp-validation-for="sol_Apellidos"></span>
                     </div>
-                    <!--Campo Telefono-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Telefono</label>
-                        <input class="form-control" asp-for="sol_Telefono" type="number" />
+
+                    <!-- Campo Teléfono -->
+                    <div class="form-group">
+                        <label asp-for="sol_Telefono">Teléfono</label>
+                        <input class="form-control" asp-for="sol_Telefono" type="number" placeholder="Ingrese el teléfono" />
                         <span class="text-danger" asp-validation-for="sol_Telefono"></span>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Correo-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Correo</label>
-                        <input class="form-control" asp-for="sol_Correo" type="email" />
+
+                    <!-- Campo Correo -->
+                    <div class="form-group">
+                        <label asp-for="sol_Correo">Correo</label>
+                        <input class="form-control" asp-for="sol_Correo" type="email" placeholder="correo@ejemplo.com" />
                         <span class="text-danger" asp-validation-for="sol_Correo"></span>
                     </div>
-                    <!--Campo Fecha-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Fecha</label>
+
+                    <!-- Campo Fecha -->
+                    <div class="form-group">
+                        <label asp-for="sol_Fecha">Fecha</label>
                         <input class="form-control" asp-for="sol_Fecha" type="date" />
                         <span class="text-danger" asp-validation-for="sol_Fecha"></span>
                     </div>
                 </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Mascota-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Mascota</label>
-                        <input class="form-control" asp-for="masc_Id" type="text" />
+            </div>
+        </div>
+
+        <!-- Datos de la Solicitud -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos de la solicitud</h2>
+                <p class="card-description">Información de la mascota solicitada</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Mascota -->
+                    <div class="form-group">
+                        <label asp-for="masc_Id">Mascota</label>
+                        <input class="form-control" asp-for="masc_Id" type="text" placeholder="Ingrese el ID de la mascota" />
                         <span class="text-danger" asp-validation-for="masc_Id"></span>
                     </div>
                 </div>
+            </div>
+        </div>
 
-            </form>
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+        </div>
+    </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-<script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/Extensions/image-Extension.js"></script>
 }
-

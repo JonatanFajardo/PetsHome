@@ -1,136 +1,171 @@
-﻿ @model VoluntarioViewModel
+@model VoluntarioViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de voluntario</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-hands-helping mr-2 text-white"></i>Registro de Voluntario
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del nuevo voluntario</p>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="vol_Id" type="hidden" />
-                <input class="form-control" asp-for="per.per_Id" type="hidden" />
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
 
-                <!--Datos Personales-->
-                <div class="card">
-                    <div class="card-body">
-                    <h5 class="card-title">Datos personales</h5>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <!--Campo Primer Nombre-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Primer Nombre</label>
-                                <input class="form-control" asp-for="per.per_PrimerNombre" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
-                            </div>
-                            <!--Campo Segundo Nombre-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Segundo Nombre</label>
-                                <input class="form-control" asp-for="per.per_SegundoNombre" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_SegundoNombre"></span>
-                            </div>
+                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data" id="voluntarioForm">
+                    <input class="form-control" asp-for="vol_Id" type="hidden" />
+                    <input class="form-control" asp-for="per.per_Id" type="hidden" />
+
+                    <!-- Datos Personales -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Datos personales</h2>
+                            <p class="card-description">Información básica del voluntario</p>
                         </div>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <!--Campo Apellido Paterno-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Apellido Paterno</label>
-                                <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Primer Nombre -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_PrimerNombre">Primer Nombre</label>
+                                    <input class="form-control" asp-for="per.per_PrimerNombre" type="text" placeholder="Ingrese el primer nombre" />
+                                    <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
+                                </div>
+
+                                <!-- Campo Segundo Nombre -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_SegundoNombre">Segundo Nombre</label>
+                                    <input class="form-control" asp-for="per.per_SegundoNombre" type="text" placeholder="Ingrese el segundo nombre" />
+                                    <span class="text-danger" asp-validation-for="per.per_SegundoNombre"></span>
+                                </div>
+
+                                <!-- Campo Apellido Paterno -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_ApellidoPaterno">Apellido Paterno</label>
+                                    <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" placeholder="Ingrese el apellido paterno" />
+                                    <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
+                                </div>
+
+                                <!-- Campo Apellido Materno -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_ApellidoMaterno">Apellido Materno</label>
+                                    <input class="form-control" asp-for="per.per_ApellidoMaterno" type="text" placeholder="Ingrese el apellido materno" />
+                                    <span class="text-danger" asp-validation-for="per.per_ApellidoMaterno"></span>
+                                </div>
+
+                                <!-- Campo Identidad -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_Identidad">Identidad</label>
+                                    <input class="form-control" asp-for="per.per_Identidad" type="text" placeholder="Ingrese el número de identidad" />
+                                    <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
+                                </div>
+
+                                <!-- Campo Fecha Nacimiento -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_FechaNacimiento">Fecha Nacimiento</label>
+                                    <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
+                                    <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
+                                </div>
+
+                                <!-- Campo Correo Electrónico -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_Correo">Correo Electrónico</label>
+                                    <input class="form-control" asp-for="per.per_Correo" type="email" placeholder="correo@ejemplo.com" />
+                                    <span class="text-danger" asp-validation-for="per.per_Correo"></span>
+                                </div>
+
+                                <!-- Campo Teléfono -->
+                                <div class="form-group">
+                                    <label asp-for="per.per_Telefono">Teléfono</label>
+                                    <input class="form-control" asp-for="per.per_Telefono" type="tel" placeholder="Ingrese el número de teléfono" />
+                                    <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
+                                </div>
                             </div>
-                            <!--Campo Apellido Materno-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Apellido Materno</label>
-                                <input class="form-control" asp-for="per.per_ApellidoMaterno" type="text" />
-                                <span class="text-danger" asp-validation-for="per.per_ApellidoMaterno"></span>
-                            </div>
-                        </div>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <!--Campo Identidad-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Identidad</label>
-                                <input class="form-control" asp-for="per.per_Identidad" type="number" />
-                                <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
-                            </div>
-                            <!--Campo Fecha Nacimiento-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Fecha Nacimiento</label>
-                                <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
-                                <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
-                            </div>
-                        </div>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <!--Campo Correo Electronico-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Correo Electrónico</label>
-                                <input class="form-control" asp-for="per.per_Correo" type="email" />
-                                <span class="text-danger" asp-validation-for="per.per_Correo"></span>
-                            </div>
-                            <!--Campo Teléfono-->
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Teléfono</label>
-                                <input class="form-control" asp-for="per.per_Telefono" type="number" />
-                                <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
-                            </div>
-                        </div>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <!--Campo Domicilio-->
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Domicilio</label>
-                                <textarea class="form-control" asp-for="per.per_Domicilio" rows="3"></textarea>
+
+                            <!-- Campo Domicilio (Full Width) -->
+                            <div class="form-group">
+                                <label asp-for="per.per_Domicilio">Domicilio</label>
+                                <textarea class="form-control" asp-for="per.per_Domicilio" rows="3" placeholder="Ingrese la dirección completa"></textarea>
                                 <span class="text-danger" asp-validation-for="per.per_Domicilio"></span>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card mt-4">
-                    <div class="card-body">
-                    <!--Titulo-->
-                        <div class="form-row justify-content-between">
-                            <h5 class="card-title">Datos de voluntario</h5>
-                            <!--Campo Recurrente-->
-                            <div class="col-3">
-                                <label class="float-right">
-                                    Recurrente
-                                    <input type="checkbox" asp-for="vol_Recurrente">
-                                </label>
-                            </div>
+                    <!-- Datos de Voluntario -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Datos de voluntario</h2>
+                            <p class="card-description">Información de participación</p>
                         </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Horas Trabajadas -->
+                                <div class="form-group">
+                                    <label asp-for="vol_HorasTrabajadas">Horas Trabajadas</label>
+                                    <input class="form-control" asp-for="vol_HorasTrabajadas" type="number" placeholder="Ingrese las horas trabajadas" />
+                                    <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
+                                </div>
 
-                        <!--Fila-->
-                        <div class="form-row">
-                            <!--Campo Horas Trabajadas-->
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Horas Trabajadas</label>
-                                <input class="form-control" asp-for="vol_HorasTrabajadas" type="number" />
-                                <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
-                            </div>
-                        </div>
-                        <!--Fila-->
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <div class="float-right mt-4">
-                                    <a class="btn mr-2 btn btn-secondary " asp-action="Index">Cancelar</a>
-                                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                                <!-- Campo Recurrente (Switch) -->
+                                <div class="form-group">
+                                    <div class="switch-container">
+                                        <div>
+                                            <label class="switch-label">Recurrente</label>
+                                            <div class="switch-status" id="recurrenteStatus">No</div>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="vol_Recurrente" id="vol_Recurrente">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-<script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/Extensions/image-Extension.js"></script>
+    <script>
+        // Recurrente Switch Handler
+        document.addEventListener('DOMContentLoaded', function () {
+            const recurrenteCheckbox = document.getElementById('vol_Recurrente');
+            const recurrenteStatus = document.getElementById('recurrenteStatus');
+
+            if (recurrenteCheckbox && recurrenteStatus) {
+                recurrenteStatus.textContent = recurrenteCheckbox.checked ? 'Sí' : 'No';
+                recurrenteCheckbox.addEventListener('change', function (e) {
+                    recurrenteStatus.textContent = e.target.checked ? 'Sí' : 'No';
+                });
+            }
+        });
+    </script>
 }

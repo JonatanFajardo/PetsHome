@@ -1,0 +1,315 @@
+/* Modern Form Styles - Complementary to main.css */
+
+/* CSS Variables for Modern Forms */
+:root {
+    --form-gray-50: #f9fafb;
+    --form-gray-100: #f3f4f6;
+    --form-gray-200: #e5e7eb;
+    --form-gray-300: #d1d5db;
+    --form-gray-400: #9ca3af;
+    --form-gray-500: #6b7280;
+    --form-gray-600: #4b5563;
+    --form-gray-700: #374151;
+    --form-gray-800: #1f2937;
+    --form-gray-900: #111827;
+    --form-radius: 0.5rem;
+    --form-transition: all 0.3s ease;
+}
+
+/* Page Header for Forms */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 1.875rem;
+    color: var(--form-gray-900);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.page-header p {
+    color: var(--form-gray-600);
+    font-size: 1rem;
+}
+
+/* Modern Card Styles */
+.card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+.card-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    border-bottom: none;
+    background-color: transparent;
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.375rem;
+    letter-spacing: -0.01em;
+}
+
+.card-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-body .card-title {
+    margin-bottom: 1rem;
+}
+
+/* Form Grid Layout */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.375rem;
+    letter-spacing: -0.01em;
+}
+
+/* Modern Form Controls */
+.form-group input.form-control,
+.form-group textarea.form-control,
+.form-group select.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    transition: var(--form-transition);
+    background-color: #ffffff;
+    color: var(--form-gray-900);
+    font-weight: 400;
+}
+
+.form-group input.form-control::placeholder,
+.form-group textarea.form-control::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.form-group input.form-control:focus,
+.form-group textarea.form-control:focus,
+.form-group select.form-control:focus {
+    outline: none;
+    border-color: #9ca3af;
+    box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.1);
+    background-color: #ffffff;
+}
+
+.form-group input.form-control.error,
+.form-group textarea.form-control.error,
+.form-group select.form-control.error {
+    border-color: #dc2626;
+}
+
+.form-group input.form-control.error:focus,
+.form-group textarea.form-control.error:focus,
+.form-group select.form-control.error:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+.form-group textarea.form-control {
+    resize: vertical;
+    min-height: 5rem;
+}
+
+/* Select Wrapper with Custom Arrow */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--form-gray-600);
+    pointer-events: none;
+}
+
+.select-wrapper select.form-control {
+    appearance: none;
+    padding-right: 2.5rem;
+}
+
+/* Error Messages */
+.text-danger {
+    font-size: 0.75rem;
+    color: #dc2626;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.error-message {
+    font-size: 0.75rem;
+    color: #dc2626;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* Modern Switch Container */
+.switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+.switch-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--form-gray-900);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.switch-status {
+    font-size: 0.875rem;
+    color: var(--form-gray-500);
+}
+
+/* Custom Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--form-gray-300);
+    transition: var(--form-transition);
+    border-radius: 24px;
+}
+
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #ffffff;
+    transition: var(--form-transition);
+    border-radius: 50%;
+}
+
+.switch input:checked + .switch-slider {
+    background-color: #EF4444;
+}
+
+.switch input:checked + .switch-slider:before {
+    transform: translateX(20px);
+}
+
+/* Form Actions (Buttons) */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-outline {
+    background-color: #ffffff;
+    color: var(--form-gray-700);
+    border-color: var(--form-gray-300);
+    border: 1px solid var(--form-gray-300);
+}
+
+.btn-outline:hover {
+    background-color: var(--form-gray-100);
+    color: var(--form-gray-700);
+    border-color: var(--form-gray-300);
+}
+
+/* Full Width Form Group (for textarea) */
+.form-group.col-md-12,
+.form-row .form-group.col-md-12 {
+    grid-column: 1 / -1;
+}
+
+/* Checkbox/Switch Alignment in Form */
+.form-row.justify-content-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Better spacing for card mt-4 */
+.card.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+}

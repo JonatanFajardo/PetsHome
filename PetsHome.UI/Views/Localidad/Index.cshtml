@@ -15,7 +15,7 @@
         <div class="pets-header-content">
             <div class="pets-title-section">
                 <h2 class="text-white"><i class="fa-map-marked-alt mr-2 text-white"></i>Gestión de Localidades</h2>
-                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
+                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("EditDepartamentos")'">
                     <i class="fas fa-plus mr-2"></i>Nuevo Departamento
                 </button>
             </div>
@@ -103,21 +103,13 @@
 </div>
 
 @section Scripts {
-<script src="~/js/components/datatable/datatable.partials.init.js"></script>
-<script>
-    // Inicializar tooltips
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
 <script src="~/js/pages/localidad.js"></script>
 <script>
-    // Configuracion del DataTable
     Localidad.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
-        urlInsert: "@Url.Action("Create")",
-        urlUpdate: "@Url.Action("Find")"
+        urlInsert: "@Url.Action("EditDepartamentos")",
+        urlUpdate: "@Url.Action("EditDepartamentos")"
     });
 
     // Busqueda global
