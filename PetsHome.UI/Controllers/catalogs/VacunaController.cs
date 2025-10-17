@@ -13,7 +13,7 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Catalogo/Vacuna/Index.cshtml");
         }
 
         public VacunaController(VacunaService vacunaService)

@@ -13,7 +13,7 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Catalogo/Raza/Index.cshtml");
         }
 
         public RazaController(RazaService razaService
