@@ -1,64 +1,107 @@
-﻿@model HistorialMedicoViewModel
+@model HistorialMedicoViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de historial medico</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-notes-medical mr-2 text-white"></i>Registro de Historial Médico
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del historial médico</p>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="medic_Id" type="hidden" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Mascota-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Mascota</label>
-                        <input class="form-control" asp-for="masc_Id" type="text" />
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+    <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+        <input class="form-control" asp-for="medic_Id" type="hidden" />
+
+        <!-- Información de la Mascota -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Información de la mascota</h2>
+                <p class="card-description">Identifique la mascota para el historial médico</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Mascota -->
+                    <div class="form-group">
+                        <label asp-for="masc_Id">Mascota</label>
+                        <input class="form-control" asp-for="masc_Id" type="text" placeholder="Ingrese el ID de la mascota" />
                         <span class="text-danger" asp-validation-for="masc_Id"></span>
                     </div>
-                    <!--Campo Esterilizacion-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Esterilizacion</label>
-                        <input class="form-control" asp-for="medic_Esterilizacion" type="text" />
-                        <span class="text-danger" asp-validation-for="medic_Esterilizacion"></span>
-                    </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Comportamiento-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Id</label>
-                        <input class="form-control" asp-for="com_Id" type="text" />
+
+                    <!-- Campo Comportamiento -->
+                    <div class="form-group">
+                        <label asp-for="com_Id">Comportamiento ID</label>
+                        <input class="form-control" asp-for="com_Id" type="text" placeholder="Ingrese el ID del comportamiento" />
                         <span class="text-danger" asp-validation-for="com_Id"></span>
                     </div>
-                    <!--Campo Salud Cuidado-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Salud Cuidado</label>
-                        <input class="form-control" asp-for="medic_SaludCuidado" type="text" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Información Médica -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Información médica</h2>
+                <p class="card-description">Detalles del estado de salud</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Esterilización -->
+                    <div class="form-group">
+                        <label asp-for="medic_Esterilizacion">Esterilización</label>
+                        <input class="form-control" asp-for="medic_Esterilizacion" type="text" placeholder="Ingrese información de esterilización" />
+                        <span class="text-danger" asp-validation-for="medic_Esterilizacion"></span>
+                    </div>
+
+                    <!-- Campo Salud Cuidado -->
+                    <div class="form-group">
+                        <label asp-for="medic_SaludCuidado">Salud y Cuidado</label>
+                        <input class="form-control" asp-for="medic_SaludCuidado" type="text" placeholder="Ingrese información de salud y cuidado" />
                         <span class="text-danger" asp-validation-for="medic_SaludCuidado"></span>
                     </div>
                 </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Informacion Adicional-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Informacion Adicional</label>
-                        <input class="form-control" asp-for="medic_InformacionAdicional" type="text" />
-                        <span class="text-danger" asp-validation-for="medic_InformacionAdicional"></span>
-                    </div>
+
+                <!-- Campo Información Adicional (Full Width) -->
+                <div class="form-group">
+                    <label asp-for="medic_InformacionAdicional">Información Adicional</label>
+                    <textarea class="form-control" asp-for="medic_InformacionAdicional" rows="4" placeholder="Ingrese información adicional del historial médico"></textarea>
+                    <span class="text-danger" asp-validation-for="medic_InformacionAdicional"></span>
                 </div>
-            </form>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+        </div>
+    </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-<script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/Extensions/image-Extension.js"></script>
 }
-

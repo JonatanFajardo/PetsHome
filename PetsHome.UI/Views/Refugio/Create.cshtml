@@ -1,105 +1,163 @@
-﻿@model RefugioViewModel
+@model RefugioViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>Registro de refugio</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-home mr-2 text-white"></i>Registro de Refugio
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del nuevo refugio</p>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-                <input class="form-control" asp-for="refg_Id" type="hidden" />
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Nombre-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Nombre</label>
-                        <input class="form-control" asp-for="refg_Nombre" type="text" />
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+    <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+        <input class="form-control" asp-for="refg_Id" type="hidden" />
+
+        <!-- Datos del Refugio -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Información del refugio</h2>
+                <p class="card-description">Datos generales del refugio</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Nombre -->
+                    <div class="form-group">
+                        <label asp-for="refg_Nombre">Nombre</label>
+                        <input class="form-control" asp-for="refg_Nombre" type="text" placeholder="Ingrese el nombre del refugio" />
                         <span class="text-danger" asp-validation-for="refg_Nombre"></span>
                     </div>
-                    <!--Campo Ubicación-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Ubicación</label>
-                        <input class="form-control" asp-for="refg_Ubicacion" type="text" />
+
+                    <!-- Campo Ubicación -->
+                    <div class="form-group">
+                        <label asp-for="refg_Ubicacion">Ubicación</label>
+                        <input class="form-control" asp-for="refg_Ubicacion" type="text" placeholder="Ingrese la ubicación" />
                         <span class="text-danger" asp-validation-for="refg_Ubicacion"></span>
                     </div>
-                </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo RTN-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">RTN</label>
-                        <input class="form-control" asp-for="refg_RTN" type="number" />
+
+                    <!-- Campo RTN -->
+                    <div class="form-group">
+                        <label asp-for="refg_RTN">RTN</label>
+                        <input class="form-control" asp-for="refg_RTN" type="number" placeholder="Ingrese el RTN" />
                         <span class="text-danger" asp-validation-for="refg_RTN"></span>
                     </div>
-                    <!--Campo Telefono-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Teléfono</label>
-                        <input class="form-control" asp-for="refg_Telefono" type="number" />
+
+                    <!-- Campo Teléfono -->
+                    <div class="form-group">
+                        <label asp-for="refg_Telefono">Teléfono</label>
+                        <input class="form-control" asp-for="refg_Telefono" type="number" placeholder="Ingrese el teléfono" />
                         <span class="text-danger" asp-validation-for="refg_Telefono"></span>
                     </div>
+
+                    <!-- Campo Correo Electrónico -->
+                    <div class="form-group">
+                        <label asp-for="refg_Correo">Correo Electrónico</label>
+                        <input class="form-control" asp-for="refg_Correo" type="email" placeholder="correo@ejemplo.com" />
+                        <span class="text-danger" asp-validation-for="refg_Correo"></span>
+                    </div>
+
+                    <!-- Campo Estado (Switch) -->
+                    <div class="form-group">
+                        <div class="switch-container">
+                            <div>
+                                <label class="switch-label">Estado</label>
+                                <div class="switch-status" id="estadoStatus">Activo</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" asp-for="refg_EsActivo" id="refg_EsActivo" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Departamento-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Departamento</label>
-                        <select class="form-control" asp-for="depto_Id" asp-items="Model.departamentoList">
-                            <option value="">-- Seleccionar --</option>
-                        </select>
+
+                <!-- Campo Información Adicional (Full Width) -->
+                <div class="form-group">
+                    <label asp-for="refg_InformacionAdicional">Información Adicional</label>
+                    <textarea class="form-control" asp-for="refg_InformacionAdicional" rows="4" placeholder="Ingrese información adicional del refugio"></textarea>
+                    <span class="text-danger" asp-validation-for="refg_InformacionAdicional"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ubicación Geográfica -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Ubicación geográfica</h2>
+                <p class="card-description">Seleccione el departamento y municipio</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Departamento -->
+                    <div class="form-group">
+                        <label asp-for="depto_Id">Departamento</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="depto_Id" asp-items="Model.departamentoList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
                         <span class="text-danger" asp-validation-for="depto_Id"></span>
                     </div>
-                    <!--Campo Municipio-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Municipio</label>
-                        <select class="form-control" asp-for="mpio_Id" asp-items="Model.municipioList">
-                            <option value="">-- Seleccionar --</option>
-                        </select>
+
+                    <!-- Campo Municipio -->
+                    <div class="form-group">
+                        <label asp-for="mpio_Id">Municipio</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="mpio_Id" asp-items="Model.municipioList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
                         <span class="text-danger" asp-validation-for="mpio_Id"></span>
                     </div>
                 </div>
-                <!--Fila-->
-                <div class="form-row">
-                    <!--Campo Información Adicional-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Información Adicional</label>
-                        <textarea class="form-control" asp-for="refg_InformacionAdicional" rows="4"></textarea>
-                        <span class="text-danger" asp-validation-for="refg_InformacionAdicional"></span>
-                        <div class="form-group col-md-6">
-                        </div>
-                    </div>
-                    <!--Campo Correo Electrónico-->
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Correo Electrónico</label>
-                        <input class="form-control" asp-for="refg_Correo" type="email" />
-                        <span class="text-danger" asp-validation-for="refg_Correo"></span>
-                        <!--Fila-->
-                        <!--Campo refg_EsActivo-->
-                        <div class="row mt-4 d-flex align-items-center justify-content-between">
-                            <!-- Botones de formulario -->
-                            <div class="col-md-5">
-                                <label>
-                                    <input type="checkbox" asp-for="refg_EsActivo">
-                                    Estado
-                                </label>
-                            </div>
-                            <div class="col-md-7 d-flex justify-content-end">
-                                <a class="btn mr-2 btn btn-secondary" asp-action="Index">Cancelar</a>
-                                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+        </div>
+    </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-<script src="~/js/load-dropdownlist.js"></script>
-<script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/Extensions/image-Extension.js"></script>
+    <script>
+        // Toggle switch functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const estadoCheckbox = document.getElementById('refg_EsActivo');
+            const estadoStatus = document.getElementById('estadoStatus');
+
+            if (estadoCheckbox && estadoStatus) {
+                estadoCheckbox.addEventListener('change', function() {
+                    estadoStatus.textContent = this.checked ? 'Activo' : 'Inactivo';
+                });
+            }
+        });
+    </script>
 }

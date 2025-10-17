@@ -8,8 +8,7 @@ var Vacuna = (function () {
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
                 { FieldName: "vac_Id", Size: 200 },
-                { FieldName: "vac_Descripcion" },
-                { FieldName: "EsActivo" }
+                { FieldName: "vac_Descripcion" }
             ];
             datatableCatalogs.init(Direction.listUrl, header);
         })

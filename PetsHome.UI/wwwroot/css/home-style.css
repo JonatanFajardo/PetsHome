@@ -1,0 +1,466 @@
+/* ========================================
+   PetsHome - Home Page Custom Styles
+   ======================================== */
+
+:root {
+    --primary-red: #ef4444;
+    --gradient-purple: linear-gradient(to right, #7c3aed, #6366f1);
+    --bg-light: #f0f2f5;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --border-light: #e5e7eb;
+}
+
+/* ========================================
+   Body & Container
+   ======================================== */
+
+body {
+    background-color: var(--bg-light);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container-fluid {
+    padding: 2rem;
+}
+
+/* ========================================
+   Welcome & Hero Cards
+   ======================================== */
+
+.welcome-card {
+    background: linear-gradient(135deg, #ACD8FD 0%, #85C1FC 100%);
+    border-radius: 20px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 200px;
+}
+
+.welcome-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-card h2 {
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+
+.welcome-card .btn-light {
+    border: none;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.welcome-card .btn-light:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   Weather Widget
+   ======================================== */
+
+.weather-widget {
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    color: white;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    min-height: 200px;
+}
+
+.weather-widget:hover {
+    transform: translateY(-3px);
+}
+
+.weather-widget i {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* ========================================
+   Statistics Cards (Tarjetas de Estadísticas)
+   ======================================== */
+
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    min-height: 160px;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.stat-card.primary-gradient {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.stat-card.success-gradient {
+    background: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+}
+
+.stat-card.warning-gradient {
+    background: linear-gradient(135deg, #ffc371 0%, #ff5f6d 100%);
+}
+
+.stat-card.info-gradient {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.stat-card h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 0.95rem;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+/* ========================================
+   Icon Circles
+   ======================================== */
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 24px;
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover .icon-circle {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: scale(1.1);
+}
+
+/* ========================================
+   Quick Action Cards (Acciones Rápidas)
+   ======================================== */
+
+.quick-action-card {
+    border-radius: 15px;
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.25rem;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.quick-action-card i {
+    transition: transform 0.3s ease;
+}
+
+.quick-action-card:hover i {
+    transform: scale(1.15);
+}
+
+.quick-action-card small {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+/* ========================================
+   Activity & Recent Activity
+   ======================================== */
+
+.recent-activity {
+    background: #ffffff;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.activity-item {
+    border-left: 4px solid;
+    padding: 1rem 0 1rem 15px;
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    background-color: #f9fafb;
+    padding-left: 20px;
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-item strong {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.activity-item p {
+    margin-bottom: 0.25rem;
+}
+
+/* ========================================
+   Carousel Card (Mascotas Destacadas)
+   ======================================== */
+
+.carousel-card {
+    background: linear-gradient(135deg, #fce043 0%, #fb7247 100%);
+    border-radius: 20px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    backdrop-filter: blur(4px);
+}
+
+.carousel-caption h6,
+.carousel-caption p {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* ========================================
+   Upcoming Appointments (Próximas Citas)
+   ======================================== */
+
+.list-group-item {
+    border: none !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 1rem 0;
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f9fafb;
+    padding-left: 0.5rem;
+}
+
+.list-group-item:last-child {
+    border-bottom: none !important;
+}
+
+.list-group-item h6 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.badge {
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.badge.bg-primary {
+    background-color: #6366f1 !important;
+}
+
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.badge.bg-warning {
+    background-color: #f59e0b !important;
+}
+
+/* ========================================
+   Tips & Reminders Cards
+   ======================================== */
+
+.tip-card {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-3px);
+}
+
+.tip-card .card-title {
+    color: #d9534f;
+    font-weight: 600;
+}
+
+.tip-card .card-text {
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+.btn-outline-primary {
+    color: #6366f1;
+    border-color: #6366f1;
+    transition: all 0.3s ease;
+    border-radius: 0.75rem;
+    font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+    background-color: #6366f1;
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   Section Headers
+   ======================================== */
+
+h5.text-secondary {
+    color: var(--text-dark) !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+h5.text-secondary::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, #7c3aed, #6366f1);
+    border-radius: 2px;
+}
+
+/* ========================================
+   Cards General Styling
+   ======================================== */
+
+.card {
+    border-radius: 15px;
+    border: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card.shadow-sm:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+.card.bg-light {
+    background-color: #ffffff !important;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+
+    .welcome-card h2 {
+        font-size: 1.35rem;
+    }
+
+    .stat-card h3 {
+        font-size: 2rem;
+    }
+
+    .stat-card {
+        min-height: 140px;
+    }
+
+    h5.text-secondary {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .quick-action-card {
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* ========================================
+   Animation Utilities
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ========================================
+   Scrollbar Customization
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #7c3aed, #6366f1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #6d28d9, #4f46e5);
+}

@@ -5,11 +5,11 @@ var Localidad = (function () {
     obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
-            //Nombre | Tama�o/AutoWidth | Visibilidad
+            //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'depto_Id'},
-                { FieldName: 'depto_Codigo'},
-                { FieldName: 'depto_Descripcion'}
+                { FieldName: 'depto_Id' },
+                { FieldName: 'depto_Codigo' },
+                { FieldName: 'depto_Descripcion' }
             ];
             datatable.init(Direction, header);
         })
