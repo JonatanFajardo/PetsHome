@@ -13,7 +13,7 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Catalogo/EmpleadosCargo/Index.cshtml");
         }
 
         public EmpleadosCargoController(EmpleadosCargoService empleadosCargoService)
