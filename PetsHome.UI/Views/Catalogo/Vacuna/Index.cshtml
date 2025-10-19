@@ -15,7 +15,7 @@
         <div class="pets-header-content">
             <div class="pets-title-section">
                 <h2 class="text-white"><i class="fa-syringe mr-2 text-white"></i>Gestión de Vacunas</h2>
-                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
+                <button class="btn-nueva-mascota" id="add-btn" data-toggle="modal" data-target="#edit-modal">
                     <i class="fas fa-plus mr-2"></i>Nuevo Vacuna
                 </button>
             </div>
@@ -51,7 +51,7 @@
             <thead>
                 <tr>
                     <th width="80">ID</th>
-                    <th>Nombre</th>
+                    <th>Descripción</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -60,6 +60,48 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Modal Edit/Create -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form asp-action="Add" method="post" autocomplete="off"
+                      data-ajax-begin="Catalogs.begin"
+                      data-ajax-success="Catalogs.success"
+                      data-ajax-failure="Catalogs.failure"
+                      data-ajax-complete="Catalogs.complete">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="vac_Id" id="item-id" value="@ViewBag.vac_Id" />
+
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="vac_Descripcion" class="control-label required"></label>
+                                    <input asp-for="vac_Descripcion" class="form-control" maxlength="50" id="Descripcion" />
+                                    <span class="text-danger" id="messageError"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center border-0">
+                        <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                            <i class="fas fa-times mr-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary px-4"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal Edit/Create -->
 
     <!-- Modal Delete -->
     <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -112,11 +154,17 @@
 <script src="~/js/pages/vacuna.js"></script>
 <script>
     // Configuración del DataTable
-    Vacuna.datatable({
+    Vacuna.datatableCatalogs({
         listUrl: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("Create")",
         urlUpdate: "@Url.Action("Find")"
+    });
+
+    // Configuración de Catalogs para el modal
+    Catalogs.configure({
+        displayName: "vacuna",
+        getUrl: "@Url.Action("Find")"
     });
 
     // Búsqueda global
