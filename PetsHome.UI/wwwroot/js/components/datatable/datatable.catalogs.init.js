@@ -230,18 +230,20 @@ var datatableCatalogs = (function () {
 
         head.push({
             targets: i,
-            className: "text-center",
-            width: 110,
+            className: "text-center action-buttons-cell",
+            width: 130,
             render: function (data, type, row) {
                 botones = "";
                 var head = _header[0].FieldName;
                 if (type == "display") {
+                    botones += '<div class="action-buttons-wrapper">';
                     // Botón Ver Detalles
                     botones += '<button class="action-btn btn-view" onclick="viewDetailCatalog(' + row[head] + ')" title="Ver detalles"><i class="fas fa-eye"></i></button>';
                     // Botón Editar
                     botones += '<button class="action-btn btn-edit edit-btn" data-id="' + row[head] + '" title="Editar"><i class="fas fa-edit"></i></button>';
                     // Botón Eliminar
                     botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
+                    botones += '</div>';
                 }
                 return botones;
             }
