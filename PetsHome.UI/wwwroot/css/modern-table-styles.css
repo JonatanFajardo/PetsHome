@@ -399,6 +399,19 @@
     font-size: 16px;
 }
 
+/* Contenedor de botones de acción */
+.action-buttons-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.action-buttons-cell {
+    white-space: nowrap !important;
+}
+
 /* Vista de Cards */
 .pet-card {
     background: white;
