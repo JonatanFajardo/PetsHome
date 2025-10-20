@@ -57,10 +57,15 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var itemDetail = await _VoluntarioService.DetailAsync(id);
-            if (itemDetail != null)
+            if (id != 0)
             {
-                return AjaxResult(itemDetail, true);
+                var itemDetail = await _VoluntarioService.DetailAsync(id);
+                if (itemDetail == null)
+                {
+                    ShowAlert("Voluntario no encontrado", AlertMessageType.Error);
+                    return RedirectToAction("Index");
+                }
+                return View("Details", itemDetail);
             }
             else
             {

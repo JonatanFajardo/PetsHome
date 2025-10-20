@@ -60,6 +60,25 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        public async Task<IActionResult> Detail(int id)
+        {
+            if (id != 0)
+            {
+                var itemDetail = await _mascotaService.FindAsync(id);
+                if (itemDetail == null)
+                {
+                    ShowAlert("Mascota no encontrada", AlertMessageType.Error);
+                    return RedirectToAction("Index");
+                }
+                return View("Details", itemDetail);
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
         public async Task<IActionResult> Add(MascotaViewModel model)
         {
             if (!model.isEdit)

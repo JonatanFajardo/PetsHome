@@ -1,0 +1,264 @@
+@model ItemViewModel
+@{
+    ViewData["Title"] = "Detalles de Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.itm_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.itm_Descripcion</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-tag"></i>
+                            <span>@Model.cat_Descripcion</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas fa-barcode"></i>
+                                <span>@Model.itm_Codigo</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-home"></i>
+                                <span>@Model.refg_Nombre</span>
+                            </div>
+                            @if (Model.itm_Stock.HasValue)
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-cubes"></i>
+                                    <span>Stock: @Model.itm_Stock.Value</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.itm_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.itm_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información General -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información General</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-box"></i>
+                                    <span>Descripción</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.itm_Descripcion</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-barcode"></i>
+                                    <span>Código</span>
+                                </div>
+                                <div class="detail-value">@Model.itm_Codigo</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Categoría</span>
+                                </div>
+                                <div class="detail-value">@Model.cat_Descripcion</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-building"></i>
+                                    <span>Refugio</span>
+                                </div>
+                                <div class="detail-value">@Model.refg_Nombre</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Inventario -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-warehouse"></i>
+                        <h3>Información de Inventario</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>Precio</span>
+                                </div>
+                                <div class="detail-value detail-value-large">L. @Model.itm_Precio.ToString("N2")</div>
+                            </div>
+
+                            @if (Model.itm_Stock.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-cubes"></i>
+                                        <span>Stock Actual</span>
+                                    </div>
+                                    <div class="detail-value">@Model.itm_Stock.Value unidades</div>
+                                </div>
+                            }
+
+                            @if (Model.itm_Entrada.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>Entradas</span>
+                                    </div>
+                                    <div class="detail-value">@Model.itm_Entrada.Value unidades</div>
+                                </div>
+                            }
+
+                            @if (Model.itm_Salida.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>Salidas</span>
+                                    </div>
+                                    <div class="detail-value">@Model.itm_Salida.Value unidades</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@(Model.itm_NombreUsuarioCrea ?? "Sistema")</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@Model.itm_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.itm_UsuarioModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.itm_NombreUsuarioModifica ?? "Sistema")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.itm_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="itm_Id" id="delete-itm-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar el item @Model.itm_Descripcion?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-itm-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}
