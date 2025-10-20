@@ -446,6 +446,67 @@ body {
     border-radius: 1.2rem;
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
     box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+    transition: all 0.3s ease;
+}
+
+.tip-card.changing {
+    transform: scale(0.99);
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);
+}
+
+.tip-card .fa-lightbulb {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tip-card.changing .fa-lightbulb {
+    transform: rotate(20deg) scale(1.1);
+    color: #f59e0b !important;
+}
+
+.tip-card #tip-text {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.tip-card #tip-source {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tip-card #tip-text.fade-out {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+}
+
+.tip-card #tip-source.fade-out {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+/* Indicadores de tips */
+.tip-indicators {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tip-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tip-indicator:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    transform: scale(1.2);
+}
+
+.tip-indicator.active {
+    background-color: #f59e0b;
+    width: 24px;
+    border-radius: 4px;
 }
 
 /* ========================================
