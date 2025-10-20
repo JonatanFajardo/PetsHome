@@ -2,14 +2,14 @@ var Inventario = (function () {
 
     var obj = {};
 
-    obj.datatableCatalogs = function (Direction) {
+    obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
-            //Nombre | Tama�o/AutoWidth | Visibilidad
+            //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {FieldName: "inv_Id"},
                 {FieldName: "inv_Fecha"},
-                {FieldName: "refg_Id"}
+                {FieldName: "refg_Nombre"}
             ];
             datatable.init(Direction, header);
         })

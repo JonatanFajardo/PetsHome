@@ -2,7 +2,7 @@ var InventariosDetalle = (function () {
 
     var obj = {};
 
-    obj.datatable = function (Direction) {
+    obj.datatablePartials = function (Direction) {
         $(function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
@@ -18,7 +18,7 @@ var InventariosDetalle = (function () {
                 {FieldName: "invdet_UsuarioModifica"},
                 {FieldName: "invdet_FechaModifica"}
             ];
-            datatable.init(Direction, header);
+            datatablePartials.init(Direction, header);
         })
     }
     return obj;
