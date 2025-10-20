@@ -21,7 +21,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool adop_EsAprobado { get; set; }
+        public string adop_Estado { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>

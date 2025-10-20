@@ -13,7 +13,7 @@ namespace PetsHome.Logic.Repositories
     {
         public async Task<IEnumerable<PR_Refugio_Adopciones_ListResult>> ListAsync()
         {
-            const string sqlQuery = "[General].[PR_Refugio_Adopciones_List]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_Adopciones_List]";
             return await DbApp.Select<PR_Refugio_Adopciones_ListResult>(sqlQuery);
         }
 
@@ -39,7 +39,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Adopcion_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@sol_Id", entity.sol_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@adop_EsAprobado", entity.adop_EsAprobado, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@adop_Estado", entity.adop_Estado, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@adop_UsuarioCrea", entity.adop_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -51,7 +51,7 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@adop_Id", entity.adop_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@sol_Id", entity.sol_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@adop_EsAprobado", entity.adop_EsAprobado, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@adop_Estado", entity.adop_Estado, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@adop_UsuarioModifica", entity.adop_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }

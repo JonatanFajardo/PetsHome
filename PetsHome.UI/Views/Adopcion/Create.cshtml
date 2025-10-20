@@ -48,11 +48,16 @@
                         <span class="text-danger" asp-validation-for="sol_Id"></span>
                     </div>
 
-                    <!-- Campo Es Aprobado -->
+                    <!-- Campo Estado -->
                     <div class="form-group">
-                        <label asp-for="adop_EsAprobado">Estado de Aprobación</label>
-                        <input class="form-control" asp-for="adop_EsAprobado" type="text" placeholder="Ingrese el estado de aprobación" />
-                        <span class="text-danger" asp-validation-for="adop_EsAprobado"></span>
+                        <label asp-for="adop_Estado">Estado de Aprobación</label>
+                        <select class="form-control" asp-for="adop_Estado">
+                            <option value="">Seleccione un estado</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Aprobado">Aprobado</option>
+                            <option value="Rechazado">Rechazado</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="adop_Estado"></span>
                     </div>
                 </div>
             </div>

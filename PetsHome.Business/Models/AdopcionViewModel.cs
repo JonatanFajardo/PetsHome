@@ -36,7 +36,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Es aprobado")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public bool adop_EsAprobado { get; set; }
+        public string adop_Estado { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea la adopción.
@@ -84,5 +84,17 @@ namespace PetsHome.Business.Models
                     return true;
             }
         }
+
+        /// <summary>
+        /// Obtiene o establece el nombre de la mascota.
+        /// </summary>
+        [Display(Name = "Mascota")]
+        public string? masc_Nombre { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el nombre del adoptante.
+        /// </summary>
+        [Display(Name = "Adoptante")]
+        public string? per_Nombre { get; set; }
     }
 }

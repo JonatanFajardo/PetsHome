@@ -27,6 +27,21 @@ namespace PetsHome.UI
             services.AddBusinessLogic();
             services.Configure<MascotaViewModel>(Configuration.GetSection("Filepath"));
 
+            // Configuración de CORS para Angular
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp", builder =>
+                {
+                    builder.WithOrigins(
+                            "http://localhost:4200",
+                            "http://localhost:4201",
+                            "http://localhost:4202"
+                        )
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
 
             services.AddHttpClient();
             services.AddHttpContextAccessor();
@@ -52,6 +67,9 @@ namespace PetsHome.UI
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            // Habilitar CORS antes de Authorization
+            app.UseCors("AllowAngularApp");
 
             app.UseAuthorization();
 

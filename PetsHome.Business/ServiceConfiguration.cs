@@ -73,6 +73,7 @@ namespace PetsHome.Business
             services.AddScoped<SolicitudService>();
             services.AddScoped<VacunaService>();
             services.AddScoped<VoluntarioService>();
+            services.AddScoped<HomeService>();
 
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
