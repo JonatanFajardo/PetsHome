@@ -1,0 +1,177 @@
+@model EmpleadoCargoViewModel
+@{
+    ViewData["Title"] = "Detalles de Cargo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.cag_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.cag_Descripcion</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-folder"></i>
+                            <span>Cargo de Empleado</span>
+                        </div>
+                        @if (Model.cag_Salario.HasValue)
+                        {
+                            <div class="profile-meta">
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>L. @Model.cag_Salario.Value.ToString("N2")</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.cag_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información Principal -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información del Cargo</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>Descripción</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.cag_Descripcion</div>
+                            </div>
+
+                            @if (Model.cag_Salario.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <span>Salario</span>
+                                    </div>
+                                    <div class="detail-value detail-value-large">L. @Model.cag_Salario.Value.ToString("N2")</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Creado por</span>
+                                </div>
+                                <div class="detail-value">@(Model.cag_NombreUsuarioCrea ?? "Sistema")</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    <span>Fecha de creación</span>
+                                </div>
+                                <div class="detail-value">@Model.cag_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                            </div>
+                            @if (Model.cag_UsuarioModifica.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user-edit"></i>
+                                        <span>Modificado por</span>
+                                    </div>
+                                    <div class="detail-value">@(Model.cag_NombreUsuarioModifica ?? "Sistema")</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <span>Última modificación</span>
+                                    </div>
+                                    <div class="detail-value">@(Model.cag_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="emp_id" id="delete-cag-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar el cargo "@Model.cag_Descripcion"?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-cag-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

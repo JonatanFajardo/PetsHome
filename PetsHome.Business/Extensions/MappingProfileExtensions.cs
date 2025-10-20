@@ -62,7 +62,10 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Procedencias_InsertResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_ListResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Raza_DropdownResult, RazaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Razas_DetailResult, RazaViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Razas_DetailResult, RazaViewModel>()
+                .ForMember(dest => dest.raza_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.raza_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion))
+                .ReverseMap();
             CreateMap<PR_Refugio_Razas_FindResult, RazaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Razas_ListResult, RazaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Refugio_DropdownResult, RefugioViewModel>().ReverseMap();

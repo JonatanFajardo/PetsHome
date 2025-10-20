@@ -1,0 +1,236 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Detalles de " + ViewBag.CatalogoTitulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var iconoClase = ViewBag.IconoClase ?? "fa-tag";
+    var catalogoNombre = ViewBag.CatalogoTitulo ?? "Catálogo";
+    var controllerName = ViewBag.ControllerName ?? "Home";
+
+    // Variables para el ID y parámetro de eliminación
+    var entityId = ViewBag.EntityId;
+    var deleteParamName = ViewBag.DeleteParamName;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas @iconoClase"></i>
+                        </div>
+                        <div class="profile-badge">#@entityId.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@ViewBag.MainTitle</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-folder"></i>
+                            <span>@catalogoNombre</span>
+                        </div>
+                        @if (ViewBag.MetaItems != null)
+                        {
+                            <div class="profile-meta">
+                                @foreach (var metaItem in ViewBag.MetaItems)
+                                {
+                                    <div class="profile-meta-item">
+                                        <i class="fas @metaItem.Icon"></i>
+                                        <span>@metaItem.Text</span>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Index", (string)ViewBag.ControllerName)" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@entityId)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                @if (ViewBag.MainFields != null && ViewBag.MainFields.Count > 0)
+                {
+                    <!-- Información Principal -->
+                    <div class="detail-card detail-card-@(ViewBag.MainFields.Count <= 3 ? "half" : "full")">
+                        <div class="detail-card-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Información Principal</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
+                                @foreach (var field in ViewBag.MainFields)
+                                {
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas @field.Icon"></i>
+                                            <span>@field.Label</span>
+                                        </div>
+                                        <div class="detail-value @(field.IsLarge ? "detail-value-large" : "")">
+                                            @if (field.IsBadge)
+                                            {
+                                                <span class="status-badge @field.BadgeClass">@field.Value</span>
+                                            }
+                                            else
+                                            {
+                                                @field.Value
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.SecondaryFields != null && ViewBag.SecondaryFields.Count > 0)
+                {
+                    <!-- Información Secundaria -->
+                    <div class="detail-card detail-card-@(ViewBag.SecondaryFields.Count <= 3 ? "half" : "full")">
+                        <div class="detail-card-header">
+                            <i class="fas @(ViewBag.SecondaryIcon ?? "fa-list")"></i>
+                            <h3>@(ViewBag.SecondaryTitle ?? "Información Adicional")</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
+                                @foreach (var field in ViewBag.SecondaryFields)
+                                {
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas @field.Icon"></i>
+                                            <span>@field.Label</span>
+                                        </div>
+                                        <div class="detail-value @(field.IsLarge ? "detail-value-large" : "")">
+                                            @if (field.IsBadge)
+                                            {
+                                                <span class="status-badge @field.BadgeClass">@field.Value</span>
+                                            }
+                                            else
+                                            {
+                                                @field.Value
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@(ViewBag.UsuarioCrea ?? "Sistema")</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@ViewBag.FechaCrea</div>
+                                    </div>
+                                </div>
+                                @if (ViewBag.TieneModificacion)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@(ViewBag.UsuarioModifica ?? "Sistema")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@ViewBag.FechaModifica</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" asp-controller="@controllerName" method="post">
+                <input type="hidden" name="@deleteParamName" id="delete-entity-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar este @catalogoNombre.ToLower()?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-entity-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

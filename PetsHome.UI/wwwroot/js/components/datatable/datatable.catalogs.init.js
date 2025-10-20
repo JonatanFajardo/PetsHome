@@ -277,7 +277,7 @@ function viewDetailCatalog(id) {
     var pathArray = window.location.pathname.split('/');
     var controller = pathArray[2] || pathArray[1]; // En catálogos es /Catalogo/NombreCatalogo
 
-    // Redirigir a la página de detalles
-    window.location.href = '/Catalogo/' + controller + '/Detail/' + id;
+    // Redirigir a la página de detalles (sin /Catalogo/ porque el controlador ya maneja la ruta correcta)
+    window.location.href = '/' + controller + '/Details/' + id;
 }
 
