@@ -9,7 +9,7 @@ namespace PetsHome.Common.Entities
     {
         public int adop_Id { get; set; }
         public int sol_Id { get; set; }
-        public bool adop_EsAprobado { get; set; }
+        public string adop_Estado { get; set; }
         public bool adop_EsEliminado { get; set; }
         public int adop_UsuarioCrea { get; set; }
         public DateTime adop_FechaCrea { get; set; }

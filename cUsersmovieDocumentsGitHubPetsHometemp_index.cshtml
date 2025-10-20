@@ -1,6 +1,4 @@
-﻿@model PetsHome.Business.Models.HomeViewModel
-@using System.Linq
-@{
+﻿@{
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -142,51 +140,51 @@
 
             <!-- Recent Activity -->
             <div class="col-md-4 mb-4">
-                <h5 class="section-title">Adopciones Recientes/Pendientes</h5>
+                <h5 class="section-title">Actividad Reciente</h5>
                 <div class="card recent-activity">
                     <div class="card-body p-0">
-                        @if (Model?.UltimasAdopciones != null && Model.UltimasAdopciones.Any())
-                        {
-                            foreach (var adopcion in Model.UltimasAdopciones)
-                            {
-                                var iconClass = adopcion.adop_Estado == "Aprobado" ? "fa-paw" :
-                                               adopcion.adop_Estado == "Rechazado" ? "fa-times-circle" : "fa-heart";
-                                var iconColor = adopcion.adop_Estado == "Aprobado" ? "bg-success-light" :
-                                               adopcion.adop_Estado == "Rechazado" ? "bg-danger-light" : "bg-pink-light";
-                                var textColor = adopcion.adop_Estado == "Aprobado" ? "text-success" :
-                                               adopcion.adop_Estado == "Rechazado" ? "text-danger" : "text-pink";
-                                var estadoTexto = adopcion.adop_Estado ?? "fue adoptada";
-                                var nombreMascota = adopcion.masc_Nombre ?? "Mascota";
-                                var nombreAdoptante = adopcion.per_Nombre ?? "una familia";
-                                var diasTranscurridos = (DateTime.Now - adopcion.adop_FechaCrea).Days;
-                                var tiempoTexto = diasTranscurridos == 0 ? "Hace 2 horas" :
-                                                 diasTranscurridos == 1 ? "Ayer" :
-                                                 $"Hace {diasTranscurridos} días";
-
-                                <div class="activity-item">
-                                    <div class="d-flex align-items-start">
-                                        <div class="activity-icon @iconColor me-3">
-                                            <i class="fas @iconClass @textColor"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                                <span class="fw-semibold">@nombreMascota @estadoTexto</span>
-                                                <small class="text-muted">@tiempoTexto</small>
-                                            </div>
-                                            <small class="text-muted d-block">Por @nombreAdoptante</small>
-                                        </div>
-                                    </div>
+                        <div class="activity-item">
+                            <div class="d-flex align-items-start">
+                                <div class="activity-icon bg-danger-light me-3">
+                                    <i class="fas fa-dog text-danger"></i>
                                 </div>
-                            }
-                        }
-                        else
-                        {
-                            <div class="activity-item">
-                                <div class="d-flex align-items-center justify-content-center p-3">
-                                    <small class="text-muted">No hay adopciones recientes</small>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <span class="fw-semibold">Max fue registrado</span>
+                                        <small class="text-muted">Hace 2 horas</small>
+                                    </div>
+                                    <small class="text-muted d-block">Golden Retriever, 2 años</small>
                                 </div>
                             </div>
-                        }
+                        </div>
+                        <div class="activity-item">
+                            <div class="d-flex align-items-start">
+                                <div class="activity-icon bg-success-light me-3">
+                                    <i class="fas fa-syringe text-success"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <span class="fw-semibold">Vacuna aplicada a Luna</span>
+                                        <small class="text-muted">Hace 4 horas</small>
+                                    </div>
+                                    <small class="text-muted d-block">Antirrábica</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="d-flex align-items-start">
+                                <div class="activity-icon bg-pink-light me-3">
+                                    <i class="fas fa-heart text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <span class="fw-semibold">Mimi fue adoptada</span>
+                                        <small class="text-muted">Ayer</small>
+                                    </div>
+                                    <small class="text-muted d-block">Por la familia González</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

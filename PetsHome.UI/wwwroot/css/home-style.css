@@ -312,6 +312,10 @@ body {
     background-color: rgba(236, 72, 153, 0.1);
 }
 
+.text-pink {
+    color: #ec4899;
+}
+
 .quick-action-card p {
     font-size: 0.9rem;
     color: #1f2937;

@@ -21,6 +21,18 @@ namespace PetsHome.Common.Entities
        /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-       public bool adop_EsAprobado { get; set; }
+       public string adop_Estado { get; set; }
+       /// <summary>
+        /// Obtiene o establece el nombre de la mascota.
+        /// </summary>
+       public string masc_Nombre { get; set; }
+       /// <summary>
+        /// Obtiene o establece el nombre del adoptante.
+        /// </summary>
+       public string per_Nombre { get; set; }
+       /// <summary>
+        /// Obtiene o establece la fecha de creación.
+        /// </summary>
+       public DateTime adop_FechaCrea { get; set; }
     }
 }
