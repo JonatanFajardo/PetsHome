@@ -2,7 +2,9 @@
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -50,12 +52,19 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [ActionName("Details")]
         public async Task<IActionResult> Detail(int id)
         {
-            var itemDetail = await _razaService.DetailAsync(id);
-            if (itemDetail != null)
+            if (id != 0)
             {
-                return AjaxResult(itemDetail, true);
+                var itemDetail = await _razaService.DetailAsync(id);
+                if (itemDetail == null)
+                {
+                    ShowAlert("Raza no encontrada", AlertMessageType.Error);
+                    return RedirectToAction("Index");
+                }
+
+                return View("~/Views/Catalogo/Raza/Details.cshtml", itemDetail);
             }
             else
             {

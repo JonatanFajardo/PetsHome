@@ -204,7 +204,13 @@ namespace PetsHome.DataAccess.Extensions
         /// <returns>El detalle del objeto.</returns>
         public static async Task<T> Detail<T>(string sqlQuery, DynamicParameters parameters)
         {
-            return default(T);
+            using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = await database.QueryFirstOrDefaultAsync<T>(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                database.Close();
+                database.Dispose();
+                return result;
+            }
         }
 
         /// <summary>
