@@ -13,14 +13,14 @@ namespace PetsHome.Business.Models
         public int TotalMascotasRegistradas { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el total de citas programadas para hoy.
+        /// Obtiene o establece el total de próximas citas médicas programadas.
         /// </summary>
-        public int CitasHoy { get; set; }
+        public int ProximasCitasMedicas { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el total de medicamentos por vencer.
+        /// Obtiene o establece el total de donaciones recibidas.
         /// </summary>
-        public int MedicamentosPorVencer { get; set; }
+        public int DonacionesRecibidas { get; set; }
 
         /// <summary>
         /// Obtiene o establece el total de adopciones pendientes.

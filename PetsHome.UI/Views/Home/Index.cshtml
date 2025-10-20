@@ -50,7 +50,7 @@
                             <i class="fas fa-dog"></i>
                         </div>
                         <div>
-                            <h3 class="fw-bold text-white">128</h3>
+                            <h3 class="fw-bold text-white">@Model.TotalMascotasRegistradas</h3>
                             <p class="mb-0 text-white">Mascotas Registradas</p>
                         </div>
                     </div>
@@ -60,10 +60,10 @@
                 <div class="card stat-card success-gradient">
                     <div class="card-body">
                         <div class="icon-circle">
-                            <i class="fas fa-gift"></i>
+                            <i class="fas fa-calendar-check"></i>
                         </div>
-                        <h3 class="fw-bold text-white">18</h3>
-                        <p class="mb-0 text-white">Citas Hoy</p>
+                        <h3 class="fw-bold text-white">@Model.ProximasCitasMedicas</h3>
+                        <p class="mb-0 text-white">Próximas Citas Médicas</p>
                     </div>
                 </div>
             </div>
@@ -71,10 +71,10 @@
                 <div class="card stat-card warning-gradient">
                     <div class="card-body">
                         <div class="icon-circle">
-                            <i class="fas fa-pills"></i>
+                            <i class="fas fa-hand-holding-heart"></i>
                         </div>
-                        <h3 class="fw-bold text-white">5</h3>
-                        <p class="mb-0 text-white">Medicamentos por Vencer</p>
+                        <h3 class="fw-bold text-white">@Model.DonacionesRecibidas</h3>
+                        <p class="mb-0 text-white">Donaciones Recibidas</p>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                         <div class="icon-circle">
                             <i class="fas fa-heart"></i>
                         </div>
-                        <h3 class="fw-bold text-white">12</h3>
+                        <h3 class="fw-bold text-white">@Model.AdopcionesPendientes</h3>
                         <p class="mb-0 text-white">Adopciones Pendientes</p>
                     </div>
                 </div>
@@ -256,11 +256,15 @@
                             <div class="me-3">
                                 <i class="fas fa-lightbulb fa-2x text-warning"></i>
                             </div>
-                            <div>
-                                <h6 class="card-title">💡 Tip de Cuidado</h6>
-                                <p class="card-text">El ejercicio regular es fundamental para la salud física y mental de las mascotas. Un perro adulto necesita al menos 30 minutos de actividad diaria.</p>
-                                <small class="text-muted">Fuente: Asociación Veterinaria Mundial</small>
+                            <div class="flex-grow-1">
+                                <h6 class="card-title"> Tip de Cuidado</h6>
+                                <p class="card-text" id="tip-text">El ejercicio regular es fundamental para la salud física y mental de las mascotas. Un perro adulto necesita al menos 30 minutos de actividad diaria.</p>
+                                <small class="text-muted" id="tip-source">Fuente: Asociación Veterinaria Mundial</small>
                             </div>
+                        </div>
+                        <div class="mt-3 d-flex justify-content-between align-items-center">
+                            <div class="tip-indicators" id="tip-indicators"></div>
+                            <small class="text-muted"><span id="tip-counter">1</span>/<span id="tip-total">10</span></small>
                         </div>
                     </div>
                 </div>
@@ -289,5 +293,112 @@
                 }, 150);
             });
         });
+
+        // Tips de cuidado rotación automática
+        const tips = [
+            {
+                text: "El ejercicio regular es fundamental para la salud física y mental de las mascotas. Un perro adulto necesita al menos 30 minutos de actividad diaria.",
+                source: "Asociación Veterinaria Mundial"
+            },
+            {
+                text: "La hidratación es vital: asegúrate de que tu mascota siempre tenga acceso a agua fresca y limpia. Cambia el agua al menos dos veces al día.",
+                source: "Colegio de Médicos Veterinarios"
+            },
+            {
+                text: "Las visitas veterinarias regulares son esenciales. Se recomienda un chequeo completo al menos una vez al año, o cada 6 meses para mascotas mayores.",
+                source: "Organización Mundial de Sanidad Animal"
+            },
+            {
+                text: "La socialización temprana es clave para el desarrollo de cachorros. Exponlos a diferentes personas, animales y ambientes de forma controlada.",
+                source: "Academia de Comportamiento Animal"
+            },
+            {
+                text: "Una dieta balanceada adaptada a la edad, tamaño y condición de salud de tu mascota previene problemas de obesidad y enfermedades crónicas.",
+                source: "Nutrición Veterinaria Avanzada"
+            },
+            {
+                text: "El cepillado regular no solo mantiene el pelaje brillante, sino que también ayuda a detectar parásitos, bultos o anomalías en la piel.",
+                source: "Asociación de Cuidado Animal"
+            },
+            {
+                text: "Mantén al día el calendario de vacunación de tu mascota. Las vacunas previenen enfermedades graves y potencialmente mortales.",
+                source: "Centro de Control de Enfermedades Veterinarias"
+            },
+            {
+                text: "Los gatos también necesitan actividad física. Proporciona juguetes interactivos y dedica al menos 15 minutos diarios al juego activo.",
+                source: "Federación Internacional Felina"
+            },
+            {
+                text: "La salud dental es crucial: el 80% de los perros mayores de 3 años sufren problemas dentales. Cepilla sus dientes regularmente y ofrece premios dentales.",
+                source: "Asociación Dental Veterinaria"
+            },
+            {
+                text: "Nunca dejes a tu mascota en un vehículo cerrado, incluso con las ventanas abiertas. La temperatura interior puede alcanzar niveles peligrosos en minutos.",
+                source: "Protección Animal Internacional"
+            }
+        ];
+
+        let currentTipIndex = 0;
+        const tipText = document.getElementById('tip-text');
+        const tipSource = document.getElementById('tip-source');
+        const tipCounter = document.getElementById('tip-counter');
+        const tipTotal = document.getElementById('tip-total');
+        const tipIndicators = document.getElementById('tip-indicators');
+        const tipCard = document.querySelector('.tip-card');
+
+        // Establecer el total de tips
+        tipTotal.textContent = tips.length;
+
+        // Crear indicadores
+        function createIndicators() {
+            tipIndicators.innerHTML = '';
+            for (let i = 0; i < tips.length; i++) {
+                const indicator = document.createElement('span');
+                indicator.className = 'tip-indicator' + (i === 0 ? ' active' : '');
+                indicator.onclick = () => goToTip(i);
+                tipIndicators.appendChild(indicator);
+            }
+        }
+
+        // Cambiar a un tip específico
+        function goToTip(index) {
+            // Añadir animación a la tarjeta completa
+            tipCard.classList.add('changing');
+
+            // Aplicar efecto de fade out con clases CSS
+            tipText.classList.add('fade-out');
+            tipSource.classList.add('fade-out');
+
+            setTimeout(() => {
+                currentTipIndex = index;
+                tipText.textContent = tips[currentTipIndex].text;
+                tipSource.textContent = 'Fuente: ' + tips[currentTipIndex].source;
+                tipCounter.textContent = currentTipIndex + 1;
+
+                // Actualizar indicadores con animación
+                document.querySelectorAll('.tip-indicator').forEach((ind, idx) => {
+                    ind.classList.toggle('active', idx === currentTipIndex);
+                });
+
+                // Aplicar efecto de fade in removiendo las clases
+                setTimeout(() => {
+                    tipText.classList.remove('fade-out');
+                    tipSource.classList.remove('fade-out');
+                    tipCard.classList.remove('changing');
+                }, 50);
+            }, 350);
+        }
+
+        // Cambiar al siguiente tip
+        function nextTip() {
+            const nextIndex = (currentTipIndex + 1) % tips.length;
+            goToTip(nextIndex);
+        }
+
+        // Inicializar indicadores
+        createIndicators();
+
+        // Rotar tips automáticamente cada 4 segundos
+        setInterval(nextTip, 4000);
     </script>
 </body>
