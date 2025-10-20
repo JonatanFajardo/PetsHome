@@ -7,19 +7,19 @@
 <div class="row">
     @if (Model.ent_Id == 0)
     {
-        //Redirige a la vista para crear 
+        //Redirige a la vista para crear
         <div class="col-md-12">
-            <partial name="Entrada" model="@Model">
+            <partial name="Entrada" model="@Model" />
         </div>
     }
     else
     {
-        //Redirige a la vista para editar 
+        //Redirige a la vista para editar
         <div class="col-md-12">
-            <partial name="Entrada" model="@Model">
-                <div class="card mt-3">
-                    <partial name="EntradaDetalle" model="@Model">
-                </div>
+            <partial name="Entrada" model="@Model" />
+            <div class="card mt-3">
+                <partial name="EntradaDetalle" model="@Model" />
+            </div>
         </div>
     }
 </div>
