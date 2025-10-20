@@ -20,7 +20,22 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string vac_Descripcion { get; set; }
-        
+
+        /// <summary>
+        /// Animal al que va dirigida la vacuna.
+        /// </summary>
+        public string vacu_Especie { get; set; }
+
+        /// <summary>
+        /// Cantidad y vía de aplicación.
+        /// </summary>
+        public string vacu_DosisRecomendada { get; set; }
+
+        /// <summary>
+        /// Tiempo antes de repetir dosis.
+        /// </summary>
+        public string vacu_PeriodoRefuerzo { get; set; }
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>

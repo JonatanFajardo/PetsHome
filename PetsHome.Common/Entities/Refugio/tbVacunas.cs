@@ -20,6 +20,18 @@ namespace PetsHome.Common.Entities
         /// Nombre de la vacuna.
         /// </summary>
         public string vac_Descripcion { get; set; }
+        /// <summary>
+        /// Animal al que va dirigida la vacuna (perro, gato, etc.)
+        /// </summary>
+        public string vacu_Especie { get; set; }
+        /// <summary>
+        /// Cantidad y vía de aplicación (ej. "2 ml SC")
+        /// </summary>
+        public string vacu_DosisRecomendada { get; set; }
+        /// <summary>
+        /// Tiempo antes de repetir dosis (ej. "12 meses")
+        /// </summary>
+        public string vacu_PeriodoRefuerzo { get; set; }
         public bool? vac_EsActivo { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.

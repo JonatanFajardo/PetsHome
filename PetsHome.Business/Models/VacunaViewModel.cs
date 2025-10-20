@@ -24,6 +24,27 @@ namespace PetsHome.Business.Models
         public string vac_Descripcion { get; set; }
 
         /// <summary>
+        /// Obtiene o establece la especie a la que va dirigida la vacuna.
+        /// </summary>
+        [Display(Name = "Especie")]
+        [StringLength(50)]
+        public string vacu_Especie { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece la dosis recomendada de la vacuna.
+        /// </summary>
+        [Display(Name = "Dosis Recomendada")]
+        [StringLength(100)]
+        public string vacu_DosisRecomendada { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el período de refuerzo de la vacuna.
+        /// </summary>
+        [Display(Name = "Período de Refuerzo")]
+        [StringLength(50)]
+        public string vacu_PeriodoRefuerzo { get; set; }
+
+        /// <summary>
         /// Obtiene o establece si la vacuna ha sido eliminada.
         /// </summary>
         [Display(Name = "")]

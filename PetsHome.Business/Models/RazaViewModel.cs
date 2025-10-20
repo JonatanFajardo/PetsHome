@@ -16,6 +16,22 @@ namespace PetsHome.Business.Models
         [Espacios(ErrorMessage = "bebesita")]
         public string raza_Descripcion { get; set; }
 
+        [Display(Name = "Tamaño")]
+        [StringLength(20)]
+        public string raza_Tamano { get; set; }
+
+        [Display(Name = "Tipo de Animal")]
+        [StringLength(50)]
+        public string raza_TipoAnimal { get; set; }
+
+        [Display(Name = "Tipo de Pelaje")]
+        [StringLength(30)]
+        public string raza_TipoPelaje { get; set; }
+
+        [Display(Name = "URL de Imagen")]
+        [StringLength(500)]
+        public string raza_ImagenUrl { get; set; }
+
         public int? raza_UsuarioCrea { get; set; }
 
         [Display(Name = "Usuario creación")]
