@@ -1,0 +1,302 @@
+@model VoluntarioViewModel
+@{
+    ViewData["Title"] = "Detalles de Voluntario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var recurrente = Model.vol_Recurrente ? "Sí" : "No";
+    var recurrenteColor = Model.vol_Recurrente ? "status-activo" : "status-inactivo";
+    var recurrenteIcono = Model.vol_Recurrente ? "fa-check-circle" : "fa-times-circle";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.vol_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.vol_Nombres</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-user-friends"></i>
+                            <span>Voluntario</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas @recurrenteIcono"></i>
+                                <span>Recurrente: @recurrente</span>
+                            </div>
+                            @if (Model.vol_HorasTrabajadas.HasValue)
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>@Model.vol_HorasTrabajadas.Value horas trabajadas</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.per_Identidad))
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>@Model.per_Identidad</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.vol_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.vol_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información General -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información General</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-user"></i>
+                                    <span>Nombre Completo</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.vol_Nombres</div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.per_Apellidos))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user"></i>
+                                        <span>Apellidos</span>
+                                    </div>
+                                    <div class="detail-value">@Model.per_Apellidos</div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.per_Identidad))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-address-card"></i>
+                                        <span>Identidad</span>
+                                    </div>
+                                    <div class="detail-value">@Model.per_Identidad</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Voluntariado -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-heart"></i>
+                        <h3>Información de Voluntariado</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            @if (Model.vol_HorasTrabajadas.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Horas Trabajadas</span>
+                                    </div>
+                                    <div class="detail-value detail-value-large">@Model.vol_HorasTrabajadas.Value horas</div>
+                                </div>
+                            }
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Voluntario Recurrente</span>
+                                </div>
+                                <div class="detail-value">
+                                    <span class="status-badge @recurrenteColor">@recurrente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.per != null && !string.IsNullOrEmpty(Model.per.per_Telefono))
+                {
+                    <!-- Datos de Contacto -->
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <i class="fas fa-address-book"></i>
+                            <h3>Datos de Contacto</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
+                                <div class="row">
+                                    @if (!string.IsNullOrEmpty(Model.per.per_Telefono))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-phone"></i>
+                                                    <span>Teléfono</span>
+                                                </div>
+                                                <div class="detail-value">@Model.per.per_Telefono</div>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.per.per_Correo))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-envelope"></i>
+                                                    <span>Correo Electrónico</span>
+                                                </div>
+                                                <div class="detail-value">@Model.per.per_Correo</div>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.per.per_Domicilio))
+                                    {
+                                        <div class="col-md-12 mt-3">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <span>Dirección</span>
+                                                </div>
+                                                <div class="detail-value">@Model.per.per_Domicilio</div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@(Model.vol_NombreUsuarioCrea ?? "Sistema")</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@Model.vol_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.vol_UsuarioModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.vol_NombreUsuarioModifica ?? "Sistema")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.vol_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="vol_Id" id="delete-vol-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar a @Model.vol_Nombres?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-vol-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

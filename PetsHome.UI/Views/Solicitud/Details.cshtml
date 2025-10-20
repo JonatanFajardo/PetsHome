@@ -1,0 +1,289 @@
+@model SolicitudViewModel
+@{
+    ViewData["Title"] = "Detalles de Solicitud";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.sol_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>Solicitud #@Model.sol_Id</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-user"></i>
+                            <span>@Model.sol_Nombres @Model.sol_Apellidos</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@Model.sol_Fecha.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-paw"></i>
+                                <span>@Model.masc_Nombre</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-id-card"></i>
+                                <span>@Model.sol_Identidad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.sol_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información del Solicitante -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-user"></i>
+                        <h3>Información del Solicitante</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>Nombre Completo</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.sol_Nombres @Model.sol_Apellidos</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>Identidad</span>
+                                </div>
+                                <div class="detail-value">@Model.sol_Identidad</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-day"></i>
+                                    <span>Fecha de Solicitud</span>
+                                </div>
+                                <div class="detail-value">@Model.sol_Fecha.ToString("dd/MM/yyyy")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Contacto -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-address-book"></i>
+                        <h3>Información de Contacto</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-phone"></i>
+                                    <span>Teléfono</span>
+                                </div>
+                                <div class="detail-value">@Model.sol_Telefono</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Correo Electrónico</span>
+                                </div>
+                                <div class="detail-value">@Model.sol_Correo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de la Mascota -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-paw"></i>
+                        <h3>Mascota Solicitada</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-dog"></i>
+                                            <span>Nombre de la Mascota</span>
+                                        </div>
+                                        <div class="detail-value detail-value-large">@Model.masc_Nombre</div>
+                                    </div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.raza_Descripcion))
+                                {
+                                    <div class="col-md-6">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-tag"></i>
+                                                <span>Raza</span>
+                                            </div>
+                                            <div class="detail-value">@Model.raza_Descripcion</div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.refg_Nombre))
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-home"></i>
+                                                <span>Refugio</span>
+                                            </div>
+                                            <div class="detail-value">@Model.refg_Nombre</div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-md-6 mt-3">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-heart"></i>
+                                            <span>Estado de Adopción</span>
+                                        </div>
+                                        <div class="detail-value">
+                                            @if (Model.masc_EsAdoptado)
+                                            {
+                                                <span class="status-badge status-activo">Adoptado</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-badge status-pendiente">Disponible</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@(Model.sol_NombreUsuarioCrea ?? "Sistema")</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@Model.sol_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.sol_UsuarioModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.sol_NombreUsuarioModifica ?? "Sistema")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.sol_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="sol_Id" id="delete-sol-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar la solicitud de @Model.sol_Nombres @Model.sol_Apellidos?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-sol-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

@@ -184,14 +184,17 @@ var datatablePartials = (function () {
         head.push({
             targets: i,
             className: "text-center",
+            width: 110,
             render: function (data, type, row) {
                 botones = "";
                 var head = _header[0].FieldName;
                 if (type == "display") {
-                    //botones += '<button class="btn btn-soft-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="fa-thin fa-pen-to-square"></i></span></button>';
-                    //botones += '<button class="btn btn-soft-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="fa-thin fa-trash"></i></span></button>';
-                    botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row[head] + '" class="bs-tooltip edit-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
-                    botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
+                    // Botón Ver Detalles
+                    botones += '<button class="action-btn btn-view" onclick="viewDetailPartial(' + row[head] + ')" title="Ver detalles"><i class="fas fa-eye"></i></button>';
+                    // Botón Editar
+                    botones += '<button class="action-btn btn-edit edit-btn" data-id="' + row[head] + '" title="Editar"><i class="fas fa-edit"></i></button>';
+                    // Botón Eliminar
+                    botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
                 }
                 return botones;
             }
@@ -221,4 +224,13 @@ function RedirectEdit(params) {
     window.location = '/' + tabla + '/Edit/' + params + '';
 }
 
+// Función global para ver detalles en módulos parciales
+function viewDetailPartial(id) {
+    // Obtener el controlador actual desde la URL
+    var pathArray = window.location.pathname.split('/');
+    var controller = pathArray[1] || 'Home';
+
+    // Redirigir a la página de detalles
+    window.location.href = '/' + controller + '/Detail/' + id;
+}
 
