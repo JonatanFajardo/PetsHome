@@ -18,6 +18,22 @@ namespace PetsHome.Common.Entities
         public int raza_Id { get; set; }
         public string raza_Descripcion { get; set; }
         /// <summary>
+        /// Tamaño de la raza (pequeño, mediano, grande, gigante)
+        /// </summary>
+        public string raza_Tamano { get; set; }
+        /// <summary>
+        /// Tipo de animal (perro, gato, etc.)
+        /// </summary>
+        public string raza_TipoAnimal { get; set; }
+        /// <summary>
+        /// Tipo de pelaje (corto, largo, rizado, sin pelo)
+        /// </summary>
+        public string raza_TipoPelaje { get; set; }
+        /// <summary>
+        /// Foto/URL de imagen representativa de la raza
+        /// </summary>
+        public string raza_ImagenUrl { get; set; }
+        /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
         public bool raza_EsEliminado { get; set; }

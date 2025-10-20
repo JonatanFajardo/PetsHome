@@ -13,8 +13,11 @@
             //];
 
             header = [
-                { FieldName: "raza_Id", Size: 200 },
-                { FieldName: "raza_Descripcion" }
+                { FieldName: "raza_Id", Size: 80 },
+                { FieldName: "raza_Descripcion" },
+                { FieldName: "raza_TipoAnimal", Size: 150 },
+                { FieldName: "raza_Tamano", Size: 120 },
+                { FieldName: "raza_TipoPelaje", Size: 150 }
             ]
 
             //header = [

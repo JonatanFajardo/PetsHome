@@ -40,6 +40,10 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Razas_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Descripcion", entity.raza_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_Tamano", entity.raza_Tamano, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_TipoAnimal", entity.raza_TipoAnimal, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_TipoPelaje", entity.raza_TipoPelaje, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_ImagenUrl", entity.raza_ImagenUrl, DbType.String, ParameterDirection.Input);
             parameter.Add("@raza_UsuarioCrea", entity.raza_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -51,6 +55,10 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Id", entity.raza_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@raza_Descripcion", entity.raza_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_Tamano", entity.raza_Tamano, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_TipoAnimal", entity.raza_TipoAnimal, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_TipoPelaje", entity.raza_TipoPelaje, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_ImagenUrl", entity.raza_ImagenUrl, DbType.String, ParameterDirection.Input);
             parameter.Add("@raza_UsuarioModifica", entity.raza_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }

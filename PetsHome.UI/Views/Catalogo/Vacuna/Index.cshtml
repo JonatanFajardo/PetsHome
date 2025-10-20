@@ -52,6 +52,9 @@
                 <tr>
                     <th width="80">ID</th>
                     <th>Descripción</th>
+                    <th width="120">Especie</th>
+                    <th width="150">Dosis Recomendada</th>
+                    <th width="130">Período Refuerzo</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -85,8 +88,30 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label asp-for="vac_Descripcion" class="control-label required"></label>
-                                    <input asp-for="vac_Descripcion" class="form-control" maxlength="50" id="Descripcion" />
+                                    <input asp-for="vac_Descripcion" class="form-control" maxlength="100" id="Descripcion" />
                                     <span class="text-danger" id="messageError"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="vacu_Especie" class="control-label"></label>
+                                    <input asp-for="vacu_Especie" class="form-control" maxlength="50" id="Especie" placeholder="Ej: Perro, Gato, Perro/Gato" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="vacu_PeriodoRefuerzo" class="control-label"></label>
+                                    <input asp-for="vacu_PeriodoRefuerzo" class="form-control" maxlength="50" id="PeriodoRefuerzo" placeholder="Ej: 12 meses, 3-4 semanas" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="vacu_DosisRecomendada" class="control-label"></label>
+                                    <input asp-for="vacu_DosisRecomendada" class="form-control" maxlength="100" id="DosisRecomendada" placeholder="Ej: 1 ml SC (subcutánea)" />
                                 </div>
                             </div>
                         </div>

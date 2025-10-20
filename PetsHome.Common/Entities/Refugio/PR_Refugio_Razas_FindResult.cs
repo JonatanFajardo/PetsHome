@@ -10,17 +10,37 @@ namespace PetsHome.Common.Entities
     /// </summary>
     public partial class PR_Refugio_Razas_FindResult
     {
-        
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public int raza_Id { get; set; }
-        
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string raza_Descripcion { get; set; }
-        
+
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string raza_Tamano { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string raza_TipoAnimal { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string raza_TipoPelaje { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string raza_ImagenUrl { get; set; }
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
