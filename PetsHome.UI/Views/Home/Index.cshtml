@@ -32,10 +32,12 @@
             <div class="col-md-4">
                 <div class="card weather-widget">
                     <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <i class="fas fa-sun weather-icon mb-3"></i>
-                        <h2 class="display-3 fw-bold mb-2">24°C</h2>
-                        <p class="mb-1 fw-semibold">Perfecto para pasear mascotas</p>
-                        <small class="opacity-90">La Ermita, Francisco Morazán</small>
+                        <img id="weather-icon" src="" alt="Clima" class="weather-icon-img mb-3" style="display: none; width: 64px; height: 64px; margin: 0 auto;">
+                        <i class="fas fa-sun weather-icon mb-3" id="weather-icon-default"></i>
+                        <h2 class="display-3 fw-bold mb-2" id="weather-temperature">24°C</h2>
+                        <p class="mb-1 fw-semibold" id="weather-condition">Perfecto para pasear mascotas</p>
+                        <small class="opacity-90" id="weather-location">La Ermita, Francisco Morazán</small>
+                        <small class="text-danger mt-2" id="weather-error-message" style="display: none;"></small>
                     </div>
                 </div>
             </div>
@@ -402,3 +404,7 @@
         setInterval(nextTip, 4000);
     </script>
 </body>
+
+@section scripts {
+    <script src="~/js/pages/home.js"></script>
+}

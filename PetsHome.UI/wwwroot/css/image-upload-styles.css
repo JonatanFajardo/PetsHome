@@ -1,0 +1,418 @@
+/* ============================================
+   IMAGE UPLOAD COMPONENT - PetsHome
+   Estilos modernos para carga de imágenes
+   ============================================ */
+
+:root {
+    --upload-primary: #a855f7;
+    --upload-primary-light: #c084fc;
+    --upload-border: #e5e7eb;
+    --upload-bg: #fafafa;
+    --upload-hover: #f3e8ff;
+    --upload-success: #10b981;
+    --upload-danger: #ef4444;
+}
+
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
+.image-upload-container {
+    width: 100%;
+    padding: 1rem 0;
+}
+
+/* ============================================
+   ZONA DE CARGA (DRAG & DROP)
+   ============================================ */
+.upload-zone {
+    position: relative;
+    border: 3px dashed var(--upload-border);
+    border-radius: 1.5rem;
+    background: var(--upload-bg);
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-zone:hover {
+    border-color: var(--upload-primary);
+    background: var(--upload-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.1);
+}
+
+.upload-zone.dragover {
+    border-color: var(--upload-primary);
+    background: var(--upload-hover);
+    border-style: solid;
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
+}
+
+.upload-zone.has-file {
+    border-color: var(--upload-success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+/* Input file oculto */
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* ============================================
+   CONTENIDO DE LA ZONA DE CARGA
+   ============================================ */
+.upload-content {
+    pointer-events: none;
+}
+
+.upload-icon {
+    margin-bottom: 1.5rem;
+}
+
+.upload-icon i {
+    font-size: 4rem;
+    color: var(--upload-primary);
+    transition: all 0.3s ease;
+}
+
+.upload-zone:hover .upload-icon i {
+    transform: scale(1.1);
+    color: var(--upload-primary-light);
+}
+
+.upload-zone.dragover .upload-icon i {
+    animation: bounce 0.6s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.upload-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.upload-subtitle {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   BADGES DE FORMATOS ACEPTADOS
+   ============================================ */
+.upload-formats {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.format-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 2px solid var(--upload-border);
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    transition: all 0.3s ease;
+}
+
+.format-badge i {
+    color: var(--upload-success);
+    font-size: 0.875rem;
+}
+
+.upload-zone:hover .format-badge {
+    border-color: var(--upload-primary);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   INFORMACIÓN DE CARGA
+   ============================================ */
+.upload-info {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.upload-info i {
+    color: var(--upload-primary);
+}
+
+/* ============================================
+   CONTENEDOR DE VISTA PREVIA
+   ============================================ */
+.preview-container {
+    position: relative;
+}
+
+.preview-label {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.preview-label i {
+    color: var(--upload-primary);
+}
+
+.preview-frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* Aspect ratio 1:1 */
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: var(--upload-bg);
+    border: 3px solid var(--upload-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.preview-frame:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagen de vista previa */
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block !important;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+/* Ocultar imagen si no tiene src o está vacío */
+.preview-image:not([src]),
+.preview-image[src=""],
+.preview-image[src="#"] {
+    opacity: 0 !important;
+    visibility: hidden;
+}
+
+.preview-image.show {
+    opacity: 1 !important;
+    visibility: visible;
+    pointer-events: auto;
+    animation: fadeInScale 0.4s ease;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Placeholder cuando no hay imagen */
+.preview-placeholder {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #d1d5db;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.preview-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.preview-placeholder p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.preview-placeholder.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ============================================
+   BOTÓN ELIMINAR IMAGEN
+   ============================================ */
+.btn-remove-image {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-remove-image:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
+}
+
+.btn-remove-image:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   ESTADOS Y FEEDBACK VISUAL
+   ============================================ */
+.upload-zone.uploading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.upload-zone.uploading .upload-icon i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.upload-zone.error {
+    border-color: var(--upload-danger);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.upload-zone.success {
+    border-color: var(--upload-success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .upload-zone {
+        padding: 2rem 1.5rem;
+        min-height: 280px;
+    }
+
+    .upload-icon i {
+        font-size: 3rem;
+    }
+
+    .upload-title {
+        font-size: 1.2rem;
+    }
+
+    .upload-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .format-badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+
+    .preview-frame {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .upload-zone {
+        padding: 1.5rem 1rem;
+        min-height: 240px;
+    }
+
+    .upload-icon i {
+        font-size: 2.5rem;
+    }
+
+    .upload-title {
+        font-size: 1rem;
+    }
+
+    .upload-formats {
+        gap: 0.5rem;
+    }
+}
+
+/* ============================================
+   ANIMACIONES ADICIONALES
+   ============================================ */
+.preview-image.zoom-out {
+    animation: zoomOut 0.3s ease;
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+/* Efecto de pulso para llamar la atención */
+.upload-zone.pulse {
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(168, 85, 247, 0);
+    }
+}
