@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PetsHome.Business;
 using PetsHome.Business.Models;
 using PetsHome.UI.Middleware;
+using System;
 
 namespace PetsHome.UI
 {
@@ -26,6 +29,20 @@ namespace PetsHome.UI
             services.AddLogicLayer(Configuration.GetConnectionString("PetsHomeConnectionString"));
             services.AddBusinessLogic();
             services.Configure<MascotaViewModel>(Configuration.GetSection("Filepath"));
+
+            // Configuración de autenticación por cookies
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+                    options.SlidingExpiration = true;
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                });
 
             // Configuración de CORS para Angular
             services.AddCors(options =>
@@ -71,13 +88,15 @@ namespace PetsHome.UI
             // Habilitar CORS antes de Authorization
             app.UseCors("AllowAngularApp");
 
+            // Habilitar autenticación y autorización
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PetsHome</title>
+    <meta content="Sistema de Gestión de Refugio de Mascotas" name="description" />
+
+    <!-- Bootstrap CSS -->
+    <link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Toastr for alerts -->
+    <link href="~/plugins/toastr/toastr.css" rel="stylesheet" />
+
+    <!-- Custom Login Styles -->
+    <link href="~/css/login.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Quicksand', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        @RenderBody()
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/assets/js/libs/jquery-3.1.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+
+    <!-- Alert Messages -->
+    @Html.Partial("_AlertMessagesPartial")
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

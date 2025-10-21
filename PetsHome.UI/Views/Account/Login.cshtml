@@ -1,0 +1,112 @@
+@model PetsHome.Business.Models.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-5 col-lg-4">
+            <div class="login-card">
+                <!-- Logo y Título -->
+                <div class="text-center mb-4">
+                    <div class="login-logo mb-3">
+                        <i class="fas fa-paw fa-3x text-primary"></i>
+                    </div>
+                    <h2 class="login-title">PetsHome</h2>
+                    <p class="text-muted">Sistema de Gestión de Refugio</p>
+                </div>
+
+                <!-- Formulario de Login -->
+                <form asp-action="Login" asp-controller="Account" method="post">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Campo Usuario -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Username" class="form-label">
+                            <i class="fas fa-user me-2"></i>Usuario
+                        </label>
+                        <input asp-for="Username"
+                               class="form-control form-control-lg"
+                               placeholder="Ingrese su usuario"
+                               autocomplete="username"
+                               autofocus />
+                        <span asp-validation-for="Username" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Campo Contraseña -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Contraseña
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="form-control form-control-lg"
+                                   id="passwordInput"
+                                   placeholder="Ingrese su contraseña"
+                                   autocomplete="current-password" />
+                            <button class="btn btn-outline-secondary"
+                                    type="button"
+                                    id="togglePassword">
+                                <i class="fas fa-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Recordarme -->
+                    <div class="form-check mb-4">
+                        <input asp-for="RememberMe"
+                               class="form-check-input"
+                               type="checkbox"
+                               id="rememberMe" />
+                        <label class="form-check-label" for="rememberMe">
+                            Recordarme
+                        </label>
+                    </div>
+
+                    <!-- Botón Iniciar Sesión -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Footer del Login -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        &copy; @DateTime.Now.Year PetsHome. Todos los derechos reservados.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            // Toggle password visibility
+            $('#togglePassword').on('click', function() {
+                const passwordInput = $('#passwordInput');
+                const toggleIcon = $('#toggleIcon');
+
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Auto-focus en usuario al cargar
+            $('#Username').focus();
+        });
+    </script>
+}
