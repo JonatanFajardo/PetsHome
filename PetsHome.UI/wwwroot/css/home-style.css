@@ -142,6 +142,13 @@ body {
     opacity: 0.95;
 }
 
+.weather-icon-img {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
 .weather-widget h2 {
     font-size: 3.5rem;
     font-weight: 700;

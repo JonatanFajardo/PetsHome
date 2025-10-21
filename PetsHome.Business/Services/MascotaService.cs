@@ -89,12 +89,21 @@ namespace PetsHome.Business.Services
         /// Agrega una nueva mascota al refugio.
         /// </summary>
         /// <param name="model">Datos de la mascota a agregar.</param>
-        /// <returns>True si la mascota se agregó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la mascota se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> AddAsync(MascotaViewModel model)
         {
             try
             {
-                model.masc_Imagen = await model.ImageFile.GetBytesAsync();
+                // Procesar imagen solo si existe
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    model.masc_Imagen = await model.ImageFile.GetBytesAsync();
+                }
+                else
+                {
+                    model.masc_Imagen = null;
+                }
+
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
                 return await _mascotaRepository.AddAsync(mappedResult);
             }
@@ -109,12 +118,19 @@ namespace PetsHome.Business.Services
         /// Actualiza una mascota existente en el refugio.
         /// </summary>
         /// <param name="model">Datos actualizados de la mascota.</param>
-        /// <returns>True si la mascota se actualizó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la mascota se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> UpdateAsync(MascotaViewModel model)
         {
             try
             {
-                model.masc_Imagen = await model.ImageFile.GetBytesAsync();
+                // Procesar imagen solo si existe un nuevo archivo
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    model.masc_Imagen = await model.ImageFile.GetBytesAsync();
+                }
+                // Si no hay nuevo archivo, mantener la imagen existente (no sobreescribir con null)
+                // El mapper mantendrÃ¡ el valor existente de masc_Imagen
+
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
                 return await _mascotaRepository.EditAsync(mappedResult);
             }
@@ -129,7 +145,7 @@ namespace PetsHome.Business.Services
         /// Elimina una mascota del refugio por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la mascota a eliminar.</param>
-        /// <returns>True si la mascota se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la mascota se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try
