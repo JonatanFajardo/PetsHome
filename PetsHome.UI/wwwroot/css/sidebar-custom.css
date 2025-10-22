@@ -102,7 +102,10 @@
 
 .sidebar-wrapper #sidebar {
     padding: 16px 0;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 56px);
+    overflow: hidden;
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f9fafb;
 }
@@ -134,9 +137,16 @@
 #sidebar ul.menu-categories {
     position: relative;
     padding: 20px 0 20px 0;
-    margin: auto;
+    margin: 0;
     width: 100%;
     overflow: auto;
+    flex: 1 1 auto;
+}
+
+/* User section fixed at bottom of sidebar */
+.sidebar-user-section {
+    border-top: 1px solid #eef2f7;
+    background: #fff;
 }
 
 .sidebar-wrapper .menu-categories {
