@@ -90,6 +90,10 @@
                 </div>
 
                 <div class="detail-actions">
+                    <a href="@Url.Action("Create", "Solicitud", new { masc_Id = Model.masc_Id })" class="btn-detail btn-detail-primary">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Generar Solicitud</span>
+                    </a>
                     <a href="@Url.Action("Find", new { id = Model.masc_Id })" class="btn-detail btn-detail-white">
                         <i class="fas fa-edit"></i>
                         <span>Editar</span>
