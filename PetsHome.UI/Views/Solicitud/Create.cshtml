@@ -93,14 +93,57 @@
                 <p class="card-description">Información de la mascota solicitada</p>
             </div>
             <div class="card-content">
-                <div class="form-grid">
-                    <!-- Campo Mascota -->
-                    <div class="form-group">
-                        <label asp-for="masc_Id">Mascota</label>
-                        <input class="form-control" asp-for="masc_Id" type="text" placeholder="Ingrese el ID de la mascota" />
-                        <span class="text-danger" asp-validation-for="masc_Id"></span>
+                @if (Model != null && Model.masc_Id > 0)
+                {
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="detail-card">
+                                <div class="detail-card-header">
+                                    <i class="fas fa-paw"></i>
+                                    <h3>Mascota seleccionada</h3>
+                                </div>
+                                <div class="detail-card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 96px; height: 96px; border-radius: 12px; overflow: hidden; background: #f2f2f2; display:flex; align-items:center; justify-content:center; margin-right:16px;">
+                                            @{
+                                                var hasImage = Model.masc_Imagen != null && Model.masc_Imagen.Length > 0;
+                                                var imgSrc = hasImage ? $"data:image/png;base64,{Convert.ToBase64String(Model.masc_Imagen)}" : Url.Content("~/images/default-pet.png");
+                                            }
+                                            <img src="@imgSrc" alt="@Model.masc_Nombre" style="width:100%; height:100%; object-fit:cover;" />
+                                        </div>
+                                        <div>
+                                            <div style="font-weight:600; font-size:18px;">@Model.masc_Nombre</div>
+                                            <div class="text-muted">ID: @Model.masc_Id</div>
+                                            <div class="text-muted">Raza: @Model.raza_Descripcion</div>
+                                            <div class="text-muted">Refugio: @Model.refg_Nombre</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-grid">
+                                <input asp-for="masc_Id" type="hidden" />
+                                <div class="form-group">
+                                    <label>Mascota</label>
+                                    <input class="form-control" value="@Model.masc_Nombre (ID: @Model.masc_Id)" readonly />
+                                    <span class="text-muted" style="font-size: 12px;">Seleccionada desde el detalle de Mascota</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="form-grid">
+                        <!-- Campo Mascota -->
+                        <div class="form-group">
+                            <label asp-for="masc_Id">Mascota</label>
+                            <input class="form-control" asp-for="masc_Id" type="number" placeholder="Ingrese el ID de la mascota" />
+                            <span class="text-danger" asp-validation-for="masc_Id"></span>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 
