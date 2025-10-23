@@ -96,5 +96,31 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Adoptante")]
         public string? per_Nombre { get; set; }
+
+        // Campos de la nueva lista de adopciones (mascotas + conteo solicitantes)
+
+        [Display(Name = "Id Mascota")]
+        public int masc_Id { get; set; }
+
+        [Display(Name = "Mascota")]
+        public string? raza_Descripcion { get; set; }
+
+        [Display(Name = "Tipo")]
+        public string? raza_TipoAnimal { get; set; }
+
+        [Display(Name = "Edad")]
+        public int masc_Edad { get; set; }
+
+        [Display(Name = "Sexo")]
+        public string? masc_Sexo { get; set; }
+
+        [Display(Name = "Adoptado")]
+        public bool masc_EsAdoptado { get; set; }
+
+        [Display(Name = "Reservado")]
+        public bool masc_EsReservado { get; set; }
+
+        [Display(Name = "Solicitantes")]
+        public int CantidadSolicitantes { get; set; }
     }
 }

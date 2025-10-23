@@ -52,12 +52,9 @@
                 <tr>
                     <th width="80">ID</th>
                     <th>Mascota</th>
-                    <th>Raza</th>
-                    <th>Tipo</th>
-                    <th width="100">Edad</th>
-                    <th width="100">Sexo</th>
-                    <th width="120">Reservado</th>
-                    <th width="150">Solicitantes</th>
+                    <th>Adoptante</th>
+                    <th width="140">Fecha</th>
+                    <th width="140">Estado</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -165,30 +162,30 @@
             html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron registros</p></div>';
         } else {
             data.each(function(row) {
-                var estadoBadge = getReservadoBadge(row.masc_EsReservado, row.masc_EsAdoptado);
+                var estadoBadge = getEstadoBadge(row.adop_Estado || 'Activo');
                 html += `
                     <div class="col-md-6 col-lg-4 col-xl-3">
                         <div class="card-item">
                             <div style="position: relative;">
                                 <div class="card-item-img">
-                                    <i class="fas fa-paw"></i>
+                                    <i class="fas fa-handshake"></i>
                                 </div>
-                                <span class="card-badge">#${String(row.masc_Id).padStart(3, '0')}</span>
+                                <span class="card-badge">#${String(row.adop_Id).padStart(3, '0')}</span>
                             </div>
                             <div class="p-3">
                                 <h5 class="mb-1">${row.masc_Nombre}</h5>
-                                <p class="text-muted small mb-2"><i class="fas fa-dna mr-2"></i>${row.raza_Descripcion} • ${row.raza_TipoAnimal}</p>
-                                <p class="text-muted mb-2"><i class="fas fa-user mr-2"></i>${row.masc_Sexo} • ${row.masc_Edad} años</p>
+                                <p class="text-muted small mb-2">${row.adop_Fecha}</p>
+                                <p class="text-muted mb-2"><i class="fas fa-info-circle mr-2"></i>${row.adoptante_Nombre}</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     ${estadoBadge}
                                     <div>
-                                        <button class="action-btn btn-view" onclick="viewItem(${row.masc_Id})" title="Ver">
+                                        <button class="action-btn btn-view" onclick="viewItem(${row.adop_Id})" title="Ver">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="action-btn btn-edit" onclick="editItem(${row.masc_Id})" title="Editar">
+                                        <button class="action-btn btn-edit" onclick="editItem(${row.adop_Id})" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="action-btn btn-delete" onclick="deleteItem(${row.masc_Id})" title="Eliminar">
+                                        <button class="action-btn btn-delete" onclick="deleteItem(${row.adop_Id})" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -200,7 +197,7 @@
             });
         }
 
-        $('#adopcionesGrid').html(html);
+        $('#cardsGrid').html(html);
     }
 
     // Funciones para acciones
@@ -217,10 +214,18 @@
         $('#delete-modal').modal('show');
     }
 
-    // Badge de reservado/adoptado
-    function getReservadoBadge(esReservado, esAdoptado) {
-        if (esAdoptado) return '<span class="status-badge status-adoptado">Adoptado</span>';
-        return esReservado ? '<span class="status-badge status-pendiente">Reservado</span>' : '<span class="status-badge status-disponible">Disponible</span>';
+    // Obtener badge segun estado
+    function getEstadoBadge(estado) {
+        var badges = {
+            'Disponible': '<span class="status-badge status-disponible">Disponible</span>',
+            'Adoptado': '<span class="status-badge status-adoptado">Adoptado</span>',
+            'En Tratamiento': '<span class="status-badge status-tratamiento">En Tratamiento</span>',
+            'Activo': '<span class="status-badge status-activo">Activo</span>',
+            'Inactivo': '<span class="status-badge status-inactivo">Inactivo</span>',
+            'Pendiente': '<span class="status-badge status-pendiente">Pendiente</span>',
+            'Aprobado': '<span class="status-badge status-aprobado">Aprobado</span>'
+        };
+        return badges[estado] || badges['Activo'];
     }
 
 
