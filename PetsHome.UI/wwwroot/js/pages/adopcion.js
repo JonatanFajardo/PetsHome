@@ -1,10 +1,53 @@
 var Adopcion = (function () {
 
-    var obj = {};
+    var obj = {},
+        statusFilter = "pending",
+        statusFilterRegistered = false;
+
+    function registerStatusFilter() {
+        if (statusFilterRegistered) {
+            return;
+        }
+
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            if (settings.nTable.id !== "datatable") {
+                return true;
+            }
+
+            var api = new $.fn.dataTable.Api(settings);
+            var row = api.row(dataIndex).data();
+
+            if (!row) {
+                return true;
+            }
+
+            if (statusFilter === "adopted") {
+                return row.masc_EsAdoptado;
+            }
+
+            return !row.masc_EsAdoptado;
+        });
+
+        statusFilterRegistered = true;
+    }
+
+    obj.filterByStatus = function (status) {
+        statusFilter = status === "adopted" ? "adopted" : "pending";
+
+        var tableInstance = $.fn.dataTable.isDataTable("#datatable")
+            ? $("#datatable").DataTable()
+            : null;
+
+        if (tableInstance) {
+            tableInstance.draw();
+        }
+    };
 
     // Inicializa DataTable con columnas de la lista de adopciones
     obj.datatable = function (DirectionUrls) {
         $(function () {
+            registerStatusFilter();
+
             var header = [];
             header = [
                 { FieldName: 'masc_Id', Size: 80 },
@@ -14,8 +57,9 @@ var Adopcion = (function () {
                 { FieldName: 'masc_Edad', Render: function (data, type, row) { return data + ' años'; } },
                 { FieldName: 'masc_Sexo' },
                 { FieldName: 'masc_EsReservado', Render: function (data, type, row) {
-                    if (row.masc_EsAdoptado) return '<span class="status-badge status-adoptado">Adoptado</span>';
-                    return data ? '<span class="status-badge status-pendiente">Reservado</span>' : '<span class="status-badge status-disponible">Disponible</span>';
+                    return row.masc_EsAdoptado
+                        ? '<span class="status-badge status-adoptado">Adoptado</span>'
+                        : '<span class="status-badge status-pendiente">Pendiente</span>';
                 } },
                 { FieldName: 'cantidadSolicitantes', Render: function (data, type, row) {
                     var count = data || 0;

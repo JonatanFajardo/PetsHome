@@ -45,6 +45,16 @@
         </div>
     </div>
 
+    <!-- Tabs de estados -->
+    <ul class="nav nav-tabs pets-status-tabs mb-3" id="adopcionStatusTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-status="pending" role="tab" aria-selected="true" href="#">Pendientes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-status="adopted" role="tab" aria-selected="false" href="#">Adoptados</a>
+        </li>
+    </ul>
+
     <!-- Vista de Tabla -->
     <div id="tableView" class="pets-table-container">
         <table class="pets-table" id="datatable">
@@ -56,7 +66,7 @@
                     <th>Tipo</th>
                     <th width="100">Edad</th>
                     <th width="100">Sexo</th>
-                    <th width="120">Reservado</th>
+                    <th width="120">Adopción</th>
                     <th width="150">Solicitantes</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
@@ -138,6 +148,32 @@
         $('#datatable').DataTable().search(this.value).draw();
     });
 
+    var $statusTabs = $('#adopcionStatusTabs');
+
+    $statusTabs.on('click', '.nav-link', function (e) {
+        e.preventDefault();
+
+        var $link = $(this);
+        var status = $link.data('status');
+
+        $statusTabs.find('.nav-link').removeClass('active').attr('aria-selected', 'false');
+        $link.addClass('active').attr('aria-selected', 'true');
+
+        Adopcion.filterByStatus(status);
+
+        if ($('#gridView').is(':visible')) {
+            loadCardsView();
+        }
+    });
+
+    Adopcion.filterByStatus($statusTabs.find('.nav-link.active').data('status'));
+
+    $('#datatable').on('draw.dt', function () {
+        if ($('#gridView').is(':visible')) {
+            loadCardsView();
+        }
+    });
+
 
     // Alternar entre vista tabla y cards
     function toggleView(view) {
@@ -165,7 +201,7 @@
             html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron registros</p></div>';
         } else {
             data.each(function(row) {
-                var estadoBadge = getReservadoBadge(row.masc_EsReservado, row.masc_EsAdoptado);
+                var estadoBadge = getReservadoBadge(row.masc_EsAdoptado);
                 html += `
                     <div class="col-md-6 col-lg-4 col-xl-3">
                         <div class="card-item">
@@ -218,9 +254,10 @@
     }
 
     // Badge de reservado/adoptado
-    function getReservadoBadge(esReservado, esAdoptado) {
-        if (esAdoptado) return '<span class="status-badge status-adoptado">Adoptado</span>';
-        return esReservado ? '<span class="status-badge status-pendiente">Reservado</span>' : '<span class="status-badge status-disponible">Disponible</span>';
+    function getReservadoBadge(esAdoptado) {
+        return esAdoptado
+            ? '<span class="status-badge status-adoptado">Adoptado</span>'
+            : '<span class="status-badge status-pendiente">Pendiente</span>';
     }
 
 
