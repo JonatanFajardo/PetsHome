@@ -122,5 +122,38 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Solicitantes")]
         public int CantidadSolicitantes { get; set; }
+
+        // Datos de solicitante (para detalle por mascota)
+        [Display(Name = "Identidad")]
+        public string? sol_Identidad { get; set; }
+
+        [Display(Name = "Nombres")]
+        public string? sol_Nombres { get; set; }
+
+        [Display(Name = "Apellidos")]
+        public string? sol_Apellidos { get; set; }
+
+        [Display(Name = "Teléfono")]
+        public string? sol_Telefono { get; set; }
+
+        [Display(Name = "Correo")]
+        public string? sol_Correo { get; set; }
+
+        [Display(Name = "Usuario creación")]
+        public string? sol_NombreUsuarioCrea { get; set; }
+
+        public DateTime sol_FechaCrea { get; set; }
+
+        public int? sol_UsuarioModifica { get; set; }
+
+        [Display(Name = "Usuario modificación")]
+        public string? sol_NombreUsuarioModifica { get; set; }
+
+        [Display(Name = "Fecha modificación")]
+        public DateTime? sol_FechaModifica { get; set; }
+
+        // Datos adicionales de mascota/refugio para el detalle
+        public string? refg_Nombre { get; set; }
+        public byte[]? masc_Imagen { get; set; }
     }
 }

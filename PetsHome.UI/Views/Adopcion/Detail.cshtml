@@ -1,0 +1,225 @@
+@model List<PetsHome.Business.Models.SolicitudViewModel>
+@using System
+@{
+    ViewData["Title"] = "Detalle de Adopcion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mascota = Model?.FirstOrDefault();
+    var esAdoptado = mascota?.masc_EsAdoptado ?? false;
+    var estado = esAdoptado ? "Adoptado" : "Disponible";
+    var estadoColor = esAdoptado ? "status-adoptado" : "status-disponible";
+    var estadoIcono = esAdoptado ? "fa-home" : "fa-heart";
+
+    string imgBase64Data = "";
+    string imagenUrl = "/images/default-pet.png";
+    if (mascota?.masc_Imagen != null && mascota.masc_Imagen.Length > 0)
+    {
+        imgBase64Data = Convert.ToBase64String(mascota.masc_Imagen);
+        imagenUrl = $"data:image/png;base64,{imgBase64Data}";
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        @if (!string.IsNullOrEmpty(imgBase64Data))
+                        {
+                            <img src="@imagenUrl" alt="@mascota?.masc_Nombre" class="profile-photo-large">
+                        }
+                        else
+                        {
+                            <div class="profile-photo-placeholder">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                        }
+                        @if (mascota != null)
+                        {
+                            <div class="profile-badge">#@mascota.masc_Id.ToString().PadLeft(3, '0')</div>
+                        }
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>Solicitantes de @mascota?.masc_Nombre</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-dog"></i>
+                            <span>@mascota?.raza_Descripcion</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas @estadoIcono"></i>
+                                <span>@estado</span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(mascota?.refg_Nombre))
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-home"></i>
+                                    <span>@mascota.refg_Nombre</span>
+                                </div>
+                            }
+                            <div class="profile-meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>@Model.Count solicitante@(Model.Count == 1 ? "" : "s")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-users"></i>
+                        <h3>Solicitantes</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <ul class="nav nav-tabs" id="solicitantesTab" role="tablist">
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                var s = Model[i];
+                                var active = i == 0 ? "active" : "";
+                                var selected = i == 0 ? "true" : "false";
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link @active" id="tab-@s.sol_Id" data-toggle="tab" href="#pane-@s.sol_Id" role="tab" aria-controls="pane-@s.sol_Id" aria-selected="@selected">
+                                        <i class="fas fa-user"></i>
+                                        Solicitante #@(i + 1)
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <div class="tab-content border-left border-right border-bottom p-3" id="solicitantesTabContent">
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                var s = Model[i];
+                                var active = i == 0 ? "show active" : "";
+                                <div class="tab-pane fade @active" id="pane-@s.sol_Id" role="tabpanel" aria-labelledby="tab-@s.sol_Id">
+                                    <div class="detail-grid">
+                                        <div class="detail-card detail-card-half">
+                                            <div class="detail-card-header">
+                                                <i class="fas fa-id-card"></i>
+                                                <h3>Datos del Solicitante</h3>
+                                            </div>
+                                            <div class="detail-card-body">
+                                                <div class="detail-list">
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-hashtag"></i><span>Identidad</span></div>
+                                                        <div class="detail-value">@s.sol_Identidad</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-user"></i><span>Nombres</span></div>
+                                                        <div class="detail-value">@s.sol_Nombres @s.sol_Apellidos</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-phone"></i><span>Telefono</span></div>
+                                                        <div class="detail-value">@s.sol_Telefono</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-envelope"></i><span>Correo</span></div>
+                                                        <div class="detail-value">@s.sol_Correo</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-calendar-plus"></i><span>Fecha de Solicitud</span></div>
+                                                        <div class="detail-value">@s.sol_FechaCrea.ToString("dd/MM/yyyy HH:mm")</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+
+                                        <div class="detail-card detail-card-half">
+                                            <div class="detail-card-header">
+                                                <i class="fas fa-paw"></i>
+                                                <h3>Datos de la Mascota</h3>
+                                            </div>
+                                            <div class="detail-card-body">
+                                                <div class="detail-list">
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-image"></i><span>Imagen</span></div>
+                                                        <div class="detail-value">
+                                                            @if (s.masc_Imagen != null && s.masc_Imagen.Length > 0)
+                                                            {
+                                                                var base64i = Convert.ToBase64String(s.masc_Imagen);
+                                                                var imgSrc2 = String.Format("data:image/png;base64,{0}", base64i);
+                                                                <img src="@imgSrc2" alt="@s.masc_Nombre" class="img-thumbnail" style="max-height:150px;" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="bg-light border rounded d-inline-flex align-items-center justify-content-center" style="height:150px;width:150px;">
+                                                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-dog"></i><span>Nombre</span></div>
+                                                        <div class="detail-value">@s.masc_Nombre</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-dna"></i><span>Raza</span></div>
+                                                        <div class="detail-value">@s.raza_Descripcion</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-home"></i><span>Refugio</span></div>
+                                                        <div class="detail-value">@s.refg_Nombre</div>
+                                                    </div>
+                                                    <div class="detail-item">
+                                                        <div class="detail-label"><i class="fas fa-heart"></i><span>Estado</span></div>
+                                                        <div class="detail-value"><span class="status-badge @((s.masc_EsAdoptado ? "status-adoptado" : "status-disponible"))">@(s.masc_EsAdoptado ? "Adoptado" : "Disponible")</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="detail-card-footer text-right">
+                                            <form asp-action="ElegirAdoptante" asp-controller="Adopcion" method="post" class="d-inline-block">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="sol_Id" value="@s.sol_Id" />
+                                                <input type="hidden" name="masc_Id" value="@s.masc_Id" />
+                                                <button type="submit" class="btn-detail btn-detail-primary">
+                                                    <i class="fas fa-check"></i>
+                                                    <span>Elegir adoptante</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var firstTab = document.querySelector('#solicitantesTab a.nav-link');
+            if (firstTab && !firstTab.classList.contains('active')) {
+                firstTab.classList.add('active');
+            }
+            var firstPane = document.querySelector('#solicitantesTabContent .tab-pane');
+            if (firstPane && !firstPane.classList.contains('show')) {
+                firstPane.classList.add('show', 'active');
+            }
+        })();
+    </script>
+}

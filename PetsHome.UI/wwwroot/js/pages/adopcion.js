@@ -17,7 +17,12 @@ var Adopcion = (function () {
                     if (row.masc_EsAdoptado) return '<span class="status-badge status-adoptado">Adoptado</span>';
                     return data ? '<span class="status-badge status-pendiente">Reservado</span>' : '<span class="status-badge status-disponible">Disponible</span>';
                 } },
-                { FieldName: 'CantidadSolicitantes' }
+                { FieldName: 'cantidadSolicitantes', Render: function (data, type, row) {
+                    var count = data || 0;
+                    var colorClass = count > 0 ? 'badge-info' : 'badge-secondary';
+                    var title = count === 1 ? '1 solicitante' : (count + ' solicitantes');
+                    return `<span class="badge badge-pill  ${colorClass}" title="${title}"><i class="fas fa-users mx-1"></i>${count}</span>`;
+                } }
             ];
             datatable.init(DirectionUrls, header);
         })
@@ -33,4 +38,3 @@ var Adopcion = (function () {
     return obj;
 
 }());
-

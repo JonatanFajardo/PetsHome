@@ -73,5 +73,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@sol_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
+      
     }
 }

@@ -74,7 +74,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@proc_Id", entity.proc_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_EsAdoptado", entity.masc_EsAdoptado, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_EsReservado", entity.masc_EsReservado, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@masc_UsuarioModifica", entity.masc_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@masc_UsuarioModifica", entity.masc_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 

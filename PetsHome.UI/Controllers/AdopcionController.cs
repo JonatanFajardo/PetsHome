@@ -3,6 +3,7 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -10,6 +11,8 @@ namespace PetsHome.UI.Controllers
     public class AdopcionController : BaseController
     {
         private readonly AdopcionService _AdopcionService;
+        private readonly SolicitudService _SolicitudService;
+        private readonly MascotaService _MascotaService;
 
         public IActionResult Index()
         {
@@ -21,10 +24,14 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
-        public AdopcionController(AdopcionService AdopcionService
+        public AdopcionController(AdopcionService AdopcionService,
+            SolicitudService SolicitudService,
+            MascotaService MascotaService
         )
         {
             _AdopcionService = AdopcionService;
+            _SolicitudService = SolicitudService;
+            _MascotaService = MascotaService;
         }
 
         public async Task<IActionResult> List()
@@ -74,6 +81,28 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        // Detalle de adopción por mascota con tabs de solicitantes
+        [HttpGet]
+        public async Task<IActionResult> DetailByMascota(int masc_Id)
+        {
+            if (masc_Id <= 0)
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+
+            // Seguir el patrón de servicios existente: usar SolicitudService
+            var solicitantesDeMascota = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+
+            if (solicitantesDeMascota == null || solicitantesDeMascota.Count == 0)
+            {
+                ShowAlert("Esta mascota no tiene solicitantes", AlertMessageType.Info);
+                return RedirectToAction("Index");
+            }
+
+            return View("Detail", solicitantesDeMascota);
+        }
+
 
         public async Task<IActionResult> Add(AdopcionViewModel model)
         {
@@ -121,6 +150,116 @@ namespace PetsHome.UI.Controllers
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 return RedirectToAction("Index");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ElegirAdoptante(int sol_Id, int masc_Id)
+        {
+            var solicitantesDeMascota = new List<SolicitudViewModel>();
+
+            try
+            {
+                if (sol_Id <= 0)
+                {
+                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                    if (masc_Id > 0)
+                        solicitantesDeMascota = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+                    return View("Detail", solicitantesDeMascota);
+                }
+
+                var solicitudDetalle = await _SolicitudService.DetailAsync(sol_Id);
+                if (solicitudDetalle == null)
+                {
+                    ShowAlert("Solicitud no encontrada", AlertMessageType.Error);
+                    if (masc_Id > 0)
+                        solicitantesDeMascota = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+                    return View("Detail", solicitantesDeMascota);
+                }
+
+                masc_Id = solicitudDetalle.masc_Id;
+                solicitantesDeMascota = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+
+                var crearAdopcion = new AdopcionViewModel
+                {
+                    sol_Id = sol_Id,
+                    adop_Estado = "Aprobado",
+                    adop_FechaRegistro = DateTime.Today
+                };
+
+                Boolean adopcionCreada = await _AdopcionService.AddAsync(crearAdopcion);
+                if (adopcionCreada)
+                {
+                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                    return View("Detail", solicitantesDeMascota);
+                }
+
+                foreach (var solicitante in solicitantesDeMascota)
+                {
+                    if (solicitante.sol_Id == sol_Id)
+                        continue;
+
+                    var rechazo = new AdopcionViewModel
+                    {
+                        sol_Id = solicitante.sol_Id,
+                        adop_Estado = "Rechazado",
+                        adop_FechaRegistro = DateTime.Today
+                    };
+
+                    await _AdopcionService.AddAsync(rechazo);
+                }
+
+                var mascotaSeleccionada = await _MascotaService.FindAsync(masc_Id);
+                if (mascotaSeleccionada != null)
+                {
+                    mascotaSeleccionada.masc_EsAdoptado = true;
+                    mascotaSeleccionada.masc_EsReservado = false;
+                    mascotaSeleccionada.masc_UsuarioModifica = 1;
+                    var resultadoMascota = await _MascotaService.UpdateAsync(mascotaSeleccionada);
+                    if (resultadoMascota)
+                    {
+                        ShowAlert("No se pudo actualizar el estado de la mascota", AlertMessageType.Warning);
+                    }
+                }
+
+                ShowAlert("Adoptante elegido y demas solicitantes rechazados", AlertMessageType.Success);
+
+                var solicitantesActualizados = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+                return View("Detail", solicitantesActualizados);
+            }
+            catch (Exception)
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                if (masc_Id > 0)
+                    solicitantesDeMascota = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+                return View("Detail", solicitantesDeMascota);
+            }
+        }
+
+        private async Task<List<SolicitudViewModel>> ObtenerSolicitantesPorMascotaAsync(int masc_Id)
+        {
+            if (masc_Id <= 0)
+            {
+                return new List<SolicitudViewModel>();
+            }
+
+            var solicitudesListado = await _SolicitudService.ListAsync();
+            if (solicitudesListado == null)
+            {
+                return new List<SolicitudViewModel>();
+            }
+
+            var solicitantesDeMascota = new List<SolicitudViewModel>();
+            foreach (var solicitud in solicitudesListado)
+            {
+                var detalle = await _SolicitudService.DetailAsync(solicitud.sol_Id);
+                if (detalle != null && detalle.masc_Id == masc_Id)
+                {
+                    solicitantesDeMascota.Add(detalle);
+                }
+            }
+
+            return solicitantesDeMascota;
         }
     }
 }
