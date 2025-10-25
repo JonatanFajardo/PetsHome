@@ -53,9 +53,9 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Eventos_ListResult, EventoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_HistorialMedico_FindResult, HistorialMedicoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_HistorialMedico_ListResult, HistorialMedicoViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Mascotas_DetailResult, MascotaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Mascotas_FindResult, MascotaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Mascotas_ListResult, MascotaViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Mascotas_DetailResult, MascotaDetailsViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Mascotas_FindResult, MascotaFormViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Mascotas_ListResult, MascotaListViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencia_DropdownResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_DetailResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_FindResult, ProcedenciaViewModel>().ReverseMap();
@@ -82,7 +82,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Voluntarios_FindResult, VoluntarioViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Voluntarios_ListResult, VoluntarioViewModel>().ReverseMap();
             CreateMap<PR_Albergue_EmpleadosCargos_DeleteResult, EmpleadoCargoViewModel>().ReverseMap();
-            CreateMap<PR_Albergue_Mascotas_DeleteResult, MascotaViewModel>().ReverseMap();
+            CreateMap<PR_Albergue_Mascotas_DeleteResult, MascotaListViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Procedencias_DeleteResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Razas_DeleteResult, RazaViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Solicitudes_DeleteResult, SolicitudViewModel>().ReverseMap();
@@ -99,7 +99,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbInventarios, InventarioViewModel>().ReverseMap();
             CreateMap<tbInventariosDetalles, InventarioDetalleViewModel>().ReverseMap();
             CreateMap<tbItems, ItemViewModel>().ReverseMap();
-            CreateMap<tbMascotas, MascotaViewModel>().ReverseMap();
+            CreateMap<tbMascotas, MascotaFormViewModel>().ReverseMap();
             CreateMap<tbMunicipios, MunicipioViewModel>().ReverseMap();
             CreateMap<tbPersonas, PersonaViewModel>().ReverseMap();
             CreateMap<tbProcedencias, ProcedenciaViewModel>().ReverseMap();

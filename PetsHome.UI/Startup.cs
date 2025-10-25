@@ -25,7 +25,7 @@ namespace PetsHome.UI
 
             services.AddLogicLayer(Configuration.GetConnectionString("PetsHomeConnectionString"));
             services.AddBusinessLogic();
-            services.Configure<MascotaViewModel>(Configuration.GetSection("Filepath"));
+            services.Configure<MascotaFormViewModel>(Configuration.GetSection("Filepath"));
 
             // Configuración de CORS para Angular
             services.AddCors(options =>

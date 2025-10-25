@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using System;
-using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
@@ -14,11 +13,11 @@ namespace PetsHome.UI.Controllers
     {
         private readonly MascotaService _mascotaService;
         private readonly RefugioService _refugioService;
-        private readonly IOptions<MascotaViewModel> _pathFile;
+        private readonly IOptions<MascotaFormViewModel> _pathFile;
 
         public MascotaController(MascotaService mascotaService,
             RefugioService refugioService,
-            IOptions<MascotaViewModel> options)
+            IOptions<MascotaFormViewModel> options)
         {
             _mascotaService = mascotaService;
             _refugioService = refugioService;
@@ -32,7 +31,7 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Create()
         {
-            var model = new MascotaViewModel();
+            var model = new MascotaFormViewModel();
             var drop = Dropdown(model);
             return View(drop);
         }
@@ -64,7 +63,7 @@ namespace PetsHome.UI.Controllers
         {
             if (id != 0)
             {
-                var itemDetail = await _mascotaService.FindAsync(id);
+                var itemDetail = await _mascotaService.DetailAsync(id);
                 if (itemDetail == null)
                 {
                     ShowAlert("Mascota no encontrada", AlertMessageType.Error);
@@ -79,12 +78,12 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(MascotaViewModel model)
+        public async Task<IActionResult> Add(MascotaFormViewModel model)
         {
             if (!model.isEdit)
             {
-                Boolean createdItem = await _mascotaService.AddAsync(model);
-                Boolean validation = Validation.IsInsert(createdItem, ModelState.IsValid);
+                bool createdItem = await _mascotaService.AddAsync(model);
+                bool validation = Validation.IsInsert(createdItem, ModelState.IsValid);
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
@@ -92,8 +91,8 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _mascotaService.UpdateAsync(model);
-                Boolean validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
+                bool updatedItem = await _mascotaService.UpdateAsync(model);
+                bool validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
                 if (updatedItem)
                     goto ErrorResult;
 
@@ -107,7 +106,7 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Remove(int masc_Id)
         {
-            Boolean deletedItem = await _mascotaService.RemoveAsync(masc_Id);
+            bool deletedItem = await _mascotaService.RemoveAsync(masc_Id);
             if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
@@ -125,11 +124,10 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public MascotaViewModel Dropdown(MascotaViewModel model)
+        public MascotaFormViewModel Dropdown(MascotaFormViewModel model)
         {
             model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
             return model;
         }
-
     }
 }

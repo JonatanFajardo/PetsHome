@@ -1,13 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
@@ -17,14 +17,13 @@ namespace PetsHome.Business.Services
     public class MascotaService
     {
         private readonly MascotaRepository _mascotaRepository;
-        private readonly RefugioRepository _refugioRepository;
         private readonly ILogger<MascotaService> _logger;
         private readonly IMapper _mapper;
 
         public MascotaService(MascotaRepository mascotaRepository, RefugioRepository refugioRepository, ILogger<MascotaService> logger, IMapper mapper)
         {
             _mascotaRepository = mascotaRepository;
-            _refugioRepository = refugioRepository;
+            _ = refugioRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -32,13 +31,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de todas las mascotas en el refugio.
         /// </summary>
-        /// <returns>Una lista de objetos MascotaViewModel.</returns>
-        public async Task<List<MascotaViewModel>> ListAsync()
+        /// <returns>Una lista de objetos MascotaListViewModel.</returns>
+        public async Task<List<MascotaListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Mascotas_ListResult> mappedResult = await _mascotaRepository.ListAsync();
-                return _mapper.Map<List<MascotaViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<MascotaListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -48,16 +47,16 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca una mascota por su identificador.
+        /// Busca una mascota por su identificador para su edición.
         /// </summary>
         /// <param name="id">Identificador de la mascota.</param>
-        /// <returns>Un objeto MascotaViewModel que corresponde a la mascota encontrada.</returns>
-        public async Task<MascotaViewModel> FindAsync(int id)
+        /// <returns>Un objeto MascotaFormViewModel que corresponde a la mascota encontrada.</returns>
+        public async Task<MascotaFormViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_Mascotas_FindResult mappedResult = await _mascotaRepository.FindAsync(id);
-                return _mapper.Map<MascotaViewModel>(mappedResult);
+                return _mapper.Map<MascotaFormViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -70,13 +69,13 @@ namespace PetsHome.Business.Services
         /// Obtiene los detalles de una mascota por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la mascota.</param>
-        /// <returns>Un objeto MascotaViewModel que contiene los detalles de la mascota.</returns>
-        public async Task<MascotaViewModel> DetailAsync(int id)
+        /// <returns>Un objeto MascotaDetailsViewModel que contiene los detalles de la mascota.</returns>
+        public async Task<MascotaDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Mascotas_DetailResult mappedResult = await _mascotaRepository.DetailAsync(id);
-                return _mapper.Map<MascotaViewModel>(mappedResult);
+                return _mapper.Map<MascotaDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -89,12 +88,11 @@ namespace PetsHome.Business.Services
         /// Agrega una nueva mascota al refugio.
         /// </summary>
         /// <param name="model">Datos de la mascota a agregar.</param>
-        /// <returns>True si la mascota se agreg� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> AddAsync(MascotaViewModel model)
+        /// <returns>True si la mascota se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(MascotaFormViewModel model)
         {
             try
             {
-                // Procesar imagen solo si existe
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
                     model.masc_Imagen = await model.ImageFile.GetBytesAsync();
@@ -118,18 +116,15 @@ namespace PetsHome.Business.Services
         /// Actualiza una mascota existente en el refugio.
         /// </summary>
         /// <param name="model">Datos actualizados de la mascota.</param>
-        /// <returns>True si la mascota se actualiz� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> UpdateAsync(MascotaViewModel model)
+        /// <returns>True si la mascota se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(MascotaFormViewModel model)
         {
             try
             {
-                // Procesar imagen solo si existe un nuevo archivo
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
                     model.masc_Imagen = await model.ImageFile.GetBytesAsync();
                 }
-                // Si no hay nuevo archivo, mantener la imagen existente (no sobreescribir con null)
-                // El mapper mantendrá el valor existente de masc_Imagen
 
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
                 return await _mascotaRepository.EditAsync(mappedResult);
@@ -145,7 +140,7 @@ namespace PetsHome.Business.Services
         /// Elimina una mascota del refugio por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la mascota a eliminar.</param>
-        /// <returns>True si la mascota se elimin� correctamente, False si ocurri� un error.</returns>
+        /// <returns>True si la mascota se eliminó correctamente, False si ocurrió un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try
