@@ -139,6 +139,7 @@
     Adopcion.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("DetailByMascota")",
+        urlDetailParam: "masc_Id",
         urlInsert: "@Url.Action("Create")",
         urlUpdate: "@Url.Action("Find")"
     });
@@ -241,7 +242,7 @@
 
     // Funciones para acciones
     function viewItem(id) {
-        window.location.href = '@Url.Action("DetailByMascota")' + '?masc_Id=' + id;
+        datatable.viewDetail(id);
     }
 
     function editItem(id) {
@@ -292,9 +293,9 @@
         a.click();
     }
 
-    // Override para ver detalles: usa DetailByMascota con masc_Id
+    // Override para mantener compatibilidad si otros scripts invocan viewDetail
     function viewDetail(id) {
-        window.location.href = '@Url.Action("DetailByMascota")' + '?masc_Id=' + id;
+           window.location.href = '@Url.Action("DetailByMascota")' + '?masc_Id=' + id;
     }
 </script>
 }
