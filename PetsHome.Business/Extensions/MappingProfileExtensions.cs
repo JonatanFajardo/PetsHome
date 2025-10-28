@@ -16,6 +16,22 @@ namespace PetsHome.Business.Extensions
         /// </summary>
         public MappingProfileExtensions()
         {
+            // Mapeos para Departamento - ViewModels separados
+            CreateMap<PR_General_Departamentos_ListResult, DepartamentoListViewModel>().ReverseMap();
+            CreateMap<PR_General_Departamentos_FindResult, DepartamentoFormViewModel>().ReverseMap();
+            CreateMap<PR_General_Departamentos_DetailResult, DepartamentoDetailsViewModel>().ReverseMap();
+            CreateMap<PR_General_Departamentos_DropdownResult, DepartamentoListViewModel>().ReverseMap();
+            CreateMap<tbDepartamentos, DepartamentoFormViewModel>().ReverseMap();
+
+            // Mapeos para Municipio - ViewModels separados
+            CreateMap<PR_General_Municipios_ListResult, MunicipioListViewModel>().ReverseMap();
+            CreateMap<PR_General_Municipios_FindResult, MunicipioFormViewModel>().ReverseMap();
+            CreateMap<PR_General_Municipios_DetailResult, MunicipioDetailsViewModel>().ReverseMap();
+            CreateMap<PR_General_Municipios_DropdownResult, MunicipioListViewModel>().ReverseMap();
+            CreateMap<PR_General_Municipios_SelectbyDepartamentoResult, MunicipioListViewModel>().ReverseMap();
+            CreateMap<tbMunicipios, MunicipioFormViewModel>().ReverseMap();
+
+            // Mantener compatibilidad con ViewModels antiguos (deprecated, se eliminará en futuras versiones)
             CreateMap<PR_General_Departamentos_DetailResult, DepartamentoViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_DropdownResult, DepartamentoViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_FindResult, DepartamentoViewModel>().ReverseMap();
@@ -87,13 +103,13 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Procedencias_FindResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_InsertResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_ListResult, ProcedenciaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Raza_DropdownResult, RazaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Razas_DetailResult, RazaViewModel>()
-                .ForMember(dest => dest.raza_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
-                .ForMember(dest => dest.raza_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion))
+            CreateMap<PR_Refugio_Raza_DropdownResult, RazaDropdownViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Razas_DetailResult, RazaDetailsViewModel>()
+                .ForMember(dest => dest.UsuarioCreacion, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.UsuarioModificacion, opt => opt.MapFrom(src => src.UsuarioModificacion))
                 .ReverseMap();
-            CreateMap<PR_Refugio_Razas_FindResult, RazaViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Razas_ListResult, RazaViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Razas_FindResult, RazaFormViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Razas_ListResult, RazaListViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Refugio_DropdownResult, RefugioDropdownViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Refugios_DetailResult, RefugioDetailsViewModel>()
                 .ForMember(dest => dest.refg_UsuarioCrea, opt => opt.Ignore())
@@ -198,13 +214,13 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Albergue_EmpleadosCargos_DeleteResult, EmpleadoCargoViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Mascotas_DeleteResult, MascotaListViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Procedencias_DeleteResult, ProcedenciaViewModel>().ReverseMap();
-            CreateMap<PR_Albergue_Razas_DeleteResult, RazaViewModel>().ReverseMap();
+            CreateMap<PR_Albergue_Razas_DeleteResult, RazaListViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Solicitudes_DeleteResult, SolicitudListViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Vacunas_DeleteResult, VacunaListViewModel>().ReverseMap();
             CreateMap<PR_Albergue_Voluntarios_DeleteResult, VoluntarioListViewModel>().ReverseMap();
             CreateMap<tbAdopciones, AdopcionViewModel>().ReverseMap();
             CreateMap<tbCategorias, CategoriaViewModel>().ReverseMap();
-            CreateMap<tbDepartamentos, DepartamentoViewModel>().ReverseMap();
+            CreateMap<tbDepartamentos, DepartamentoViewModel>().ReverseMap(); // Deprecated - usar DepartamentoFormViewModel
             CreateMap<tbEmpleados, EmpleadoFormViewModel>().ReverseMap();
             CreateMap<tbItems, ItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_DropdownResult, ItemViewModel>().ReverseMap();
@@ -214,10 +230,10 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbInventariosDetalles, InventarioDetalleViewModel>().ReverseMap();
             CreateMap<tbItems, ItemViewModel>().ReverseMap();
             CreateMap<tbMascotas, MascotaFormViewModel>().ReverseMap();
-            CreateMap<tbMunicipios, MunicipioViewModel>().ReverseMap();
+            CreateMap<tbMunicipios, MunicipioViewModel>().ReverseMap(); // Deprecated - usar MunicipioFormViewModel
             CreateMap<tbPersonas, PersonaViewModel>().ReverseMap();
             CreateMap<tbProcedencias, ProcedenciaViewModel>().ReverseMap();
-            CreateMap<tbRazas, RazaViewModel>().ReverseMap();
+            CreateMap<tbRazas, RazaFormViewModel>().ReverseMap();
             CreateMap<tbRefugios, RefugioFormViewModel>().ReverseMap();
             CreateMap<tbSolicitudes, SolicitudFormViewModel>().ReverseMap();
             CreateMap<tbVacunas, VacunaFormViewModel>().ReverseMap();

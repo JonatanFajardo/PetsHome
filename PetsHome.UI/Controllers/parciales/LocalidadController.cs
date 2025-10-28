@@ -42,7 +42,7 @@ namespace PetsHome.UI.Controllers
         {
             if (id == 0)
             {
-                var model = new DepartamentoViewModel();
+                var model = new DepartamentoFormViewModel();
                 model.depto_Id = id;
                 return View(nameof(EditDepartamentos), model);
             }
@@ -60,7 +60,7 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
-        public async Task<IActionResult> Add(DepartamentoViewModel model)
+        public async Task<IActionResult> Add(DepartamentoFormViewModel model)
         {
             if (!model.isEdit)
             {
@@ -84,7 +84,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        public async Task<IActionResult> AddMunicipio(DepartamentoViewModel model)
+        public async Task<IActionResult> AddMunicipio(DepartamentoFormViewModel model)
         {
             if (!model.Municipio.isEdit)
             {

@@ -160,13 +160,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de razas para su uso en un dropdown.
         /// </summary>
-        /// <returns>Una lista de objetos RazaViewModel para el dropdown.</returns>
-        public IEnumerable<RazaViewModel> RazaDropdown()
+        /// <returns>Una lista de objetos RazaDropdownViewModel para el dropdown.</returns>
+        public IEnumerable<RazaDropdownViewModel> RazaDropdown()
         {
             try
             {
                 IEnumerable<PR_Refugio_Raza_DropdownResult> mappedResult = _mascotaRepository.RazaDropdown();
-                return _mapper.Map<List<RazaViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<RazaDropdownViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {

@@ -28,15 +28,15 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de departamentos de forma asíncrona.
+        /// Obtiene una lista de departamentos de forma asÃ­ncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de departamentos.</returns>
-        public async Task<List<DepartamentoViewModel>> ListAsync()
+        /// <returns>Una tarea que representa la operaciÃ³n asincrÃ³nica. El resultado contiene la lista de departamentos.</returns>
+        public async Task<List<DepartamentoListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_General_Departamentos_ListResult> mappedResult = await _departamentoRepository.ListAsync();
-                return _mapper.Map<List<DepartamentoViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<DepartamentoListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -46,16 +46,17 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca un departamento por su ID de forma asíncrona.
+        /// Busca un departamento por su ID de forma asÃ­ncrona.
         /// </summary>
         /// <param name="id">El ID del departamento.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el departamento encontrado.</returns>
-        public async Task<DepartamentoViewModel> FindAsync(int id)
+        /// <returns>Una tarea que representa la operaciÃ³n asincrÃ³nica. El resultado contiene el departamento encontrado.</returns>
+        public async Task<DepartamentoFormViewModel> FindAsync(int id)
         {
             try
             {
                 var mappedResult = await _departamentoRepository.FindAsync(id);
-                return MappingCustom.Map(mappedResult);
+                var result = _mapper.Map<DepartamentoFormViewModel>(mappedResult);
+                return result;
             }
             catch (Exception error)
             {
@@ -65,16 +66,16 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de un departamento por su ID de forma asíncrona.
+        /// Obtiene los detalles de un departamento por su ID de forma asÃ­ncrona.
         /// </summary>
         /// <param name="id">El ID del departamento.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles del departamento.</returns>
-        public async Task<DepartamentoViewModel> DetailAsync(int id)
+        /// <returns>Una tarea que representa la operaciÃ³n asincrÃ³nica. El resultado contiene los detalles del departamento.</returns>
+        public async Task<DepartamentoDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_General_Departamentos_DetailResult mappedResult = await _departamentoRepository.DetailAsync(id);
-                return _mapper.Map<DepartamentoViewModel>(mappedResult);
+                return _mapper.Map<DepartamentoDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -84,11 +85,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega un nuevo departamento de forma asíncrona.
+        /// Agrega un nuevo departamento de forma asÃ­ncrona.
         /// </summary>
         /// <param name="model">El modelo del departamento a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el departamento correctamente.</returns>
-        public async Task<Boolean> AddAsync(DepartamentoViewModel model)
+        /// <returns>Una tarea que representa la operaciÃ³n asincrÃ³nica. El resultado indica si se agregÃ³ el departamento correctamente.</returns>
+        public async Task<Boolean> AddAsync(DepartamentoFormViewModel model)
         {
             try
             {
@@ -103,11 +104,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza un departamento de forma asíncrona.
+        /// Actualiza un departamento de forma asÃ­ncrona.
         /// </summary>
         /// <param name="model">El modelo del departamento a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el departamento correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(DepartamentoViewModel model)
+        /// <returns>Una tarea que representa la operaciÃ³n asincrÃ³nica. El resultado indica si se actualizÃ³ el departamento correctamente.</returns>
+        public async Task<Boolean> UpdateAsync(DepartamentoFormViewModel model)
         {
             try
             {
@@ -122,10 +123,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina un departamento por su ID de forma asíncrona.
+        /// Elimina un departamento por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID del departamento a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el departamento correctamente.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se eliminï¿½ el departamento correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try
@@ -143,13 +144,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene un dropdown de departamentos.
         /// </summary>
-        /// <returns>Una enumeración de DepartamentoViewModel que representa el dropdown de departamentos.</returns>
-        public IEnumerable<DepartamentoViewModel> DepartamentoDropdown()
+        /// <returns>Una enumeraciÃ³n de DepartamentoListViewModel que representa el dropdown de departamentos.</returns>
+        public IEnumerable<DepartamentoListViewModel> DepartamentoDropdown()
         {
             try
             {
                 IEnumerable<PR_General_Departamentos_DropdownResult> mappedResult = _departamentoRepository.DepartamentoDropdown();
-                return _mapper.Map<IEnumerable<DepartamentoViewModel>>(mappedResult.ToList());
+                return _mapper.Map<IEnumerable<DepartamentoListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {

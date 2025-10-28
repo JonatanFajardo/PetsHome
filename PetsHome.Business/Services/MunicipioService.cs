@@ -31,13 +31,13 @@ namespace PetsHome.Business.Services
         /// Obtiene una lista de municipios por el identificador de departamento.
         /// </summary>
         /// <param name="id">Identificador del departamento.</param>
-        /// <returns>Una lista de objetos MunicipioViewModel que corresponden a los municipios encontrados.</returns>
-        public async Task<List<MunicipioViewModel>> ListIdAsync(int id)
+        /// <returns>Una lista de objetos MunicipioListViewModel que corresponden a los municipios encontrados.</returns>
+        public async Task<List<MunicipioListViewModel>> ListIdAsync(int id)
         {
             try
             {
                 IEnumerable<PR_General_Municipios_ListResult> mappedResult = await _municipioRepository.ListIdAsync(id);
-                return _mapper.Map<List<MunicipioViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<MunicipioListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -50,13 +50,15 @@ namespace PetsHome.Business.Services
         /// Busca un municipio por su identificador.
         /// </summary>
         /// <param name="id">Identificador del municipio.</param>
-        /// <returns>Un objeto DepartamentoViewModel que corresponde al municipio encontrado.</returns>
-        public async Task<DepartamentoViewModel> FindAsync(int id)
+        /// <returns>Un objeto DepartamentoFormViewModel que corresponde al municipio encontrado.</returns>
+        public async Task<DepartamentoFormViewModel> FindAsync(int id)
         {
             try
             {
                 var mappedResult = await _municipioRepository.FindAsync(id);
-                return MappingCustom.Map(mappedResult);
+                var departamento = new DepartamentoFormViewModel();
+                departamento.Municipio = _mapper.Map<MunicipioFormViewModel>(mappedResult);
+                return departamento;
             }
             catch (Exception error)
             {
@@ -69,8 +71,8 @@ namespace PetsHome.Business.Services
         /// Agrega un nuevo municipio.
         /// </summary>
         /// <param name="model">Datos del municipio a agregar.</param>
-        /// <returns>True si el municipio se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(MunicipioViewModel model)
+        /// <returns>True si el municipio se agregÃ³ correctamente, False si ocurriÃ³ un error.</returns>
+        public async Task<bool> AddAsync(MunicipioFormViewModel model)
         {
             try
             {
@@ -88,8 +90,8 @@ namespace PetsHome.Business.Services
         /// Actualiza un municipio existente.
         /// </summary>
         /// <param name="model">Datos actualizados del municipio.</param>
-        /// <returns>True si el municipio se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(MunicipioViewModel model)
+        /// <returns>True si el municipio se actualizÃ³ correctamente, False si ocurriÃ³ un error.</returns>
+        public async Task<bool> UpdateAsync(MunicipioFormViewModel model)
         {
             try
             {
@@ -107,7 +109,7 @@ namespace PetsHome.Business.Services
         /// Elimina un municipio por su identificador.
         /// </summary>
         /// <param name="id">Identificador del municipio a eliminar.</param>
-        /// <returns>True si el municipio se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si el municipio se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try
@@ -125,13 +127,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de municipios para su uso en un dropdown.
         /// </summary>
-        /// <returns>Una lista de objetos MunicipioViewModel para el dropdown.</returns>
-        public IEnumerable<MunicipioViewModel> MunicipioDropdown()
+        /// <returns>Una lista de objetos MunicipioListViewModel para el dropdown.</returns>
+        public IEnumerable<MunicipioListViewModel> MunicipioDropdown()
         {
             try
             {
                 IEnumerable<PR_General_Municipios_DropdownResult> mappedResult = _municipioRepository.MunicipioDropdown();
-                return _mapper.Map<IEnumerable<MunicipioViewModel>>(mappedResult.ToList());
+                return _mapper.Map<IEnumerable<MunicipioListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
