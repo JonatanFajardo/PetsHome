@@ -9,8 +9,6 @@ namespace PetsHome.Common.Entities
     {
         public tbItems()
         {
-            tbEntradasDetalles = new HashSet<tbEntradasDetalles>();
-            tbInventariosDetalles = new HashSet<tbInventariosDetalles>();
         }
 
         /// <summary>
@@ -44,7 +42,5 @@ namespace PetsHome.Common.Entities
 
         public virtual tbCategorias cat { get; set; }
         public virtual tbUsuarios itm_UsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbEntradasDetalles> tbEntradasDetalles { get; set; }
-        public virtual ICollection<tbInventariosDetalles> tbInventariosDetalles { get; set; }
     }
 }

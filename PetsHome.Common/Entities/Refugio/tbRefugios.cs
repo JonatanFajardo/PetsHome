@@ -10,9 +10,7 @@ namespace PetsHome.Common.Entities
         public tbRefugios()
         {
             tbEmpleados = new HashSet<tbEmpleados>();
-            tbEntradas = new HashSet<tbEntradas>();
             tbEventos = new HashSet<tbEventos>();
-            tbInventarios = new HashSet<tbInventarios>();
             tbMascotas = new HashSet<tbMascotas>();
         }
 
@@ -51,9 +49,7 @@ namespace PetsHome.Common.Entities
         public virtual tbMunicipios mpio { get; set; }
         public virtual tbUsuarios refg_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
-        public virtual ICollection<tbEntradas> tbEntradas { get; set; }
         public virtual ICollection<tbEventos> tbEventos { get; set; }
-        public virtual ICollection<tbInventarios> tbInventarios { get; set; }
         public virtual ICollection<tbMascotas> tbMascotas { get; set; }
     }
 }

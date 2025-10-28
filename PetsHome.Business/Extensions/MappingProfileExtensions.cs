@@ -45,14 +45,6 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_Categorias_FindResult, CategoriaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Categorias_ListResult, CategoriaViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Categorias_DropdownResult, CategoriaViewModel>().ReverseMap();
-            CreateMap<PR_Inventario_Entradas_DetailResult, EntradaViewModel>().ReverseMap();
-            CreateMap<PR_Inventario_Entradas_FindResult, EntradaViewModel>().ReverseMap();
-            CreateMap<PR_Inventario_Entradas_ListResult, EntradaViewModel>().ReverseMap();
-            CreateMap<tbEntradasDetalles, EntradaDetalleViewModel>().ReverseMap();
-            CreateMap<EntradaDetalleViewModel, PR_Inventario_EntradasDetalles_ListResult>().ReverseMap();
-            CreateMap<PR_Inventario_Inventarios_DetailResult, InventarioViewModel>().ReverseMap();
-            CreateMap<PR_Inventario_Inventarios_FindResult, InventarioViewModel>().ReverseMap();
-            CreateMap<PR_Inventario_Inventarios_ListResult, InventarioViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_DetailResult, ItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_FindResult, ItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_ListResult, ItemViewModel>().ReverseMap();
@@ -224,10 +216,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbEmpleados, EmpleadoFormViewModel>().ReverseMap();
             CreateMap<tbItems, ItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_DropdownResult, ItemViewModel>().ReverseMap();
-            CreateMap<tbEntradas, EntradaViewModel>().ReverseMap();
             CreateMap<tbEventos, EventoViewModel>().ReverseMap();
-            CreateMap<tbInventarios, InventarioViewModel>().ReverseMap();
-            CreateMap<tbInventariosDetalles, InventarioDetalleViewModel>().ReverseMap();
             CreateMap<tbItems, ItemViewModel>().ReverseMap();
             CreateMap<tbMascotas, MascotaFormViewModel>().ReverseMap();
             CreateMap<tbMunicipios, MunicipioViewModel>().ReverseMap(); // Deprecated - usar MunicipioFormViewModel
@@ -238,6 +227,17 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbSolicitudes, SolicitudFormViewModel>().ReverseMap();
             CreateMap<tbVacunas, VacunaFormViewModel>().ReverseMap();
             CreateMap<tbVoluntarios, VoluntarioFormViewModel>().ReverseMap();
+
+            // Mapeos para RecepcionMercancia - ViewModels separados
+            CreateMap<PR_Inventario_RecepcionesMercancia_ListResult, RecepcionMercanciaListViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_RecepcionesMercancia_FindResult, RecepcionMercanciaFormViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_RecepcionesMercancia_DetailResult, RecepcionMercanciaDetailsViewModel>().ReverseMap();
+            CreateMap<tbRecepcionesMercancia, RecepcionMercanciaFormViewModel>().ReverseMap();
+
+            // Mapeos para RecepcionDetalle - ViewModels separados
+            CreateMap<PR_Inventario_RecepcionesDetalles_ListResult, RecepcionDetalleListViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_RecepcionesDetalles_FindResult, RecepcionDetalleFormViewModel>().ReverseMap();
+            CreateMap<tbRecepcionesDetalles, RecepcionDetalleFormViewModel>().ReverseMap();
 
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();

@@ -61,5 +61,19 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@proc_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
+        #region Dropdown
+
+        /// <summary>
+        /// Obtiene una lista de procedencias para dropdowns.
+        /// </summary>
+        /// <returns>Lista de procedencias para dropdowns.</returns>
+        public IEnumerable<PR_Refugio_Procedencia_DropdownResult> ProcedenciaDropdown()
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Procedencias_Dropdown]";
+            return DbApp.Dropdown<PR_Refugio_Procedencia_DropdownResult>(sqlQuery);
+        }
+
+        #endregion Dropdown
     }
 }
