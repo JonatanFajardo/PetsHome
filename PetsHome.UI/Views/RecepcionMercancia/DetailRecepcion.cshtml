@@ -1,0 +1,156 @@
+@model RecepcionMercanciaDetailsViewModel
+@{
+    ViewData["Title"] = "Detalle de Recepción de Mercancía";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+
+        @* === Información de la Recepción === *@
+        <div class="card ribbon-box">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ribbon ribbon-primary float-left"><h4>Información de la Recepción</h4></div>
+                    </div>
+                </div>
+                <div class="ribbon-content">
+                    <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                        <form class="col-md-10" method="post">
+                            <dl class="dl-horizontal">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.recep_Id)
+                                        </dt>
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.recep_Id)
+                                        </dd>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.recep_Fecha)
+                                        </dt>
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.recep_Fecha)
+                                        </dd>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.recep_Descripcion)
+                                        </dt>
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.recep_Descripcion)
+                                        </dd>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.refg_Nombre)
+                                        </dt>
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.refg_Nombre)
+                                        </dd>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dt class="titulo">
+                                            @Html.DisplayNameFor(model => model.recep_TipoRecepcion)
+                                        </dt>
+                                        <dd class="descripcion mb-2">
+                                            @Html.DisplayFor(model => model.recep_TipoRecepcion)
+                                        </dd>
+                                    </div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.proc_Descripcion))
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <dt class="titulo">
+                                                @Html.DisplayNameFor(model => model.proc_Descripcion)
+                                            </dt>
+                                            <dd class="descripcion mb-2">
+                                                @Html.DisplayFor(model => model.proc_Descripcion)
+                                            </dd>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(Model.recep_NumeroDocumento))
+                                        {
+                                            <div class="col-md-6">
+                                                <dt class="titulo">
+                                                    @Html.DisplayNameFor(model => model.recep_NumeroDocumento)
+                                                </dt>
+                                                <dd class="descripcion mb-2">
+                                                    @Html.DisplayFor(model => model.recep_NumeroDocumento)
+                                                </dd>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </dl>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* === Detalles de la Recepción (Items) === *@
+        <div class="card ribbon-box mt-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ribbon ribbon-primary float-left"><h4>Items Recibidos</h4></div>
+                    </div>
+                </div>
+                <div class="ribbon-content">
+                    <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="detalles-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Lote</th>
+                                <th>Fecha Vencimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.Detalles != null)
+                            {
+                                @foreach (var item in (List<RecepcionDetalleListViewModel>)ViewBag.Detalles)
+                                {
+                                    <tr>
+                                        <td>@item.itm_Descripcion</td>
+                                        <td>@item.recdet_Cantidad</td>
+                                        <td>@(item.recdet_PrecioUnitario.HasValue ? item.recdet_PrecioUnitario.Value.ToString("C2") : "N/A")</td>
+                                        <td>@(string.IsNullOrEmpty(item.recdet_NumeroLote) ? "N/A" : item.recdet_NumeroLote)</td>
+                                        <td>@(item.recdet_FechaVencimiento.HasValue ? item.recdet_FechaVencimiento.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">No hay detalles para esta recepción</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12" id="m-footer">
+                        <a style="background-color:gray;color:white" asp-controller="RecepcionMercancia" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left mr-2"></i>Volver
+                        </a>
+                        <a class="btn btn-primary" href="/RecepcionMercancia/EditRecepcion/@Model.recep_Id">
+                            <i class="fa fa-edit"></i> Editar
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

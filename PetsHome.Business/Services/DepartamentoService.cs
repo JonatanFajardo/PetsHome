@@ -17,12 +17,14 @@ namespace PetsHome.Business.Services
     public class DepartamentoService
     {
         private readonly LocalidadRepository _departamentoRepository;
+        private readonly MunicipioRepository _municipioRepository;
         private readonly ILogger<DepartamentoService> _logger;
         private readonly IMapper _mapper;
 
-        public DepartamentoService(LocalidadRepository departamentoRepository, ILogger<DepartamentoService> logger, IMapper mapper)
+        public DepartamentoService(LocalidadRepository departamentoRepository, MunicipioRepository municipioRepository, ILogger<DepartamentoService> logger, IMapper mapper)
         {
             _departamentoRepository = departamentoRepository;
+            _municipioRepository = municipioRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -75,7 +77,26 @@ namespace PetsHome.Business.Services
             try
             {
                 PR_General_Departamentos_DetailResult mappedResult = await _departamentoRepository.DetailAsync(id);
-                return _mapper.Map<DepartamentoDetailsViewModel>(mappedResult);
+                var result = _mapper.Map<DepartamentoDetailsViewModel>(mappedResult);
+
+                // Load associated municipalities
+                var municipios = await _municipioRepository.ListIdAsync(id);
+
+                // Map to MunicipioDetailsViewModel - ListResult doesn't have audit fields, so we initialize them as empty
+                result.ListadoMunicipios = municipios.Select(m => new MunicipioDetailsViewModel
+                {
+                    mpio_Id = m.mpio_Id,
+                    mpio_Codigo = m.mpio_Codigo,
+                    mpio_Descripcion = m.mpio_Descripcion,
+                    depto_Id = id,
+                    // Audit fields will be empty since ListResult doesn't include them
+                    UsuarioCreacion = "N/A",
+                    mpio_FechaCrea = null,
+                    UsuarioModificacion = null,
+                    mpio_FechaModifica = null
+                }).ToList();
+
+                return result;
             }
             catch (Exception error)
             {

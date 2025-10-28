@@ -122,5 +122,19 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        public async Task<IActionResult> DetailDepartamento(int id)
+        {
+            var result = await _departamentoService.DetailAsync(id);
+            if (result != null)
+            {
+                return View(nameof(DetailDepartamento), result);
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
     }
 }
