@@ -13,18 +13,6 @@ namespace PetsHome.UI.Controllers
         private readonly DepartamentoService _departamentoService;
         private readonly MunicipioService _municipioService;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Create()
-        {
-            var model = new RefugioViewModel();
-            var drop = Dropdown(model);
-            return View(drop);
-        }
-
         public RefugioController(RefugioService RefugioService,
                                 DepartamentoService DepartamentoService,
                                 MunicipioService MunicipioService
@@ -33,6 +21,18 @@ namespace PetsHome.UI.Controllers
             _RefugioService = RefugioService;
             _departamentoService = DepartamentoService;
             _municipioService = MunicipioService;
+        }
+
+        public IActionResult Index()
+        {
+            return View(new RefugioFormViewModel());
+        }
+
+        public IActionResult Create()
+        {
+            var model = new RefugioFormViewModel();
+            var drop = Dropdown(model);
+            return View(drop);
         }
 
         public async Task<IActionResult> List()
@@ -83,7 +83,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(RefugioViewModel model)
+        public async Task<IActionResult> Add(RefugioFormViewModel model)
         {
 
             if (!model.isEdit)
@@ -124,7 +124,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public RefugioViewModel Dropdown(RefugioViewModel model)
+        public RefugioFormViewModel Dropdown(RefugioFormViewModel model)
         {
             model.LoadDropDownList(
                 _departamentoService.DepartamentoDropdown(),

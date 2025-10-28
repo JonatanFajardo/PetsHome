@@ -29,13 +29,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de solicitudes.
         /// </summary>
-        /// <returns>Una lista de objetos SolicitudViewModel que corresponden a las solicitudes encontradas.</returns>
-        public async Task<List<SolicitudViewModel>> ListAsync()
+        /// <returns>Una lista de objetos solicitud que corresponden a las solicitudes encontradas.</returns>
+        public async Task<List<SolicitudListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Solicitudes_ListResult> mappedResult = await _solicitudRepository.ListAsync();
-                return _mapper.Map<List<SolicitudViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<SolicitudListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -48,13 +48,13 @@ namespace PetsHome.Business.Services
         /// Busca una solicitud por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la solicitud.</param>
-        /// <returns>Un objeto SolicitudViewModel que corresponde a la solicitud encontrada.</returns>
-        public async Task<SolicitudViewModel> FindAsync(int id)
+        /// <returns>Un objeto solicitud que corresponde a la solicitud encontrada.</returns>
+        public async Task<SolicitudFormViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_Solicitudes_FindResult mappedResult = await _solicitudRepository.FindAsync(id);
-                return _mapper.Map<SolicitudViewModel>(mappedResult);
+                return _mapper.Map<SolicitudFormViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -67,13 +67,13 @@ namespace PetsHome.Business.Services
         /// Obtiene los detalles de una solicitud por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la solicitud.</param>
-        /// <returns>Un objeto SolicitudViewModel que contiene los detalles de la solicitud encontrada.</returns>
-        public async Task<SolicitudViewModel> DetailAsync(int id)
+        /// <returns>Un objeto solicitud que contiene los detalles de la solicitud encontrada.</returns>
+        public async Task<SolicitudDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Solicitudes_DetailResult mappedResult = await _solicitudRepository.DetailAsync(id);
-                return _mapper.Map<SolicitudViewModel>(mappedResult);
+                return _mapper.Map<SolicitudDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -86,8 +86,8 @@ namespace PetsHome.Business.Services
         /// Agrega una nueva solicitud.
         /// </summary>
         /// <param name="model">Datos de la solicitud a agregar.</param>
-        /// <returns>True si la solicitud se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(SolicitudViewModel model)
+        /// <returns>True si la solicitud se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> AddAsync(SolicitudFormViewModel model)
         {
             try
             {
@@ -105,8 +105,8 @@ namespace PetsHome.Business.Services
         /// Actualiza una solicitud existente.
         /// </summary>
         /// <param name="model">Datos actualizados de la solicitud.</param>
-        /// <returns>True si la solicitud se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(SolicitudViewModel model)
+        /// <returns>True si la solicitud se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> UpdateAsync(SolicitudFormViewModel model)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace PetsHome.Business.Services
         /// Elimina una solicitud por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la solicitud a eliminar.</param>
-        /// <returns>True si la solicitud se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la solicitud se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try

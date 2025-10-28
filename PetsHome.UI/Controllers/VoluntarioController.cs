@@ -19,12 +19,12 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new VoluntarioListViewModel());
         }
 
         public IActionResult Create()
         {
-            return View();
+            return View(new VoluntarioFormViewModel());
         }
 
         public async Task<IActionResult> List()
@@ -75,7 +75,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(VoluntarioViewModel model)
+        public async Task<IActionResult> Add(VoluntarioFormViewModel model)
         {
             if (!model.isEdit)
             {

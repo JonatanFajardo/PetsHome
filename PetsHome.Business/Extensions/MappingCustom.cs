@@ -1,13 +1,14 @@
-﻿using PetsHome.Business.Models;
+using System.Linq;
+using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 
 namespace PetsHome.Business.Extensions
 {
     public class MappingCustom
     {
-        public static EmpleadoViewModel Map(PR_Refugio_Empleados_FindResult map)
+        public static EmpleadoFormViewModel Map(PR_Refugio_Empleados_FindResult map)
         {
-            EmpleadoViewModel model = new EmpleadoViewModel()
+            EmpleadoFormViewModel model = new EmpleadoFormViewModel()
             {
                 emp_Id = map.emp_Id,
                 emp_Codigo = map.emp_Codigo,
@@ -38,14 +39,34 @@ namespace PetsHome.Business.Extensions
             return model;
         }
 
-        public static VoluntarioViewModel Map(PR_Refugio_Voluntarios_FindResult map)
+        public static VoluntarioFormViewModel Map(PR_Refugio_Voluntarios_FindResult map)
         {
-            VoluntarioViewModel model = new VoluntarioViewModel()
+            VoluntarioFormViewModel model = new VoluntarioFormViewModel()
             {
                 vol_Id = map.vol_Id,
                 vol_HorasTrabajadas = map.vol_HorasTrabajadas,
                 vol_Recurrente = map.vol_Recurrente,
                 estado = map.estado,
+                per_Id = map.per_Id,
+                vol_Nombres = string.Join(" ", new[]
+                {
+                    map.per_PrimerNombre,
+                    map.per_SegundoNombre,
+                    map.per_ApellidoPaterno,
+                    map.per_ApellidoMaterno
+                }.Where(name => !string.IsNullOrWhiteSpace(name))).Trim(),
+                per_Apellidos = string.Join(" ", new[]
+                {
+                    map.per_ApellidoPaterno,
+                    map.per_ApellidoMaterno
+                }.Where(name => !string.IsNullOrWhiteSpace(name))).Trim(),
+                per_Identidad = map.per_Identidad,
+                vol_UsuarioCrea = map.per_UsuarioCrea,
+                vol_NombreUsuarioCrea = map.usuarioCrea,
+                vol_FechaCrea = map.per_FechaCrea,
+                vol_UsuarioModifica = map.per_UsuarioModifica,
+                vol_NombreUsuarioModifica = map.usuarioModifica,
+                vol_FechaModifica = map.per_FechaModifica,
                 per = new PersonaViewModel()
                 {
                     per_Id = map.per_Id,

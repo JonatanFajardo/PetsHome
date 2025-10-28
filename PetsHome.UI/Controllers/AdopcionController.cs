@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -156,7 +156,7 @@ namespace PetsHome.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ElegirAdoptante(int sol_Id, int masc_Id)
         {
-            var solicitantesDeMascota = new List<SolicitudViewModel>();
+            var solicitantesDeMascota = new List<SolicitudDetailsViewModel>();
 
             try
             {
@@ -236,20 +236,20 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        private async Task<List<SolicitudViewModel>> ObtenerSolicitantesPorMascotaAsync(int masc_Id)
+        private async Task<List<SolicitudDetailsViewModel>> ObtenerSolicitantesPorMascotaAsync(int masc_Id)
         {
             if (masc_Id <= 0)
             {
-                return new List<SolicitudViewModel>();
+                return new List<SolicitudDetailsViewModel>();
             }
 
             var solicitudesListado = await _SolicitudService.ListAsync();
             if (solicitudesListado == null)
             {
-                return new List<SolicitudViewModel>();
+                return new List<SolicitudDetailsViewModel>();
             }
 
-            var solicitantesDeMascota = new List<SolicitudViewModel>();
+            var solicitantesDeMascota = new List<SolicitudDetailsViewModel>();
             foreach (var solicitud in solicitudesListado)
             {
                 var detalle = await _SolicitudService.DetailAsync(solicitud.sol_Id);

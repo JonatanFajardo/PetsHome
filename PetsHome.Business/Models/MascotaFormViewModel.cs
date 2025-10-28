@@ -118,7 +118,7 @@ namespace PetsHome.Business.Models
 
         public void LoadDropDownList(IEnumerable<RazaViewModel> razaDropdownResults,
                                      IEnumerable<Dropdown> dropdownlists,
-                                     IEnumerable<RefugioViewModel> refugioDropdownResults,
+                                     IEnumerable<RefugioDropdownViewModel> refugioDropdownResults,
                                      IEnumerable<ProcedenciaViewModel> procedenciaDropdownResults)
         {
             razaList = new SelectList(razaDropdownResults, "raza_Id", "raza_Descripcion");

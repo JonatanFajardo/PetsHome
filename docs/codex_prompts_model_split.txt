@@ -1,0 +1,21 @@
+Steps to split a feature's view models into list/form/detail
+
+1. Inspect current view model and note all properties and usages (controller, service, views, mappings).
+2. Create three independent models:
+   - `<Entity>ListViewModel` with only listing fields.
+   - `<Entity>FormViewModel` with form fields, dropdown helpers, `isEdit`.
+   - `<Entity>DetailsViewModel` with detail view fields.
+3. Update AutoMapper profile (and custom mapping helpers) to return the new models:
+   - `ListResult` → List model.
+   - `FindResult` → Form model (load nested objects as needed).
+   - `DetailResult` → Detail model.
+   - `tb<Entity>` ↔ Form model for add/update.
+4. Adjust service methods:
+   - `ListAsync` returns list model collection.
+   - `FindAsync` returns form model.
+   - `DetailAsync` returns detail model.
+   - `AddAsync`/`UpdateAsync` accept form model.
+5. Update controller actions to target new types and remove unused dependencies/options.
+6. Point Razor views at their specific models and adjust bindings to match property names.
+7. Ensure dropdown loaders and helper methods live only on form model.
+8. Run `dotnet build` to verify and fix any errors/warnings caused by property changes.

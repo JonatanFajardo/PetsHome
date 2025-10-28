@@ -22,7 +22,7 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new SolicitudFormViewModel());
         }
 
         public async Task<IActionResult> Create(int? masc_Id)
@@ -33,7 +33,7 @@ namespace PetsHome.UI.Controllers
                 var pet = await _mascotaService.FindAsync(masc_Id.Value);
                 if (pet != null)
                 {
-                    var model = new SolicitudViewModel
+                    var model = new SolicitudFormViewModel
                     {
                         masc_Id = pet.masc_Id,
                         masc_Nombre = pet.masc_Nombre,
@@ -47,7 +47,10 @@ namespace PetsHome.UI.Controllers
                 }
             }
 
-            return View();
+            return View(new SolicitudFormViewModel
+            {
+                sol_Fecha = DateTime.Today
+            });
         }
 
         public async Task<IActionResult> List()
@@ -97,7 +100,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(SolicitudViewModel model)
+        public async Task<IActionResult> Add(SolicitudFormViewModel model)
         {
 
             if (!model.isEdit)
