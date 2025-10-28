@@ -135,6 +135,11 @@ namespace PetsHome.Business.Models
         [Display(Name = "Fecha modificación")]
         public DateTime? sol_FechaModifica { get; set; }
 
+  /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string adop_Estado { get; set; }
+        
         /// <summary>
         /// Indica si el formulario se está editando.
         /// </summary>

@@ -4,6 +4,7 @@ using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -156,7 +157,7 @@ namespace PetsHome.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ElegirAdoptante(int sol_Id, int masc_Id)
         {
-            var solicitantesDeMascota = new List<SolicitudViewModel>();
+            var solicitantesDeMascota = new List<AdopcionDetailsViewModel>();
 
             try
             {
@@ -231,35 +232,29 @@ namespace PetsHome.UI.Controllers
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
                 if (masc_Id > 0)
+                {
                     solicitantesDeMascota = await ObtenerSolicitantesPorMascotaAsync(masc_Id);
+                }
+
                 return View("Detail", solicitantesDeMascota);
             }
         }
 
-        private async Task<List<SolicitudViewModel>> ObtenerSolicitantesPorMascotaAsync(int masc_Id)
+        private async Task<List<AdopcionDetailsViewModel>> ObtenerSolicitantesPorMascotaAsync(int masc_Id)
         {
             if (masc_Id <= 0)
             {
-                return new List<SolicitudViewModel>();
+                return new List<AdopcionDetailsViewModel>();
             }
 
-            var solicitudesListado = await _SolicitudService.ListAsync();
-            if (solicitudesListado == null)
+            var detalle = await _AdopcionService.DetailAsync(masc_Id);
+
+            if (detalle == null || !detalle.Any())
             {
-                return new List<SolicitudViewModel>();
+                return new List<AdopcionDetailsViewModel>();
             }
 
-            var solicitantesDeMascota = new List<SolicitudViewModel>();
-            foreach (var solicitud in solicitudesListado)
-            {
-                var detalle = await _SolicitudService.DetailAsync(solicitud.sol_Id);
-                if (detalle != null && detalle.masc_Id == masc_Id)
-                {
-                    solicitantesDeMascota.Add(detalle);
-                }
-            }
-
-            return solicitantesDeMascota;
+            return detalle.ToList();
         }
     }
 }
