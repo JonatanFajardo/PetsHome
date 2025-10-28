@@ -15,7 +15,7 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index()
         {
-            return View("~/Views/Catalogo/Vacuna/Index.cshtml");
+            return View("~/Views/Catalogo/Vacuna/Index.cshtml", new VacunaFormViewModel());
         }
 
         public VacunaController(VacunaService vacunaService)
@@ -73,7 +73,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(VacunaViewModel model)
+        public async Task<IActionResult> Add(VacunaFormViewModel model)
         {
             if (!model.isEdit)
             {

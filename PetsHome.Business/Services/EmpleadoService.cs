@@ -1,13 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
@@ -28,28 +28,26 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de Empleados de forma asíncrona.
+        /// Obtiene una lista de Empleados de forma asincrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de Empleados.</returns>
-        public async Task<List<EmpleadoViewModel>> ListAsync()
+        public async Task<List<EmpleadoListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Empleados_ListResult> mappedResult = await _empleadoRepository.ListAsync();
-                return _mapper.Map<List<EmpleadoViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<EmpleadoListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
+                _logger.LogError(error, error.Message);
                 throw;
             }
         }
 
         /// <summary>
-        /// Busca un Empleado por su ID de forma asíncrona.
+        /// Busca un Empleado por su ID de forma asincrona.
         /// </summary>
-        /// <param name="id">El ID del Empleado.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el Empleado encontrado.</returns>
-        public async Task<EmpleadoViewModel> FindAsync(int id)
+        public async Task<EmpleadoFormViewModel> FindAsync(int id)
         {
             try
             {
@@ -64,16 +62,17 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de un Empleado por su ID de forma asíncrona.
+        /// Obtiene los detalles de un Empleado por su ID de forma asincrona.
         /// </summary>
-        /// <param name="id">El ID del Empleado.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles del Empleado.</returns>
-        public async Task<EmpleadoViewModel> DetailAsync(int id)
+        public async Task<EmpleadoDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Empleados_DetailResult mappedResult = await _empleadoRepository.DetailAsync(id);
-                return _mapper.Map<EmpleadoViewModel>(mappedResult);
+                EmpleadoDetailsViewModel detail = _mapper.Map<EmpleadoDetailsViewModel>(mappedResult);
+                detail.emp_FechaCrea = mappedResult.per_FechaCrea;
+                detail.emp_FechaModifica = mappedResult.per_FechaModifica;
+                return detail;
             }
             catch (Exception error)
             {
@@ -83,11 +82,9 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega un nuevo Empleado de forma asíncrona.
+        /// Agrega un nuevo Empleado de forma asincrona.
         /// </summary>
-        /// <param name="model">El modelo del Empleado a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el Empleado correctamente.</returns>
-        public async Task<Boolean> AddAsync(EmpleadoViewModel model)
+        public async Task<bool> AddAsync(EmpleadoFormViewModel model)
         {
             try
             {
@@ -102,11 +99,9 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza un Empleado de forma asíncrona.
+        /// Actualiza un Empleado de forma asincrona.
         /// </summary>
-        /// <param name="model">El modelo del Empleado a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el Empleado correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(EmpleadoViewModel model)
+        public async Task<bool> UpdateAsync(EmpleadoFormViewModel model)
         {
             try
             {
@@ -121,15 +116,13 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina un Empleado por su ID de forma asíncrona.
+        /// Elimina un Empleado por su ID de forma asincrona.
         /// </summary>
-        /// <param name="id">El ID del Empleado a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el Empleado correctamente.</returns>
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _empleadoRepository.RemoveAsync(id);
+                bool mappedResult = await _empleadoRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)
@@ -140,9 +133,8 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de opciones de cargo de empleados de forma asíncrona.
+        /// Obtiene una lista de opciones de cargo de empleados de forma asincrona.
         /// </summary>
-        /// <returns>Una enumeración de las opciones de cargo de empleados.</returns>
         public IEnumerable<EmpleadoCargoViewModel> EmpleadoCargoDropdown()
         {
             try

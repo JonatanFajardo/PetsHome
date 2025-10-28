@@ -28,12 +28,12 @@ namespace PetsHome.Business.Services
         /// Obtiene la lista de voluntarios
         /// </summary>
         /// <returns></returns>
-        public async Task<List<VoluntarioViewModel>> ListAsync()
+        public async Task<List<VoluntarioListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Voluntarios_ListResult> mappedResult = await _voluntarioRepository.ListAsync();
-                return _mapper.Map<List<VoluntarioViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<VoluntarioListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -42,7 +42,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<VoluntarioViewModel> FindAsync(int id)
+        public async Task<VoluntarioFormViewModel> FindAsync(int id)
         {
             try
             {
@@ -56,12 +56,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<VoluntarioViewModel> DetailAsync(int id)
+        public async Task<VoluntarioDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Voluntarios_DetailResult mappedResult = await _voluntarioRepository.DetailAsync(id);
-                return _mapper.Map<VoluntarioViewModel>(mappedResult);
+                return _mapper.Map<VoluntarioDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -70,7 +70,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> AddAsync(VoluntarioViewModel model)
+        public async Task<bool> AddAsync(VoluntarioFormViewModel model)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(VoluntarioViewModel model)
+        public async Task<bool> UpdateAsync(VoluntarioFormViewModel model)
         {
             try
             {
@@ -98,11 +98,11 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _voluntarioRepository.RemoveAsync(id);
+                bool mappedResult = await _voluntarioRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)

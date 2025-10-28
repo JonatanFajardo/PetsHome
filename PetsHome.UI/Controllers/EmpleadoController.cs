@@ -28,7 +28,7 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var model = new EmpleadoViewModel();
+            var model = new EmpleadoFormViewModel();
             var drop = Dropdown(model);
             return View(drop);
         }
@@ -82,7 +82,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(EmpleadoViewModel model)
+        public async Task<IActionResult> Add(EmpleadoFormViewModel model)
         {
             if (!model.isEdit)
             {
@@ -122,7 +122,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public EmpleadoViewModel Dropdown(EmpleadoViewModel model)
+        public EmpleadoFormViewModel Dropdown(EmpleadoFormViewModel model)
         {
             model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
             return model;

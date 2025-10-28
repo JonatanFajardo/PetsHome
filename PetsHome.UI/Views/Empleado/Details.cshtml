@@ -1,4 +1,4 @@
-@model EmpleadoViewModel
+@model EmpleadoDetailsViewModel
 @{
     ViewData["Title"] = "Detalles de Empleado";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -146,7 +146,7 @@
                     </div>
                 </div>
 
-                @if (Model.per != null && !string.IsNullOrEmpty(Model.per.per_Telefono))
+                @if (!string.IsNullOrEmpty(Model.per_Telefono) || !string.IsNullOrEmpty(Model.per_Correo) || !string.IsNullOrEmpty(Model.per_Domicilio))
                 {
                     <!-- Datos de Contacto -->
                     <div class="detail-card detail-card-full">
@@ -157,7 +157,7 @@
                         <div class="detail-card-body">
                             <div class="detail-list">
                                 <div class="row">
-                                    @if (!string.IsNullOrEmpty(Model.per.per_Telefono))
+                                    @if (!string.IsNullOrEmpty(Model.per_Telefono))
                                     {
                                         <div class="col-md-6">
                                             <div class="detail-item">
@@ -165,11 +165,11 @@
                                                     <i class="fas fa-phone"></i>
                                                     <span>Teléfono</span>
                                                 </div>
-                                                <div class="detail-value">@Model.per.per_Telefono</div>
+                                                <div class="detail-value">@Model.per_Telefono</div>
                                             </div>
                                         </div>
                                     }
-                                    @if (!string.IsNullOrEmpty(Model.per.per_Correo))
+                                    @if (!string.IsNullOrEmpty(Model.per_Correo))
                                     {
                                         <div class="col-md-6">
                                             <div class="detail-item">
@@ -177,11 +177,11 @@
                                                     <i class="fas fa-envelope"></i>
                                                     <span>Correo Electrónico</span>
                                                 </div>
-                                                <div class="detail-value">@Model.per.per_Correo</div>
+                                                <div class="detail-value">@Model.per_Correo</div>
                                             </div>
                                         </div>
                                     }
-                                    @if (!string.IsNullOrEmpty(Model.per.per_Domicilio))
+                                    @if (!string.IsNullOrEmpty(Model.per_Domicilio))
                                     {
                                         <div class="col-md-12 mt-3">
                                             <div class="detail-item">
@@ -189,7 +189,7 @@
                                                     <i class="fas fa-map-marker-alt"></i>
                                                     <span>Dirección</span>
                                                 </div>
-                                                <div class="detail-value">@Model.per.per_Domicilio</div>
+                                                <div class="detail-value">@Model.per_Domicilio</div>
                                             </div>
                                         </div>
                                     }

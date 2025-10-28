@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PetsHome.Business.Services
 {
@@ -26,16 +26,12 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Obtiene una lista de razas.
-        /// </summary>
-        /// <returns>Una lista de objetos RazaViewModel que corresponden a las razas encontradas.</returns>
-        public async Task<List<RazaViewModel>> ListAsync()
+        public async Task<List<RazaListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Razas_ListResult> mappedResult = await _razaRepository.ListAsync();
-                return _mapper.Map<List<RazaViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<RazaListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -44,17 +40,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        /// <summary>
-        /// Busca una raza por su identificador.
-        /// </summary>
-        /// <param name="id">Identificador de la raza.</param>
-        /// <returns>Un objeto RazaViewModel que corresponde a la raza encontrada.</returns>
-        public async Task<RazaViewModel> FindAsync(int id)
+        public async Task<RazaFormViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_Razas_FindResult mappedResult = await _razaRepository.FindAsync(id);
-                return _mapper.Map<RazaViewModel>(mappedResult);
+                return _mapper.Map<RazaFormViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -63,17 +54,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        /// <summary>
-        /// Obtiene los detalles de una raza por su identificador.
-        /// </summary>
-        /// <param name="id">Identificador de la raza.</param>
-        /// <returns>Un objeto RazaViewModel que contiene los detalles de la raza encontrada.</returns>
-        public async Task<RazaViewModel> DetailAsync(int id)
+        public async Task<RazaDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Razas_DetailResult mappedResult = await _razaRepository.DetailAsync(id);
-                return _mapper.Map<RazaViewModel>(mappedResult);
+                return _mapper.Map<RazaDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -82,12 +68,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        /// <summary>
-        /// Agrega una nueva raza.
-        /// </summary>
-        /// <param name="model">Datos de la raza a agregar.</param>
-        /// <returns>True si la raza se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(RazaViewModel model)
+        public async Task<bool> AddAsync(RazaFormViewModel model)
         {
             try
             {
@@ -101,12 +82,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        /// <summary>
-        /// Actualiza una raza existente.
-        /// </summary>
-        /// <param name="model">Datos actualizados de la raza.</param>
-        /// <returns>True si la raza se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(RazaViewModel model)
+        public async Task<bool> UpdateAsync(RazaFormViewModel model)
         {
             try
             {
@@ -120,11 +96,6 @@ namespace PetsHome.Business.Services
             }
         }
 
-        /// <summary>
-        /// Elimina una raza por su identificador.
-        /// </summary>
-        /// <param name="id">Identificador de la raza a eliminar.</param>
-        /// <returns>True si la raza se eliminó correctamente, False si ocurrió un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try

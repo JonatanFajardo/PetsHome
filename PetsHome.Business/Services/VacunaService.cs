@@ -23,12 +23,12 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<List<VacunaViewModel>> ListAsync()
+        public async Task<List<VacunaListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Refugio_Vacunas_ListResult> mappedResult = await _vacunaRepository.ListAsync();
-                return _mapper.Map<List<VacunaViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<VacunaListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -37,12 +37,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<VacunaViewModel> FindAsync(int id)
+        public async Task<VacunaFormViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Refugio_Vacunas_FindResult mappedResult = await _vacunaRepository.FindAsync(id);
-                return _mapper.Map<VacunaViewModel>(mappedResult);
+                return _mapper.Map<VacunaFormViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -51,12 +51,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<VacunaViewModel> DetailAsync(int id)
+        public async Task<VacunaDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Refugio_Vacunas_DetailResult mappedResult = await _vacunaRepository.DetailAsync(id);
-                return _mapper.Map<VacunaViewModel>(mappedResult);
+                return _mapper.Map<VacunaDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -65,7 +65,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> AddAsync(VacunaViewModel model)
+        public async Task<bool> AddAsync(VacunaFormViewModel model)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> UpdateAsync(VacunaViewModel model)
+        public async Task<bool> UpdateAsync(VacunaFormViewModel model)
         {
             try
             {
@@ -93,11 +93,11 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id)
         {
             try
             {
-                Boolean mappedResult = await _vacunaRepository.RemoveAsync(id);
+                bool mappedResult = await _vacunaRepository.RemoveAsync(id);
                 return mappedResult;
             }
             catch (Exception error)

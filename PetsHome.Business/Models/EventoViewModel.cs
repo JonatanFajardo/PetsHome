@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -112,7 +112,7 @@ namespace PetsHome.Business.Models
         /// Carga los datos de la lista desplegable.
         /// </summary>
         /// <param name="refugioDropdownResults">Resultados de la lista desplegable de refugios.</param>
-        public void LoadDropDownList(IEnumerable<RefugioViewModel> refugioDropdownResults)
+        public void LoadDropDownList(IEnumerable<RefugioDropdownViewModel> refugioDropdownResults)
         {
             refugioList = new SelectList(refugioDropdownResults, "refg_Id", "refg_Nombre");
         }
