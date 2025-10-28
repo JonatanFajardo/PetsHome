@@ -86,7 +86,7 @@ namespace PetsHome.Business.Services
         /// Agrega una nueva procedencia.
         /// </summary>
         /// <param name="model">Datos de la procedencia a agregar.</param>
-        /// <returns>True si la procedencia se agregó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la procedencia se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> AddAsync(ProcedenciaViewModel model)
         {
             try
@@ -105,7 +105,7 @@ namespace PetsHome.Business.Services
         /// Actualiza una procedencia existente.
         /// </summary>
         /// <param name="model">Datos actualizados de la procedencia.</param>
-        /// <returns>True si la procedencia se actualizó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la procedencia se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> UpdateAsync(ProcedenciaViewModel model)
         {
             try
@@ -124,7 +124,7 @@ namespace PetsHome.Business.Services
         /// Elimina una procedencia por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la procedencia a eliminar.</param>
-        /// <returns>True si la procedencia se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si la procedencia se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try
@@ -138,5 +138,27 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        #region Dropdown
+
+        /// <summary>
+        /// Obtiene una lista de procedencias para dropdowns.
+        /// </summary>
+        /// <returns>Lista de procedencias para dropdowns.</returns>
+        public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_Procedencia_DropdownResult> mappedResult = _procedenciaRepository.ProcedenciaDropdown();
+                return _mapper.Map<IEnumerable<ProcedenciaViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        #endregion Dropdown
     }
 }

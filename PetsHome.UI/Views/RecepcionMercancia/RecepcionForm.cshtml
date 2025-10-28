@@ -1,0 +1,87 @@
+@model RecepcionMercanciaFormViewModel
+<!-- Card-->
+<div class="card">
+    <div class="card-header">
+        @if (Model.recep_Id == 0)
+        {
+            <h3>Agregar Recepción de Mercancía</h3>
+        }
+        else
+        {
+            <h3>Editar Recepción de Mercancía</h3>
+        }
+    </div>
+
+    <div class="card-body">
+        <form asp-controller="RecepcionMercancia" asp-action="Add" class="col-md-12" autocomplete="off">
+            <input class="form-control" asp-for="recep_Id" type="hidden" />
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label required">Descripción</label>
+                    <input class="form-control" asp-for="recep_Descripcion" type="text" maxlength="500" />
+                    <span class="text-danger" asp-validation-for="recep_Descripcion"></span>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label required">Fecha</label>
+                    <input class="form-control" asp-for="recep_Fecha" type="date" />
+                    <span class="text-danger" asp-validation-for="recep_Fecha"></span>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label required">Tipo de Recepción</label>
+                    <select class="form-control" asp-for="recep_TipoRecepcion">
+                        <option value="">Seleccione...</option>
+                        <option value="Compra">Compra</option>
+                        <option value="Donación">Donación</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="recep_TipoRecepcion"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="control-label required">Refugio</label>
+                    <select class="form-control" asp-for="refg_Id">
+                        <option value="">Seleccione un refugio...</option>
+                        @foreach (var refugio in ViewBag.Refugios)
+                        {
+                            <option value="@refugio.refg_Id">@refugio.refg_Nombre</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="refg_Id"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">Origen/Procedencia</label>
+                    <select class="form-control" asp-for="recep_OrigenId">
+                        <option value="">Seleccione...</option>
+                        @foreach (var procedencia in ViewBag.Procedencias)
+                        {
+                            <option value="@procedencia.proc_Id">@procedencia.proc_Descripcion</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="recep_OrigenId"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">Número de Documento</label>
+                    <input class="form-control" asp-for="recep_NumeroDocumento" type="text" maxlength="50" />
+                    <span class="text-danger" asp-validation-for="recep_NumeroDocumento"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @if (Model.recep_Id == 0)
+                    {
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar cambios</button>
+                    }
+                    <a asp-action="Index" class="btn btn-secondary"><i class="mdi mdi-arrow-left"></i> Volver al listado</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
