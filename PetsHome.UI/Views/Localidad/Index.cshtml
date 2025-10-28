@@ -107,10 +107,15 @@
 <script>
     Localidad.datatable({
         urlList: "@Url.Action("List")",
-        urlDetail: "@Url.Action("Detail")",
+        urlDetail: "@Url.Action("DetailDepartamento")",
         urlInsert: "@Url.Action("EditDepartamentos")",
         urlUpdate: "@Url.Action("EditDepartamentos")"
     });
+
+    // Función para ver detalles del departamento
+    function viewDetail(id) {
+        window.location.href = "@Url.Action("DetailDepartamento")/" + id;
+    }
 
     // Busqueda global
     $('#globalSearch').on('keyup', function() {

@@ -55,6 +55,44 @@ namespace PetsHome.UI.Controllers
         }
 
         /// <summary>
+        /// Obtiene el detalle de una recepción de mercancía para mostrar en vista.
+        /// </summary>
+        /// <param name="id">ID de la recepción.</param>
+        /// <returns>Vista DetailRecepcion con el detalle completo.</returns>
+        public async Task<IActionResult> Detail(int id)
+        {
+            var itemDetail = await _recepcionService.DetailAsync(id);
+            if (itemDetail != null)
+            {
+                ViewBag.Detalles = await _detalleService.ListByRecepcionAsync(id);
+                return View("DetailRecepcion", itemDetail);
+            }
+            else
+            {
+                ShowAlert("No se encontró la recepción", AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el detalle de una recepción de mercancía en formato JSON (para AJAX).
+        /// </summary>
+        /// <param name="id">ID de la recepción.</param>
+        /// <returns>JSON con el detalle de la recepción.</returns>
+        public async Task<IActionResult> DetailJson(int id)
+        {
+            var itemDetail = await _recepcionService.DetailAsync(id);
+            if (itemDetail != null)
+            {
+                return Json(new { item = itemDetail, success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "No se encontró la recepción" });
+            }
+        }
+
+        /// <summary>
         /// Lista los detalles de una recepción específica.
         /// </summary>
         /// <param name="id">ID de la recepción.</param>
