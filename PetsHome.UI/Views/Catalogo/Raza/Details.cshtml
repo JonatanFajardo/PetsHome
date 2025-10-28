@@ -1,4 +1,4 @@
-@model RazaViewModel
+@model RazaDetailsViewModel
 @{
     ViewData["Title"] = "Detalles de Raza";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -153,23 +153,23 @@
                                     <i class="fas fa-user-plus"></i>
                                     <span>Creado por</span>
                                 </div>
-                                <div class="detail-value">@(Model.raza_NombreUsuarioCrea ?? "Sistema")</div>
+                                <div class="detail-value">@(Model.UsuarioCreacion ?? "Sistema")</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">
                                     <i class="fas fa-calendar-plus"></i>
                                     <span>Fecha de creación</span>
                                 </div>
-                                <div class="detail-value">@(Model.raza_FechaCrea?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                <div class="detail-value">@(Model.raza_FechaCrea.ToString("dd/MM/yyyy hh:mm tt"))</div>
                             </div>
-                            @if (Model.raza_UsuarioModifica.HasValue)
+                            @if (Model.raza_FechaModifica.HasValue)
                             {
                                 <div class="detail-item">
                                     <div class="detail-label">
                                         <i class="fas fa-user-edit"></i>
                                         <span>Modificado por</span>
                                     </div>
-                                    <div class="detail-value">@(Model.raza_NombreUsuarioModifica ?? "Sistema")</div>
+                                    <div class="detail-value">@(Model.UsuarioModificacion ?? "Sistema")</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">

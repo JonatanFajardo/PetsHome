@@ -73,7 +73,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(RazaViewModel model)
+        public async Task<IActionResult> Add(RazaFormViewModel model)
         {
 
 

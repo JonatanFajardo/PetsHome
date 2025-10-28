@@ -78,7 +78,7 @@ namespace PetsHome.Business.Models
 
         public SelectList municipioList { get; set; }
 
-        public void LoadDropDownList(IEnumerable<DepartamentoViewModel> departamentoResults, IEnumerable<MunicipioViewModel> municipioResults)
+        public void LoadDropDownList(IEnumerable<DepartamentoListViewModel> departamentoResults, IEnumerable<MunicipioListViewModel> municipioResults)
         {
             departamentoList = new SelectList(departamentoResults, "depto_Id", "depto_Descripcion");
             municipioList = new SelectList(municipioResults, "mpio_Id", "mpio_Descripcion");

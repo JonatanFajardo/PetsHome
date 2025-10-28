@@ -116,7 +116,7 @@ namespace PetsHome.Business.Models
 
         public SelectList procedenciaList { get; set; }
 
-        public void LoadDropDownList(IEnumerable<RazaViewModel> razaDropdownResults,
+        public void LoadDropDownList(IEnumerable<RazaDropdownViewModel> razaDropdownResults,
                                      IEnumerable<Dropdown> dropdownlists,
                                      IEnumerable<RefugioDropdownViewModel> refugioDropdownResults,
                                      IEnumerable<ProcedenciaViewModel> procedenciaDropdownResults)
