@@ -1026,3 +1026,207 @@ tr.loading-row {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ===========================================
+   ESTILOS MODERNOS PARA TABS
+   =========================================== */
+
+/* Contenedor de tabs con fondo blanco y sombra */
+.pets-status-tabs {
+    border-bottom: none;
+}
+
+/* Items de tabs */
+.pets-status-tabs .nav-item {
+    margin-bottom: -1px;
+    margin-right: 8px;
+}
+
+/* Links de tabs con diseño moderno */
+.pets-status-tabs .nav-link {
+    border: none !important;
+    background: transparent;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de hover en tabs */
+.pets-status-tabs .nav-link:hover {
+    background: #f3f4f6;
+    color: #374151;
+    cursor: pointer;
+}
+
+/* Tab activa con gradiente púrpura */
+.pets-status-tabs .nav-link.active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Barra inferior animada para tab activa */
+.pets-status-tabs .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: white;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.pets-status-tabs .nav-link.active::after {
+    width: 80%;
+}
+
+/* Efecto ripple al hacer click */
+.pets-status-tabs .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.pets-status-tabs .nav-link:active::before {
+    width: 200px;
+    height: 200px;
+}
+
+/* Badges de contador dentro de tabs */
+.pets-status-tabs .nav-link .badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    transition: all 0.3s ease;
+}
+
+.pets-status-tabs .nav-link:not(.active) .badge {
+    background: #e5e7eb;
+    color: #6b7280;
+}
+
+.pets-status-tabs .nav-link.active .badge {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    animation: pulseCounter 2s infinite;
+}
+
+/* Iconos dentro de tabs */
+.pets-status-tabs .nav-link i {
+    margin-right: 8px;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.pets-status-tabs .nav-link.active i {
+    transform: scale(1.1);
+}
+
+/* Animación de pulse para badges */
+@keyframes pulseCounter {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Estilo para tabs con diferentes estados */
+.pets-status-tabs .nav-link[data-status="pending"] {
+    border-top: 3px solid transparent;
+}
+
+.pets-status-tabs .nav-link[data-status="pending"].active {
+    border-top-color: #f59e0b;
+}
+
+.pets-status-tabs .nav-link[data-status="adopted"] {
+    border-top: 3px solid transparent;
+}
+
+.pets-status-tabs .nav-link[data-status="adopted"].active {
+    border-top-color: #10b981;
+}
+
+/* Efecto de deslizamiento suave entre tabs */
+.tab-content {
+    animation: fadeInContent 0.4s ease-out;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para tabs */
+@media (max-width: 768px) {
+    .pets-status-tabs {
+        padding: 12px 16px 0;
+        margin: 0 16px;
+    }
+
+    .pets-status-tabs .nav-item {
+        margin-right: 4px;
+        flex: 1;
+    }
+
+    .pets-status-tabs .nav-link {
+        padding: 10px 16px;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .pets-status-tabs .nav-link .badge {
+        display: block;
+        margin: 4px 0 0 0;
+    }
+
+    .pets-status-tabs .nav-link i {
+        display: none;
+    }
+}
+
+/* Tabs compactas para móviles pequeños */
+@media (max-width: 480px) {
+    .pets-status-tabs .nav-link {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .pets-status-tabs .nav-link span.text {
+        display: none;
+    }
+
+    .pets-status-tabs .nav-link i {
+        display: inline-block;
+        margin: 0;
+        font-size: 16px;
+    }
+}
