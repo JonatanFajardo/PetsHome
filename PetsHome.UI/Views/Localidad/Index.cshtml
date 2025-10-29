@@ -15,7 +15,7 @@
         <div class="pets-header-content">
             <div class="pets-title-section">
                 <h2 class="text-white"><i class="fa-map-marked-alt mr-2 text-white"></i>Gestión de Localidades</h2>
-                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("EditDepartamentos")'">
+                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("FormDepartamentos")'">
                     <i class="fas fa-plus mr-2"></i>Nuevo Departamento
                 </button>
             </div>
@@ -108,8 +108,8 @@
     Localidad.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("DetailDepartamento")",
-        urlInsert: "@Url.Action("EditDepartamentos")",
-        urlUpdate: "@Url.Action("EditDepartamentos")"
+        urlInsert: "@Url.Action("FormDepartamentos")",
+            urlUpdate: "@Url.Action("FormDepartamentos")"
     });
 
     // Función para ver detalles del departamento
