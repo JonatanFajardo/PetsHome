@@ -27,6 +27,7 @@ namespace PetsHome.Common.Entities
         public string masc_Historia { get; set; }
         public int refg_Id { get; set; }
         public int proc_Id { get; set; }
+        public int? masc_IngresoId { get; set; }
         public bool masc_EsAdoptado { get; set; }
         public bool masc_EsReservado { get; set; }
         /// <summary>
@@ -54,6 +55,7 @@ namespace PetsHome.Common.Entities
         public virtual tbProcedencias proc { get; set; }
         public virtual tbRazas raza { get; set; }
         public virtual tbRefugios refg { get; set; }
+        public virtual tbIngresos masc_Ingreso { get; set; }
         public virtual ICollection<tbHistorialMedico> tbHistorialMedico { get; set; }
         public virtual ICollection<tbSolicitudes> tbSolicitudes { get; set; }
     }

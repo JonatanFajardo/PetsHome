@@ -1,0 +1,302 @@
+@model IngresoDetailsViewModel
+@{
+    ViewData["Title"] = "Detalles del Ingreso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Determinar estado de emergencia
+    var emergenciaColor = Model.ingr_EsEmergencia ? "status-urgente" : "status-disponible";
+    var emergenciaIcono = Model.ingr_EsEmergencia ? "fa-exclamation-circle" : "fa-check-circle";
+    var emergenciaTexto = Model.ingr_EsEmergencia ? "EMERGENCIA" : "Normal";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.ingr_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>Ingreso de Rescate</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@Model.ingr_LugarRescate</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas @emergenciaIcono"></i>
+                                <span>@emergenciaTexto</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@Model.ingr_FechaIngreso.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-home"></i>
+                                <span>@Model.refg_Nombre</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.ingr_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.ingr_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información General del Ingreso -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información General</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Fecha de Ingreso</span>
+                                </div>
+                                <div class="detail-value">@Model.ingr_FechaIngreso.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Lugar de Rescate</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.ingr_LugarRescate</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-building"></i>
+                                    <span>Refugio Asignado</span>
+                                </div>
+                                <div class="detail-value">@Model.refg_Nombre</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Tipo de Ingreso</span>
+                                </div>
+                                <div class="detail-value">
+                                    <span class="status-badge @emergenciaColor">@emergenciaTexto</span>
+                                </div>
+                            </div>
+
+                            @if (Model.repa_Id.HasValue && !string.IsNullOrEmpty(Model.repa_UbicacionIncidente))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Reporte Asociado</span>
+                                    </div>
+                                    <div class="detail-value">
+                                        <a href="@Url.Action("Detail", "ReportesAbandono", new { id = Model.repa_Id })">
+                                            Reporte #@Model.repa_Id.Value.ToString().PadLeft(3, '0')
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Rescate -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>Datos del Rescate</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            @if (!string.IsNullOrEmpty(Model.ingr_PersonaRescatista))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user"></i>
+                                        <span>Persona Rescatista</span>
+                                    </div>
+                                    <div class="detail-value detail-value-large">@Model.ingr_PersonaRescatista</div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.ingr_MedioTransporte))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-car"></i>
+                                        <span>Medio de Transporte</span>
+                                    </div>
+                                    <div class="detail-value">@Model.ingr_MedioTransporte</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condición del Animal -->
+                @if (!string.IsNullOrEmpty(Model.ingr_CondicionInicial))
+                {
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <i class="fas fa-heartbeat"></i>
+                            <h3>Condición Inicial del Animal</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
+                                <div class="detail-item">
+                                    <div class="detail-value detail-value-large">@Model.ingr_CondicionInicial</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ingr_Observaciones))
+                {
+                    <!-- Observaciones -->
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <i class="fas fa-clipboard"></i>
+                            <h3>Observaciones</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
+                                <div class="detail-item">
+                                    <div class="detail-value detail-value-large">@Model.ingr_Observaciones</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@Model.ingr_NombreUsuarioCrea</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@Model.ingr_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.ingr_UsuarioModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@Model.ingr_NombreUsuarioModifica</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.ingr_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="ingr_Id" id="delete-ingr-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar este ingreso?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-ingr-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

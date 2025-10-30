@@ -1,0 +1,176 @@
+@model ReportesAbandonoFormViewModel
+@{
+    ViewData["Title"] = Model.isEdit ? "Editar Reporte de Abandono" : "Nuevo Reporte de Abandono";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-exclamation-triangle mr-2 text-white"></i>@(Model.isEdit ? "Editar Reporte" : "Nuevo Reporte de Abandono")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del reporte de abandono</p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+    <form asp-action="Add" method="post" autocomplete="ON" id="reporteForm">
+        <input class="form-control" asp-for="repa_Id" type="hidden" />
+
+        <!-- Datos del Reporte -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del Reporte</h2>
+                <p class="card-description">Información general del reporte</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Fecha del Reporte -->
+                    <div class="form-group">
+                        <label asp-for="repa_FechaReporte">Fecha del Reporte</label>
+                        <input class="form-control" asp-for="repa_FechaReporte" type="datetime-local" />
+                        <span class="text-danger" asp-validation-for="repa_FechaReporte"></span>
+                    </div>
+
+                    <!-- Tipo de Reportante -->
+                    <div class="form-group">
+                        <label asp-for="reptip_Id">Tipo de Reportante</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="reptip_Id" asp-items="Model.reportantesTipoList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="reptip_Id"></span>
+                    </div>
+
+                    <!-- Refugio Asignado -->
+                    <div class="form-group">
+                        <label asp-for="refg_Id">Refugio Asignado</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="refg_Id"></span>
+                    </div>
+
+                    <!-- Estado de Atención -->
+                    <div class="form-group">
+                        <label asp-for="repa_EstadoAtencion">Estado de Atención</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="repa_EstadoAtencion">
+                                <option value="">-- Seleccionar --</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Atendido">Atendido</option>
+                                <option value="Rechazado">Rechazado</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="repa_EstadoAtencion"></span>
+                    </div>
+                </div>
+
+                <!-- Ubicación del Incidente (Full Width) -->
+                <div class="form-group">
+                    <label asp-for="repa_UbicacionIncidente">Ubicación del Incidente</label>
+                    <textarea class="form-control" asp-for="repa_UbicacionIncidente" rows="2" placeholder="Ingrese la ubicación exacta del incidente"></textarea>
+                    <span class="text-danger" asp-validation-for="repa_UbicacionIncidente"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datos del Animal -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del Animal</h2>
+                <p class="card-description">Información sobre el animal reportado</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Descripción del Animal -->
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label asp-for="repa_DescripcionAnimal">Descripción del Animal</label>
+                        <textarea class="form-control" asp-for="repa_DescripcionAnimal" rows="3" placeholder="Describa el animal (especie, color, tamaño aproximado, etc.)"></textarea>
+                        <span class="text-danger" asp-validation-for="repa_DescripcionAnimal"></span>
+                    </div>
+
+                    <!-- Estado del Animal -->
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label asp-for="repa_EstadoAnimal">Estado del Animal</label>
+                        <textarea class="form-control" asp-for="repa_EstadoAnimal" rows="3" placeholder="Describa el estado físico y de salud del animal"></textarea>
+                        <span class="text-danger" asp-validation-for="repa_EstadoAnimal"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datos del Reportante -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del Reportante</h2>
+                <p class="card-description">Información de contacto</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Nombre del Reportante -->
+                    <div class="form-group">
+                        <label asp-for="repa_NombreReportante">Nombre del Reportante</label>
+                        <input class="form-control" asp-for="repa_NombreReportante" type="text" placeholder="Ingrese el nombre completo" />
+                        <span class="text-danger" asp-validation-for="repa_NombreReportante"></span>
+                    </div>
+
+                    <!-- Teléfono de Contacto -->
+                    <div class="form-group">
+                        <label asp-for="repa_TelefonoContactoContacto">Teléfono de Contacto</label>
+                        <input class="form-control" asp-for="repa_TelefonoContactoContacto" type="tel" placeholder="Ingrese el número de teléfono" />
+                        <span class="text-danger" asp-validation-for="repa_TelefonoContactoContacto"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Observaciones -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Observaciones</h2>
+                <p class="card-description">Información adicional relevante</p>
+            </div>
+            <div class="card-content">
+                <div class="form-group">
+                    <label asp-for="repa_Observaciones">Observaciones</label>
+                    <textarea class="form-control" asp-for="repa_Observaciones" rows="4" placeholder="Ingrese cualquier información adicional relevante"></textarea>
+                    <span class="text-danger" asp-validation-for="repa_Observaciones"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+        </div>
+    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/load-dropdownlist.js"></script>
+}

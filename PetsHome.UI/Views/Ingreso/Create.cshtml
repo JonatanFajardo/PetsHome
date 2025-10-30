@@ -1,0 +1,166 @@
+@model IngresoFormViewModel
+@{
+    ViewData["Title"] = Model.isEdit ? "Editar Ingreso" : "Nuevo Ingreso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-ambulance mr-2 text-white"></i>@(Model.isEdit ? "Editar Ingreso" : "Nuevo Ingreso")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del ingreso de rescate</p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+    <form asp-action="Add" method="post" autocomplete="ON" id="ingresoForm">
+        <input class="form-control" asp-for="ingr_Id" type="hidden" />
+
+        <!-- Datos del Ingreso -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del Ingreso</h2>
+                <p class="card-description">Información general del ingreso</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Fecha de Ingreso -->
+                    <div class="form-group">
+                        <label asp-for="ingr_FechaIngreso">Fecha de Ingreso</label>
+                        <input class="form-control" asp-for="ingr_FechaIngreso" type="datetime-local" />
+                        <span class="text-danger" asp-validation-for="ingr_FechaIngreso"></span>
+                    </div>
+
+                    <!-- Refugio -->
+                    <div class="form-group">
+                        <label asp-for="refg_Id">Refugio</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="refg_Id"></span>
+                    </div>
+
+                    <!-- Reporte de Abandono (opcional) -->
+                    <div class="form-group">
+                        <label asp-for="repa_Id">Reporte de Abandono Asociado (opcional)</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="repa_Id" asp-items="Model.reportesList">
+                                <option value="">-- Sin reporte asociado --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="repa_Id"></span>
+                    </div>
+
+                    <!-- Es Emergencia -->
+                    <div class="form-group">
+                        <div class="switch-container">
+                            <div>
+                                <label class="switch-label">Es Emergencia</label>
+                                <div class="switch-status" id="emergenciaStatus">No</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" asp-for="ingr_EsEmergencia" id="ingr_EsEmergencia">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lugar de Rescate -->
+                <div class="form-group">
+                    <label asp-for="ingr_LugarRescate">Lugar de Rescate</label>
+                    <textarea class="form-control" asp-for="ingr_LugarRescate" rows="2" placeholder="Ingrese el lugar exacto donde se realizó el rescate"></textarea>
+                    <span class="text-danger" asp-validation-for="ingr_LugarRescate"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datos del Rescate -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Datos del Rescate</h2>
+                <p class="card-description">Información sobre la operación de rescate</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Persona Rescatista -->
+                    <div class="form-group">
+                        <label asp-for="ingr_PersonaRescatista">Persona Rescatista</label>
+                        <input class="form-control" asp-for="ingr_PersonaRescatista" type="text" placeholder="Nombre de quien realizó el rescate" />
+                        <span class="text-danger" asp-validation-for="ingr_PersonaRescatista"></span>
+                    </div>
+
+                    <!-- Medio de Transporte -->
+                    <div class="form-group">
+                        <label asp-for="ingr_MedioTransporte">Medio de Transporte</label>
+                        <input class="form-control" asp-for="ingr_MedioTransporte" type="text" placeholder="Vehículo o medio utilizado" />
+                        <span class="text-danger" asp-validation-for="ingr_MedioTransporte"></span>
+                    </div>
+                </div>
+
+                <!-- Condición Inicial -->
+                <div class="form-group">
+                    <label asp-for="ingr_CondicionInicial">Condición Inicial del Animal</label>
+                    <textarea class="form-control" asp-for="ingr_CondicionInicial" rows="3" placeholder="Describa el estado físico y de salud del animal al momento del rescate"></textarea>
+                    <span class="text-danger" asp-validation-for="ingr_CondicionInicial"></span>
+                </div>
+
+                <!-- Observaciones -->
+                <div class="form-group">
+                    <label asp-for="ingr_Observaciones">Observaciones</label>
+                    <textarea class="form-control" asp-for="ingr_Observaciones" rows="4" placeholder="Información adicional relevante sobre el ingreso"></textarea>
+                    <span class="text-danger" asp-validation-for="ingr_Observaciones"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+        </div>
+    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script>
+        // Actualizar el estado del switch de emergencia
+        $('#ingr_EsEmergencia').on('change', function() {
+            if($(this).is(':checked')) {
+                $('#emergenciaStatus').text('Sí');
+            } else {
+                $('#emergenciaStatus').text('No');
+            }
+        });
+
+        // Inicializar estado del switch
+        $(document).ready(function() {
+            if($('#ingr_EsEmergencia').is(':checked')) {
+                $('#emergenciaStatus').text('Sí');
+            }
+        });
+    </script>
+}

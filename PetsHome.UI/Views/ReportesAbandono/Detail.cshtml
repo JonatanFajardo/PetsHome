@@ -1,0 +1,316 @@
+@model ReportesAbandonoDetailsViewModel
+@{
+    ViewData["Title"] = "Detalles del Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Determinar estado
+    var estadoColor = Model.repa_EstadoAtencion == "Atendido" ? "status-activo" :
+                      Model.repa_EstadoAtencion == "En Proceso" ? "status-en-proceso" :
+                      Model.repa_EstadoAtencion == "Rechazado" ? "status-inactivo" : "status-pendiente";
+    var estadoIcono = Model.repa_EstadoAtencion == "Atendido" ? "fa-check-circle" :
+                      Model.repa_EstadoAtencion == "En Proceso" ? "fa-spinner" :
+                      Model.repa_EstadoAtencion == "Rechazado" ? "fa-times-circle" : "fa-clock";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.repa_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>Reporte de Abandono</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@Model.repa_UbicacionIncidente</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas @estadoIcono"></i>
+                                <span>@Model.repa_EstadoAtencion</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@Model.repa_FechaReporte.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-user-tag"></i>
+                                <span>@Model.reptip_Descripcion</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.repa_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.repa_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información del Reporte -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Información del Reporte</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Fecha del Reporte</span>
+                                </div>
+                                <div class="detail-value">@Model.repa_FechaReporte.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Ubicación del Incidente</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.repa_UbicacionIncidente</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Estado de Atención</span>
+                                </div>
+                                <div class="detail-value">
+                                    <span class="status-badge @estadoColor">@Model.repa_EstadoAtencion</span>
+                                </div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-user-tag"></i>
+                                    <span>Tipo de Reportante</span>
+                                </div>
+                                <div class="detail-value">@Model.reptip_Descripcion</div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.refg_Nombre))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-home"></i>
+                                        <span>Refugio Asignado</span>
+                                    </div>
+                                    <div class="detail-value">@Model.refg_Nombre</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Reportante -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-user"></i>
+                        <h3>Datos del Reportante</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            @if (!string.IsNullOrEmpty(Model.repa_NombreReportante))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user"></i>
+                                        <span>Nombre</span>
+                                    </div>
+                                    <div class="detail-value detail-value-large">@Model.repa_NombreReportante</div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.repa_TelefonoContactoContacto))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-phone"></i>
+                                        <span>Teléfono de Contacto</span>
+                                    </div>
+                                    <div class="detail-value">@Model.repa_TelefonoContactoContacto</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Animal -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-paw"></i>
+                        <h3>Información del Animal</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            @if (!string.IsNullOrEmpty(Model.repa_DescripcionAnimal))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-dog"></i>
+                                        <span>Descripción del Animal</span>
+                                    </div>
+                                    <div class="detail-value detail-value-large">@Model.repa_DescripcionAnimal</div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.repa_EstadoAnimal))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-heartbeat"></i>
+                                        <span>Estado del Animal</span>
+                                    </div>
+                                    <div class="detail-value detail-value-large">@Model.repa_EstadoAnimal</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.repa_Observaciones))
+                {
+                    <!-- Observaciones -->
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <i class="fas fa-clipboard"></i>
+                            <h3>Observaciones</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
+                                <div class="detail-item">
+                                    <div class="detail-value detail-value-large">@Model.repa_Observaciones</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@Model.repa_NombreUsuarioCrea</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@Model.repa_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.repa_UsuarioModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@Model.repa_NombreUsuarioModifica</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.repa_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="repa_Id" id="delete-repa-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar este reporte?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-repa-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

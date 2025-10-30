@@ -1,0 +1,223 @@
+@model ReportesAbandonoListViewModel
+@{
+    ViewData["Title"] = "Reportes de Abandono";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+    <!-- Header púrpura con todos los controles -->
+    <div class="pets-header-full">
+        <div class="pets-header-content">
+            <div class="pets-title-section">
+                <h2 class="text-white"><i class="fas fa-exclamation-triangle mr-2 text-white"></i>Gestión de Reportes de Abandono</h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
+                    <i class="fas fa-plus mr-2"></i>Nuevo Reporte
+                </button>
+            </div>
+
+            <div class="pets-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Buscar por ubicación, reportante...">
+                </div>
+                <div class="action-buttons">
+                    <div class="view-toggle">
+                        <button class="btn-control active" id="tableViewBtn" onclick="toggleView('table')">
+                            <i class="fas fa-table"></i><span>Tabla</span>
+                        </button>
+                        <button class="btn-control" id="gridViewBtn" onclick="toggleView('grid')">
+                            <i class="fas fa-th"></i><span>Tarjetas</span>
+                        </button>
+                    </div>
+                        <button class="btn-export-datatable" onclick="location.reload()">
+                        Recargar
+                    </button>
+                    <div id="export-buttons-container" class="export-buttons-container">
+                        <!-- Los botones de DataTable se moveran aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista de Tabla -->
+    <div id="tableView" class="pets-table-container">
+        <table class="pets-table" id="datatable">
+            <thead>
+                <tr>
+                    <th width="80">ID</th>
+                    <th>Fecha Reporte</th>
+                    <th>Ubicación</th>
+                    <th>Tipo Reportante</th>
+                    <th>Refugio</th>
+                    <th width="130">Estado</th>
+                    <th width="150" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DataTable cargará los datos aquí -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Vista de Cards (oculta por defecto) -->
+    <div id="gridView" style="display: none;">
+        <div class="row" id="reportesGrid">
+            <!-- Las tarjetas se generarán dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form asp-action="Remove" method="post" autocomplete="off"
+                      data-ajax-begin="Catalogs.begin"
+                      data-ajax-success="Catalogs.success"
+                      data-ajax-failure="Catalogs.failure"
+                      data-ajax-complete="Catalogs.complete">
+                    <input type="hidden" asp-for="repa_Id" id="delete-item-id">
+                    <div class="modal-body text-center py-4">
+                        <div class="mb-3">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                        </div>
+                        <h5>¿Está seguro de eliminar este reporte?</h5>
+                        <p class="text-muted">Esta acción no se puede deshacer.</p>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                            <i class="fas fa-times mr-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash mr-2"></i>Eliminar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+<script src="~/js/components/datatable/datatable.init.js"></script>
+<script src="~/js/pages/reportesabandono.js"></script>
+<script>
+    // Configuración del DataTable
+    ReportesAbandono.datatable({
+        urlList: "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
+
+    // Búsqueda global
+    $('#globalSearch').on('keyup', function() {
+        $('#datatable').DataTable().search(this.value).draw();
+    });
+
+    // Alternar entre vista tabla y cards
+    function toggleView(view) {
+        if (view === 'table') {
+            $('#tableView').show();
+            $('#gridView').hide();
+            $('#tableViewBtn').addClass('active');
+            $('#gridViewBtn').removeClass('active');
+        } else {
+            $('#tableView').hide();
+            $('#gridView').show();
+            $('#tableViewBtn').removeClass('active');
+            $('#gridViewBtn').addClass('active');
+            loadCardsView();
+        }
+    }
+
+    // Cargar vista de tarjetas
+    function loadCardsView() {
+        var table = $('#datatable').DataTable();
+        var data = table.rows({ search: 'applied' }).data();
+        var html = '';
+
+        if (data.length === 0) {
+            html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron reportes</p></div>';
+        } else {
+            data.each(function(row) {
+                var estadoBadge = getEstadoBadge(row.repa_EstadoAtencion);
+                html += `
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="pet-card">
+                            <div style="position: relative;">
+                                <div class="pet-card-img">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <span class="pet-badge">#${String(row.repa_Id).padStart(3, '0')}</span>
+                            </div>
+                            <div class="p-3">
+                                <h5 class="mb-1">${row.repa_UbicacionIncidente}</h5>
+                                <p class="text-muted small mb-2">${new Date(row.repa_FechaReporte).toLocaleDateString()}</p>
+                                <p class="text-muted mb-2"><i class="fas fa-user mr-2"></i>${row.reptip_Descripcion}</p>
+                                <p class="text-muted mb-3"><i class="fas fa-home mr-2"></i>${row.refg_Nombre || 'Sin asignar'}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    ${estadoBadge}
+                                    <div>
+                                        <button class="action-btn btn-view" onclick="viewReporte(${row.repa_Id})" title="Ver">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn btn-edit" onclick="editReporte(${row.repa_Id})" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn btn-delete" onclick="deleteReporte(${row.repa_Id})" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        $('#reportesGrid').html(html);
+    }
+
+    // Funciones para acciones
+    function viewReporte(id) {
+        window.location.href = '@Url.Action("Detail")' + '/' + id;
+    }
+
+    function editReporte(id) {
+        window.location.href = '@Url.Action("Find")' + '/' + id;
+    }
+
+    function deleteReporte(id) {
+        $('#delete-item-id').val(id);
+        $('#delete-modal').modal('show');
+    }
+
+    // Obtener badge según estado
+    function getEstadoBadge(estado) {
+        var badges = {
+            'Pendiente': '<span class="status-badge status-pendiente">Pendiente</span>',
+            'En Proceso': '<span class="status-badge status-en-proceso">En Proceso</span>',
+            'Atendido': '<span class="status-badge status-disponible">Atendido</span>',
+            'Rechazado': '<span class="status-badge status-adoptado">Rechazado</span>'
+        };
+        return badges[estado] || badges['Pendiente'];
+    }
+</script>
+}

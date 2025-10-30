@@ -240,6 +240,33 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbVacunas, VacunaFormViewModel>().ReverseMap();
             CreateMap<tbVoluntarios, VoluntarioFormViewModel>().ReverseMap();
 
+            // Mapeos para ReportantesTipo - ViewModels separados
+            CreateMap<PR_Rescate_ReportantesTipo_ListResult, ReportantesTipoListViewModel>().ReverseMap();
+            CreateMap<PR_Rescate_ReportantesTipo_FindResult, ReportantesTipoFormViewModel>()
+                .ForMember(dest => dest.reptip_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.reptip_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica))
+                .ReverseMap();
+            CreateMap<PR_Rescate_ReportantesTipo_DetailResult, ReportantesTipoDetailsViewModel>().ReverseMap();
+            CreateMap<tbReportantesTipo, ReportantesTipoFormViewModel>().ReverseMap();
+
+            // Mapeos para ReportesAbandono - ViewModels separados
+            CreateMap<PR_Rescate_ReportesAbandono_ListResult, ReportesAbandonoListViewModel>().ReverseMap();
+            CreateMap<PR_Rescate_ReportesAbandono_FindResult, ReportesAbandonoFormViewModel>()
+                .ForMember(dest => dest.repa_UsuarioCrea, opt => opt.MapFrom(src => src.repa_UsuarioCrea))
+                .ForMember(dest => dest.repa_UsuarioModifica, opt => opt.MapFrom(src => src.repa_UsuarioModifica))
+                .ReverseMap();
+            CreateMap<PR_Rescate_ReportesAbandono_DetailResult, ReportesAbandonoDetailsViewModel>().ReverseMap();
+            CreateMap<tbReportesAbandono, ReportesAbandonoFormViewModel>().ReverseMap();
+
+            // Mapeos para Ingresos - ViewModels separados
+            CreateMap<PR_Rescate_Ingresos_ListResult, IngresoListViewModel>().ReverseMap();
+            CreateMap<PR_Rescate_Ingresos_FindResult, IngresoFormViewModel>()
+                .ForMember(dest => dest.ingr_UsuarioCrea, opt => opt.MapFrom(src => src.ingr_UsuarioCrea))
+                .ForMember(dest => dest.ingr_UsuarioModifica, opt => opt.MapFrom(src => src.ingr_UsuarioModifica))
+                .ReverseMap();
+            CreateMap<PR_Rescate_Ingresos_DetailResult, IngresoDetailsViewModel>().ReverseMap();
+            CreateMap<tbIngresos, IngresoFormViewModel>().ReverseMap();
+
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
             ////CreateMap<tbContratos, ContratosViewModel>().ReverseMap()();
