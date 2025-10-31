@@ -1,156 +1,187 @@
 ﻿@model DepartamentoDetailsViewModel
 @{
-    ViewData["Title"] = "DetailDepartamento";
+    ViewData["Title"] = "Detalles de Departamento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-lg-12">
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
 
-        @* === Información departamentos === *@
-        <div class="card ribbon-box">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="ribbon ribbon-primary float-left"><h4>Información de departamentos</h4></div>
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente y información principal -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.depto_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.depto_Descripcion</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-map"></i>
+                            <span>Departamento</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas fa-code"></i>
+                                <span>Código: @Model.depto_Codigo</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-building"></i>
+                                <span>@Model.ListadoMunicipios.Count() municipio@(Model.ListadoMunicipios.Count() != 1 ? "s" : "")</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="ribbon-content">
-                    <div class="card-body d-flex align-items-center justify-content-center flex-column">
-                        <form class="col-md-10" method="post">
-                            <dl class="dl-horizontal">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.depto_Codigo)
-                                        </dt>
 
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.depto_Codigo)
-                                        </dd>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.depto_Descripcion)
-                                        </dt>
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.depto_Descripcion)
-                                        </dd>
-                                    </div>
+                <div class="detail-actions">
+                    <a href="@Url.Action("FormDepartamentos", new { id = Model.depto_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información General -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información General</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-code"></i>
+                                    <span>Código</span>
                                 </div>
-                            </dl>
-                            </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                <div class="detail-value detail-value-large">@Model.depto_Codigo</div>
+                            </div>
 
-        @* === Auditoria departamentos === *@
-        <div class="card ribbon-box mt-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="ribbon ribbon-primary float-left"><h4>Auditoría de departamentos</h4></div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <span>Descripción</span>
+                                </div>
+                                <div class="detail-value">@Model.depto_Descripcion</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="ribbon-content">
-                    <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info">
-                        <thead>
-                            <tr>
-                                <th>Acción</th>
-                                <th>Usuario</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Creado</td>
-                                <td>@Html.DisplayFor(model => model.UsuarioCreacion)</td>
-                                <td>@Html.DisplayFor(model => model.depto_FechaCrea)</td>
-                            </tr>
-                            @if (string.IsNullOrEmpty(Model.UsuarioModificacion))
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Creado por</span>
+                                </div>
+                                <div class="detail-value">@(Model.UsuarioCreacion ?? "Sistema")</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    <span>Fecha de creación</span>
+                                </div>
+                                <div class="detail-value">@(Model.depto_FechaCrea != null ? ((DateTime)Model.depto_FechaCrea).ToString("dd/MM/yyyy hh:mm tt") : "N/A")</div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.UsuarioModificacion))
                             {
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td>Modificado</td>
-                                    <td>@Html.DisplayFor(model => model.UsuarioModificacion)</td>
-                                    <td>@Html.DisplayFor(model => model.depto_FechaModifica)</td>
-                                </tr>
-                            }
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user-edit"></i>
+                                        <span>Modificado por</span>
+                                    </div>
+                                    <div class="detail-value">@Model.UsuarioModificacion</div>
+                                </div>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        @* === Información municipios === *@
-        <div class="card ribbon-box mt-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="ribbon ribbon-primary float-left"><h4>Información de municipios</h4></div>
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <span>Última modificación</span>
+                                    </div>
+                                    <div class="detail-value">@(Model.depto_FechaModifica != null ? ((DateTime)Model.depto_FechaModifica).ToString("dd/MM/yyyy hh:mm tt") : "N/A")</div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
-                <div class="ribbon-content">
-                    <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info" id="municipio-detalle">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Descripción</th>
-                                <th>Usuario creación</th>
-                                <th>Fecha creación</th>
-                                <th>Usuario modificación</th>
-                                <th>Fecha modificación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.ListadoMunicipios)
-                                {
-                                    @if (string.IsNullOrEmpty(item.UsuarioModificacion))
+
+                <!-- Municipios Asociados -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-building"></i>
+                        <h3>Municipios Asociados</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        @if (Model.ListadoMunicipios != null && Model.ListadoMunicipios.Any())
+                        {
+                            <table class="detail-table" id="municipio-detalle">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Usuario Creación</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Usuario Modificación</th>
+                                        <th>Fecha Modificación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ListadoMunicipios)
                                     {
                                         <tr>
                                             <td>@item.mpio_Codigo</td>
                                             <td>@item.mpio_Descripcion</td>
                                             <td>@item.UsuarioCreacion</td>
-                                            <td>@item.mpio_FechaCrea</td>
-                                            <td>N/A</td>
-                                            <td>N/A</td>
+                                            <td>@(item.mpio_FechaCrea != null ? ((DateTime)item.mpio_FechaCrea).ToString("dd/MM/yyyy") : "N/A")</td>
+                                            <td>@(string.IsNullOrEmpty(item.UsuarioModificacion) ? "N/A" : item.UsuarioModificacion)</td>
+                                            <td>@(item.mpio_FechaModifica != null ? ((DateTime)item.mpio_FechaModifica).ToString("dd/MM/yyyy") : "N/A")</td>
                                         </tr>
                                     }
-                                    else
-                                    {
-                                        <tr>
-                                            <td>@item.mpio_Codigo</td>
-                                            <td>@item.mpio_Descripcion</td>
-                                            <td>@item.UsuarioCreacion</td>
-                                            <td>@item.mpio_FechaCrea</td>
-                                            <td>@item.UsuarioModificacion</td>
-                                            <td>@item.mpio_FechaModifica</td>
-                                        </tr>
-                                    }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-12" id="m-footer">
-                        <a style="background-color:gray;color:white" asp-controller="Localidad" asp-action="Index" class="btn btn-secondary">Cancelar</a>
-                        <a type="submit" class="btn btn-primary" href="/Localidad/FormDepartamentos/@Model.depto_Id"><i class="fa fa-edit"></i> Editar</a>
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="empty-state-detail">
+                                <i class="fas fa-building"></i>
+                                <h4>No hay municipios registrados</h4>
+                                <p>Este departamento no tiene municipios asociados</p>
+                            </div>
+                        }
                     </div>
                 </div>
 
             </div>
-
         </div>
     </div>
 </div>
+
 @section Scripts{
     <script src="~/js/app/catalogos/list-municipiosdetails.js"></script>
-  
-
 }

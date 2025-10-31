@@ -1,0 +1,91 @@
+﻿@model DepartamentoFormViewModel
+
+@{
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+    <meta charset="utf-8" />
+    <title>Departamento</title>
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" asp-append-version="true" />
+</head>
+<body>
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-map-marked-alt mr-2 text-white"></i>@(Model.depto_Id == 0 ? "Agregar Departamento" : "Editar Departamento")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">@(Model.depto_Id == 0 ? "Complete la información del nuevo departamento" : "Actualice la información del departamento")</p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div style="padding: 24px; background: #fafafa;">
+            <div class="container-fluid">
+
+                <form asp-controller="Localidad" asp-action="Add" method="post" autocomplete="off">
+                    <input class="form-control" asp-for="depto_Id" type="hidden" />
+
+                    <!-- Información del Departamento -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Información del Departamento</h2>
+                            <p class="card-description">Datos básicos del departamento</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Código -->
+                                <div class="form-group">
+                                    <label asp-for="depto_Codigo">Código</label>
+                                    <input class="form-control" asp-for="depto_Codigo" type="text" placeholder="Ingrese el código del departamento" maxlength="2" />
+                                    <span class="text-danger" asp-validation-for="depto_Codigo"></span>
+                                </div>
+
+                                <!-- Campo Descripción -->
+                                <div class="form-group">
+                                    <label asp-for="depto_Descripcion">Departamento</label>
+                                    <input class="form-control" asp-for="depto_Descripcion" type="text" placeholder="Ingrese el nombre del departamento" maxlength="100" />
+                                    <span class="text-danger" asp-validation-for="depto_Descripcion"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        @if (Model.depto_Id == 0)
+                        {
+                            <button type="submit" class="btn btn-primary">
+                                <i class="mdi mdi-content-save mr-1"></i> Guardar
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary">
+                                <i class="mdi mdi-content-save mr-1"></i> Guardar cambios
+                            </button>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </body>
+</html>
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
