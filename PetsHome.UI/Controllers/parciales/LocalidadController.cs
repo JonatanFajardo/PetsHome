@@ -38,19 +38,19 @@ namespace PetsHome.UI.Controllers
             });
         }
 
-        public async Task<IActionResult> FormDepartamentos(int id)
+        public async Task<IActionResult> FormPartialDepartamento(int id)
         {
             if (id == 0)
             {
                 var model = new DepartamentoFormViewModel();
                 model.depto_Id = id;
-                return View("FormDepartamentos", model);
+                return View("FormPartialDepartamento", model);
             }
             else
             {
                 var result = await _departamentoService.FindAsync(id);
                 result.ListadoMunicipios = await _municipioService.ListIdAsync(id);
-                return View("FormDepartamentos", result);
+                return View("FormPartialDepartamento", result);
             }
         }
 
@@ -68,7 +68,7 @@ namespace PetsHome.UI.Controllers
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
-                return RedirectToAction("FormDepartamentos");
+                return RedirectToAction("FormPartialDepartamento");
             }
             else
             {
@@ -77,7 +77,7 @@ namespace PetsHome.UI.Controllers
                     goto ErrorResult;
 
                 ShowAlert("Actualizado", AlertMessageType.Success);
-                return RedirectToAction("FormDepartamentos", routeValues: new { id = model.depto_Id });
+                return RedirectToAction("FormPartialDepartamento", routeValues: new { id = model.depto_Id });
             }
 
         ErrorResult:
@@ -92,7 +92,7 @@ namespace PetsHome.UI.Controllers
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
-                return RedirectToAction("FormDepartamentos", routeValues: new { id = model.Municipio.depto_Id });
+                return RedirectToAction("FormPartialDepartamento", routeValues: new { id = model.Municipio.depto_Id });
             }
             else
             {
@@ -101,7 +101,7 @@ namespace PetsHome.UI.Controllers
                     goto ErrorResult;
 
                 ShowAlert("Actualizado", AlertMessageType.Success);
-                return RedirectToAction("FormDepartamentos", routeValues: new { id = model.Municipio.depto_Id });
+                return RedirectToAction("FormPartialDepartamento", routeValues: new { id = model.Municipio.depto_Id });
             }
 
         ErrorResult:
