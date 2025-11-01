@@ -73,7 +73,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(EmpleadoCargoViewModel model)
+        public async Task<IActionResult> Add(EmpleadoCargoViewModel model, int userId)
         {
             if (!model.isEdit)
             {

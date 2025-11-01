@@ -100,7 +100,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(SolicitudFormViewModel model)
+        public async Task<IActionResult> Add(SolicitudFormViewModel model, int userId)
         {
 
             if (!model.isEdit)

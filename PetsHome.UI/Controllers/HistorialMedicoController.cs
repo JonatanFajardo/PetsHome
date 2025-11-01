@@ -73,7 +73,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(HistorialMedicoViewModel model)
+        public async Task<IActionResult> Add(HistorialMedicoViewModel model, int userId)
         {
 
 

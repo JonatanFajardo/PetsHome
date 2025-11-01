@@ -60,7 +60,7 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
-        public async Task<IActionResult> Add(DepartamentoFormViewModel model)
+        public async Task<IActionResult> Add(DepartamentoFormViewModel model, int userId)
         {
             if (!model.isEdit)
             {
@@ -84,7 +84,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        public async Task<IActionResult> AddMunicipio(DepartamentoFormViewModel model)
+        public async Task<IActionResult> AddMunicipio(DepartamentoFormViewModel model, int userId)
         {
             if (!model.Municipio.isEdit)
             {

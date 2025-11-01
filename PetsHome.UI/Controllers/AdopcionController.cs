@@ -105,7 +105,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(AdopcionViewModel model)
+        public async Task<IActionResult> Add(AdopcionViewModel model, int userId)
         {
 
             if (!model.isEdit)

@@ -73,7 +73,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(ProcedenciaViewModel model)
+        public async Task<IActionResult> Add(ProcedenciaViewModel model, int userId)
         {
             if (!model.isEdit)
             {
