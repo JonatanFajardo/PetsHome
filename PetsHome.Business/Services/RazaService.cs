@@ -87,11 +87,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos de la raza a agregar.</param>
         /// <returns>True si la raza se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(RazaViewModel model)
+        public async Task<bool> AddAsync(RazaViewModel model, int userId)
         {
             try
             {
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
+                mappedResult.raza_UsuarioCrea = userId;
+                mappedResult.raza_FechaCrea = DateTime.Now;
                 return await _razaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -106,11 +108,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados de la raza.</param>
         /// <returns>True si la raza se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(RazaViewModel model)
+        public async Task<bool> UpdateAsync(RazaViewModel model, int userId)
         {
             try
             {
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
+                mappedResult.raza_UsuarioModifica = userId;
+                mappedResult.raza_FechaModifica = DateTime.Now;
                 return await _razaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

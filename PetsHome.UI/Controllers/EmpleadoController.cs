@@ -1,132 +1,142 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PetsHome.Business.Extensions;
-using PetsHome.Business.Models;
-using PetsHome.Business.Services;
-using System;
-using System.Threading.Tasks;
-
-namespace PetsHome.UI.Controllers
-{
-    public class EmpleadoController : BaseController
-    {
-        private readonly EmpleadoService _EmpleadoService;
-        private readonly RefugioService _RefugioService;
-
-
-        public EmpleadoController(EmpleadoService EmpleadoService,
-                                    RefugioService RefugioService
-            )
-        {
-            _EmpleadoService = EmpleadoService;
-            _RefugioService = RefugioService;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> Create()
-        {
-            var model = new EmpleadoViewModel();
-            var drop = Dropdown(model);
-            return View(drop);
-        }
-
-        public async Task<IActionResult> List()
-        {
-            var itemListing = await _EmpleadoService.ListAsync();
-            if (itemListing != null)
-            {
-                return Json(new { data = itemListing });
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
-            }
-        }
-
-        public async Task<IActionResult> Find(int id)
-        {
-            var itemSearched = await _EmpleadoService.FindAsync(id);
-            if (itemSearched != null)
-            {
-                var dropdown = Dropdown(itemSearched);
-                return View("Create", dropdown);
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return AjaxResult(itemSearched, true);
-            }
-        }
-
-        public async Task<IActionResult> Detail(int id)
-        {
-            if (id != 0)
-            {
-                var itemDetail = await _EmpleadoService.DetailAsync(id);
-                if (itemDetail == null)
-                {
-                    ShowAlert("Empleado no encontrado", AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
-                return View("Details", itemDetail);
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
-            }
-        }
-
-
-        public async Task<IActionResult> Add(EmpleadoViewModel model)
-        {
-            if (!model.isEdit)
-            {
-                Boolean createdItem = await _EmpleadoService.AddAsync(model);
-                if (createdItem)
-                    goto ErrorResult;
-
-                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                Boolean updatedItem = await _EmpleadoService.UpdateAsync(model);
-                if (updatedItem)
-                    goto ErrorResult;
-
-                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
-                return RedirectToAction("Index");
-            }
-
-        ErrorResult:
-            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
-        }
-
-        public async Task<IActionResult> Remove(int Empleado_Id)
-        {
-            Boolean deletedItem = await _EmpleadoService.RemoveAsync(Empleado_Id);
-            if (!deletedItem)
-            {
-                ShowAlert("Eliminado", AlertMessageType.Success);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
-            }
-        }
-
-        public EmpleadoViewModel Dropdown(EmpleadoViewModel model)
-        {
-            model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
-            return model;
-        }
-
-    }
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PetsHome.Business.Extensions;
+using PetsHome.Business.Models;
+using PetsHome.Business.Services;
+using System;
+using System.Threading.Tasks;
+
+namespace PetsHome.UI.Controllers
+{
+    [Authorize]
+    public class EmpleadoController : BaseController
+    {
+        private readonly EmpleadoService _EmpleadoService;
+        private readonly RefugioService _RefugioService;
+
+
+        public EmpleadoController(EmpleadoService EmpleadoService,
+                                    RefugioService RefugioService
+            )
+        {
+            _EmpleadoService = EmpleadoService;
+            _RefugioService = RefugioService;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            var model = new EmpleadoViewModel();
+            var drop = Dropdown(model);
+            return View(drop);
+        }
+
+        public async Task<IActionResult> List()
+        {
+            var itemListing = await _EmpleadoService.ListAsync();
+            if (itemListing != null)
+            {
+                return Json(new { data = itemListing });
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        public async Task<IActionResult> Find(int id)
+        {
+            var itemSearched = await _EmpleadoService.FindAsync(id);
+            if (itemSearched != null)
+            {
+                var dropdown = Dropdown(itemSearched);
+                return View("Create", dropdown);
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return AjaxResult(itemSearched, true);
+            }
+        }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            if (id != 0)
+            {
+                var itemDetail = await _EmpleadoService.DetailAsync(id);
+                if (itemDetail == null)
+                {
+                    ShowAlert("Empleado no encontrado", AlertMessageType.Error);
+                    return RedirectToAction("Index");
+                }
+                return View("Details", itemDetail);
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+
+        public async Task<IActionResult> Add(EmpleadoViewModel model)
+        {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
+            if (!model.isEdit)
+            {
+                Boolean createdItem = await _EmpleadoService.AddAsync(model, userId);
+                if (createdItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Boolean updatedItem = await _EmpleadoService.UpdateAsync(model, userId);
+                if (updatedItem)
+                    goto ErrorResult;
+
+                ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
+                return RedirectToAction("Index");
+            }
+
+        ErrorResult:
+            return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
+        }
+
+        public async Task<IActionResult> Remove(int Empleado_Id)
+        {
+            Boolean deletedItem = await _EmpleadoService.RemoveAsync(Empleado_Id);
+            if (!deletedItem)
+            {
+                ShowAlert("Eliminado", AlertMessageType.Success);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        public EmpleadoViewModel Dropdown(EmpleadoViewModel model)
+        {
+            model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
+            return model;
+        }
+
+    }
 }

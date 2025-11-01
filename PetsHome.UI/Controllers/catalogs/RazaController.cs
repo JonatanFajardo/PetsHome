@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class RazaController : BaseController
     {
         private readonly RazaService _razaService;
@@ -18,8 +20,7 @@ namespace PetsHome.UI.Controllers
             return View("~/Views/Catalogo/Raza/Index.cshtml");
         }
 
-        public RazaController(RazaService razaService
-            )
+        public RazaController(RazaService razaService)
         {
             _razaService = razaService;
         }
@@ -75,11 +76,17 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(RazaViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
 
+            int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
             {
-                Boolean createdItem = await _razaService.AddAsync(model);
+                Boolean createdItem = await _razaService.AddAsync(model, userId);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -93,7 +100,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _razaService.UpdateAsync(model);
+                Boolean updatedItem = await _razaService.UpdateAsync(model, userId);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
