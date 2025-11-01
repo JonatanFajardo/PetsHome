@@ -32,6 +32,18 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public string depto_Descripcion { get; set; }
         /// <summary>
+        /// Ciudad capital del departamento.
+        /// </summary>
+        public string depto_Capital { get; set; }
+        /// <summary>
+        /// Población del departamento.
+        /// </summary>
+        public int? depto_Poblacion { get; set; }
+        /// <summary>
+        /// Área en kilómetros cuadrados del departamento.
+        /// </summary>
+        public decimal? depto_AreaKm2 { get; set; }
+        /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
         public bool depto_EsEliminado { get; set; }

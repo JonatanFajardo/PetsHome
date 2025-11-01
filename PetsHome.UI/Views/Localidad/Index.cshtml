@@ -1,11 +1,11 @@
-@model DepartamentoFormViewModel
 @{
-    ViewData["Title"] = "Departamentos";
+    ViewData["Title"] = "Departamentos de Honduras";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/departamento-cards.css" />
 }
 
 <div class="col-12">
@@ -14,7 +14,8 @@
     <div class="pets-header-full">
         <div class="pets-header-content">
             <div class="pets-title-section">
-                <h2 class="text-white"><i class="fas fa-map-marked-alt mr-2 text-white"></i>Gestión de Localidades</h2>
+                <h2 class="text-white"><i class="fas fa-map-marked-alt mr-2 text-white"></i>Departamentos de Colombia</h2>
+                <p class="text-white-50 mb-0">Explora la informacion de <span id="departamentosCount">0</span> departamentos</p>
                     <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("FormPartialDepartamento")'">
                     <i class="fas fa-plus mr-2"></i>Nuevo Departamento
                 </button>
@@ -23,17 +24,34 @@
             <div class="pets-controls">
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="Buscar por nombre o municipio...">
+                    <input type="text" id="globalSearch" placeholder="Buscar por nombre, codigo o capital...">
                 </div>
                 <div class="action-buttons">
+                    <button class="btn-control" id="filterBtn" onclick="toggleFilters()">
+                        <i class="fas fa-filter"></i><span>Filtros</span>
+                    </button>
+                    <div class="dropdown d-inline-block">
+                        <button class="btn-control dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-sort"></i><span id="sortLabel">Nombre (A-Z)</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
+                            <a class="dropdown-item" href="#" onclick="sortData('name-asc')">Nombre (A-Z)</a>
+                            <a class="dropdown-item" href="#" onclick="sortData('name-desc')">Nombre (Z-A)</a>
+                            <a class="dropdown-item" href="#" onclick="sortData('population-desc')">Poblacion (Mayor a menor)</a>
+                            <a class="dropdown-item" href="#" onclick="sortData('population-asc')">Poblacion (Menor a mayor)</a>
+                            <a class="dropdown-item" href="#" onclick="sortData('area-desc')">Area (Mayor a menor)</a>
+                            <a class="dropdown-item" href="#" onclick="sortData('area-asc')">Area (Menor a mayor)</a>
+                        </div>
+                    </div>
                     <div class="view-toggle">
-                        <button class="btn-control active" id="tableViewBtn" onclick="toggleView('table')">
+                        <button class="btn-control" id="tableViewBtn" onclick="toggleView('table')">
                             <i class="fas fa-table"></i><span>Tabla</span>
                         </button>
-                        <button class="btn-control" id="gridViewBtn" onclick="toggleView('grid')">
+                        <button class="btn-control active" id="gridViewBtn" onclick="toggleView('grid')">
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
                     </div>
+                   
                     <button class="btn-export-datatable" onclick="location.reload()">
                         Recargar
                     </button>
@@ -45,14 +63,81 @@
         </div>
     </div>
 
-    <!-- Vista de Tabla -->
-    <div id="tableView" class="pets-table-container">
+    <!-- Vista de Tarjetas (Grid View - por defecto) -->
+        <div  class="pets-card-container">
+        <div class="row" id="departamentosGrid">
+            <!-- Las tarjetas se generaran dinamicamente -->
+        </div>
+    </div>
+
+    <!-- Template para las cards de departamento -->
+    <template id="department-card-template">
+        <div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+            <div class="department-card">
+                    <div class="card-header bg-white">
+                    <div class="card-title-wrapper">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                <line x1="9" y1="10" x2="15" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title" data-field="name"></h3>
+                            <div class="card-code" data-field="code"></div>
+                        </div>
+                    </div>
+                    <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+
+                <div class="card-info ">
+                    <div class="card-info-item">
+                        <svg class="card-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <div class="card-info-content">
+                            <p class="card-info-label">Capital</p>
+                            <p class="card-info-value" data-field="capital"></p>
+                        </div>
+                    </div>
+
+                    <div class="card-info-item">
+                        <svg class="card-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <div class="card-info-content">
+                            <p class="card-info-label">Población</p>
+                            <p class="card-info-value" data-field="population"></p>
+                        </div>
+                    </div>
+
+                        <div class="card-footer bg-white">
+                        <span data-field="municipalities"></span>
+                        <span data-field="area"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Vista de Tabla (oculta por defecto) -->
+    <div id="tableView" class="pets-table-container" style="display: none;">
         <table class="pets-table" id="datatable">
             <thead>
                 <tr>
                     <th width="80">ID</th>
                     <th width="100">Codigo</th>
-                    <th>Descripcion</th>
+                    <th>Departamento</th>
+                    <th>Capital</th>
+                    <th width="120">Poblacion</th>
+                    <th width="120">Area (km²)</th>
+                    <th width="100">Municipios</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -79,7 +164,7 @@
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
-                    <input type="hidden" asp-for="depto_Id" id="delete-item-id">
+                    <input type="hidden" name="depto_Id" id="delete-item-id">
                     <div class="modal-body text-center py-4">
                         <div class="mb-3">
                             <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
@@ -103,55 +188,40 @@
 </div>
 
 @section Scripts {
-<script src="~/js/pages/localidad.js"></script>
-<script>
-    Localidad.datatable({
-        urlList: "@Url.Action("List")",
-        urlDetail: "@Url.Action("DetailDepartamento")",
-        urlInsert: "@Url.Action("FormDepartamentos")",
+    <script src="~/js/pages/localidad.js"></script>
+    <script>
+        $(document).ready(function() {
+            Localidad.init({
+                urlList: "@Url.Action("List")",
+                urlDetail: "@Url.Action("DetailDepartamento")",
+                urlInsert: "@Url.Action("FormDepartamentos")",
                 urlUpdate: "@Url.Action("FormPartialDepartamento")"
-    });
-
-    // Función para ver detalles del departamento
-    function viewDetail(id) {
-        window.location.href = "@Url.Action("DetailDepartamento")/" + id;
-    }
-
-    // Busqueda global
-    $('#globalSearch').on('keyup', function() {
-        $('#datatable').DataTable().search(this.value).draw();
-    });
-
-
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
-    }
-
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
-    function exportCSV() {
-        var table = $('#datatable').DataTable();
-        var data = table.rows({ search: 'applied' }).data();
-
-        var csv = 'ID,Codigo,Descripcion\n';
-        data.each(function(row) {
-            // Implementar segun estructura de datos
-            console.log('Exportar CSV - Implementar segun datos');
+            });
         });
 
-        var blob = new Blob([csv], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'localidad_' + new Date().toISOString().slice(0,10) + '.csv';
-        a.click();
-    }
-</script>
+        // Funciones globales para los onclick en el HTML
+        function viewDepartamento(id) {
+            Localidad.viewDepartamento(id);
+        }
+
+        function editDepartamento(id) {
+            Localidad.editDepartamento(id);
+        }
+
+        function deleteDepartamento(id) {
+            Localidad.deleteDepartamento(id);
+        }
+
+        function toggleView(view) {
+            Localidad.toggleView(view);
+        }
+
+        function sortData(sortType) {
+            Localidad.sortData(sortType);
+        }
+
+        function toggleFilters() {
+            Localidad.toggleFilters();
+        }
+    </script>
 }

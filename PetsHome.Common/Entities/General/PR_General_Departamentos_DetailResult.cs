@@ -28,6 +28,18 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
+        public string depto_Capital { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public int? depto_Poblacion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public decimal? depto_AreaKm2 { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
         public string UsuarioCreacion { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.

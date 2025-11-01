@@ -24,9 +24,10 @@ namespace PetsHome.UI.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var departamentos = await _departamentoService.ListAsync();
+            return View(departamentos);
         }
 
         public async Task<IActionResult> ListMunicipios(int id)

@@ -42,6 +42,9 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@depto_Codigo", entity.depto_Codigo, DbType.String, ParameterDirection.Input);
             parameter.Add("@depto_Descripcion", entity.depto_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@depto_Capital", entity.depto_Capital, DbType.String, ParameterDirection.Input);
+            parameter.Add("@depto_Poblacion", entity.depto_Poblacion, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@depto_AreaKm2", entity.depto_AreaKm2, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@depto_UsuarioCrea", entity.depto_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -54,6 +57,9 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@depto_Id", entity.depto_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@depto_Codigo", entity.depto_Codigo, DbType.String, ParameterDirection.Input);
             parameter.Add("@depto_Descripcion", entity.depto_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@depto_Capital", entity.depto_Capital, DbType.String, ParameterDirection.Input);
+            parameter.Add("@depto_Poblacion", entity.depto_Poblacion, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@depto_AreaKm2", entity.depto_AreaKm2, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@depto_UsuarioModifica", entity.depto_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
