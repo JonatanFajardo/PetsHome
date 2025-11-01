@@ -28,6 +28,24 @@ namespace PetsHome.Business.Models
         public string depto_Descripcion { get; set; }
 
         /// <summary>
+        /// Obtiene o establece la capital del departamento.
+        /// </summary>
+        [Display(Name = "Capital")]
+        public string depto_Capital { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece la población del departamento.
+        /// </summary>
+        [Display(Name = "Población")]
+        public int? depto_Poblacion { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el área en km2 del departamento.
+        /// </summary>
+        [Display(Name = "Área (km²)")]
+        public decimal? depto_AreaKm2 { get; set; }
+
+        /// <summary>
         /// Obtiene o establece el nombre del usuario que creó el departamento.
         /// </summary>
         [Display(Name = "Usuario creación")]

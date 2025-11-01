@@ -1,0 +1,145 @@
+/* Departamento Cards - Modern Design */
+
+/* Department Card */
+.department-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.department-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #60a5fa;
+    transform: translateY(-2px);
+}
+
+.department-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.department-card .card-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.department-card .card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #3b82f6;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.department-card .card-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.department-card .card-code {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: inline-block;
+}
+
+.department-card .card-chevron {
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.department-card .card-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.department-card .card-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.department-card .card-info-icon {
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.department-card .card-info-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.department-card .card-info-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0 0 0.125rem 0;
+}
+
+.department-card .card-info-value {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.department-card .card-footer {
+    grid-column: span 2;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.department-card .card-footer span {
+    font-weight: 500;
+}
+
+/* SVG Icons */
+.department-card svg {
+    width: 16px;
+    height: 16px;
+}
+
+.department-card .card-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.department-card .card-chevron {
+    width: 20px;
+    height: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .department-card .card-info {
+        grid-template-columns: 1fr;
+    }
+
+    .department-card .card-footer {
+        flex-direction: column;
+        gap: 0.25rem;
+        align-items: flex-start;
+    }
+}

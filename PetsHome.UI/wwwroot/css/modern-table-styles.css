@@ -193,13 +193,21 @@
 
 /* Tabla Container */
 .modern-table-container,
-.pets-table-container {
+.pets-table-container{
     background: white;
     padding: 0;
     margin: 24px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.pets-card-container {
+    background: white;
+    padding: 0;
+    margin: 24px;
+    padding: 10px;
     overflow: hidden;
 }
 

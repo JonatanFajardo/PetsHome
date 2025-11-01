@@ -34,6 +34,10 @@
                                 <span>Código: @Model.depto_Codigo</span>
                             </div>
                             <div class="profile-meta-item">
+                                <i class="fas fa-city"></i>
+                                <span>Capital: @(Model.depto_Capital ?? "N/A")</span>
+                            </div>
+                            <div class="profile-meta-item">
                                 <i class="fas fa-building"></i>
                                 <span>@Model.ListadoMunicipios.Count() municipio@(Model.ListadoMunicipios.Count() != 1 ? "s" : "")</span>
                             </div>
@@ -80,6 +84,30 @@
                                     <span>Descripción</span>
                                 </div>
                                 <div class="detail-value">@Model.depto_Descripcion</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-city"></i>
+                                    <span>Capital</span>
+                                </div>
+                                <div class="detail-value">@(Model.depto_Capital ?? "N/A")</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-users"></i>
+                                    <span>Población</span>
+                                </div>
+                                <div class="detail-value">@(Model.depto_Poblacion != null ? Model.depto_Poblacion.Value.ToString("N0") : "N/A")</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                    <span>Área (km²)</span>
+                                </div>
+                                <div class="detail-value">@(Model.depto_AreaKm2 != null ? Model.depto_AreaKm2.Value.ToString("N2") + " km²" : "N/A")</div>
                             </div>
                         </div>
                     </div>
