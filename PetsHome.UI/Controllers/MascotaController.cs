@@ -78,7 +78,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(MascotaFormViewModel model)
+        public async Task<IActionResult> Add(MascotaFormViewModel model, int userId)
         {
             if (!model.isEdit)
             {
@@ -124,7 +124,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public MascotaFormViewModel Dropdown(MascotaFormViewModel model)
+        public MascotaFormViewModel Dropdown(MascotaFormViewModel model, int userId)
         {
             model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
             return model;

@@ -77,7 +77,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(ItemViewModel model)
+        public async Task<IActionResult> Add(ItemViewModel model, int userId)
         {
             if (!model.isEdit)
             {
@@ -118,7 +118,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public ItemViewModel Dropdown(ItemViewModel model)
+        public ItemViewModel Dropdown(ItemViewModel model, int userId)
         {
             model.LoadDropDownList(_ItemService.CategoriaDropdown());
             return model;

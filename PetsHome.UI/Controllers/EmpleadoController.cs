@@ -82,7 +82,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(EmpleadoFormViewModel model)
+        public async Task<IActionResult> Add(EmpleadoFormViewModel model, int userId)
         {
             if (!model.isEdit)
             {
@@ -122,7 +122,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public EmpleadoFormViewModel Dropdown(EmpleadoFormViewModel model)
+        public EmpleadoFormViewModel Dropdown(EmpleadoFormViewModel model, int userId)
         {
             model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());
             return model;

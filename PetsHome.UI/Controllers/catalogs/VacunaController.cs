@@ -73,7 +73,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(VacunaFormViewModel model)
+        public async Task<IActionResult> Add(VacunaFormViewModel model, int userId)
         {
             if (!model.isEdit)
             {

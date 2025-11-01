@@ -80,7 +80,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(EventoViewModel model)
+        public async Task<IActionResult> Add(EventoViewModel model, int userId)
         {
             if (!model.isEdit)
             {
@@ -120,7 +120,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public EventoViewModel Dropdown(EventoViewModel model)
+        public EventoViewModel Dropdown(EventoViewModel model, int userId)
         {
             model.LoadDropDownList(_RefugioService.RefugioDropdown());
             return model;

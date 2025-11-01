@@ -71,7 +71,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Add(EntradaViewModel model)
+        public async Task<IActionResult> Add(EntradaViewModel model, int userId)
         {
             if (!model.isEdit)
             {
@@ -100,7 +100,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<IActionResult> AddEntradaDetalle(EntradaViewModel model)
+        public async Task<IActionResult> AddEntradaDetalle(EntradaViewModel model, int userId)
         {
             if (!model.EntradaDetalle.isEdit)
             {
@@ -139,13 +139,13 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public EntradaViewModel Dropdown(EntradaViewModel model)
+        public EntradaViewModel Dropdown(EntradaViewModel model, int userId)
         {
             model.LoadDropDownList(_refugioService.RefugioDropdown());
             return model;
         }
 
-        public EntradaViewModel ItemDropdown(EntradaViewModel model)
+        public EntradaViewModel ItemDropdown(EntradaViewModel model, int userId)
         {
             model.EntradaDetalle.LoadDropDownList(_itemService.ItemDropdown());
             return model;

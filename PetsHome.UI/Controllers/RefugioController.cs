@@ -83,7 +83,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(RefugioFormViewModel model)
+        public async Task<IActionResult> Add(RefugioFormViewModel model, int userId)
         {
 
             if (!model.isEdit)
@@ -124,7 +124,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public RefugioFormViewModel Dropdown(RefugioFormViewModel model)
+        public RefugioFormViewModel Dropdown(RefugioFormViewModel model, int userId)
         {
             model.LoadDropDownList(
                 _departamentoService.DepartamentoDropdown(),
