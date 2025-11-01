@@ -1,0 +1,37 @@
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Acceso Denegado";
+}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 col-lg-5">
+            <div class="login-card text-center">
+                <!-- Icono de Error -->
+                <div class="mb-4">
+                    <i class="fas fa-ban fa-5x text-danger"></i>
+                </div>
+
+                <!-- Título -->
+                <h2 class="text-danger mb-3">Acceso Denegado</h2>
+
+                <!-- Mensaje -->
+                <p class="text-muted mb-4">
+                    No tiene permisos para acceder a esta página.
+                    <br />
+                    Por favor, contacte al administrador del sistema si cree que esto es un error.
+                </p>
+
+                <!-- Botones -->
+                <div class="d-grid gap-2">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Volver al Inicio
+                    </a>
+                    <a asp-action="Login" asp-controller="Account" class="btn btn-outline-secondary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión con otra cuenta
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

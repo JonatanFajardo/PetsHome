@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -92,6 +92,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbInventarios mappedResult = _mapper.Map<tbInventarios>(model);
+                mappedResult.inv_UsuarioCrea = userId;
+                mappedResult.inv_FechaCrea = DateTime.Now;
                 return await _inventarioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -111,6 +113,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbInventarios mappedResult = _mapper.Map<tbInventarios>(model);
+                mappedResult.inv_UsuarioModifica = userId;
+                mappedResult.inv_FechaModifica = DateTime.Now;
                 return await _inventarioRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

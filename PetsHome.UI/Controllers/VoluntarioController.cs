@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class VoluntarioController : BaseController
     {
         private readonly VoluntarioService _VoluntarioService;
 
-        public VoluntarioController(VoluntarioService VoluntarioService
-              )
+        public VoluntarioController(VoluntarioService VoluntarioService)
         {
             _VoluntarioService = VoluntarioService;
         }
@@ -75,11 +76,19 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(VoluntarioFormViewModel model, int userId)
+        public async Task<IActionResult> Add(VoluntarioFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _VoluntarioService.AddAsync(model);
+                Boolean createdItem = await _VoluntarioService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
 
@@ -88,7 +97,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _VoluntarioService.UpdateAsync(model);
+                Boolean updatedItem = await _VoluntarioService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 

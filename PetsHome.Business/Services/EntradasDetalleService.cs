@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -76,6 +76,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbEntradasDetalles mappedResult = _mapper.Map<tbEntradasDetalles>(model);
+                mappedResult.entdet_UsuarioCrea = userId;
+                mappedResult.entdet_FechaCrea = DateTime.Now;
                 return await _entradaDetalleRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -95,6 +97,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbEntradasDetalles mappedResult = _mapper.Map<tbEntradasDetalles>(model);
+                mappedResult.entdet_UsuarioModifica = userId;
+                mappedResult.entdet_FechaModifica = DateTime.Now;
                 return await _entradaDetalleRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -7,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class SolicitudController : BaseController
     {
         private readonly SolicitudService _SolicitudService;
         private readonly MascotaService _mascotaService;
 
-        public SolicitudController(SolicitudService SolicitudService,
-            MascotaService mascotaService
-            )
+        public SolicitudController(SolicitudService SolicitudService, MascotaService mascotaService)
         {
             _SolicitudService = SolicitudService;
             _mascotaService = mascotaService;
@@ -100,12 +100,19 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(SolicitudFormViewModel model, int userId)
+        public async Task<IActionResult> Add(SolicitudFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
             {
-                Boolean createdItem = await _SolicitudService.AddAsync(model);
+                Boolean createdItem = await _SolicitudService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
 
@@ -114,7 +121,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _SolicitudService.UpdateAsync(model);
+                Boolean updatedItem = await _SolicitudService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 

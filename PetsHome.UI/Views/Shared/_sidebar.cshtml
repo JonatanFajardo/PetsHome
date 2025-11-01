@@ -1,4 +1,4 @@
-﻿<!--  BEGIN SIDEBAR  -->
+<!--  BEGIN SIDEBAR  -->
 <div class="sidebar-wrapper sidebar-theme">
             <ul class="navbar-nav theme-brand flex-row text-center text-white">
                 <li class="nav-item theme-logo text-white">
@@ -12,7 +12,8 @@
                 </li>
             </ul>
             
-    <nav id="sidebar">
+    <nav id="sidebar" class="d-flex flex-column"  >
+        
         @*  <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
@@ -23,7 +24,7 @@
             </div>
             <div class="shadow-bottom"></div>*@
 
-        <ul class="list-unstyled menu-categories" id="accordionExample">
+        <ul class="list-unstyled menu-categories flex-grow-1" id="accordionExample" >
 
 
             <li class="menu">
@@ -162,8 +163,14 @@
             </li>
 
         </ul>
-
+        <div class="mt-auto w-100 sidebar-user-section">
+            <div class="px-3 py-3">
+                @Html.Partial("~/Views/Shared/_UserInfo.cshtml")
+            </div>
+            <div class="shadow-bottom"></div>
+        </div>
     </nav>
 
 </div>
 <!--  END SIDEBAR  -->
+

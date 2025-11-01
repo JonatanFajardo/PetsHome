@@ -1,0 +1,62 @@
+@using PetsHome.Business.Extensions
+
+@if (TempData["ShowAlert"] != null)
+{
+    var alert = TempData.Get<AlertMessageExtensions>("ShowAlert");
+    var alertType = alert.Type switch
+    {
+        AlertMessageType.Success => "success",
+        AlertMessageType.Error => "error",
+        AlertMessageType.Warning => "warning",
+        AlertMessageType.Info => "info",
+        _ => "info"
+    };
+
+    var toastIcon = alert.Type switch
+    {
+        AlertMessageType.Success => "fa-check-circle",
+        AlertMessageType.Error => "fa-times-circle",
+        AlertMessageType.Warning => "fa-exclamation-triangle",
+        AlertMessageType.Info => "fa-info-circle",
+        _ => "fa-info-circle"
+    };
+
+    var toastTitle = alert.Type switch
+    {
+        AlertMessageType.Success => "Éxito",
+        AlertMessageType.Error => "Error",
+        AlertMessageType.Warning => "Advertencia",
+        AlertMessageType.Info => "Información",
+        _ => "Notificación"
+    };
+
+    <script>
+        $(document).ready(function() {
+            // Configurar toastr si existe
+            if (typeof toastr !== 'undefined') {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                toastr['@alertType']('@Html.Raw(alert.Text)');
+            } else {
+                // Fallback a alert del navegador si toastr no está disponible
+                alert('@Html.Raw(alert.Text)');
+            }
+        });
+    </script>
+}

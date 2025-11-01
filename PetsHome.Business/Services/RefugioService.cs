@@ -85,6 +85,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbRefugios mappedResult = _mapper.Map<tbRefugios>(model);
+                mappedResult.refg_UsuarioCrea = userId;
+                mappedResult.refg_FechaCrea = DateTime.Now;
                 return await _refugioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -102,6 +104,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbRefugios mappedResult = _mapper.Map<tbRefugios>(model);
+                mappedResult.refg_UsuarioModifica = userId;
+                mappedResult.refg_FechaModifica = DateTime.Now;
                 return await _refugioRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

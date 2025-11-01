@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class HistorialMedicoController : BaseController
     {
         private readonly HistorialMedicoService _HistorialMedicoService;
-        public HistorialMedicoController(HistorialMedicoService HistorialMedicoService
-            )
+        public HistorialMedicoController(HistorialMedicoService HistorialMedicoService)
         {
             _HistorialMedicoService = HistorialMedicoService;
         }
@@ -73,13 +74,19 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Add(HistorialMedicoViewModel model, int userId)
+        public async Task<IActionResult> Add(HistorialMedicoViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
 
+            int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
             {
-                Boolean createdItem = await _HistorialMedicoService.AddAsync(model);
+                Boolean createdItem = await _HistorialMedicoService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
 
@@ -88,7 +95,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _HistorialMedicoService.UpdateAsync(model);
+                Boolean updatedItem = await _HistorialMedicoService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 

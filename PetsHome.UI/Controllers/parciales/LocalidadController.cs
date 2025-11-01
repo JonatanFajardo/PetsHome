@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class LocalidadController : BaseController
     {
         private readonly MunicipioService _municipioService;
@@ -15,9 +17,7 @@ namespace PetsHome.UI.Controllers
 
         private readonly IMapper _mapper;
 
-        public LocalidadController(MunicipioService municipioService,
-                                    DepartamentoService departamentoService,
-                                    IMapper mapper)
+        public LocalidadController(MunicipioService municipioService, DepartamentoService departamentoService, IMapper mapper)
         {
             _municipioService = municipioService;
             _departamentoService = departamentoService;
@@ -60,11 +60,19 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
-        public async Task<IActionResult> Add(DepartamentoFormViewModel model, int userId)
+        public async Task<IActionResult> Add(DepartamentoFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _departamentoService.AddAsync(model);
+                Boolean createdItem = await _departamentoService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
@@ -72,7 +80,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _departamentoService.UpdateAsync(model);
+                Boolean updatedItem = await _departamentoService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 
@@ -84,11 +92,19 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        public async Task<IActionResult> AddMunicipio(DepartamentoFormViewModel model, int userId)
+        public async Task<IActionResult> AddMunicipio(DepartamentoFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.Municipio.isEdit)
             {
-                Boolean createdItem = await _municipioService.AddAsync(model.Municipio);
+                Boolean createdItem = await _municipioService.AddAsync(model.Municipio, userId);
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
@@ -96,7 +112,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _municipioService.UpdateAsync(model.Municipio);
+                Boolean updatedItem = await _municipioService.UpdateAsync(model.Municipio, userId);
                 if (updatedItem)
                     goto ErrorResult;
 

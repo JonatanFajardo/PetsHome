@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -92,6 +92,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
+                mappedResult.medic_UsuarioCrea = userId;
+                mappedResult.medic_FechaCrea = DateTime.Now;
                 return await _historialmedicoRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -111,6 +113,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
+                mappedResult.medic_UsuarioModifica = userId;
+                mappedResult.medic_FechaModifica = DateTime.Now;
                 return await _historialmedicoRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

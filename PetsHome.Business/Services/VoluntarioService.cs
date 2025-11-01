@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -75,6 +75,12 @@ namespace PetsHome.Business.Services
             try
             {
                 tbVoluntarios mappedResult = _mapper.Map<tbVoluntarios>(model);
+                if (mappedResult.per == null)
+                {
+                    mappedResult.per = new tbPersonas();
+                }
+                mappedResult.per.per_UsuarioCrea = userId;
+                mappedResult.per.per_FechaCrea = DateTime.Now;
                 return await _voluntarioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -89,6 +95,12 @@ namespace PetsHome.Business.Services
             try
             {
                 tbVoluntarios mappedResult = _mapper.Map<tbVoluntarios>(model);
+                if (mappedResult.per == null)
+                {
+                    mappedResult.per = new tbPersonas();
+                }
+                mappedResult.per.per_UsuarioModifica = userId;
+                mappedResult.per.per_FechaModifica = DateTime.Now;
                 return await _voluntarioRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

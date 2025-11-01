@@ -92,6 +92,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbSolicitudes mappedResult = _mapper.Map<tbSolicitudes>(model);
+                mappedResult.sol_UsuarioCrea = userId;
+                mappedResult.sol_FechaCrea = DateTime.Now;
                 return await _solicitudRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -111,6 +113,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbSolicitudes mappedResult = _mapper.Map<tbSolicitudes>(model);
+                mappedResult.sol_UsuarioModifica = userId;
+                mappedResult.sol_FechaModifica = DateTime.Now;
                 return await _solicitudRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

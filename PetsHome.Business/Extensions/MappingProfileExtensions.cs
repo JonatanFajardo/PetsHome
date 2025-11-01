@@ -240,6 +240,10 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbVacunas, VacunaFormViewModel>().ReverseMap();
             CreateMap<tbVoluntarios, VoluntarioFormViewModel>().ReverseMap();
 
+            // Mapeos de Usuarios y Autenticación
+            CreateMap<PR_Seguridad_Usuarios_LoginResult, UsuarioViewModel>().ReverseMap();
+            CreateMap<tbUsuarios, UsuarioViewModel>().ReverseMap();
+
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
             ////CreateMap<tbContratos, ContratosViewModel>().ReverseMap()();
