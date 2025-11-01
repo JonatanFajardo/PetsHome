@@ -66,6 +66,11 @@ var Ingreso = (function () {
 
 }());
 
+// Función global para ver detalle
+function viewDetail(id) {
+    window.location.href = '/Ingreso/Detail/' + id;
+}
+
 // Función global para eliminar ingreso
 function deleteIngreso(id) {
     $('#delete-item-id').val(id);
