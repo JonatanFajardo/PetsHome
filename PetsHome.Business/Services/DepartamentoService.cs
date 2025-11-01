@@ -89,7 +89,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">El modelo del departamento a agregar.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el departamento correctamente.</returns>
-        public async Task<Boolean> AddAsync(DepartamentoFormViewModel model)
+        public async Task<Boolean> AddAsync(DepartamentoFormViewModel model, int userId)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">El modelo del departamento a actualizar.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el departamento correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(DepartamentoFormViewModel model)
+        public async Task<Boolean> UpdateAsync(DepartamentoFormViewModel model, int userId)
         {
             try
             {

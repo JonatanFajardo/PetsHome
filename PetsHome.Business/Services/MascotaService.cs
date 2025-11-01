@@ -89,7 +89,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos de la mascota a agregar.</param>
         /// <returns>True si la mascota se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(MascotaFormViewModel model)
+        public async Task<bool> AddAsync(MascotaFormViewModel model, int userId)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados de la mascota.</param>
         /// <returns>True si la mascota se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(MascotaFormViewModel model)
+        public async Task<bool> UpdateAsync(MascotaFormViewModel model, int userId)
         {
             try
             {

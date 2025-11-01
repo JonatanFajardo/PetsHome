@@ -53,7 +53,7 @@ namespace PetsHome.Business.Services
         //        throw;
         //    }
         //}
-        //public async Task<Boolean> AddAsync(InventariosDetallViewModel model)
+        //public async Task<Boolean> AddAsync(InventariosDetallViewModel model, int userId)
         //{
         //    try
         //    {
@@ -65,7 +65,7 @@ namespace PetsHome.Business.Services
         //        throw;
         //    }
         //}
-        //public async Task<Boolean> UpdateAsync(InventariosDetallViewModel model)
+        //public async Task<Boolean> UpdateAsync(InventariosDetallViewModel model, int userId)
         //{
         //    try
         //    {

@@ -29,10 +29,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de Detalles de Entradas por su ID de forma asíncrona.
+        /// Obtiene una lista de Detalles de Entradas por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID de la Entrada.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de Detalles de Entradas.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la lista de Detalles de Entradas.</returns>
         public async Task<List<EntradaDetalleViewModel>> ListIdAsync(int id)
         {
             try
@@ -48,10 +48,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca un Detalle de Entrada por su ID de forma asíncrona.
+        /// Busca un Detalle de Entrada por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID del Detalle de Entrada.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el Detalle de Entrada encontrado.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene el Detalle de Entrada encontrado.</returns>
         public async Task<EntradaViewModel> FindAsync(int id)
         {
             try
@@ -67,11 +67,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega un nuevo Detalle de Entrada de forma asíncrona.
+        /// Agrega un nuevo Detalle de Entrada de forma asï¿½ncrona.
         /// </summary>
         /// <param name="model">El modelo del Detalle de Entrada a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el Detalle de Entrada correctamente.</returns>
-        public async Task<Boolean> AddAsync(EntradaDetalleViewModel model)
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se agregï¿½ el Detalle de Entrada correctamente.</returns>
+        public async Task<Boolean> AddAsync(EntradaDetalleViewModel model, int userId)
         {
             try
             {
@@ -86,11 +86,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza un Detalle de Entrada de forma asíncrona.
+        /// Actualiza un Detalle de Entrada de forma asï¿½ncrona.
         /// </summary>
         /// <param name="model">El modelo del Detalle de Entrada a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el Detalle de Entrada correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(EntradaDetalleViewModel model)
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se actualizï¿½ el Detalle de Entrada correctamente.</returns>
+        public async Task<Boolean> UpdateAsync(EntradaDetalleViewModel model, int userId)
         {
             try
             {
@@ -105,10 +105,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina un Detalle de Entrada por su ID de forma asíncrona.
+        /// Elimina un Detalle de Entrada por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID del Detalle de Entrada a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el Detalle de Entrada correctamente.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se eliminï¿½ el Detalle de Entrada correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

@@ -80,7 +80,7 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Agrega un nuevo refugio.
         /// </summary>
-        public async Task<bool> AddAsync(RefugioFormViewModel model)
+        public async Task<bool> AddAsync(RefugioFormViewModel model, int userId)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Actualiza un refugio existente.
         /// </summary>
-        public async Task<bool> UpdateAsync(RefugioFormViewModel model)
+        public async Task<bool> UpdateAsync(RefugioFormViewModel model, int userId)
         {
             try
             {

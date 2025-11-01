@@ -86,8 +86,8 @@ namespace PetsHome.Business.Services
         /// Agrega un nuevo elemento al inventario.
         /// </summary>
         /// <param name="model">Datos del elemento del inventario a agregar.</param>
-        /// <returns>True si el elemento del inventario se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(ItemViewModel model)
+        /// <returns>True si el elemento del inventario se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> AddAsync(ItemViewModel model, int userId)
         {
             try
             {
@@ -105,8 +105,8 @@ namespace PetsHome.Business.Services
         /// Actualiza un elemento existente del inventario.
         /// </summary>
         /// <param name="model">Datos actualizados del elemento del inventario.</param>
-        /// <returns>True si el elemento del inventario se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(ItemViewModel model)
+        /// <returns>True si el elemento del inventario se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> UpdateAsync(ItemViewModel model, int userId)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace PetsHome.Business.Services
         /// Elimina un elemento del inventario por su identificador.
         /// </summary>
         /// <param name="id">Identificador del elemento del inventario a eliminar.</param>
-        /// <returns>True si el elemento del inventario se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si el elemento del inventario se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try
@@ -142,7 +142,7 @@ namespace PetsHome.Business.Services
         #region Dropdown
 
         /// <summary>
-        /// Obtiene una lista de categorías para su uso en un dropdown.
+        /// Obtiene una lista de categorï¿½as para su uso en un dropdown.
         /// </summary>
         /// <returns>Una lista de objetos CategoriaViewModel para el dropdown.</returns>
         public IEnumerable<CategoriaViewModel> CategoriaDropdown()

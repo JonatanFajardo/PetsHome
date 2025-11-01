@@ -27,9 +27,9 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de EmpleadosCargo de forma asíncrona.
+        /// Obtiene una lista de EmpleadosCargo de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de EmpleadosCargo.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la lista de EmpleadosCargo.</returns>
         public async Task<List<EmpleadoCargoViewModel>> ListAsync()
         {
             try
@@ -45,10 +45,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca un EmpleadoCargo por su ID de forma asíncrona.
+        /// Busca un EmpleadoCargo por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID del EmpleadoCargo.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el EmpleadoCargo encontrado.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene el EmpleadoCargo encontrado.</returns>
         public async Task<EmpleadoCargoViewModel> FindAsync(int id)
         {
             try
@@ -64,10 +64,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de un EmpleadoCargo por su ID de forma asíncrona.
+        /// Obtiene los detalles de un EmpleadoCargo por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID del EmpleadoCargo.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles del EmpleadoCargo.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene los detalles del EmpleadoCargo.</returns>
         public async Task<EmpleadoCargoViewModel> DetailAsync(int id)
         {
             try
@@ -83,11 +83,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega un nuevo EmpleadoCargo de forma asíncrona.
+        /// Agrega un nuevo EmpleadoCargo de forma asï¿½ncrona.
         /// </summary>
         /// <param name="model">El modelo del EmpleadoCargo a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el EmpleadoCargo correctamente.</returns>
-        public async Task<Boolean> AddAsync(EmpleadoCargoViewModel model)
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se agregï¿½ el EmpleadoCargo correctamente.</returns>
+        public async Task<Boolean> AddAsync(EmpleadoCargoViewModel model, int userId)
         {
             try
             {
@@ -102,11 +102,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza un EmpleadoCargo de forma asíncrona.
+        /// Actualiza un EmpleadoCargo de forma asï¿½ncrona.
         /// </summary>
         /// <param name="model">El modelo del EmpleadoCargo a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el EmpleadoCargo correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(EmpleadoCargoViewModel model)
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se actualizï¿½ el EmpleadoCargo correctamente.</returns>
+        public async Task<Boolean> UpdateAsync(EmpleadoCargoViewModel model, int userId)
         {
             try
             {
@@ -121,10 +121,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina un EmpleadoCargo por su ID de forma asíncrona.
+        /// Elimina un EmpleadoCargo por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID del EmpleadoCargo a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el EmpleadoCargo correctamente.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se eliminï¿½ el EmpleadoCargo correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

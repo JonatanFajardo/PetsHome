@@ -84,7 +84,7 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Agrega un nuevo Empleado de forma asincrona.
         /// </summary>
-        public async Task<bool> AddAsync(EmpleadoFormViewModel model)
+        public async Task<bool> AddAsync(EmpleadoFormViewModel model, int userId)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Actualiza un Empleado de forma asincrona.
         /// </summary>
-        public async Task<bool> UpdateAsync(EmpleadoFormViewModel model)
+        public async Task<bool> UpdateAsync(EmpleadoFormViewModel model, int userId)
         {
             try
             {
