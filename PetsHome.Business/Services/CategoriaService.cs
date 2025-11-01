@@ -92,6 +92,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbCategorias mappedResult = _mapper.Map<tbCategorias>(model);
+                mappedResult.cat_UsuarioCrea = userId;
+                mappedResult.cat_FechaCrea = DateTime.Now;
                 return await _categoriaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -111,6 +113,8 @@ namespace PetsHome.Business.Services
             try
             {
                 tbCategorias mappedResult = _mapper.Map<tbCategorias>(model);
+                mappedResult.cat_UsuarioModifica = userId;
+                mappedResult.cat_FechaModifica = DateTime.Now;
                 return await _categoriaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

@@ -1,0 +1,104 @@
+@using System.Security.Claims
+
+@if (User.Identity.IsAuthenticated)
+{
+    var nombreCompleto = User.FindFirst(ClaimTypes.GivenName)?.Value ?? User.Identity.Name;
+    var rol = User.FindFirst(ClaimTypes.Role)?.Value ?? "Usuario";
+    var imagenPerfil = User.FindFirst("ProfileImage")?.Value;
+
+    <div class="dropdown user-profile-dropdown">
+        <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="media">
+                @if (!string.IsNullOrEmpty(imagenPerfil))
+                {
+                    <img src="@imagenPerfil" class="img-fluid" alt="Usuario">
+                }
+                else
+                {
+                    <div class="avatar-icon">
+                        <i class="fas fa-user-circle fa-2x"></i>
+                    </div>
+                }
+                <div class="media-body align-self-center ms-2">
+                    <span>@nombreCompleto</span>
+                    <br />
+                    <small class="text-muted">@rol</small>
+                </div>
+            </div>
+        </a>
+        <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
+            <div class="user-profile-section">
+                <div class="media mx-auto">
+                    @if (!string.IsNullOrEmpty(imagenPerfil))
+                    {
+                        <img src="@imagenPerfil" class="img-fluid me-2" alt="Usuario">
+                    }
+                    else
+                    {
+                        <i class="fas fa-user-circle fa-3x me-2"></i>
+                    }
+                    <div class="media-body">
+                        <h5>@nombreCompleto</h5>
+                        <p>@rol</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown-item">
+                <a href="#">
+                    <i class="fas fa-user me-2"></i>
+                    <span>Mi Perfil</span>
+                </a>
+            </div>
+            <div class="dropdown-item">
+                <a href="#">
+                    <i class="fas fa-cog me-2"></i>
+                    <span>Configuración</span>
+                </a>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item">
+                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                    <button type="submit" class="dropdown-item-logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .user-profile-dropdown .dropdown-toggle {
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile-dropdown .dropdown-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropdown-item-logout {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #e74c3c;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item-logout:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+}

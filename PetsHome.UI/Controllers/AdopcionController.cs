@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class AdopcionController : BaseController
     {
         private readonly AdopcionService _AdopcionService;
@@ -110,7 +112,7 @@ namespace PetsHome.UI.Controllers
 
             if (!model.isEdit)
             {
-                Boolean createdItem = await _AdopcionService.AddAsync(model);
+                Boolean createdItem = await _AdopcionService.AddAsync(model, userId);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -124,7 +126,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _AdopcionService.UpdateAsync(model);
+                Boolean updatedItem = await _AdopcionService.UpdateAsync(model, userId);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
@@ -157,6 +159,13 @@ namespace PetsHome.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ElegirAdoptante(int sol_Id, int masc_Id)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
             var solicitantesDeMascota = new List<AdopcionDetailsViewModel>();
 
             try
@@ -188,7 +197,7 @@ namespace PetsHome.UI.Controllers
                     adop_FechaRegistro = DateTime.Today
                 };
 
-                Boolean adopcionCreada = await _AdopcionService.AddAsync(crearAdopcion);
+                Boolean adopcionCreada = await _AdopcionService.AddAsync(crearAdopcion, userId);
                 if (adopcionCreada)
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
@@ -207,7 +216,7 @@ namespace PetsHome.UI.Controllers
                         adop_FechaRegistro = DateTime.Today
                     };
 
-                    await _AdopcionService.AddAsync(rechazo);
+                    await _AdopcionService.AddAsync(rechazo, userId);
                 }
 
                 var mascotaSeleccionada = await _MascotaService.FindAsync(masc_Id);
@@ -215,8 +224,8 @@ namespace PetsHome.UI.Controllers
                 {
                     mascotaSeleccionada.masc_EsAdoptado = true;
                     mascotaSeleccionada.masc_EsReservado = false;
-                    mascotaSeleccionada.masc_UsuarioModifica = 1;
-                    var resultadoMascota = await _MascotaService.UpdateAsync(mascotaSeleccionada);
+                    mascotaSeleccionada.masc_UsuarioModifica = userId;
+                    var resultadoMascota = await _MascotaService.UpdateAsync(mascotaSeleccionada, userId);
                     if (resultadoMascota)
                     {
                         ShowAlert("No se pudo actualizar el estado de la mascota", AlertMessageType.Warning);

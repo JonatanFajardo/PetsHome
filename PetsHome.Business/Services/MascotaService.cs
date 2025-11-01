@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -103,6 +103,8 @@ namespace PetsHome.Business.Services
                 }
 
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
+                mappedResult.masc_UsuarioCrea = userId;
+                mappedResult.masc_FechaCrea = DateTime.Now;
                 return await _mascotaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -127,6 +129,8 @@ namespace PetsHome.Business.Services
                 }
 
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
+                mappedResult.masc_UsuarioModifica = userId;
+                mappedResult.masc_FechaModifica = DateTime.Now;
                 return await _mascotaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

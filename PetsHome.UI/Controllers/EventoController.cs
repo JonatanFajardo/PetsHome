@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -7,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class EventoController : BaseController
     {
         private readonly EventoService _EventoService;
         private readonly RefugioService _RefugioService;
-        public EventoController(EventoService eventoService,
-                                RefugioService refugioService
-            )
+        public EventoController(EventoService eventoService, RefugioService refugioService)
         {
             _EventoService = eventoService;
             _RefugioService = refugioService;
@@ -80,11 +80,19 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(EventoViewModel model, int userId)
+        public async Task<IActionResult> Add(EventoViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _EventoService.AddAsync(model);
+                Boolean createdItem = await _EventoService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
 
@@ -93,7 +101,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _EventoService.UpdateAsync(model);
+                Boolean updatedItem = await _EventoService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 
@@ -120,7 +128,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public EventoViewModel Dropdown(EventoViewModel model, int userId)
+        public EventoViewModel Dropdown(EventoViewModel model)
         {
             model.LoadDropDownList(_RefugioService.RefugioDropdown());
             return model;

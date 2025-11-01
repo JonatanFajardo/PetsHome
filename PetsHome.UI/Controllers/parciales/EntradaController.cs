@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class EntradaController : BaseController
     {
         private readonly EntradasDetalleService _entradaDetalleService;
@@ -14,10 +16,7 @@ namespace PetsHome.UI.Controllers
         private readonly RefugioService _refugioService;
         private readonly ItemService _itemService;
 
-        public EntradaController(EntradasDetalleService entradaDetalleService,
-                                    EntradaService entradaService,
-                                    RefugioService refugioService,
-                                    ItemService itemService)
+        public EntradaController(EntradasDetalleService entradaDetalleService, EntradaService entradaService, RefugioService refugioService, ItemService itemService)
         {
             _entradaDetalleService = entradaDetalleService;
             _entradaService = entradaService;
@@ -71,11 +70,19 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Add(EntradaViewModel model, int userId)
+        public async Task<IActionResult> Add(EntradaViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _entradaService.AddAsync(model);
+                Boolean createdItem = await _entradaService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
@@ -83,7 +90,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _entradaService.UpdateAsync(model);
+                Boolean updatedItem = await _entradaService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 
@@ -100,11 +107,19 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<IActionResult> AddEntradaDetalle(EntradaViewModel model, int userId)
+        public async Task<IActionResult> AddEntradaDetalle(EntradaViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.EntradaDetalle.isEdit)
             {
-                Boolean createdItem = await _entradaDetalleService.AddAsync(model.EntradaDetalle);
+                Boolean createdItem = await _entradaDetalleService.AddAsync(model.EntradaDetalle, userId);
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
@@ -112,7 +127,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _entradaDetalleService.UpdateAsync(model.EntradaDetalle);
+                Boolean updatedItem = await _entradaDetalleService.UpdateAsync(model.EntradaDetalle, userId);
                 if (updatedItem)
                     goto ErrorResult;
 
@@ -139,13 +154,13 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-        public EntradaViewModel Dropdown(EntradaViewModel model, int userId)
+        public EntradaViewModel Dropdown(EntradaViewModel model)
         {
             model.LoadDropDownList(_refugioService.RefugioDropdown());
             return model;
         }
 
-        public EntradaViewModel ItemDropdown(EntradaViewModel model, int userId)
+        public EntradaViewModel ItemDropdown(EntradaViewModel model)
         {
             model.EntradaDetalle.LoadDropDownList(_itemService.ItemDropdown());
             return model;
