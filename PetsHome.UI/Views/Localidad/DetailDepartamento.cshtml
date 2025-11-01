@@ -39,7 +39,10 @@
                             </div>
                             <div class="profile-meta-item">
                                 <i class="fas fa-building"></i>
-                                <span>@Model.ListadoMunicipios.Count() municipio@(Model.ListadoMunicipios.Count() != 1 ? "s" : "")</span>
+                                @{
+                                    var municipiosCount = Model.ListadoMunicipios?.Count() ?? 0;
+                                }
+                                <span>@municipiosCount municipio@(municipiosCount != 1 ? "s" : "")</span>
                             </div>
                         </div>
                     </div>
@@ -168,31 +171,33 @@
                     <div class="detail-card-body">
                         @if (Model.ListadoMunicipios != null && Model.ListadoMunicipios.Any())
                         {
-                            <table class="detail-table" id="municipio-detalle">
-                                <thead>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Descripción</th>
-                                        <th>Usuario Creación</th>
-                                        <th>Fecha Creación</th>
-                                        <th>Usuario Modificación</th>
-                                        <th>Fecha Modificación</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.ListadoMunicipios)
-                                    {
+                            <div class="table-responsive">
+                                <table class="detail-table dt-responsive nowrap" id="municipio-detalle">
+                                    <thead class="text-center">
                                         <tr>
-                                            <td>@item.mpio_Codigo</td>
-                                            <td>@item.mpio_Descripcion</td>
-                                            <td>@item.UsuarioCreacion</td>
-                                            <td>@(item.mpio_FechaCrea != null ? ((DateTime)item.mpio_FechaCrea).ToString("dd/MM/yyyy") : "N/A")</td>
-                                            <td>@(string.IsNullOrEmpty(item.UsuarioModificacion) ? "N/A" : item.UsuarioModificacion)</td>
-                                            <td>@(item.mpio_FechaModifica != null ? ((DateTime)item.mpio_FechaModifica).ToString("dd/MM/yyyy") : "N/A")</td>
+                                            <th>Código</th>
+                                            <th>Descripción</th>
+                                            <th>Usuario Creación</th>
+                                            <th>Fecha Creación</th>
+                                            <th>Usuario Modificación</th>
+                                            <th>Fecha Modificación</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ListadoMunicipios)
+                                        {
+                                            <tr>
+                                                <td>@item.mpio_Codigo</td>
+                                                <td>@item.mpio_Descripcion</td>
+                                                <td>@(string.IsNullOrWhiteSpace(item.UsuarioCreacion) ? "N/A" : item.UsuarioCreacion)</td>
+                                                <td>@(item.mpio_FechaCrea != null ? ((DateTime)item.mpio_FechaCrea).ToString("dd/MM/yyyy") : "N/A")</td>
+                                                <td>@(string.IsNullOrWhiteSpace(item.UsuarioModificacion) ? "N/A" : item.UsuarioModificacion)</td>
+                                                <td>@(item.mpio_FechaModifica != null ? ((DateTime)item.mpio_FechaModifica).ToString("dd/MM/yyyy") : "N/A")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         }
                         else
                         {
@@ -211,5 +216,5 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/app/catalogos/list-municipiosdetails.js"></script>
+    <script src="~/js/pages/list-municipiosdetails.js"></script>
 }

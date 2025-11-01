@@ -15,7 +15,7 @@
         <div class="pets-header-content">
             <div class="pets-title-section">
                 <h2 class="text-white"><i class="fas fa-truck-loading mr-2 text-white"></i>Gestión de Recepciones de Mercancía</h2>
-                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("EditRecepcion")'">
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("FormRecepcion")'">
                     <i class="fas fa-plus mr-2"></i>Nueva Recepción
                 </button>
             </div>
@@ -111,8 +111,8 @@
     RecepcionMercancia.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
-        urlInsert: "@Url.Action("EditRecepcion")",
-        urlUpdate: "@Url.Action("EditRecepcion")"
+        urlInsert: "@Url.Action("FormRecepcion")",
+        urlUpdate: "@Url.Action("FormRecepcion")"
     });
 
     // Busqueda global

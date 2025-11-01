@@ -36,7 +36,7 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                IEnumerable<PR_General_Municipios_ListResult> mappedResult = await _municipioRepository.ListIdAsync(id);
+                IEnumerable<PR_General_Municipios_DetailResult> mappedResult = await _municipioRepository.ListIdAsync(id);
                 return _mapper.Map<List<MunicipioListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
