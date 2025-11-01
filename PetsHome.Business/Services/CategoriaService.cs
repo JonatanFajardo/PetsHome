@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PetsHome.Business.Services
 {
     /// <summary>
-    /// Clase que representa el servicio de categoría.
+    /// Clase que representa el servicio de categorï¿½a.
     /// </summary>
     public class CategoriaService
     {
@@ -27,9 +27,9 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de categorías de forma asíncrona.
+        /// Obtiene una lista de categorï¿½as de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de categorías.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la lista de categorï¿½as.</returns>
         public async Task<List<CategoriaViewModel>> ListAsync()
         {
             try
@@ -45,10 +45,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca una categoría por su ID de forma asíncrona.
+        /// Busca una categorï¿½a por su ID de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="id">El ID de la categoría.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la categoría encontrada.</returns>
+        /// <param name="id">El ID de la categorï¿½a.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la categorï¿½a encontrada.</returns>
         public async Task<CategoriaViewModel> FindAsync(int id)
         {
             try
@@ -64,10 +64,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de una categoría por su ID de forma asíncrona.
+        /// Obtiene los detalles de una categorï¿½a por su ID de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="id">El ID de la categoría.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles de la categoría.</returns>
+        /// <param name="id">El ID de la categorï¿½a.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene los detalles de la categorï¿½a.</returns>
         public async Task<CategoriaViewModel> DetailAsync(int id)
         {
             try
@@ -83,11 +83,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega una nueva categoría de forma asíncrona.
+        /// Agrega una nueva categorï¿½a de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="model">El modelo de la categoría a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó la categoría correctamente.</returns>
-        public async Task<Boolean> AddAsync(CategoriaViewModel model)
+        /// <param name="model">El modelo de la categorï¿½a a agregar.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se agregï¿½ la categorï¿½a correctamente.</returns>
+        public async Task<Boolean> AddAsync(CategoriaViewModel model, int userId)
         {
             try
             {
@@ -102,11 +102,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza una categoría de forma asíncrona.
+        /// Actualiza una categorï¿½a de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="model">El modelo de la categoría a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó la categoría correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(CategoriaViewModel model)
+        /// <param name="model">El modelo de la categorï¿½a a actualizar.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se actualizï¿½ la categorï¿½a correctamente.</returns>
+        public async Task<Boolean> UpdateAsync(CategoriaViewModel model, int userId)
         {
             try
             {
@@ -121,10 +121,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina una categoría por su ID de forma asíncrona.
+        /// Elimina una categorï¿½a por su ID de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="id">El ID de la categoría a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó la categoría correctamente.</returns>
+        /// <param name="id">El ID de la categorï¿½a a eliminar.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se eliminï¿½ la categorï¿½a correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

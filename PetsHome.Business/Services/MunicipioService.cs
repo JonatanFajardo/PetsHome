@@ -72,7 +72,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos del municipio a agregar.</param>
         /// <returns>True si el municipio se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(MunicipioFormViewModel model)
+        public async Task<bool> AddAsync(MunicipioFormViewModel model, int userId)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados del municipio.</param>
         /// <returns>True si el municipio se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(MunicipioFormViewModel model)
+        public async Task<bool> UpdateAsync(MunicipioFormViewModel model, int userId)
         {
             try
             {

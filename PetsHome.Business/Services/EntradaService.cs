@@ -28,9 +28,9 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de Entradas de forma asíncrona.
+        /// Obtiene una lista de Entradas de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de Entradas.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la lista de Entradas.</returns>
         public async Task<List<EntradaViewModel>> ListAsync()
         {
             try
@@ -46,10 +46,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca una Entrada por su ID de forma asíncrona.
+        /// Busca una Entrada por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID de la Entrada.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la Entrada encontrada.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la Entrada encontrada.</returns>
         public async Task<EntradaViewModel> FindAsync(int id)
         {
             try
@@ -65,10 +65,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de una Entrada por su ID de forma asíncrona.
+        /// Obtiene los detalles de una Entrada por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID de la Entrada.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles de la Entrada.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene los detalles de la Entrada.</returns>
         public async Task<EntradaViewModel> DetailAsync(int id)
         {
             try
@@ -84,11 +84,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega una nueva Entrada de forma asíncrona.
+        /// Agrega una nueva Entrada de forma asï¿½ncrona.
         /// </summary>
         /// <param name="model">El modelo de la Entrada a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó la Entrada correctamente.</returns>
-        public async Task<Boolean> AddAsync(EntradaViewModel model)
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se agregï¿½ la Entrada correctamente.</returns>
+        public async Task<Boolean> AddAsync(EntradaViewModel model, int userId)
         {
             try
             {
@@ -103,11 +103,11 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza una Entrada existente de forma asíncrona.
+        /// Actualiza una Entrada existente de forma asï¿½ncrona.
         /// </summary>
         /// <param name="model">El modelo de la Entrada a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó la Entrada correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(EntradaViewModel model)
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se actualizï¿½ la Entrada correctamente.</returns>
+        public async Task<Boolean> UpdateAsync(EntradaViewModel model, int userId)
         {
             try
             {
@@ -122,10 +122,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina una Entrada por su ID de forma asíncrona.
+        /// Elimina una Entrada por su ID de forma asï¿½ncrona.
         /// </summary>
         /// <param name="id">El ID de la Entrada a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó la Entrada correctamente.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se eliminï¿½ la Entrada correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

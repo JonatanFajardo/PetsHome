@@ -65,7 +65,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(VacunaFormViewModel model)
+        public async Task<bool> AddAsync(VacunaFormViewModel model, int userId)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(VacunaFormViewModel model)
+        public async Task<bool> UpdateAsync(VacunaFormViewModel model, int userId)
         {
             try
             {

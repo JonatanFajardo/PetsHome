@@ -68,7 +68,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(RazaFormViewModel model)
+        public async Task<bool> AddAsync(RazaFormViewModel model, int userId)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(RazaFormViewModel model)
+        public async Task<bool> UpdateAsync(RazaFormViewModel model, int userId)
         {
             try
             {

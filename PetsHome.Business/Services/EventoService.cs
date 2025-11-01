@@ -86,8 +86,8 @@ namespace PetsHome.Business.Services
         /// Agrega un nuevo evento.
         /// </summary>
         /// <param name="model">Datos del evento a agregar.</param>
-        /// <returns>True si el evento se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(EventoViewModel model)
+        /// <returns>True si el evento se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> AddAsync(EventoViewModel model, int userId)
         {
             try
             {
@@ -105,8 +105,8 @@ namespace PetsHome.Business.Services
         /// Actualiza un evento existente.
         /// </summary>
         /// <param name="model">Datos actualizados del evento.</param>
-        /// <returns>True si el evento se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(EventoViewModel model)
+        /// <returns>True si el evento se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> UpdateAsync(EventoViewModel model, int userId)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace PetsHome.Business.Services
         /// Elimina un evento por su identificador.
         /// </summary>
         /// <param name="id">Identificador del evento a eliminar.</param>
-        /// <returns>True si el evento se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si el evento se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try

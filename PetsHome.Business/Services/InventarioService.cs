@@ -86,8 +86,8 @@ namespace PetsHome.Business.Services
         /// Agrega un nuevo registro al inventario.
         /// </summary>
         /// <param name="model">Datos del registro del inventario a agregar.</param>
-        /// <returns>True si el registro del inventario se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(InventarioViewModel model)
+        /// <returns>True si el registro del inventario se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> AddAsync(InventarioViewModel model, int userId)
         {
             try
             {
@@ -105,8 +105,8 @@ namespace PetsHome.Business.Services
         /// Actualiza un registro existente del inventario.
         /// </summary>
         /// <param name="model">Datos actualizados del registro del inventario.</param>
-        /// <returns>True si el registro del inventario se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(InventarioViewModel model)
+        /// <returns>True si el registro del inventario se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> UpdateAsync(InventarioViewModel model, int userId)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace PetsHome.Business.Services
         /// Elimina un registro del inventario por su identificador.
         /// </summary>
         /// <param name="id">Identificador del registro del inventario a eliminar.</param>
-        /// <returns>True si el registro del inventario se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si el registro del inventario se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try

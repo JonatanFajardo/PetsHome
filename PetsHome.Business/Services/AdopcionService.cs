@@ -87,7 +87,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">El modelo de la adopci�n a agregar.</param>
         /// <returns>Una tarea que representa la operaci�n asincr�nica. El resultado indica si se agreg� la adopci�n correctamente.</returns>
-        public async Task<Boolean> AddAsync(AdopcionViewModel model)
+        public async Task<Boolean> AddAsync(AdopcionViewModel model, int userId)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">El modelo de la adopci�n a actualizar.</param>
         /// <returns>Una tarea que representa la operaci�n asincr�nica. El resultado indica si se actualiz� la adopci�n correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(AdopcionViewModel model)
+        public async Task<Boolean> UpdateAsync(AdopcionViewModel model, int userId)
         {
             try
             {
