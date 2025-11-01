@@ -90,10 +90,10 @@ namespace PetsHome.Business.Services
                     mpio_Descripcion = m.mpio_Descripcion,
                     depto_Id = id,
                     // Audit fields will be empty since ListResult doesn't include them
-                    UsuarioCreacion = "N/A",
-                    mpio_FechaCrea = null,
-                    UsuarioModificacion = null,
-                    mpio_FechaModifica = null
+                    UsuarioCreacion = m.UsuarioCreacion,
+                    mpio_FechaCrea = m.mpio_FechaCrea,
+                    UsuarioModificacion = m.UsuarioModificacion,
+                    mpio_FechaModifica = m.mpio_FechaModifica
                 }).ToList();
 
                 return result;

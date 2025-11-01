@@ -46,5 +46,14 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public DateTime? mpio_FechaModifica { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string UsuarioCreacion { get; set; }
+        /// <summary>
+        /// Obtiene o establece el valor de la propiedad.
+        /// </summary>
+        public string UsuarioModificacion { get; set; }
     }
 }

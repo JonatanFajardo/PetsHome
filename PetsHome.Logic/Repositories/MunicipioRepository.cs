@@ -16,12 +16,12 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Select<PR_General_Municipios_ListResult>(sqlQuery);
         }
 
-        public async Task<IEnumerable<PR_General_Municipios_ListResult>> ListIdAsync(int id)
+        public async Task<IEnumerable<PR_General_Municipios_DetailResult>> ListIdAsync(int id)
         {
             const string sqlQuery = "[General].[PR_General_Municipios_SelectbyDepartamento]";
             var parameter = new DynamicParameters();
             parameter.Add("@depto_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.SelectById<PR_General_Municipios_ListResult>(sqlQuery, parameter);
+            return await DbApp.SelectById<PR_General_Municipios_DetailResult>(sqlQuery, parameter);
         }
 
         public async Task<Boolean> AddAsync(tbMunicipios entity)

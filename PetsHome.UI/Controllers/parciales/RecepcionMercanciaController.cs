@@ -35,6 +35,14 @@ namespace PetsHome.UI.Controllers
             _mapper = mapper;
         }
 
+        private static class Views
+        {
+            public const string Index = "~/Views/RecepcionMercancia/Index.cshtml";
+            public const string Create = "~/Views/RecepcionMercancia/FormRecepcion.cshtml";
+            public const string Update = "~/Views/RecepcionMercancia/FormRecepcion.cshtml";
+            public const string Detail = "~/Views/RecepcionMercancia/DetailRecepcion.cshtml";
+        }
+
         /// <summary>
         /// Vista principal del índice de recepciones.
         /// </summary>
@@ -65,12 +73,12 @@ namespace PetsHome.UI.Controllers
             if (itemDetail != null)
             {
                 ViewBag.Detalles = await _detalleService.ListByRecepcionAsync(id);
-                return View("DetailRecepcion", itemDetail);
+                return View(Views.Detail, itemDetail);
             }
             else
             {
                 ShowAlert("No se encontró la recepción", AlertMessageType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(Views.Index);
             }
         }
 
@@ -107,8 +115,8 @@ namespace PetsHome.UI.Controllers
         /// Vista de edición/creación de recepción de mercancía.
         /// </summary>
         /// <param name="id">ID de la recepción. 0 para crear nueva.</param>
-        /// <returns>Vista EditRecepcion.</returns>
-        public async Task<IActionResult> EditRecepcion(int id)
+        /// <returns>Vista FormRecepcion.</returns>
+        public async Task<IActionResult> FormRecepcion(int id)
         {
             if (id == 0)
             {
@@ -120,7 +128,7 @@ namespace PetsHome.UI.Controllers
                 ViewBag.Refugios = _refugioService.RefugioDropdown();
                 ViewBag.Procedencias = _procedenciaService.ProcedenciaDropdown();
                 ViewBag.Items = _itemService.ItemDropdown();
-                return View(nameof(EditRecepcion), model);
+                return View(nameof(FormRecepcion), model);
             }
             else
             {
@@ -129,7 +137,7 @@ namespace PetsHome.UI.Controllers
                 ViewBag.Refugios = _refugioService.RefugioDropdown();
                 ViewBag.Procedencias = _procedenciaService.ProcedenciaDropdown();
                 ViewBag.Items = _itemService.ItemDropdown();
-                return View(nameof(EditRecepcion), result);
+                return View(nameof(FormRecepcion), result);
             }
         }
 
@@ -147,7 +155,7 @@ namespace PetsHome.UI.Controllers
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Recepción insertada correctamente", AlertMessageType.Success);
-                return RedirectToAction("EditRecepcion");
+                return RedirectToAction(Views.Create);
             }
             else
             {
@@ -156,7 +164,7 @@ namespace PetsHome.UI.Controllers
                     goto ErrorResult;
 
                 ShowAlert("Recepción actualizada correctamente", AlertMessageType.Success);
-                return RedirectToAction("EditRecepcion", routeValues: new { id = model.recep_Id });
+                return RedirectToAction(Views.Update, routeValues: new { id = model.recep_Id });
             }
 
         ErrorResult:
@@ -180,7 +188,7 @@ namespace PetsHome.UI.Controllers
                 if (createdItem)
                     goto ErrorResult;
                 ShowAlert("Detalle insertado correctamente", AlertMessageType.Success);
-                return RedirectToAction("EditRecepcion", routeValues: new { id = model.Detalle.recep_Id });
+                return RedirectToAction("FormRecepcion", routeValues: new { id = model.Detalle.recep_Id });
             }
             else
             {
@@ -189,7 +197,7 @@ namespace PetsHome.UI.Controllers
                     goto ErrorResult;
 
                 ShowAlert("Detalle actualizado correctamente", AlertMessageType.Success);
-                return RedirectToAction("EditRecepcion", routeValues: new { id = model.Detalle.recep_Id });
+                return RedirectToAction("FormRecepcion", routeValues: new { id = model.Detalle.recep_Id });
             }
 
         ErrorResult:
@@ -214,7 +222,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(Views.Index);
             }
         }
 
@@ -235,7 +243,7 @@ namespace PetsHome.UI.Controllers
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(Views.Index);
         }
 
         /// <summary>
@@ -256,7 +264,7 @@ namespace PetsHome.UI.Controllers
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
             }
-            return RedirectToAction("EditRecepcion", new { id = recep_Id });
+            return RedirectToAction("FormRecepcion", new { id = recep_Id });
         }
     }
 }
