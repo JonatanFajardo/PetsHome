@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -27,9 +27,7 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
-        public RefugioController(RefugioService RefugioService,
-                                DepartamentoService DepartamentoService,
-                                MunicipioService MunicipioService)
+        public RefugioController(RefugioService RefugioService, DepartamentoService DepartamentoService, MunicipioService MunicipioService)
         {
             _RefugioService = RefugioService;
             _departamentoService = DepartamentoService;
