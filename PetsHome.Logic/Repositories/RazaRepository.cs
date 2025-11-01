@@ -36,7 +36,6 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> AddAsync(tbRazas entity)
         {
-            entity.raza_UsuarioCrea = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_Razas_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Descripcion", entity.raza_Descripcion, DbType.String, ParameterDirection.Input);
@@ -50,7 +49,6 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbRazas entity)
         {
-            entity.raza_UsuarioModifica = 1;
             const string sqlQuery = "[Refugio].[PR_Refugio_Razas_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Id", entity.raza_Id, DbType.Int32, ParameterDirection.Input);
@@ -59,7 +57,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@raza_TipoAnimal", entity.raza_TipoAnimal, DbType.String, ParameterDirection.Input);
             parameter.Add("@raza_TipoPelaje", entity.raza_TipoPelaje, DbType.String, ParameterDirection.Input);
             parameter.Add("@raza_ImagenUrl", entity.raza_ImagenUrl, DbType.String, ParameterDirection.Input);
-            parameter.Add("@raza_UsuarioModifica", entity.raza_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@raza_UsuarioModifica", entity.raza_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 

@@ -29,7 +29,6 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> AddAsync(tbEntradasDetalles entity)
         {
-            entity.entdet_UsuarioCrea = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_EntradasDetalles_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@ent_Id", entity.ent_Id, DbType.Int32, ParameterDirection.Input);
@@ -41,7 +40,6 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbEntradasDetalles entity)
         {
-            entity.entdet_UsuarioModifica = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_EntradasDetalles_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@entdet_Id", entity.entdet_Id, DbType.Int32, ParameterDirection.Input);

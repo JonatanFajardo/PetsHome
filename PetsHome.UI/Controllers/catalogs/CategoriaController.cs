@@ -73,38 +73,46 @@ namespace PetsHome.UI.Controllers
         }
 
 
-        public async Task<IActionResult> Add(CategoriaViewModel model)
-        {
-            if (!model.isEdit)
-            {
-                Boolean createdItem = await _CategoriaService.AddAsync(model);
-                if (!createdItem)
-                {
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                Boolean updatedItem = await _CategoriaService.UpdateAsync(model);
-                if (!updatedItem)
-                {
-                    ShowAlert("Modificado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
-            }
-        }
-
+        public async Task<IActionResult> Add(CategoriaViewModel model)
+        {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
+            if (!model.isEdit)
+            {
+                Boolean createdItem = await _CategoriaService.AddAsync(model, userId);
+                if (!createdItem)
+                {
+                    ShowAlert("Insertado", AlertMessageType.Success);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                Boolean updatedItem = await _CategoriaService.UpdateAsync(model, userId);
+                if (!updatedItem)
+                {
+                    ShowAlert("Modificado", AlertMessageType.Success);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+
         public async Task<IActionResult> Remove(int cat_Id)
         {
             Boolean deletedItem = await _CategoriaService.RemoveAsync(cat_Id);

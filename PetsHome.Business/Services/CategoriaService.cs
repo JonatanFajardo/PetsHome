@@ -87,11 +87,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">El modelo de la categoría a agregar.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó la categoría correctamente.</returns>
-        public async Task<Boolean> AddAsync(CategoriaViewModel model)
+        public async Task<Boolean> AddAsync(CategoriaViewModel model, int userId)
         {
             try
             {
                 tbCategorias mappedResult = _mapper.Map<tbCategorias>(model);
+                mappedResult.cat_UsuarioCrea = userId;
+                mappedResult.cat_FechaCrea = DateTime.Now;
                 return await _categoriaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -106,11 +108,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">El modelo de la categoría a actualizar.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó la categoría correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(CategoriaViewModel model)
+        public async Task<Boolean> UpdateAsync(CategoriaViewModel model, int userId)
         {
             try
             {
                 tbCategorias mappedResult = _mapper.Map<tbCategorias>(model);
+                mappedResult.cat_UsuarioModifica = userId;
+                mappedResult.cat_FechaModifica = DateTime.Now;
                 return await _categoriaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

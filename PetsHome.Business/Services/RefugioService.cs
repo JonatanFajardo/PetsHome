@@ -87,11 +87,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos del refugio a agregar.</param>
         /// <returns>True si el refugio se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(RefugioViewModel model)
+        public async Task<bool> AddAsync(RefugioViewModel model, int userId)
         {
             try
             {
                 tbRefugios mappedResult = _mapper.Map<tbRefugios>(model);
+                mappedResult.refg_UsuarioCrea = userId;
+                mappedResult.refg_FechaCrea = DateTime.Now;
                 return await _refugioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -106,11 +108,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados del refugio.</param>
         /// <returns>True si el refugio se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(RefugioViewModel model)
+        public async Task<bool> UpdateAsync(RefugioViewModel model, int userId)
         {
             try
             {
                 tbRefugios mappedResult = _mapper.Map<tbRefugios>(model);
+                mappedResult.refg_UsuarioModifica = userId;
+                mappedResult.refg_FechaModifica = DateTime.Now;
                 return await _refugioRepository.EditAsync(mappedResult);
             }
             catch (Exception error)
