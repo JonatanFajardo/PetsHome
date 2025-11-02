@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Services;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly HomeService _homeService;
