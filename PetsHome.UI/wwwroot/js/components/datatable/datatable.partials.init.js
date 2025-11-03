@@ -213,12 +213,8 @@ var datatablePartials = (function () {
     return obj;
 }());
 
-
-
-
-$(function () {
-    datatable.init();
-});
+// Note: datatablePartials is initializesd manually from specific pages
+// Do not auto-initialize here as it requires specific parameters (listUrl, id, header)
 
 
 

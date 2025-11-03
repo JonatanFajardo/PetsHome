@@ -27,6 +27,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_General_Municipios_ListResult, MunicipioListViewModel>().ReverseMap();
             CreateMap<PR_General_Municipios_FindResult, MunicipioFormViewModel>().ReverseMap();
             CreateMap<PR_General_Municipios_DetailResult, MunicipioDetailsViewModel>().ReverseMap();
+            CreateMap<PR_General_Municipios_DetailResult, MunicipioListViewModel>().ReverseMap();
             CreateMap<PR_General_Municipios_DropdownResult, MunicipioListViewModel>().ReverseMap();
             CreateMap<PR_General_Municipios_SelectbyDepartamentoResult, MunicipioListViewModel>().ReverseMap();
             CreateMap<tbMunicipios, MunicipioFormViewModel>().ReverseMap();

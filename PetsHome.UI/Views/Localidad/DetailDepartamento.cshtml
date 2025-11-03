@@ -168,45 +168,11 @@
                         <i class="fas fa-building"></i>
                         <h3>Municipios Asociados</h3>
                     </div>
-                    <div class="detail-card-body">
-                        @if (Model.ListadoMunicipios != null && Model.ListadoMunicipios.Any())
-                        {
-                            <div class="table-responsive">
-                                <table class="detail-table dt-responsive nowrap" id="municipio-detalle">
-                                    <thead class="text-center">
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Descripción</th>
-                                            <th>Usuario Creación</th>
-                                            <th>Fecha Creación</th>
-                                            <th>Usuario Modificación</th>
-                                            <th>Fecha Modificación</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.ListadoMunicipios)
-                                        {
-                                            <tr>
-                                                <td>@item.mpio_Codigo</td>
-                                                <td>@item.mpio_Descripcion</td>
-                                                <td>@(string.IsNullOrWhiteSpace(item.UsuarioCreacion) ? "N/A" : item.UsuarioCreacion)</td>
-                                                <td>@(item.mpio_FechaCrea != null ? ((DateTime)item.mpio_FechaCrea).ToString("dd/MM/yyyy") : "N/A")</td>
-                                                <td>@(string.IsNullOrWhiteSpace(item.UsuarioModificacion) ? "N/A" : item.UsuarioModificacion)</td>
-                                                <td>@(item.mpio_FechaModifica != null ? ((DateTime)item.mpio_FechaModifica).ToString("dd/MM/yyyy") : "N/A")</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="">
+                        @{
+                            ViewData["depto_Id"] = Model.depto_Id;
                         }
-                        else
-                        {
-                            <div class="empty-state-detail">
-                                <i class="fas fa-building"></i>
-                                <h4>No hay municipios registrados</h4>
-                                <p>Este departamento no tiene municipios asociados</p>
-                            </div>
-                        }
+                        <partial name="_MunicipioPartial" />
                     </div>
                 </div>
 
@@ -215,6 +181,22 @@
     </div>
 </div>
 
-@section Scripts{
-    <script src="~/js/pages/list-municipiosdetails.js"></script>
+@section Scripts {
+    <script src="~/js/pages/municipio.js"></script>
+    <script>
+        $(document).ready(function() {
+            Municipio.datatablePartials({
+                listUrl: "@Url.Action("ListMunicipios")",
+                id: @Model.depto_Id
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            Catalogs.configure({
+                displayName: "municipio",
+                getUrl: "@Url.Action("FindMunicipio")"
+            });
+        });
+    </script>
 }
