@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PetsHome.Business.Data;
@@ -9,15 +10,14 @@ using PetsHome.Business.Services;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class MascotaController : BaseController
     {
         private readonly MascotaService _mascotaService;
         private readonly RefugioService _refugioService;
         private readonly IOptions<MascotaFormViewModel> _pathFile;
 
-        public MascotaController(MascotaService mascotaService,
-            RefugioService refugioService,
-            IOptions<MascotaFormViewModel> options)
+        public MascotaController(MascotaService mascotaService, RefugioService refugioService, IOptions<MascotaFormViewModel> options)
         {
             _mascotaService = mascotaService;
             _refugioService = refugioService;
@@ -80,9 +80,17 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(MascotaFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesi�n expirada. Por favor, inicie sesi�n nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                bool createdItem = await _mascotaService.AddAsync(model);
+                bool createdItem = await _mascotaService.AddAsync(model, userId);
                 bool validation = Validation.IsInsert(createdItem, ModelState.IsValid);
                 if (createdItem)
                     goto ErrorResult;
@@ -91,7 +99,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                bool updatedItem = await _mascotaService.UpdateAsync(model);
+                bool updatedItem = await _mascotaService.UpdateAsync(model, userId);
                 bool validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
                 if (updatedItem)
                     goto ErrorResult;

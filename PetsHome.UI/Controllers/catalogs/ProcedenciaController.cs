@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class ProcedenciaController : BaseController
     {
         private readonly ProcedenciaService _procedenciaService;
@@ -75,9 +77,17 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(ProcedenciaViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _procedenciaService.AddAsync(model);
+                Boolean createdItem = await _procedenciaService.AddAsync(model, userId);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -91,7 +101,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _procedenciaService.UpdateAsync(model);
+                Boolean updatedItem = await _procedenciaService.UpdateAsync(model, userId);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);

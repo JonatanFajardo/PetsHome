@@ -65,11 +65,13 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(VacunaFormViewModel model)
+        public async Task<bool> AddAsync(VacunaFormViewModel model, int userId)
         {
             try
             {
                 tbVacunas mappedResult = _mapper.Map<tbVacunas>(model);
+                mappedResult.vac_UsuarioCrea = userId;
+                mappedResult.vac_FechaCrea = DateTime.Now;
                 return await _vacunaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -79,11 +81,13 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(VacunaFormViewModel model)
+        public async Task<bool> UpdateAsync(VacunaFormViewModel model, int userId)
         {
             try
             {
                 tbVacunas mappedResult = _mapper.Map<tbVacunas>(model);
+                mappedResult.vac_UsuarioModifica = userId;
+                mappedResult.vac_FechaModifica = DateTime.Now;
                 return await _vacunaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

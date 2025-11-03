@@ -68,11 +68,13 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(RazaFormViewModel model)
+        public async Task<bool> AddAsync(RazaFormViewModel model, int userId)
         {
             try
             {
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
+                mappedResult.raza_UsuarioCrea = userId;
+                mappedResult.raza_FechaCrea = DateTime.Now;
                 return await _razaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -82,11 +84,13 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(RazaFormViewModel model)
+        public async Task<bool> UpdateAsync(RazaFormViewModel model, int userId)
         {
             try
             {
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
+                mappedResult.raza_UsuarioModifica = userId;
+                mappedResult.raza_FechaModifica = DateTime.Now;
                 return await _razaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

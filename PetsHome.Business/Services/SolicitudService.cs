@@ -87,11 +87,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos de la solicitud a agregar.</param>
         /// <returns>True si la solicitud se agreg� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> AddAsync(SolicitudFormViewModel model)
+        public async Task<bool> AddAsync(SolicitudFormViewModel model, int userId)
         {
             try
             {
                 tbSolicitudes mappedResult = _mapper.Map<tbSolicitudes>(model);
+                mappedResult.sol_UsuarioCrea = userId;
+                mappedResult.sol_FechaCrea = DateTime.Now;
                 return await _solicitudRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -106,11 +108,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados de la solicitud.</param>
         /// <returns>True si la solicitud se actualiz� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> UpdateAsync(SolicitudFormViewModel model)
+        public async Task<bool> UpdateAsync(SolicitudFormViewModel model, int userId)
         {
             try
             {
                 tbSolicitudes mappedResult = _mapper.Map<tbSolicitudes>(model);
+                mappedResult.sol_UsuarioModifica = userId;
+                mappedResult.sol_FechaModifica = DateTime.Now;
                 return await _solicitudRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

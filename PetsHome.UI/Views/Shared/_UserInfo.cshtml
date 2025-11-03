@@ -1,0 +1,117 @@
+@using System.Security.Claims
+
+@if (User.Identity.IsAuthenticated)
+{
+    var nombreCompleto = User.FindFirst(ClaimTypes.GivenName)?.Value ?? User.Identity.Name;
+    var rol = User.FindFirst(ClaimTypes.Role)?.Value ?? "Usuario";
+    var imagenPerfil = User.FindFirst("ProfileImage")?.Value;
+
+    <!-- User Info Display -->
+    <div class="user-info-display">
+        <div class="d-flex align-items-center mb-2">
+            @if (!string.IsNullOrEmpty(imagenPerfil))
+            {
+                <img src="@imagenPerfil" class="user-avatar mr-2" alt="Usuario">
+            }
+            else
+            {
+                <div class="user-avatar-icon mr-2">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            }
+            <div class="user-info-text">
+                <div class="user-name">@nombreCompleto</div>
+                <div class="user-role">@rol</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Button - Always Visible -->
+    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="w-100">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn-logout">
+            <i class="fas fa-sign-out-alt mr-2"></i>
+            <span>Cerrar Sesión</span>
+        </button>
+    </form>
+
+    <style>
+        /* User Info Display */
+        .user-info-display {
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e0e6ed;
+        }
+
+        .user-avatar-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 40px;
+        }
+
+        .user-info-text {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: #9ca3af;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Logout Button - Always Visible */
+        .btn-logout {
+            width: 100%;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #F00C22 0%, #d70a1e 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(240, 12, 34, 0.2);
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #d70a1e 0%, #b8091a 100%);
+            box-shadow: 0 4px 8px rgba(240, 12, 34, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-logout:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(240, 12, 34, 0.2);
+        }
+
+        .btn-logout i {
+            font-size: 14px;
+        }
+    </style>
+}
