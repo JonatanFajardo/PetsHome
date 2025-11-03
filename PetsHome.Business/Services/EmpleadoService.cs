@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -84,11 +84,17 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Agrega un nuevo Empleado de forma asincrona.
         /// </summary>
-        public async Task<bool> AddAsync(EmpleadoFormViewModel model)
+        public async Task<bool> AddAsync(EmpleadoFormViewModel model, int userId)
         {
             try
             {
                 tbEmpleados mappedResult = _mapper.Map<tbEmpleados>(model);
+                if (mappedResult.per == null)
+                {
+                    mappedResult.per = new tbPersonas();
+                }
+                mappedResult.per.per_UsuarioCrea = userId;
+                mappedResult.per.per_FechaCrea = DateTime.Now;
                 return await _empleadoRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -101,11 +107,17 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Actualiza un Empleado de forma asincrona.
         /// </summary>
-        public async Task<bool> UpdateAsync(EmpleadoFormViewModel model)
+        public async Task<bool> UpdateAsync(EmpleadoFormViewModel model, int userId)
         {
             try
             {
                 tbEmpleados mappedResult = _mapper.Map<tbEmpleados>(model);
+                if (mappedResult.per == null)
+                {
+                    mappedResult.per = new tbPersonas();
+                }
+                mappedResult.per.per_UsuarioModifica = userId;
+                mappedResult.per.per_FechaModifica = DateTime.Now;
                 return await _empleadoRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

@@ -1,0 +1,312 @@
+Changed database context to 'PETSHOMEDB'.
+===== UDP_Acce_tbUsuarios_Login =====
+Text                                                                                                                                                                                                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                                                                                                                                                                                                             
+-- 1. Login simplificado como AHM (UDP_Acce_tbUsuarios_Login)
+                                                                                                                                                                                                
+CREATE   PROCEDURE [Seguridad].[UDP_Acce_tbUsuarios_Login]
+                                                                                                                                                                                                   
+    @usu_NombreUsuario NVARCHAR(150),
+                                                                                                                                                                                                                        
+    @contrasena NVARCHAR(255)
+                                                                                                                                                                                                                                
+AS
+                                                                                                                                                                                                                                                           
+BEGIN
+                                                                                                                                                                                                                                                        
+    SET NOCOUNT ON;
+                                                                                                                                                                                                                                          
+    
+                                                                                                                                                                                                                                                         
+    SELECT 
+                                                                                                                                                                                                                                                  
+        u.usu_Id,
+                                                                                                                                                                                                                                            
+        u.Emp_Id,
+                                                                                                                                                                                                                                            
+        u.Usu_Nombre AS usu_NombreUsuario,
+                                                                                                                                                                                                                   
+        CONCAT(p.per_PrimerNombre, ' ', ISNULL(p.per_SegundoNombre, ''), ' ', 
+                                                                                                                                                                               
+               p.per_ApellidoPaterno, ' ', ISNULL(p.per_ApellidoMaterno, '')) AS usu_NombreCompleto,
+                                                                                                                                                         
+        p.per_PrimerNombre,
+                                                                                                                                                                                                                                  
+        p.per_ApellidoPaterno,
+                                                                                                                                                                                                                               
+        -- Obtener el rol principal (el primero si tiene múltiples)
+                                                                                                                                                                                          
+        (SELECT TOP 1 ru.rol_Id 
+                                                                                                                                                                                                                             
+         FROM [Seguridad].[tbRolesUsuarios] ru 
+                                                                                                                                                                                                              
+         WHERE ru.usu_Id = u.usu_Id 
+                                                                                                                                                                                                                         
+         ORDER BY ru.rol_usu_FechaAsignacion ASC) AS rol_Id,
+                                                                                                                                                                                                 
+        (SELECT TOP 1 r.Rol_Descripcion 
+                                                                                                                                                                                                                     
+         FROM [Seguridad].[tbRolesUsuarios] ru 
+                                                                                                                                                                                                              
+         INNER JOIN [Seguridad].[tbRoles] r ON ru.rol_Id = r.Rol_Id
+                                                                                                                                                                                          
+         WHERE ru.usu_Id = u.usu_Id 
+                                                                                                                                                                                                                         
+         ORDER BY ru.rol_usu_FechaAsignacion ASC) AS rol_Descripcion,
+                                                                                                                                                                                        
+        u.Usu_EsActivo AS usu_Estado,
+                                                                                                                                                                                                                        
+        u.usu_ImagenPerfil,
+                                                                                                                                                                                                                                  
+        u.usu_Logueado
+                                                                                                                                                                                                                                       
+    FROM [Seguridad].[tbUsuarios] u
+                                                                                                                                                                                                                          
+    INNER JOIN [Refugio].[tbEmpleados] e ON u.Emp_Id = e.emp_Id
+                                                                                                                                                                                              
+    INNER JOIN [General].[tbPersonas] p ON e.per_Id = p.per_Id
+                                                                                                                                                                                               
+    WHERE u.Usu_Nombre = @usu_NombreUsuario 
+                                                                                                                                                                                                                 
+        AND u.Usu_PasswordHash = @contrasena
+                                                                                                                                                                                                                 
+        AND u.Usu_EsActivo = 1 
+                                                                                                                                                                                                                              
+        AND ISNULL(u.Usu_Suspendido, 0) = 0
+                                                                                                                                                                                                                  
+        AND ISNULL(u.Usu_EsEliminado, 0) = 0
+                                                                                                                                                                                                                 
+        AND e.emp_EsActivo = 1
+                                                                                                                                                                                                                               
+        -- Verificar que el usuario tenga al menos un rol activo
+                                                                                                                                                                                             
+        AND EXISTS (
+                                                                                                                                                                                                                                         
+            SELECT 1 FROM [Seguridad].[tbRolesUsuarios] ru 
+                                                                                                                                                                                                  
+            INNER JOIN [Seguridad].[tbRoles] r ON ru.rol_Id = r.Rol_Id
+                                                                                                                                                                                       
+            WHERE ru.usu_Id = u.usu_Id AND r.Rol_EsActivo = 1
+                                                                                                                                                                                                
+        );
+                                                                                                                                                                                                                                                   
+END
+                                                                                                                                                                                                                                                          
+ 
+===== PR_Seguridad_Usuarios_Login =====
+Text                                                                                                                                                                                                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Procedimiento para login de usuario con permisos de rol y módulo
+                                                                                                                                                                                          
+CREATE   PROCEDURE Seguridad.[PR_Seguridad_Usuarios_Login] 
+                                                                                                                                                                                                  
+    @Usu_Nombre NVARCHAR(150),
+                                                                                                                                                                                                                               
+    @Con_Hash NVARCHAR(255)
+                                                                                                                                                                                                                                  
+AS
+                                                                                                                                                                                                                                                           
+BEGIN
+                                                                                                                                                                                                                                                        
+    SET NOCOUNT ON;
+                                                                                                                                                                                                                                          
+    
+                                                                                                                                                                                                                                                         
+    SELECT 
+                                                                                                                                                                                                                                                  
+        u.usu_Id,
+                                                                                                                                                                                                                                            
+        u.Emp_Id,
+                                                                                                                                                                                                                                            
+        u.Usu_Nombre,
+                                                                                                                                                                                                                                        
+        p.per_PrimerNombre + ' ' + p.per_SegundoNombre Emp_Nombres,
+                                                                                                                                                                                          
+        p.per_ApellidoPaterno Emp_Apellidos,
+                                                                                                                                                                                                                 
+        u.Rol_Id,
+                                                                                                                                                                                                                                            
+        r.Rol_Descripcion, 
+                                                                                                                                                                                                                                  
+         STRING_AGG(p.per_PrimerNombre, ', ') AS Permisos,
+                                                                                                                                                                                                   
+        -- OR, if you prefer the permission names:
+                                                                                                                                                                                                           
+        -- STRING_AGG(DISTINCT perm.Per_Nombre, ',') WITHIN GROUP (ORDER BY perm.Per_Nombre) AS PermisosNombresAsignados,
+                                                                                                                                    
+		perm.Per_Nombre,
+                                                                                                                                                                                                                                           
+        u.Usu_EsActivo,
+                                                                                                                                                                                                                                      
+        u.Usu_Suspendido
+                                                                                                                                                                                                                                     
+        --c.Con_Hash,
+                                                                                                                                                                                                                                        
+        --c.Con_Salt
+                                                                                                                                                                                                                                         
+    FROM tbUsuarios u
+                                                                                                                                                                                                                                        
+    INNER JOIN refugio.tbEmpleados e ON u.Emp_Id = e.Emp_Id
+                                                                                                                                                                                                  
+    INNER JOIN seguridad.tbRoles r ON u.Rol_Id = r.Rol_Id
+                                                                                                                                                                                                    
+	INNER JOIN General.tbPersonas p ON e.per_Id = p.per_Id 
+                                                                                                                                                                                                     
+    LEFT JOIN Seguridad.tbRolModuloPermisos rmp ON u.Rol_Id = rmp.Rol_Id -- Join con la tabla de permisos
+                                                                                                                                                    
+    -- If you want permission names, uncomment the next line and the corresponding STRING_AGG line above:
+                                                                                                                                                    
+     LEFT JOIN Seguridad.tbPermisos perm ON rmp.Per_Id = perm.Per_Id
+                                                                                                                                                                                         
+    WHERE u.Usu_Nombre = @Usu_Nombre 
+                                                                                                                                                                                                                        
+        AND u.Usu_EsActivo = 1 
+                                                                                                                                                                                                                              
+        AND u.Usu_Suspendido = 0
+                                                                                                                                                                                                                             
+        AND u.Usu_EsEliminado = 0
+                                                                                                                                                                                                                            
+        --AND c.Con_Hash = @Con_Hash
+                                                                                                                                                                                                                         
+        --AND c.Con_EsActivo = 1;
+                                                                                                                                                                                                                            
+    GROUP BY
+                                                                                                                                                                                                                                                 
+        u.usu_Id,
+                                                                                                                                                                                                                                            
+        u.Emp_Id,
+                                                                                                                                                                                                                                            
+        u.Usu_Nombre,
+                                                                                                                                                                                                                                        
+        p.per_PrimerNombre,
+                                                                                                                                                                                                                                  
+        p.per_SegundoNombre,
+                                                                                                                                                                                                                                 
+        p.per_ApellidoPaterno,
+                                                                                                                                                                                                                               
+        u.Rol_Id,
+                                                                                                                                                                                                                                            
+perm.Per_Nombre,
+                                                                                                                                                                                                                                             
+        r.Rol_Descripcion,
+                                                                                                                                                                                                                                   
+        u.Usu_EsActivo,
+                                                                                                                                                                                                                                      
+        u.Usu_Suspendido;
+                                                                                                                                                                                                                                    
+END
+                                                                                                                                                                                                                                                          
+ 
+===== UDP_Acce_tbUsuarios_LoginIn =====
+Text                                                                                                                                                                                                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                                                                                                                                                                                                             
+-- 2. Login/Logout State Management como AHM
+                                                                                                                                                                                                                 
+CREATE   PROCEDURE [Seguridad].[UDP_Acce_tbUsuarios_LoginIn]
+                                                                                                                                                                                                 
+    @usu_Id INT
+                                                                                                                                                                                                                                              
+AS
+                                                                                                                                                                                                                                                           
+BEGIN
+                                                                                                                                                                                                                                                        
+    SET NOCOUNT ON;
+                                                                                                                                                                                                                                          
+    
+                                                                                                                                                                                                                                                         
+    UPDATE [Seguridad].[tbUsuarios]
+                                                                                                                                                                                                                          
+    SET usu_Logueado = 1,
+                                                                                                                                                                                                                                    
+        usu_UltimoAcceso = GETDATE(),
+                                                                                                                                                                                                                        
+        usu_IntentosFallidos = 0,
+                                                                                                                                                                                                                            
+        usu_FechaBloqueo = NULL
+                                                                                                                                                                                                                              
+    WHERE usu_Id = @usu_Id;
+                                                                                                                                                                                                                                  
+    
+                                                                                                                                                                                                                                                         
+    -- Registrar evento de login
+                                                                                                                                                                                                                             
+    INSERT INTO [Seguridad].[tbRegistroEventos]
+                                                                                                                                                                                                              
+    (Tpevt_Id, Evt_Usu_Id, Evt_Detalles, Evt_FechaCreacion)
+                                                                                                                                                                                                  
+    VALUES (1, @usu_Id, 'Usuario inició sesión', GETDATE());
+                                                                                                                                                                                                 
+    
+                                                                                                                                                                                                                                                         
+    SELECT 0 AS Resultado; -- 0 = éxito en AHM
+                                                                                                                                                                                                               
+END
+                                                                                                                                                                                                                                                          
+ 
+===== UDP_Acce_tbUsuarios_Logout =====
+Text                                                                                                                                                                                                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                                                                                                                                                                                                             
+CREATE   PROCEDURE [Seguridad].[UDP_Acce_tbUsuarios_Logout]
+                                                                                                                                                                                                  
+    @usu_Id INT
+                                                                                                                                                                                                                                              
+AS
+                                                                                                                                                                                                                                                           
+BEGIN
+                                                                                                                                                                                                                                                        
+    SET NOCOUNT ON;
+                                                                                                                                                                                                                                          
+    
+                                                                                                                                                                                                                                                         
+    UPDATE [Seguridad].[tbUsuarios]
+                                                                                                                                                                                                                          
+    SET usu_Logueado = 0
+                                                                                                                                                                                                                                     
+    WHERE usu_Id = @usu_Id;
+                                                                                                                                                                                                                                  
+    
+                                                                                                                                                                                                                                                         
+    -- Registrar evento de logout
+                                                                                                                                                                                                                            
+    INSERT INTO [Seguridad].[tbRegistroEventos]
+                                                                                                                                                                                                              
+    (Tpevt_Id, Evt_Usu_Id, Evt_Detalles, Evt_FechaCreacion)
+                                                                                                                                                                                                  
+    VALUES (2, @usu_Id, 'Usuario cerró sesión', GETDATE());
+                                                                                                                                                                                                  
+    
+                                                                                                                                                                                                                                                         
+    SELECT 0 AS Resultado; -- 0 = éxito en AHM
+                                                                                                                                                                                                               
+END
+                                                                                                                                                                                                                                                          
+ 
+===== ESTRUCTURA DE tbRoles =====
+Campo                                                                                                                            Tipo de Dato                                                                                                                     Permite NULL
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------- ------------
+Rol_Id                                                                                                                           int                                                                                                                              NO          
+Rol_Descripcion                                                                                                                  nvarchar                                                                                                                         NO          
+Rol_EsActivo                                                                                                                     bit                                                                                                                              NO          
+Rol_EsEliminado                                                                                                                  bit                                                                                                                              NO          
+Rol_FechaCreacion                                                                                                                datetime                                                                                                                         NO          
+Rol_FechaModificacion                                                                                                            datetime                                                                                                                         YES         
+
+(6 rows affected)
+ 
+===== DATOS DE tbRoles =====
+Rol_Id      Rol_Descripcion                                                                                      Rol_EsActivo Rol_EsEliminado Rol_FechaCreacion       Rol_FechaModificacion  
+----------- ---------------------------------------------------------------------------------------------------- ------------ --------------- ----------------------- -----------------------
+          1 Administrador                                                                                                   1               0 2025-07-23 17:32:10.937                    NULL
+          2 Director                                                                                                        1               0 2025-07-23 17:32:10.937                    NULL
+          3 Supervisor                                                                                                      1               0 2025-07-23 17:32:10.937                    NULL
+          4 Veterinario                                                                                                     1               0 2025-07-23 17:32:10.937                    NULL
+          5 Cuidador                                                                                                        1               0 2025-07-23 17:32:10.937                    NULL
+          6 Usuario Básico                                                                                                  1               0 2025-07-23 17:32:10.937                    NULL
+
+(6 rows affected)

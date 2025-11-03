@@ -101,42 +101,55 @@
    ======================================== */
 
 .sidebar-wrapper #sidebar {
-    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    overflow: hidden;
+}
+
+.sidebar-wrapper #sidebar * {
+    white-space: nowrap;
+}
+
+/* Menu categories container with scroll */
+#sidebar ul.menu-categories {
+    position: relative;
+    padding: 20px 0 20px 0;
+    margin: 0;
+    width: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 0;
+    min-height: 0;
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f9fafb;
 }
 
-.sidebar-wrapper #sidebar * {
-    overflow: hidden;
-    white-space: nowrap;
-}
-
 /* Scrollbar styling */
-.sidebar-wrapper #sidebar::-webkit-scrollbar {
+#sidebar ul.menu-categories::-webkit-scrollbar {
     width: 6px;
 }
 
-.sidebar-wrapper #sidebar::-webkit-scrollbar-track {
+#sidebar ul.menu-categories::-webkit-scrollbar-track {
     background: #f9fafb;
 }
 
-.sidebar-wrapper #sidebar::-webkit-scrollbar-thumb {
+#sidebar ul.menu-categories::-webkit-scrollbar-thumb {
     background-color: #d1d5db;
     border-radius: 3px;
 }
 
-.sidebar-wrapper #sidebar::-webkit-scrollbar-thumb:hover {
+#sidebar ul.menu-categories::-webkit-scrollbar-thumb:hover {
     background-color: #9ca3af;
 }
 
-/* Menu categories container */
-#sidebar ul.menu-categories {
+/* User section fixed at bottom of sidebar */
+.sidebar-user-section {
+    border-top: 1px solid #eef2f7;
+    background: #fff;
+    flex-shrink: 0;
     position: relative;
-    padding: 20px 0 20px 0;
-    margin: auto;
-    width: 100%;
-    overflow: auto;
+    z-index: 10;
 }
 
 .sidebar-wrapper .menu-categories {
@@ -496,6 +509,15 @@
     transition: 0.6s;
 }
 
+/* Hide user section when sidebar is collapsed */
+.sidebar-closed .sidebar-user-section {
+    display: none;
+}
+
+.sidebar-closed .sidebar-wrapper:hover .sidebar-user-section {
+    display: block;
+}
+
 /* ========================================
    11. SMOOTH TRANSITIONS
    ======================================== */
@@ -547,10 +569,6 @@
         padding: 0;
     }
 
-    #sidebar ul.menu-categories.ps {
-        height: calc(100vh - 218px) !important;
-    }
-
     .sidebar-wrapper {
         position: fixed;
         top: 0;
@@ -588,24 +606,12 @@
    13. PERFECT SCROLLBAR INTEGRATION
    ======================================== */
 
-#sidebar ul.menu-categories.ps {
-    height: calc(100vh - 282px) !important;
-}
-
 #sidebar ul.menu-categories.ps .ps__rail-y:hover {
     background-color: transparent;
 }
 
 #sidebar ul.menu-categories.ps:hover > .ps__rail-y .ps__thumb-y {
     background-color: #888ea8;
-}
-
-.sidebar-closed #sidebar:hover ul.menu-categories.ps {
-    height: calc(100vh - 282px) !important;
-}
-
-.sidebar-closed #sidebar ul.menu-categories.ps {
-    height: calc(100vh - 130px) !important;
 }
 
 /* ========================================

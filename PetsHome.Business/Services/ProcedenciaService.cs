@@ -87,11 +87,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos de la procedencia a agregar.</param>
         /// <returns>True si la procedencia se agreg� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> AddAsync(ProcedenciaViewModel model)
+        public async Task<bool> AddAsync(ProcedenciaViewModel model, int userId)
         {
             try
             {
                 tbProcedencias mappedResult = _mapper.Map<tbProcedencias>(model);
+                mappedResult.proc_UsuarioCrea = userId;
+                mappedResult.proc_FechaCrea = DateTime.Now;
                 return await _procedenciaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -106,11 +108,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados de la procedencia.</param>
         /// <returns>True si la procedencia se actualiz� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> UpdateAsync(ProcedenciaViewModel model)
+        public async Task<bool> UpdateAsync(ProcedenciaViewModel model, int userId)
         {
             try
             {
                 tbProcedencias mappedResult = _mapper.Map<tbProcedencias>(model);
+                mappedResult.proc_UsuarioModifica = userId;
+                mappedResult.proc_FechaModifica = DateTime.Now;
                 return await _procedenciaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

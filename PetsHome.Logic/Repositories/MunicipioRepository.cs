@@ -26,7 +26,6 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> AddAsync(tbMunicipios entity)
         {
-            entity.mpio_UsuarioCrea = 1;
             const string sqlQuery = "[General].[PR_General_Municipios_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@mpio_Codigo", entity.mpio_Codigo, DbType.String, ParameterDirection.Input);
@@ -54,7 +53,6 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> EditAsync(tbMunicipios entity)
         {
-            entity.mpio_UsuarioModifica = 1;
             const string sqlQuery = "[General].[PR_General_Municipios_Update]";
             var parameter = new DynamicParameters();
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);

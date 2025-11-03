@@ -49,7 +49,8 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_Items_DetailResult, ItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_FindResult, ItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Items_ListResult, ItemViewModel>().ReverseMap();
-            CreateMap<PR_Refugio_Adopciones_DetailResult, AdopcionViewModel>().ReverseMap();
+            //CreateMap<PR_Refugio_Adopciones_DetailResult, AdopcionViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Adopciones_DetailResult, AdopcionDetailsViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Adopciones_FindResult, AdopcionViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Adopciones_ListResult, AdopcionViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Empleados_ListResult, EmpleadoListViewModel>()
@@ -239,6 +240,9 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_RecepcionesDetalles_ListResult, RecepcionDetalleListViewModel>().ReverseMap();
             CreateMap<PR_Inventario_RecepcionesDetalles_FindResult, RecepcionDetalleFormViewModel>().ReverseMap();
             CreateMap<tbRecepcionesDetalles, RecepcionDetalleFormViewModel>().ReverseMap();
+
+            // Mapeos para Usuario (Login/Seguridad)
+            CreateMap<PR_Seguridad_Usuarios_LoginResult, UsuarioViewModel>().ReverseMap();
 
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();

@@ -30,7 +30,7 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de departamentos de forma asíncrona.
+        /// Obtiene una lista de departamentos de forma as�ncrona.
         /// </summary>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de departamentos.</returns>
         public async Task<List<DepartamentoListViewModel>> ListAsync()
@@ -48,7 +48,7 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca un departamento por su ID de forma asíncrona.
+        /// Busca un departamento por su ID de forma as�ncrona.
         /// </summary>
         /// <param name="id">El ID del departamento.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el departamento encontrado.</returns>
@@ -68,7 +68,7 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de un departamento por su ID de forma asíncrona.
+        /// Obtiene los detalles de un departamento por su ID de forma as�ncrona.
         /// </summary>
         /// <param name="id">El ID del departamento.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles del departamento.</returns>
@@ -106,15 +106,17 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega un nuevo departamento de forma asíncrona.
+        /// Agrega un nuevo departamento de forma as�ncrona.
         /// </summary>
         /// <param name="model">El modelo del departamento a agregar.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó el departamento correctamente.</returns>
-        public async Task<Boolean> AddAsync(DepartamentoFormViewModel model)
+        public async Task<Boolean> AddAsync(DepartamentoFormViewModel model, int userId)
         {
             try
             {
                 tbDepartamentos mappedResult = _mapper.Map<tbDepartamentos>(model);
+                mappedResult.depto_UsuarioCrea = userId;
+                mappedResult.depto_FechaCrea = DateTime.Now;
                 return await _departamentoRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -125,15 +127,17 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza un departamento de forma asíncrona.
+        /// Actualiza un departamento de forma as�ncrona.
         /// </summary>
         /// <param name="model">El modelo del departamento a actualizar.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó el departamento correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(DepartamentoFormViewModel model)
+        public async Task<Boolean> UpdateAsync(DepartamentoFormViewModel model, int userId)
         {
             try
             {
                 tbDepartamentos mappedResult = _mapper.Map<tbDepartamentos>(model);
+                mappedResult.depto_UsuarioModifica = userId;
+                mappedResult.depto_FechaModifica = DateTime.Now;
                 return await _departamentoRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

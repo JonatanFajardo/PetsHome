@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PetsHome.Business.Services
 {
     /// <summary>
-    /// Clase que representa el servicio de adopción.
+    /// Clase que representa el servicio de adopciï¿½n.
     /// </summary>
     public class AdopcionService
     {
@@ -27,9 +27,9 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de adopciones de forma asíncrona.
+        /// Obtiene una lista de adopciones de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de adopciones.</returns>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la lista de adopciones.</returns>
         public async Task<List<AdopcionViewModel>> ListAsync()
         {
             try
@@ -45,10 +45,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca una adopción por su ID de forma asíncrona.
+        /// Busca una adopciï¿½n por su ID de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="id">El ID de la adopción.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la adopción encontrada.</returns>
+        /// <param name="id">El ID de la adopciï¿½n.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene la adopciï¿½n encontrada.</returns>
         public async Task<AdopcionViewModel> FindAsync(int id)
         {
             try
@@ -64,16 +64,16 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de una adopción por su ID de forma asíncrona.
+        /// Obtiene los detalles de una adopciï¿½n por su ID de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="id">El ID de la adopción.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene los detalles de la adopción.</returns>
-        public async Task<AdopcionViewModel> DetailAsync(int id)
+        /// <param name="id">El ID de la adopciï¿½n.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado contiene los detalles de la adopciï¿½n.</returns>
+        public async Task<IEnumerable<AdopcionDetailsViewModel>> DetailAsync(int id)
         {
             try
             {
-                PR_Refugio_Adopciones_DetailResult mappedResult = await _adopcionRepository.DetailAsync(id);
-                return _mapper.Map<AdopcionViewModel>(mappedResult);
+                IEnumerable<PR_Refugio_Adopciones_DetailResult> mappedResult = await _adopcionRepository.DetailAsync(id);
+                return _mapper.Map<IEnumerable<AdopcionDetailsViewModel>>(mappedResult);
             }
             catch (Exception error)
             {
@@ -83,15 +83,17 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega una nueva adopción de forma asíncrona.
+        /// Agrega una nueva adopciï¿½n de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="model">El modelo de la adopción a agregar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se agregó la adopción correctamente.</returns>
-        public async Task<Boolean> AddAsync(AdopcionViewModel model)
+        /// <param name="model">El modelo de la adopciï¿½n a agregar.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se agregï¿½ la adopciï¿½n correctamente.</returns>
+        public async Task<Boolean> AddAsync(AdopcionViewModel model, int userId)
         {
             try
             {
                 tbAdopciones mappedResult = _mapper.Map<tbAdopciones>(model);
+                mappedResult.adop_UsuarioCrea = userId;
+                mappedResult.adop_FechaCrea = DateTime.Now;
                 return await _adopcionRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -102,15 +104,17 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza una adopción de forma asíncrona.
+        /// Actualiza una adopciï¿½n de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="model">El modelo de la adopción a actualizar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se actualizó la adopción correctamente.</returns>
-        public async Task<Boolean> UpdateAsync(AdopcionViewModel model)
+        /// <param name="model">El modelo de la adopciï¿½n a actualizar.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se actualizï¿½ la adopciï¿½n correctamente.</returns>
+        public async Task<Boolean> UpdateAsync(AdopcionViewModel model, int userId)
         {
             try
             {
                 tbAdopciones mappedResult = _mapper.Map<tbAdopciones>(model);
+                mappedResult.adop_UsuarioModifica = userId;
+                mappedResult.adop_FechaModifica = DateTime.Now;
                 return await _adopcionRepository.EditAsync(mappedResult);
             }
             catch (Exception error)
@@ -121,10 +125,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina una adopción por su ID de forma asíncrona.
+        /// Elimina una adopciï¿½n por su ID de forma asï¿½ncrona.
         /// </summary>
-        /// <param name="id">El ID de la adopción a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó la adopción correctamente.</returns>
+        /// <param name="id">El ID de la adopciï¿½n a eliminar.</param>
+        /// <returns>Una tarea que representa la operaciï¿½n asincrï¿½nica. El resultado indica si se eliminï¿½ la adopciï¿½n correctamente.</returns>
         public async Task<Boolean> RemoveAsync(int id)
         {
             try

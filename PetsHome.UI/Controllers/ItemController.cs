@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class ItemController : BaseController
     {
         private readonly ItemService _ItemService;
-        public ItemController(ItemService ItemService
-            )
+        public ItemController(ItemService ItemService)
         {
             _ItemService = ItemService;
         }
@@ -79,9 +80,17 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(ItemViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _ItemService.AddAsync(model);
+                Boolean createdItem = await _ItemService.AddAsync(model, userId);
                 if (createdItem)
                     goto ErrorResult;
 
@@ -90,7 +99,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _ItemService.UpdateAsync(model);
+                Boolean updatedItem = await _ItemService.UpdateAsync(model, userId);
                 if (updatedItem)
                     goto ErrorResult;
 

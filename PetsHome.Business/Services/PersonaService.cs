@@ -53,7 +53,7 @@ namespace PetsHome.Business.Services
         //        throw;
         //    }
         //}
-        //public async Task<Boolean> AddAsync(PersonaViewModel model)
+        //public async Task<Boolean> AddAsync(PersonaViewModel model, int userId)
         //{
         //    try
         //    {
@@ -65,7 +65,7 @@ namespace PetsHome.Business.Services
         //        throw;
         //    }
         //}
-        //public async Task<Boolean> UpdateAsync(PersonaViewModel model)
+        //public async Task<Boolean> UpdateAsync(PersonaViewModel model, int userId)
         //{
         //    try
         //    {

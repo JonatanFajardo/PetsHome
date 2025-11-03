@@ -1,4 +1,4 @@
-using AutoMapper;
+ï»¿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -86,12 +86,14 @@ namespace PetsHome.Business.Services
         /// Agrega un nuevo evento.
         /// </summary>
         /// <param name="model">Datos del evento a agregar.</param>
-        /// <returns>True si el evento se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(EventoViewModel model)
+        /// <returns>True si el evento se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> AddAsync(EventoViewModel model, int userId)
         {
             try
             {
                 tbEventos mappedResult = _mapper.Map<tbEventos>(model);
+                mappedResult.eve_UsuarioCrea = userId;
+                mappedResult.eve_FechaCrea = DateTime.Now;
                 return await _eventoRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -105,12 +107,14 @@ namespace PetsHome.Business.Services
         /// Actualiza un evento existente.
         /// </summary>
         /// <param name="model">Datos actualizados del evento.</param>
-        /// <returns>True si el evento se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(EventoViewModel model)
+        /// <returns>True si el evento se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
+        public async Task<bool> UpdateAsync(EventoViewModel model, int userId)
         {
             try
             {
                 tbEventos mappedResult = _mapper.Map<tbEventos>(model);
+                mappedResult.eve_UsuarioModifica = userId;
+                mappedResult.eve_FechaModifica = DateTime.Now;
                 return await _eventoRepository.EditAsync(mappedResult);
             }
             catch (Exception error)
@@ -124,7 +128,7 @@ namespace PetsHome.Business.Services
         /// Elimina un evento por su identificador.
         /// </summary>
         /// <param name="id">Identificador del evento a eliminar.</param>
-        /// <returns>True si el evento se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <returns>True si el evento se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try

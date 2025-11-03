@@ -1,4 +1,4 @@
-@model List<PetsHome.Business.Models.SolicitudDetailsViewModel>
+@model List<PetsHome.Business.Models.AdopcionDetailsViewModel>
 @using System
 @{
     ViewData["Title"] = "Detalle de Adopcion";
@@ -9,12 +9,14 @@
     var estado = esAdoptado ? "Adoptado" : "Disponible";
     var estadoColor = esAdoptado ? "status-adoptado" : "status-disponible";
     var estadoIcono = esAdoptado ? "fa-home" : "fa-heart";
+    var solicitudesAprobadas = ViewBag.SolicitudesAprobadas as System.Collections.Generic.ISet<int>
+        ?? new System.Collections.Generic.HashSet<int>();
 
     string imgBase64Data = "";
     string imagenUrl = "/images/default-pet.png";
     if (mascota?.masc_Imagen != null && mascota.masc_Imagen.Length > 0)
     {
-        imgBase64Data = Convert.ToBase64String(mascota.masc_Imagen);
+        // imgBase64Data = Convert.ToBase64String(mascota.masc_Imagen);
         imagenUrl = $"data:image/png;base64,{imgBase64Data}";
     }
 }
@@ -99,6 +101,14 @@
                                     <a class="nav-link @active" id="tab-@s.sol_Id" data-toggle="tab" href="#pane-@s.sol_Id" role="tab" aria-controls="pane-@s.sol_Id" aria-selected="@selected">
                                         <i class="fas fa-user"></i>
                                         Solicitante #@(i + 1)
+                                        @if (s.adop_Estado == "Aprobado")
+                                        {
+                                            <span class="badge badge-success ml-2">Aprobado</span>
+                                        }else if (s.adop_Estado == "Rechazado")
+                                        {
+                                            <span class="badge badge-warning ml-2">Rechazado</span>
+
+                                        }
                                     </a>
                                 </li>
                             }
@@ -155,9 +165,9 @@
                                                         <div class="detail-value">
                                                             @if (s.masc_Imagen != null && s.masc_Imagen.Length > 0)
                                                             {
-                                                                var base64i = Convert.ToBase64String(s.masc_Imagen);
+                                                               @*  var base64i = Convert.ToBase64String(s.masc_Imagen);
                                                                 var imgSrc2 = String.Format("data:image/png;base64,{0}", base64i);
-                                                                <img src="@imgSrc2" alt="@s.masc_Nombre" class="img-thumbnail" style="max-height:150px;" />
+                                                                <img src="@imgSrc2" alt="@s.masc_Nombre" class="img-thumbnail" style="max-height:150px;" /> *@
                                                             }
                                                             else
                                                             {

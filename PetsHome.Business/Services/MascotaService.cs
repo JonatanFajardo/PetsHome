@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -89,7 +89,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos de la mascota a agregar.</param>
         /// <returns>True si la mascota se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(MascotaFormViewModel model)
+        public async Task<bool> AddAsync(MascotaFormViewModel model, int userId)
         {
             try
             {
@@ -103,6 +103,8 @@ namespace PetsHome.Business.Services
                 }
 
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
+                mappedResult.masc_UsuarioCrea = userId;
+                mappedResult.masc_FechaCrea = DateTime.Now;
                 return await _mascotaRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -117,7 +119,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados de la mascota.</param>
         /// <returns>True si la mascota se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(MascotaFormViewModel model)
+        public async Task<bool> UpdateAsync(MascotaFormViewModel model, int userId)
         {
             try
             {
@@ -127,6 +129,8 @@ namespace PetsHome.Business.Services
                 }
 
                 tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
+                mappedResult.masc_UsuarioModifica = userId;
+                mappedResult.masc_FechaModifica = DateTime.Now;
                 return await _mascotaRepository.EditAsync(mappedResult);
             }
             catch (Exception error)
