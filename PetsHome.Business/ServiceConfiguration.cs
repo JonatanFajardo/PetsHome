@@ -77,6 +77,7 @@ namespace PetsHome.Business
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfileExtensions());
+                mc.AddProfile(new DtoMappingProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

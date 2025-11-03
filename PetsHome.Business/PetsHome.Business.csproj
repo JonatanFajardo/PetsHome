@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PetsHome.Contracts\PetsHome.Contracts.csproj" />
     <ProjectReference Include="..\PetsHome.DataAccess\PetsHome.DataAccess.csproj" />
     <ProjectReference Include="..\PetsHome.Logic\PetsHome.Logic.csproj" />
   </ItemGroup>
