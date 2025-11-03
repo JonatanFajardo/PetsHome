@@ -241,6 +241,9 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_RecepcionesDetalles_FindResult, RecepcionDetalleFormViewModel>().ReverseMap();
             CreateMap<tbRecepcionesDetalles, RecepcionDetalleFormViewModel>().ReverseMap();
 
+            // Mapeos para Usuario (Login/Seguridad)
+            CreateMap<PR_Seguridad_Usuarios_LoginResult, UsuarioViewModel>().ReverseMap();
+
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
             ////CreateMap<tbContratos, ContratosViewModel>().ReverseMap()();
