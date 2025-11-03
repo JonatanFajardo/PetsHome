@@ -75,9 +75,17 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(CategoriaViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = CurrentUserId.Value;
+
             if (!model.isEdit)
             {
-                Boolean createdItem = await _CategoriaService.AddAsync(model);
+                Boolean createdItem = await _CategoriaService.AddAsync(model, userId);
                 if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
@@ -91,7 +99,7 @@ namespace PetsHome.UI.Controllers
             }
             else
             {
-                Boolean updatedItem = await _CategoriaService.UpdateAsync(model);
+                Boolean updatedItem = await _CategoriaService.UpdateAsync(model, userId);
                 if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);

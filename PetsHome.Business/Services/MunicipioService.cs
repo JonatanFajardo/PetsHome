@@ -72,11 +72,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos del municipio a agregar.</param>
         /// <returns>True si el municipio se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(MunicipioFormViewModel model)
+        public async Task<bool> AddAsync(MunicipioFormViewModel model, int userId)
         {
             try
             {
                 tbMunicipios mappedResult = _mapper.Map<tbMunicipios>(model);
+                mappedResult.mpio_UsuarioCrea = userId;
+                mappedResult.mpio_FechaCrea = DateTime.Now;
                 return await _municipioRepository.AddAsync(mappedResult);
             }
             catch (Exception error)
@@ -91,11 +93,13 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados del municipio.</param>
         /// <returns>True si el municipio se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(MunicipioFormViewModel model)
+        public async Task<bool> UpdateAsync(MunicipioFormViewModel model, int userId)
         {
             try
             {
                 tbMunicipios mappedResult = _mapper.Map<tbMunicipios>(model);
+                mappedResult.mpio_UsuarioModifica = userId;
+                mappedResult.mpio_FechaModifica = DateTime.Now;
                 return await _municipioRepository.EditAsync(mappedResult);
             }
             catch (Exception error)

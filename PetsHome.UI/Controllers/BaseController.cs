@@ -1,11 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using System;
+using System.Security.Claims;
 
 namespace PetsHome.UI.Controllers
 {
     public class BaseController : Controller
     {
+        protected int? CurrentUserId
+        {
+            get
+            {
+                var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (int.TryParse(userIdClaim, out int userId))
+                {
+                    return userId;
+                }
+
+                return null;
+            }
+        }
+
         /// <summary>
         /// Muestra alertas en el navegador
         /// </summary>
@@ -43,3 +58,4 @@ namespace PetsHome.UI.Controllers
         }
     }
 }
+
