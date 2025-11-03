@@ -9,14 +9,14 @@
         {
             //Redirige a la vista para crear
             <div class="col-md-12">
-                <partial name="RecepcionForm" model="@Model">
+                <partial name="FormRecepcion" model="@Model">
             </div>
         }
         else
         {
             //Redirige a la vista para editar
             <div class="col-md-12">
-                <partial name="RecepcionForm" model="@Model">
+                <partial name="FormRecepcion" model="@Model">
                     <div class="card mt-3">
                         <partial name="RecepcionDetalle" model="@Model">
                     </div>

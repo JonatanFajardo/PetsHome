@@ -73,5 +73,6 @@ namespace PetsHome.Business.Models
         /// Obtiene o establece la lista de municipios asociados al departamento.
         /// </summary>
         public List<MunicipioDetailsViewModel> ListadoMunicipios { get; set; }
+
     }
 }

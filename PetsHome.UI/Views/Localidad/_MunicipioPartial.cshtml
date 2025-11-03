@@ -1,0 +1,97 @@
+@{
+    var deptoId = ViewData["depto_Id"] as int? ?? 0;
+}
+ 
+<div class="table-responsive">
+    <table class="table table-striped dt-responsive nowrap" id="datatable">
+        <thead class="text-center bg-primary text-white">
+            <tr>
+                <th>Id</th>
+                <th>Codigo</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+   
+@* Modal para crear y editar municipios *@
+<div class="modal" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddMunicipio" asp-controller="Localidad" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="Municipio.mpio_Id" id="item-id" />
+                <input type="hidden" name="Municipio.depto_Id" id="depto_Id" value="@deptoId" />
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="mpio_Codigo" class="control-label required">Código</label>
+                                <input type="text" name="Municipio.mpio_Codigo" id="mpio_Codigo" class="form-control" />
+                                <span class="text-danger" id="lblCodigo"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="mpio_Descripcion" class="control-label required">Descripción</label>
+                                <input type="text" name="Municipio.mpio_Descripcion" id="mpio_Descripcion" class="form-control" maxlength="100" />
+                                <span class="text-danger" id="mpio_Descripcion_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* Fin Modal *@
+
+@* Modal Delete *@
+<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" asp-controller="Localidad" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" name="Municipio.mpio_Id" id="delete-item-id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i> Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* Fin Modal Delete *@
