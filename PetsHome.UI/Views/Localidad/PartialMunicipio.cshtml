@@ -1,7 +1,7 @@
 @{
     var deptoId = ViewData["depto_Id"] as int? ?? 0;
 }
- 
+
 <div class="table-responsive">
     <table class="table table-striped dt-responsive nowrap" id="datatable">
         <thead class="text-center bg-primary text-white">
@@ -14,10 +14,10 @@
         </thead>
     </table>
 </div>
-   
+
 @* Modal para crear y editar municipios *@
-<div class="modal" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -62,7 +62,7 @@
 @* Fin Modal *@
 
 @* Modal Delete *@
-<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

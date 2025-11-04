@@ -1,0 +1,124 @@
+@{
+    var recepId = ViewData["recep_Id"] as int? ?? 0;
+}
+
+<div class="table-responsive">
+    <table class="table table-striped dt-responsive nowrap" id="datatable">
+        <thead class="text-center bg-primary text-white">
+            <tr>
+                <th>Id</th>
+                <th>Item</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Fecha Vencimiento</th>
+                <th>Número de Lote</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@* Modal para crear y editar detalles *@
+<div class="modal fade" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddDetalle" asp-controller="RecepcionMercancia" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="Detalle.recdet_Id" id="item-id" />
+                <input type="hidden" name="Detalle.recep_Id" id="recep_Id" value="@recepId" />
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="itm_Id" class="control-label required">Item</label>
+                                <select name="Detalle.itm_Id" id="itm_Id" class="form-control">
+                                    <option value="">Seleccione un item</option>
+                                </select>
+                                <span class="text-danger" id="itm_Id_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="recdet_Cantidad" class="control-label required">Cantidad</label>
+                                <input type="number" name="Detalle.recdet_Cantidad" id="recdet_Cantidad" class="form-control" min="1" />
+                                <span class="text-danger" id="recdet_Cantidad_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="recdet_PrecioUnitario" class="control-label">Precio Unitario</label>
+                                <input type="number" name="Detalle.recdet_PrecioUnitario" id="recdet_PrecioUnitario" class="form-control" step="0.01" min="0" />
+                                <span class="text-danger" id="recdet_PrecioUnitario_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="recdet_NumeroLote" class="control-label">Número de Lote</label>
+                                <input type="text" name="Detalle.recdet_NumeroLote" id="recdet_NumeroLote" class="form-control" maxlength="50" />
+                                <span class="text-danger" id="recdet_NumeroLote_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="recdet_FechaVencimiento" class="control-label">Fecha Vencimiento</label>
+                                <input type="date" name="Detalle.recdet_FechaVencimiento" id="recdet_FechaVencimiento" class="form-control" />
+                                <span class="text-danger" id="recdet_FechaVencimiento_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* Fin Modal *@
+
+@* Modal Delete *@
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="RemoveDetalle" asp-controller="RecepcionMercancia" method="post" autocomplete="off"
+                  data-ajax-begin="Catalogs.begin"
+                  data-ajax-success="Catalogs.success"
+                  data-ajax-failure="Catalogs.failure"
+                  data-ajax-complete="Catalogs.complete">
+                <input type="hidden" name="recdet_Id" id="delete-item-id">
+                <input type="hidden" name="recep_Id" value="@recepId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p>¿Está seguro de que desea eliminar este detalle?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i> Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* Fin Modal Delete *@

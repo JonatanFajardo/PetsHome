@@ -4,132 +4,176 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-lg-12">
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
 
-        @* === Información de la Recepción === *@
-        <div class="card ribbon-box">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="ribbon ribbon-primary float-left"><h4>Información de la Recepción</h4></div>
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente y información principal -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.recep_Id.ToString().PadLeft(4, '0')</div>
                     </div>
-                </div>
-                <div class="ribbon-content">
-                    <div class="card-body d-flex align-items-center justify-content-center flex-column">
-                        <form class="col-md-10" method="post">
-                            <dl class="dl-horizontal">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.recep_Id)
-                                        </dt>
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.recep_Id)
-                                        </dd>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.recep_Fecha)
-                                        </dt>
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.recep_Fecha)
-                                        </dd>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.recep_Descripcion)
-                                        </dt>
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.recep_Descripcion)
-                                        </dd>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.refg_Nombre)
-                                        </dt>
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.refg_Nombre)
-                                        </dd>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <dt class="titulo">
-                                            @Html.DisplayNameFor(model => model.recep_TipoRecepcion)
-                                        </dt>
-                                        <dd class="descripcion mb-2">
-                                            @Html.DisplayFor(model => model.recep_TipoRecepcion)
-                                        </dd>
-                                    </div>
-                                </div>
-                                @if (!string.IsNullOrEmpty(Model.proc_Descripcion))
-                                {
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <dt class="titulo">
-                                                @Html.DisplayNameFor(model => model.proc_Descripcion)
-                                            </dt>
-                                            <dd class="descripcion mb-2">
-                                                @Html.DisplayFor(model => model.proc_Descripcion)
-                                            </dd>
-                                        </div>
-                                        @if (!string.IsNullOrEmpty(Model.recep_NumeroDocumento))
-                                        {
-                                            <div class="col-md-6">
-                                                <dt class="titulo">
-                                                    @Html.DisplayNameFor(model => model.recep_NumeroDocumento)
-                                                </dt>
-                                                <dd class="descripcion mb-2">
-                                                    @Html.DisplayFor(model => model.recep_NumeroDocumento)
-                                                </dd>
-                                            </div>
-                                        }
-                                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.recep_Descripcion</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-dolly"></i>
+                            <span>Recepción de Mercancía</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>@Model.recep_Fecha</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-home"></i>
+                                <span>@Model.refg_Nombre</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-tag"></i>
+                                @{
+                                    var tipoIcono = Model.recep_TipoRecepcion == "C" ? "shopping-cart" :
+                                                   Model.recep_TipoRecepcion == "D" ? "hand-holding-heart" : "exchange-alt";
+                                    var tipoNombre = Model.recep_TipoRecepcion == "C" ? "Compra" :
+                                                    Model.recep_TipoRecepcion == "D" ? "Donación" : "Transferencia";
                                 }
-                            </dl>
-                        </form>
+                                <span>@tipoNombre</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("FormPartialRecepcion", new { id = Model.recep_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
                 </div>
             </div>
         </div>
 
-        @* === Detalles de la Recepción (Items) === *@
-        <div class="card ribbon-box mt-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="ribbon ribbon-primary float-left"><h4>Items Recibidos</h4></div>
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información General -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información General</h3>
                     </div>
-                </div>
-                <div class="ribbon-content">
-                    <div class="table-responsive">
-                        <table class="table table-striped dt-responsive nowrap" id="datatable">
-                            <thead class="text-center bg-primary text-white">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Item</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio Unitario</th>
-                                    <th>Fecha Vencimiento</th>
-                                    <th>Número de Lote</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                        </table>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-hashtag"></i>
+                                    <span>ID Recepción</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.recep_Id</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Fecha de Recepción</span>
+                                </div>
+                                <div class="detail-value">@Model.recep_Fecha</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-align-left"></i>
+                                    <span>Descripción</span>
+                                </div>
+                                <div class="detail-value">@Model.recep_Descripcion</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-home"></i>
+                                    <span>Refugio</span>
+                                </div>
+                                <div class="detail-value">@Model.refg_Nombre</div>
+                            </div>
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Tipo de Recepción</span>
+                                </div>
+                                <div class="detail-value">@tipoNombre</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-12" id="m-footer">
-                        <a style="background-color:gray;color:white" asp-controller="RecepcionMercancia" asp-action="Index" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left mr-2"></i>Volver
-                        </a>
-                        <a class="btn btn-primary" href="@Url.Action("FormPartialRecepcion", new { id = Model.recep_Id })">
-                            <i class="fa fa-edit"></i> Editar
-                        </a>
+                <!-- Información Adicional -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Información Adicional</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            @if (!string.IsNullOrEmpty(Model.proc_Descripcion))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Procedencia</span>
+                                    </div>
+                                    <div class="detail-value">@Model.proc_Descripcion</div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.recep_NumeroDocumento))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-file-invoice"></i>
+                                        <span>Número de Documento</span>
+                                    </div>
+                                    <div class="detail-value">@Model.recep_NumeroDocumento</div>
+                                </div>
+                            }
+
+                            @if (string.IsNullOrEmpty(Model.proc_Descripcion) && string.IsNullOrEmpty(Model.recep_NumeroDocumento))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span>Información</span>
+                                    </div>
+                                    <div class="detail-value">No hay información adicional disponible</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles de Items -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Items Recibidos</h3>
+                    </div>
+                    <div class="">
+                        @{
+                            ViewData["recep_Id"] = Model.recep_Id;
+                        }
+                        <partial name="PartialRecepcionDetalle" />
                     </div>
                 </div>
 
@@ -138,130 +182,22 @@
     </div>
 </div>
 
-@* Modal para crear y editar detalles *@
-<div class="modal" tabindex="-1" id="edit-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="AddDetalle" asp-controller="RecepcionMercancia" method="post" autocomplete="off"
-                  data-ajax-begin="Catalogs.begin"
-                  data-ajax-success="Catalogs.success"
-                  data-ajax-failure="Catalogs.failure"
-                  data-ajax-complete="Catalogs.complete">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" name="Detalle.recdet_Id" id="item-id" />
-                <input type="hidden" name="Detalle.recep_Id" id="recep_Id" value="@Model.recep_Id" />
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="itm_Id" class="control-label required">Item</label>
-                                <select name="Detalle.itm_Id" id="itm_Id" class="form-control">
-                                    <option value="">Seleccione un item</option>
-                                </select>
-                                <span class="text-danger" id="itm_Id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recdet_Cantidad" class="control-label required">Cantidad</label>
-                                <input type="number" name="Detalle.recdet_Cantidad" id="recdet_Cantidad" class="form-control" min="1" />
-                                <span class="text-danger" id="recdet_Cantidad_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recdet_PrecioUnitario" class="control-label">Precio Unitario</label>
-                                <input type="number" name="Detalle.recdet_PrecioUnitario" id="recdet_PrecioUnitario" class="form-control" step="0.01" min="0" />
-                                <span class="text-danger" id="recdet_PrecioUnitario_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recdet_NumeroLote" class="control-label">Número de Lote</label>
-                                <input type="text" name="Detalle.recdet_NumeroLote" id="recdet_NumeroLote" class="form-control" maxlength="50" />
-                                <span class="text-danger" id="recdet_NumeroLote_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recdet_FechaVencimiento" class="control-label">Fecha Vencimiento</label>
-                                <input type="date" name="Detalle.recdet_FechaVencimiento" id="recdet_FechaVencimiento" class="form-control" />
-                                <span class="text-danger" id="recdet_FechaVencimiento_error"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary"></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@* Fin Modal *@
-
-@* Modal Delete *@
-<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="RemoveDetalle" asp-controller="RecepcionMercancia" method="post" autocomplete="off"
-                  data-ajax-begin="Catalogs.begin"
-                  data-ajax-success="Catalogs.success"
-                  data-ajax-failure="Catalogs.failure"
-                  data-ajax-complete="Catalogs.complete">
-                <input type="hidden" name="recdet_Id" id="delete-item-id">
-                <input type="hidden" name="recep_Id" value="@Model.recep_Id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <p>¿Está seguro de que desea eliminar este detalle?</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i> Eliminar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@* Fin Modal Delete *@
-
-@* Scripts para inicializar DataTable y Catalogs *@
-<script src="~/js/pages/recepciondetalle.js"></script>
-<script>
-    $(document).ready(function() {
-        console.log("Initializing RecepcionDetalle DataTable");
-        console.log("listUrl: @Url.Action("ListDetalles")");
-        console.log("recep_Id: @Model.recep_Id");
-        RecepcionDetalle.datatablePartials({
-            listUrl: "@Url.Action("ListDetalles")",
-            id: @Model.recep_Id
+@section Scripts {
+    <script src="~/js/pages/recepciondetalle.js"></script>
+    <script>
+        $(document).ready(function() {
+            RecepcionDetalle.datatablePartials({
+                listUrl: "@Url.Action("ListDetalles")",
+                id: @Model.recep_Id
+            });
         });
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        Catalogs.configure({
-            displayName: "detalle de recepción",
-            getUrl: "@Url.Action("FindDetalle")"
+    </script>
+    <script>
+        $(document).ready(function() {
+            Catalogs.configure({
+                displayName: "detalle de recepción",
+                getUrl: "@Url.Action("FindDetalle")"
+            });
         });
-    });
-</script>
+    </script>
+}
