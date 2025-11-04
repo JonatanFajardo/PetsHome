@@ -71,6 +71,33 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
+        /// Busca un detalle de recepción por su ID para vista de detalles (incluye descripción del item).
+        /// </summary>
+        /// <param name="id">ID del detalle.</param>
+        /// <returns>Un RecepcionDetalleListViewModel con todos los datos incluyendo la descripción del item.</returns>
+        public async Task<RecepcionDetalleListViewModel> FindForDetailAsync(int id)
+        {
+            try
+            {
+                // Primero obtenemos el detalle básico para saber a qué recepción pertenece
+                var detalleBasico = await _detalleRepository.FindAsync(id);
+                if (detalleBasico == null)
+                    return null;
+
+                // Luego obtenemos la lista completa de detalles de esa recepción (incluye descripción del item)
+                var listaDetalles = await ListByRecepcionAsync(detalleBasico.recep_Id);
+
+                // Filtramos el detalle específico que buscamos
+                return listaDetalles?.FirstOrDefault(d => d.recdet_Id == id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Agrega un nuevo detalle de recepción.
         /// </summary>
         /// <param name="model">Modelo con los datos del detalle.</param>

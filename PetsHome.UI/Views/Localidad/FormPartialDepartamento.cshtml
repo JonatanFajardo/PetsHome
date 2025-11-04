@@ -165,7 +165,8 @@
         $(document).ready(function() {
             Catalogs.configure({
                 displayName: "municipio",
-                getUrl: "@Url.Action("FindMunicipio")"
+                getUrl: "@Url.Action("FindMunicipio")",  // Para editar
+                detailGetUrl: "@Url.Action("FindMunicipio")"  // Para ver detalles
             });
         });
     </script>

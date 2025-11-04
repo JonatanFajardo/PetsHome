@@ -122,3 +122,71 @@
     </div>
 </div>
 @* Fin Modal Delete *@
+
+@* Modal View Details *@
+<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel">
+                    <i class="fas fa-info-circle mr-2"></i>Detalles del Item
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-list">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-hashtag"></i>
+                            <span>ID</span>
+                        </div>
+                        <div class="detail-value detail-value-large" id="detail-recdet-id"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-box"></i>
+                            <span>Item</span>
+                        </div>
+                        <div class="detail-value" id="detail-itm-descripcion"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-cubes"></i>
+                            <span>Cantidad</span>
+                        </div>
+                        <div class="detail-value" id="detail-recdet-cantidad"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Precio Unitario</span>
+                        </div>
+                        <div class="detail-value" id="detail-recdet-preciounitario"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Fecha Vencimiento</span>
+                        </div>
+                        <div class="detail-value" id="detail-recdet-fechavencimiento"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-barcode"></i>
+                            <span>Número de Lote</span>
+                        </div>
+                        <div class="detail-value" id="detail-recdet-numerolote"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-2"></i>Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@* Fin Modal View Details *@

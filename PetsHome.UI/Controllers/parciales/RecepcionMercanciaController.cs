@@ -197,7 +197,7 @@ namespace PetsHome.UI.Controllers
         }
 
         /// <summary>
-        /// Busca un detalle de recepción por su ID.
+        /// Busca un detalle de recepción por su ID (para editar).
         /// </summary>
         /// <param name="id">ID del detalle.</param>
         /// <returns>JSON con el detalle encontrado.</returns>
@@ -206,7 +206,26 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _detalleService.FindAsync(id);
             if (itemSearched != null)
             {
-                return Json(new { item = itemSearched.Detalle, success = true });
+                return Json(new { data = itemSearched.Detalle, success = true });
+            }
+            else
+            {
+                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        /// <summary>
+        /// Busca un detalle de recepción por su ID (para ver detalles con descripción del item).
+        /// </summary>
+        /// <param name="id">ID del detalle.</param>
+        /// <returns>JSON con el detalle encontrado incluyendo descripción del item.</returns>
+        public async Task<IActionResult> FindDetalleDetail(int id)
+        {
+            var itemSearched = await _detalleService.FindForDetailAsync(id);
+            if (itemSearched != null)
+            {
+                return Json(new { data = itemSearched, success = true });
             }
             else
             {
