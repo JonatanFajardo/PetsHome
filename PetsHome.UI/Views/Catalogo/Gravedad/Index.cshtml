@@ -1,0 +1,53 @@
+@model GravedadViewModel
+@{
+    ViewData["Title"] = "Niveles de Gravedad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles { <link rel="stylesheet" href="~/css/modern-table-styles.css" /> }
+<div class="col-12"><div class="pets-container">
+<div class="pets-header-full"><div class="pets-header-content"><div class="pets-title-section">
+<h2 class="text-white"><i class="fas fa-exclamation-circle mr-2 text-white"></i>Gestión de Gravedades</h2>
+<button class="btn-nueva-mascota" id="add-btn" data-toggle="modal" data-target="#edit-modal">
+<i class="fas fa-plus mr-2"></i>Nueva Gravedad</button></div>
+<div class="pets-controls"><div class="search-container"><i class="fas fa-search"></i>
+<input type="text" id="globalSearch" placeholder="Buscar..."></div>
+<div class="action-buttons"><button class="btn-export-datatable" onclick="location.reload()">Recargar</button>
+<div id="export-buttons-container" class="export-buttons-container"></div></div></div></div></div>
+<div id="tableView" class="pets-table-container"><table class="pets-table" id="datatable"><thead><tr>
+<th width="80">ID</th><th>Descripción</th><th width="150" class="text-center">Acciones</th></tr></thead><tbody></tbody></table></div>
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content"><div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel"></h5>
+<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+<form asp-action="Add" method="post" autocomplete="off" data-ajax-begin="Catalogs.begin" data-ajax-success="Catalogs.success" data-ajax-failure="Catalogs.failure" data-ajax-complete="Catalogs.complete">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="grav_Id" id="item-id" value="@ViewBag.grav_Id" />
+<div class="modal-body"><div class="form-row"><div class="col-md-12"><div class="form-group">
+<label asp-for="grav_Descripcion" class="control-label required"></label>
+<input asp-for="grav_Descripcion" class="form-control" maxlength="50" id="Descripcion" />
+<span class="text-danger" id="messageError"></span></div></div></div></div>
+<div class="modal-footer border-0">
+<button type="button" class="btn btn-secondary px-4" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cancelar</button>
+<button type="submit" class="btn btn-primary px-4"></button></div></form></div></div></div>
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content"><div class="modal-header">
+<h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación</h5>
+<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+<form asp-action="Remove" method="post" autocomplete="off" data-ajax-begin="Catalogs.begin" data-ajax-success="Catalogs.success" data-ajax-failure="Catalogs.failure" data-ajax-complete="Catalogs.complete">
+<input type="hidden" asp-for="grav_Id" id="delete-item-id">
+<div class="modal-body text-center py-4"><div class="mb-3"><i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i></div>
+<h5>¿Está seguro de eliminar esta gravedad?</h5><p class="text-muted">Esta acción no se puede deshacer.</p></div>
+<div class="modal-footer border-0">
+<button type="button" class="btn btn-secondary px-4" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cancelar</button>
+<button type="submit" class="btn btn-danger px-4"><i class="fas fa-trash mr-2"></i>Eliminar</button></div></form></div></div></div>
+</div></div>
+@section Scripts {
+<script src="~/js/components/datatable/datatable.catalogs.init.js"></script>
+<script>$(function () { $('[data-toggle="tooltip"]').tooltip(); });</script>
+<script src="~/js/pages/gravedad.js"></script>
+<script>
+Gravedad.datatableCatalogs({ listUrl: "@Url.Action("List")", urlDetail: "@Url.Action("Detail")", urlInsert: "@Url.Action("Create")", urlUpdate: "@Url.Action("Find")" });
+Catalogs.configure({ displayName: "gravedad", getUrl: "@Url.Action("Find")" });
+$('#globalSearch').on('keyup', function() { $('#datatable').DataTable().search(this.value).draw(); });
+</script>
+}
