@@ -5,12 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbProcedencias
+    public partial class ProcedenciasDto
     {
-        public tbProcedencias()
-        {
-            tbMascotas = new HashSet<tbMascotas>();
-        }
 
         /// <summary>
         /// Identificador único de la tabla Procedencias.
@@ -35,7 +31,5 @@ namespace PetsHome.Contracts.DTOs
         /// </summary>
         public DateTime? procFechaModifica { get; set; }
 
-        public virtual tbUsuarios procUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbMascotas> tbMascotas { get; set; }
     }
 }

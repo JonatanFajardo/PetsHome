@@ -31,13 +31,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de todas las mascotas en el refugio.
         /// </summary>
-        /// <returns>Una lista de objetos MascotaListViewModel.</returns>
-        public async Task<List<MascotaListViewModel>> ListAsync()
+        /// <returns>Una lista de RefugioMascotasListDto.</returns>
+        public async Task<List<Contracts.DTOs.RefugioMascotasListDto>> ListAsync()
         {
             try
             {
-                IEnumerable<PR_Refugio_Mascotas_ListResult> mappedResult = await _mascotaRepository.ListAsync();
-                return _mapper.Map<List<MascotaListViewModel>>(mappedResult.ToList());
+                IEnumerable<PR_Refugio_Mascotas_ListResult> result = await _mascotaRepository.ListAsync();
+                return _mapper.Map<List<Contracts.DTOs.RefugioMascotasListDto>>(result.ToList());
             }
             catch (Exception error)
             {
@@ -50,13 +50,13 @@ namespace PetsHome.Business.Services
         /// Busca una mascota por su identificador para su edición.
         /// </summary>
         /// <param name="id">Identificador de la mascota.</param>
-        /// <returns>Un objeto MascotaFormViewModel que corresponde a la mascota encontrada.</returns>
-        public async Task<MascotaFormViewModel> FindAsync(int id)
+        /// <returns>Un objeto RefugioMascotasFindDto que corresponde a la mascota encontrada.</returns>
+        public async Task<Contracts.DTOs.RefugioMascotasFindDto> FindAsync(int id)
         {
             try
             {
-                PR_Refugio_Mascotas_FindResult mappedResult = await _mascotaRepository.FindAsync(id);
-                return _mapper.Map<MascotaFormViewModel>(mappedResult);
+                PR_Refugio_Mascotas_FindResult result = await _mascotaRepository.FindAsync(id);
+                return _mapper.Map<Contracts.DTOs.RefugioMascotasFindDto>(result);
             }
             catch (Exception error)
             {
@@ -69,13 +69,13 @@ namespace PetsHome.Business.Services
         /// Obtiene los detalles de una mascota por su identificador.
         /// </summary>
         /// <param name="id">Identificador de la mascota.</param>
-        /// <returns>Un objeto MascotaDetailsViewModel que contiene los detalles de la mascota.</returns>
-        public async Task<MascotaDetailsViewModel> DetailAsync(int id)
+        /// <returns>Un objeto RefugioMascotasDetailDto que contiene los detalles de la mascota.</returns>
+        public async Task<Contracts.DTOs.RefugioMascotasDetailDto> DetailAsync(int id)
         {
             try
             {
-                PR_Refugio_Mascotas_DetailResult mappedResult = await _mascotaRepository.DetailAsync(id);
-                return _mapper.Map<MascotaDetailsViewModel>(mappedResult);
+                PR_Refugio_Mascotas_DetailResult result = await _mascotaRepository.DetailAsync(id);
+                return _mapper.Map<Contracts.DTOs.RefugioMascotasDetailDto>(result);
             }
             catch (Exception error)
             {
@@ -87,25 +87,17 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Agrega una nueva mascota al refugio.
         /// </summary>
-        /// <param name="model">Datos de la mascota a agregar.</param>
+        /// <param name="dto">Datos de la mascota a agregar.</param>
+        /// <param name="userId">ID del usuario que crea el registro.</param>
         /// <returns>True si la mascota se agregó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> AddAsync(MascotaFormViewModel model, int userId)
+        public async Task<bool> AddAsync(Contracts.DTOs.MascotasDto dto, int userId)
         {
             try
             {
-                if (model.ImageFile != null && model.ImageFile.Length > 0)
-                {
-                    model.masc_Imagen = await model.ImageFile.GetBytesAsync();
-                }
-                else
-                {
-                    model.masc_Imagen = null;
-                }
-
-                tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
-                mappedResult.masc_UsuarioCrea = userId;
-                mappedResult.masc_FechaCrea = DateTime.Now;
-                return await _mascotaRepository.AddAsync(mappedResult);
+                var entity = _mapper.Map<tbMascotas>(dto);
+                entity.masc_UsuarioCrea = userId;
+                entity.masc_FechaCrea = DateTime.Now;
+                return await _mascotaRepository.AddAsync(entity);
             }
             catch (Exception error)
             {
@@ -117,21 +109,17 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Actualiza una mascota existente en el refugio.
         /// </summary>
-        /// <param name="model">Datos actualizados de la mascota.</param>
+        /// <param name="dto">Datos actualizados de la mascota.</param>
+        /// <param name="userId">ID del usuario que modifica el registro.</param>
         /// <returns>True si la mascota se actualizó correctamente, False si ocurrió un error.</returns>
-        public async Task<bool> UpdateAsync(MascotaFormViewModel model, int userId)
+        public async Task<bool> UpdateAsync(Contracts.DTOs.MascotasDto dto, int userId)
         {
             try
             {
-                if (model.ImageFile != null && model.ImageFile.Length > 0)
-                {
-                    model.masc_Imagen = await model.ImageFile.GetBytesAsync();
-                }
-
-                tbMascotas mappedResult = _mapper.Map<tbMascotas>(model);
-                mappedResult.masc_UsuarioModifica = userId;
-                mappedResult.masc_FechaModifica = DateTime.Now;
-                return await _mascotaRepository.EditAsync(mappedResult);
+                var entity = _mapper.Map<tbMascotas>(dto);
+                entity.masc_UsuarioModifica = userId;
+                entity.masc_FechaModifica = DateTime.Now;
+                return await _mascotaRepository.EditAsync(entity);
             }
             catch (Exception error)
             {
@@ -164,13 +152,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de razas para su uso en un dropdown.
         /// </summary>
-        /// <returns>Una lista de objetos RazaDropdownViewModel para el dropdown.</returns>
-        public IEnumerable<RazaDropdownViewModel> RazaDropdown()
+        /// <returns>Una lista de RefugioRazaDropdownDto.</returns>
+        public IEnumerable<Contracts.DTOs.RefugioRazaDropdownDto> RazaDropdown()
         {
             try
             {
-                IEnumerable<PR_Refugio_Raza_DropdownResult> mappedResult = _mascotaRepository.RazaDropdown();
-                return _mapper.Map<List<RazaDropdownViewModel>>(mappedResult.ToList());
+                IEnumerable<PR_Refugio_Raza_DropdownResult> result = _mascotaRepository.RazaDropdown();
+                return _mapper.Map<List<Contracts.DTOs.RefugioRazaDropdownDto>>(result.ToList());
             }
             catch (Exception error)
             {
@@ -182,13 +170,13 @@ namespace PetsHome.Business.Services
         /// <summary>
         /// Obtiene una lista de procedencias para su uso en un dropdown.
         /// </summary>
-        /// <returns>Una lista de objetos ProcedenciaViewModel para el dropdown.</returns>
-        public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
+        /// <returns>Una lista de RefugioProcedenciaDropdownDto.</returns>
+        public IEnumerable<Contracts.DTOs.RefugioProcedenciaDropdownDto> ProcedenciaDropdown()
         {
             try
             {
-                IEnumerable<PR_Refugio_Procedencia_DropdownResult> mappedResult = _mascotaRepository.ProcedenciaDropdown();
-                return _mapper.Map<List<ProcedenciaViewModel>>(mappedResult.ToList());
+                IEnumerable<PR_Refugio_Procedencia_DropdownResult> result = _mascotaRepository.ProcedenciaDropdown();
+                return _mapper.Map<List<Contracts.DTOs.RefugioProcedenciaDropdownDto>>(result.ToList());
             }
             catch (Exception error)
             {

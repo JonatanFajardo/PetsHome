@@ -13,22 +13,22 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int itmId { get; set; }
+        public int itm_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string itmCodigo { get; set; }
+        public string itm_Codigo { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string itmDescripcion { get; set; }
+        public string itm_Descripcion { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string catDescripcion { get; set; }
+        public string cat_Descripcion { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public decimal itmPrecio { get; set; }
+        public decimal itm_Precio { get; set; }
     }
 }

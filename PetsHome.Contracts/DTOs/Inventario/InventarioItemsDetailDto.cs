@@ -13,19 +13,19 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int itmId { get; set; }
+        public int itm_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string itmCodigo { get; set; }
+        public string itm_Codigo { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string itmDescripcion { get; set; }
+        public string itm_Descripcion { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string itmPrecio { get; set; }
+        public string itm_Precio { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
@@ -33,7 +33,7 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime itmFechaCrea { get; set; }
+        public DateTime itm_FechaCrea { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
@@ -41,6 +41,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? itmFechaModifica { get; set; }
+        public DateTime? itm_FechaModifica { get; set; }
     }
 }

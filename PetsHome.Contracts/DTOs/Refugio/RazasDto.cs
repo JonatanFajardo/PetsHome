@@ -5,13 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbRazas
-    {
-        public tbRazas()
-        {
-            tbMascotas = new HashSet<tbMascotas>();
-        }
-
+    public partial class RazasDto
+    { 
         /// <summary>
         /// Número único que identifica el registro.
         /// </summary>
@@ -50,8 +45,6 @@ namespace PetsHome.Contracts.DTOs
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? razaFechaModifica { get; set; }
-
-        public virtual tbUsuarios razaUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbMascotas> tbMascotas { get; set; }
+         
     }
 }

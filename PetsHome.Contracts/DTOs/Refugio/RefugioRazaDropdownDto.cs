@@ -14,11 +14,11 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int razaId { get; set; }
+        public int raza_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaDescripcion { get; set; }
+        public string raza_Descripcion { get; set; }
     }
 }

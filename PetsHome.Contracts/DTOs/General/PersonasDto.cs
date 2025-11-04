@@ -8,16 +8,8 @@ namespace PetsHome.Contracts.DTOs
     /// <summary>
     /// Entidad que representa la tabla.
     /// </summary>
-    public partial class tbPersonas
-    {
-        /// <summary>
-        /// Constructor de la clase.
-        /// </summary>
-        public tbPersonas()
-        {
-            tbEmpleados = new HashSet<tbEmpleados>();
-            tbVoluntarios = new HashSet<tbVoluntarios>();
-        }
+    public partial class PersonasDto
+    { 
 
         /// <summary>
         /// Identificador único de la tabla Personas.
@@ -46,9 +38,6 @@ namespace PetsHome.Contracts.DTOs
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? perFechaModifica { get; set; }
-
-        public virtual tbUsuarios perUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
-        public virtual ICollection<tbVoluntarios> tbVoluntarios { get; set; }
+         
     }
 }

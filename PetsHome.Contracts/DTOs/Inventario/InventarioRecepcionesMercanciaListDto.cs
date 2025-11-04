@@ -6,43 +6,43 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Contracts.DTOs
 {
     /// <summary>
-    /// Dtoado del procedimiento almacenado de listado de recepciones de mercancía.
+    /// ado del procedimiento almacenado de listado de recepciones de mercancía.
     /// </summary>
     public partial class InventarioRecepcionesMercanciaListDto
     {
         /// <summary>
         /// Obtiene o establece el ID de la recepción.
         /// </summary>
-        public int recepId { get; set; }
+        public int recep_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece la descripción de la recepción.
         /// </summary>
-        public string recepDescripcion { get; set; }
+        public string recep_Descripcion { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de la recepción.
         /// </summary>
-        public DateTime recepFecha { get; set; }
+        public DateTime recep_Fecha { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del refugio.
         /// </summary>
-        public int refgId { get; set; }
+        public int refg_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del refugio.
         /// </summary>
-        public string refgNombre { get; set; }
+        public string refg_Nombre { get; set; }
 
         /// <summary>
         /// Obtiene o establece el tipo de recepción.
         /// </summary>
-        public string recepTipoRecepcion { get; set; }
+        public string recep_TipoRecepcion { get; set; }
 
         /// <summary>
         /// Obtiene o establece el número de documento.
         /// </summary>
-        public string recepNumeroDocumento { get; set; }
+        public string recep_NumeroDocumento { get; set; }
     }
 }

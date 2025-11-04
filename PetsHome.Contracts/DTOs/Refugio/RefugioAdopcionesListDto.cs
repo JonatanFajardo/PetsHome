@@ -6,49 +6,49 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Contracts.DTOs
 {
     /// <summary>
-    /// Entidad que representa el Dtoado de RefugioAdopcionesList.
+    /// Entidad que representa el ado de RefugioAdopcionesListDto.
     /// </summary>
     public partial class RefugioAdopcionesListDto
     {
         /// <summary>
         /// Identificador de la mascota.
         /// </summary>
-        public int mascId { get; set; }
+        public int masc_Id { get; set; }
 
         /// <summary>
         /// Nombre de la mascota.
         /// </summary>
-        public string mascNombre { get; set; }
+        public string masc_Nombre { get; set; }
 
         /// <summary>
         /// Descripción de la raza.
         /// </summary>
-        public string razaDescripcion { get; set; }
+        public string raza_Descripcion { get; set; }
 
         /// <summary>
         /// Tipo de animal (por ejemplo: Perro, Gato).
         /// </summary>
-        public string razaTipoAnimal { get; set; }
+        public string raza_TipoAnimal { get; set; }
 
         /// <summary>
         /// Edad de la mascota.
         /// </summary>
-        public int mascEdad { get; set; }
+        public int masc_Edad { get; set; }
 
         /// <summary>
         /// Sexo de la mascota.
         /// </summary>
-        public string mascSexo { get; set; }
+        public string masc_Sexo { get; set; }
 
         /// <summary>
         /// Indica si la mascota ya fue adoptada.
         /// </summary>
-        public bool mascEsAdoptado { get; set; }
+        public bool masc_EsAdoptado { get; set; }
 
         /// <summary>
         /// Indica si la mascota está reservada.
         /// </summary>
-        public bool mascEsReservado { get; set; }
+        public bool masc_EsReservado { get; set; }
 
         /// <summary>
         /// Cantidad de solicitantes asociados a la mascota.

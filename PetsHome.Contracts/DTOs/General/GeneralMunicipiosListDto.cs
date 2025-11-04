@@ -13,14 +13,14 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int mpioId { get; set; }
+        public int mpio_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mpioCodigo { get; set; }
+        public string mpio_Codigo { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mpioDescripcion { get; set; }
+        public string mpio_Descripcion { get; set; }
     }
 }

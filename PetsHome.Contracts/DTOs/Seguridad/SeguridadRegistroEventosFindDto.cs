@@ -14,46 +14,46 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public long EvtId { get; set; }
+        public long Evt_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string TipoEvento { get; set; }
+        public string Tipo_Evento { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? EvtUsuId { get; set; }
+        public int? Evt_Usu_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string EvtDetalles { get; set; }
+        public string Evt_Detalles { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string EvtUserAgent { get; set; }
+        public string Evt_UserAgent { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string EvtDireccionIP { get; set; }
+        public string Evt_DireccionIP { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string EvtEstadoAnterior { get; set; }
+        public string Evt_EstadoAnterior { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string EvtNuevoEstado { get; set; }
+        public string Evt_NuevoEstado { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? EvtFechaCreacion { get; set; }
+        public DateTime? Evt_FechaCreacion { get; set; }
     }
 }

@@ -19,32 +19,32 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int razaId { get; set; }
+        public int raza_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaDescripcion { get; set; }
+        public string raza_Descripcion { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaTamano { get; set; }
+        public string raza_Tamano { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaTipoAnimal { get; set; }
+        public string raza_TipoAnimal { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaTipoPelaje { get; set; }
+        public string raza_TipoPelaje { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaImagenUrl { get; set; }
+        public string raza_ImagenUrl { get; set; }
     }
 
 

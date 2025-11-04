@@ -14,67 +14,67 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int volId { get; set; }
+        public int vol_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int volHorasTrabajadas { get; set; }
+        public int vol_HorasTrabajadas { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int perId { get; set; }
+        public int per_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perPrimerNombre { get; set; }
+        public string per_PrimerNombre { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perSegundoNombre { get; set; }
+        public string per_SegundoNombre { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perApellidoPaterno { get; set; }
+        public string per_ApellidoPaterno { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perApellidoMaterno { get; set; }
+        public string per_ApellidoMaterno { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perIdentidad { get; set; }
+        public string per_Identidad { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime perFechaNacimiento { get; set; }
+        public DateTime per_FechaNacimiento { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perDomicilio { get; set; }
+        public string per_Domicilio { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perTelefono { get; set; }
+        public string per_Telefono { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string perCorreo { get; set; }
+        public string per_Correo { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool volRecurrente { get; set; }
+        public bool vol_Recurrente { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -84,7 +84,7 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int perUsuarioCrea { get; set; }
+        public int per_UsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -94,12 +94,12 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime perFechaCrea { get; set; }
+        public DateTime per_FechaCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? perUsuarioModifica { get; set; }
+        public int? per_UsuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -109,6 +109,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? perFechaModifica { get; set; }
+        public DateTime? per_FechaModifica { get; set; }
     }
 }

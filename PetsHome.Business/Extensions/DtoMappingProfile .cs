@@ -12,16 +12,16 @@ namespace PetsHome.Business.Extensions
         public DtoMappingProfile()
         {
             // Albergue
-            CreateMap<Entities.PR_Albergue_Albergues_DeleteResult, AlbergueAlberguesDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_EmpleadosCargos_DeleteResult, AlbergueEmpleadosCargosDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_FichaAdopcion_DeleteResult, AlbergueFichaAdopcionDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_FichasMedicas_DeleteResult, AlbergueFichasMedicasDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_Mascotas_DeleteResult, AlbergueMascotasDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_Procedencias_DeleteResult, AlbergueProcedenciasDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_Razas_DeleteResult, AlbergueRazasDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_Solicitudes_DeleteResult, AlbergueSolicitudesDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_Vacunas_DeleteResult, AlbergueVacunasDeleteDto>().ReverseMap();
-            CreateMap<Entities.PR_Albergue_Voluntarios_DeleteResult, AlbergueVoluntariosDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Albergues_DeleteResult, AlbergueAlberguesDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_EmpleadosCargos_DeleteResult, AlbergueEmpleadosCargosDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_FichaAdopcion_DeleteResult, AlbergueFichaAdopcionDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_FichasMedicas_DeleteResult, AlbergueFichasMedicasDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Mascotas_DeleteResult, AlbergueMascotasDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Procedencias_DeleteResult, AlbergueProcedenciasDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Razas_DeleteResult, AlbergueRazasDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Solicitudes_DeleteResult, AlbergueSolicitudesDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Vacunas_DeleteResult, AlbergueVacunasDeleteDto>().ReverseMap();
+            //CreateMap<Entities.PR_Albergue_Voluntarios_DeleteResult, AlbergueVoluntariosDeleteDto>().ReverseMap();
 
             // General
             CreateMap<Entities.PR_General_Departamentos_DetailResult, GeneralDepartamentosDetailDto>().ReverseMap();
@@ -103,31 +103,34 @@ namespace PetsHome.Business.Extensions
             CreateMap<Entities.PR_Seguridad_RegistroEventos_InsertResult, SeguridadRegistroEventosInsertDto>().ReverseMap();
             CreateMap<Entities.PR_Seguridad_RegistroEventos_SelectResult, SeguridadRegistroEventosSelectDto>().ReverseMap();
 
+            // Mapeos entre DTOs para conversiones
+            CreateMap<RefugioMascotasFindDto, MascotasDto>();
+
             // Tablas base
-            CreateMap<Entities.tbAdopciones, tbAdopciones>().ReverseMap();
-            CreateMap<Entities.tbCategorias, tbCategorias>().ReverseMap();
-            CreateMap<Entities.tbComportamientos, tbComportamientos>().ReverseMap();
-            CreateMap<Entities.tbDepartamentos, tbDepartamentos>().ReverseMap();
-            CreateMap<Entities.tbEmpleados, tbEmpleados>().ReverseMap();
-            CreateMap<Entities.tbEmpleadosCargos, tbEmpleadosCargos>().ReverseMap();
-            CreateMap<Entities.tbEventos, tbEventos>().ReverseMap();
-            //CreateMap<Entities.tbEventos_tbVoluntarios, tbEventos_tbVoluntarios>().ReverseMap();
-            CreateMap<Entities.tbHistorialMedico, tbHistorialMedico>().ReverseMap();
-            //CreateMap<Entities.tbHistorialMedico_tbVacunas, tbHistorialMedico_tbVacunas>().ReverseMap();
-            CreateMap<Entities.tbItems, tbItems>().ReverseMap();
-            CreateMap<Entities.tbMascotas, tbMascotas>().ReverseMap();
-            CreateMap<Entities.tbMunicipios, tbMunicipios>().ReverseMap();
-            CreateMap<Entities.tbPersonas, tbPersonas>().ReverseMap();
-            CreateMap<Entities.tbProcedencias, tbProcedencias>().ReverseMap();
-            CreateMap<Entities.tbRazas, tbRazas>().ReverseMap();
-            CreateMap<Entities.tbRecepcionesDetalles, tbRecepcionesDetalles>().ReverseMap();
-            CreateMap<Entities.tbRecepcionesMercancia, tbRecepcionesMercancia>().ReverseMap();
-            CreateMap<Entities.tbRefugios, tbRefugios>().ReverseMap();
-            CreateMap<Entities.tbRegistroEventos, tbRegistroEventos>().ReverseMap();
-            CreateMap<Entities.tbSolicitudes, tbSolicitudes>().ReverseMap();
-            CreateMap<Entities.tbUsuarios, tbUsuarios>().ReverseMap();
-            CreateMap<Entities.tbVacunas, tbVacunas>().ReverseMap();
-            CreateMap<Entities.tbVoluntarios, tbVoluntarios>().ReverseMap();
+            CreateMap<Entities.tbAdopciones, AdopcionesDto>().ReverseMap();
+            CreateMap<Entities.tbCategorias, CategoriasDto>().ReverseMap();
+            CreateMap<Entities.tbComportamientos, ComportamientosDto>().ReverseMap();
+            CreateMap<Entities.tbDepartamentos, DepartamentosDto>().ReverseMap();
+            CreateMap<Entities.tbEmpleados, EmpleadosDto>().ReverseMap();
+            CreateMap<Entities.tbEmpleadosCargos, EmpleadosCargosDto>().ReverseMap();
+            CreateMap<Entities.tbEventos, EventosDto>().ReverseMap();
+            CreateMap<Entities.tbEventos_tbVoluntarios, EventosVoluntariosDto>().ReverseMap();
+            CreateMap<Entities.tbHistorialMedico, HistorialMedicoDto>().ReverseMap();
+            CreateMap<Entities.tbHistorialMedico_tbVacunas, HistorialMedicoVacunasDto>().ReverseMap();
+            CreateMap<Entities.tbItems, ItemsDto>().ReverseMap();
+            CreateMap<Entities.tbMascotas, MascotasDto>().ReverseMap();
+            CreateMap<Entities.tbMunicipios, MunicipiosDto>().ReverseMap();
+            CreateMap<Entities.tbPersonas, PersonasDto>().ReverseMap();
+            CreateMap<Entities.tbProcedencias, ProcedenciasDto>().ReverseMap();
+            CreateMap<Entities.tbRazas, RazasDto>().ReverseMap();
+            CreateMap<Entities.tbRecepcionesDetalles, RecepcionesDetallesDto>().ReverseMap();
+            CreateMap<Entities.tbRecepcionesMercancia, RecepcionesMercanciaDto>().ReverseMap();
+            CreateMap<Entities.tbRefugios, RefugiosDto>().ReverseMap();
+            CreateMap<Entities.tbRegistroEventos, RegistroEventosDto>().ReverseMap();
+            CreateMap<Entities.tbSolicitudes, SolicitudesDto>().ReverseMap();
+            CreateMap<Entities.tbUsuarios, UsuariosDto>().ReverseMap();
+            CreateMap<Entities.tbVacunas, VacunasDto>().ReverseMap();
+            CreateMap<Entities.tbVoluntarios, VoluntariosDto>().ReverseMap();
         }
     }
 }

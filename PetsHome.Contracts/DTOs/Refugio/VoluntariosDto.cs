@@ -5,13 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbVoluntarios
-    {
-        public tbVoluntarios()
-        {
-            tbEventostbVoluntarios = new HashSet<tbEventostbVoluntarios>();
-        }
-
+    public partial class VoluntariosDto
+    { 
         /// <summary>
         /// Identificador único de la tabla Voluntarios.
         /// </summary>
@@ -19,8 +14,6 @@ namespace PetsHome.Contracts.DTOs
         public int volHorasTrabajadas { get; set; }
         public int perId { get; set; }
         public bool volRecurrente { get; set; }
-
-        public virtual tbPersonas per { get; set; }
-        public virtual ICollection<tbEventostbVoluntarios> tbEventostbVoluntarios { get; set; }
+         
     }
 }

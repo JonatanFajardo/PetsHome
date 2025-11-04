@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbEmpleados
+    public partial class EmpleadosDto
     {
         /// <summary>
         /// Identificador único de la tabla Empleados.
@@ -15,10 +15,6 @@ namespace PetsHome.Contracts.DTOs
         public int perId { get; set; }
         public int refgId { get; set; }
         public int cagId { get; set; }
-        public bool? empEsActivo { get; set; }
-
-        public virtual tbEmpleadosCargos cag { get; set; }
-        public virtual tbPersonas per { get; set; }
-        public virtual tbRefugios refg { get; set; }
+        public bool? empEsActivo { get; set; } 
     }
 }

@@ -8,7 +8,7 @@ namespace PetsHome.Contracts.DTOs
     /// <summary>
     /// Entidad que representa el detalle de recepciones de mercancía.
     /// </summary>
-    public partial class tbRecepcionesDetalles
+    public partial class RecepcionesDetallesDto
     {
         /// <summary>
         /// Identificador único del detalle de recepción.
@@ -68,10 +68,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Número de lote del producto.
         /// </summary>
-        public string recdetNumeroLote { get; set; }
-
-        public virtual tbRecepcionesMercancia recep { get; set; }
-        public virtual tbItems itm { get; set; }
-        public virtual tbUsuarios recdetUsuarioCreaNavigation { get; set; }
+        public string recdetNumeroLote { get; set; } 
     }
 }

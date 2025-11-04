@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbRegistroEventos
+    public partial class RegistroEventosDto
     {
         /// <summary>
         ///  Id identificador de la tabla

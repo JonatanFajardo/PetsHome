@@ -14,36 +14,36 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int eveId { get; set; }
+        public int eve_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string eveDescripcion { get; set; }
+        public string eve_Descripcion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int refgId { get; set; }
+        public int refg_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgNombre { get; set; }
+        public string refg_Nombre { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public TimeSpan eveHoraInicio { get; set; }
+        public TimeSpan eve_HoraInicio { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public TimeSpan eveHoraFinal { get; set; }
+        public TimeSpan eve_HoraFinal { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime eveFecha { get; set; }
+        public DateTime eve_Fecha { get; set; }
     }
 }

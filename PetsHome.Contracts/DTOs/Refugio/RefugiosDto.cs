@@ -5,14 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbRefugios
-    {
-        public tbRefugios()
-        {
-            tbEmpleados = new HashSet<tbEmpleados>();
-            tbEventos = new HashSet<tbEventos>();
-            tbMascotas = new HashSet<tbMascotas>();
-        }
+    public partial class RefugiosDto
+    { 
 
         /// <summary>
         /// Identificador único de la tabla Refugios.
@@ -43,13 +37,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
-        public DateTime? refgFechaModifica { get; set; }
-
-        public virtual tbDepartamentos depto { get; set; }
-        public virtual tbMunicipios mpio { get; set; }
-        public virtual tbUsuarios refgUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
-        public virtual ICollection<tbEventos> tbEventos { get; set; }
-        public virtual ICollection<tbMascotas> tbMascotas { get; set; }
+        public DateTime? refgFechaModifica { get; set; } 
     }
 }

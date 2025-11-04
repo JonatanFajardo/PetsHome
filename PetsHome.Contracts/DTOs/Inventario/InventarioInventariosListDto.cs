@@ -13,14 +13,14 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int invId { get; set; }
+        public int inv_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime invFecha { get; set; }
+        public DateTime inv_Fecha { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int refgId { get; set; }
+        public int refg_Id { get; set; }
     }
 }

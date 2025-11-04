@@ -8,7 +8,7 @@ namespace PetsHome.Contracts.DTOs
     /// <summary>
     /// Entidad que representa la tabla.
     /// </summary>
-    public partial class AlbergueVacunasDeleteDto
+    public partial class AlbergueVacunasDto
     {
     }
 }

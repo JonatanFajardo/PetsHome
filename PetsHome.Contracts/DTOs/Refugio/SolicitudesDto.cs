@@ -5,12 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbSolicitudes
-    {
-        public tbSolicitudes()
-        {
-            tbAdopciones = new HashSet<tbAdopciones>();
-        }
+    public partial class SolicitudesDto
+    { 
 
         /// <summary>
         /// Identificador único del registro.
@@ -61,9 +57,6 @@ namespace PetsHome.Contracts.DTOs
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? solFechaModifica { get; set; }
-
-        public virtual tbMascotas masc { get; set; }
-        public virtual tbUsuarios solUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbAdopciones> tbAdopciones { get; set; }
+         
     }
 }

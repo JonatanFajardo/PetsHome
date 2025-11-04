@@ -6,43 +6,43 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetsHome.Contracts.DTOs
 {
     /// <summary>
-    /// Dtoado del procedimiento almacenado de búsqueda de detalle de recepción.
+    /// ado del procedimiento almacenado de búsqueda de detalle de recepción.
     /// </summary>
     public partial class InventarioRecepcionesDetallesFindDto
     {
         /// <summary>
         /// Obtiene o establece el ID del detalle de recepción.
         /// </summary>
-        public int recdetId { get; set; }
+        public int recdet_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID de la recepción.
         /// </summary>
-        public int recepId { get; set; }
+        public int recep_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del item.
         /// </summary>
-        public int itmId { get; set; }
+        public int itm_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece la cantidad.
         /// </summary>
-        public decimal recdetCantidad { get; set; }
+        public decimal recdet_Cantidad { get; set; }
 
         /// <summary>
         /// Obtiene o establece el precio unitario.
         /// </summary>
-        public decimal? recdetPrecioUnitario { get; set; }
+        public decimal? recdet_PrecioUnitario { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de vencimiento.
         /// </summary>
-        public DateTime? recdetFechaVencimiento { get; set; }
+        public DateTime? recdet_FechaVencimiento { get; set; }
 
         /// <summary>
         /// Obtiene o establece el número de lote.
         /// </summary>
-        public string recdetNumeroLote { get; set; }
+        public string recdet_NumeroLote { get; set; }
     }
 }

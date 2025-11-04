@@ -5,13 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbEmpleadosCargos
-    {
-        public tbEmpleadosCargos()
-        {
-            tbEmpleados = new HashSet<tbEmpleados>();
-        }
-
+    public partial class EmpleadosCargosDto
+    { 
         /// <summary>
         /// Identificador único de la tabla Empleados Cargos.
         /// </summary>
@@ -38,9 +33,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
-        public DateTime? cagFechaModifica { get; set; }
-
-        public virtual tbUsuarios cagUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
+        public DateTime? cagFechaModifica { get; set; } 
     }
 }

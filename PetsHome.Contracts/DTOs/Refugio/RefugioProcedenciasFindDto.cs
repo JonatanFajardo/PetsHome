@@ -14,17 +14,17 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int procId { get; set; }
+        public int proc_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string procDescripcion { get; set; }
+        public string proc_Descripcion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int procUsuarioCrea { get; set; }
+        public int proc_UsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -34,12 +34,12 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime procFechaCrea { get; set; }
+        public DateTime proc_FechaCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? procUsuarioModifica { get; set; }
+        public int? proc_UsuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -49,6 +49,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? procFechaModifica { get; set; }
+        public DateTime? proc_FechaModifica { get; set; }
     }
 }

@@ -13,15 +13,15 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int mpioId { get; set; }
+        public int mpio_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mpioCodigo { get; set; }
+        public string mpio_Codigo { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mpioDescripcion { get; set; }
+        public string mpio_Descripcion { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
@@ -33,19 +33,19 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int mpioUsuarioCrea { get; set; }
+        public int mpio_UsuarioCrea { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime mpioFechaCrea { get; set; }
+        public DateTime mpio_FechaCrea { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? mpioUsuarioModifica { get; set; }
+        public int? mpio_UsuarioModifica { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? mpioFechaModifica { get; set; }
+        public DateTime? mpio_FechaModifica { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.

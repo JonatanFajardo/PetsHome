@@ -5,12 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbEventos
-    {
-        public tbEventos()
-        {
-            tbEventostbVoluntarios = new HashSet<tbEventostbVoluntarios>();
-        }
+    public partial class EventosDto
+    { 
 
         /// <summary>
         /// Identificador único de la tabla Eventos.
@@ -41,9 +37,6 @@ namespace PetsHome.Contracts.DTOs
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? eveFechaModifica { get; set; }
-
-        public virtual tbUsuarios eveUsuarioCreaNavigation { get; set; }
-        public virtual tbRefugios refg { get; set; }
-        public virtual ICollection<tbEventostbVoluntarios> tbEventostbVoluntarios { get; set; }
+         
     }
 }

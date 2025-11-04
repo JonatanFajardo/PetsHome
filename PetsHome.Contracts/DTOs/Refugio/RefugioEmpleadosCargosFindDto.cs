@@ -15,31 +15,31 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int cagId { get; set; }
+        public int cag_Id { get; set; }
         
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string cagDescripcion { get; set; }
+        public string cag_Descripcion { get; set; }
         
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public decimal? cagSalario { get; set; }
+        public decimal? cag_Salario { get; set; }
         
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool cagEsActivo { get; set; }
+        public bool cag_EsActivo { get; set; }
         
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int cagUsuarioCrea { get; set; }
+        public int cag_UsuarioCrea { get; set; }
         
         
         /// <summary>
@@ -51,13 +51,13 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime cagFechaCrea { get; set; }
+        public DateTime cag_FechaCrea { get; set; }
         
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? cagUsuarioModifica { get; set; }
+        public int? cag_UsuarioModifica { get; set; }
         
         
         /// <summary>
@@ -69,6 +69,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? cagFechaModifica { get; set; }
+        public DateTime? cag_FechaModifica { get; set; }
     }
 }

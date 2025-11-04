@@ -5,13 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbComportamientos
-    {
-        public tbComportamientos()
-        {
-            tbHistorialMedico = new HashSet<tbHistorialMedico>();
-        }
-
+    public partial class ComportamientosDto
+    { 
         public int comId { get; set; }
         public string comDescripcion { get; set; }
         public bool comEsEliminado { get; set; }
@@ -19,7 +14,6 @@ namespace PetsHome.Contracts.DTOs
         public DateTime comFechaCrea { get; set; }
         public int? comUsuarioModifica { get; set; }
         public DateTime? comFechaModifica { get; set; }
-
-        public virtual ICollection<tbHistorialMedico> tbHistorialMedico { get; set; }
+         
     }
 }

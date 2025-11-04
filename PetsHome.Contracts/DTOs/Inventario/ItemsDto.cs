@@ -5,40 +5,36 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbCategorias
-    {
-        public tbCategorias()
-        {
-            tbItems = new HashSet<tbItems>();
-        }
+    public partial class ItemsDto
+    { 
 
         /// <summary>
-        /// Identificador único de la tabla Categorias.
+        /// Identificador único de la tabla Items.
         /// </summary>
+        public int itmId { get; set; }
+        public string itmCodigo { get; set; }
+        public string itmDescripcion { get; set; }
         public int catId { get; set; }
-        public string catDescripcion { get; set; }
+        public decimal itmPrecio { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
-        public bool catEsEliminado { get; set; }
+        public bool itmEsEliminado { get; set; }
         /// <summary>
         /// Indica el identificador del usuario que creó el registro.
         /// </summary>
-        public int catUsuarioCrea { get; set; }
+        public int itmUsuarioCrea { get; set; }
         /// <summary>
         /// Registra la fecha en que se creó el registro.
         /// </summary>
-        public DateTime catFechaCrea { get; set; }
+        public DateTime itmFechaCrea { get; set; }
         /// <summary>
         /// Indica el identificador del último usuario que modificó el registro.
         /// </summary>
-        public int? catUsuarioModifica { get; set; }
+        public int? itmUsuarioModifica { get; set; }
         /// <summary>
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
-        public DateTime? catFechaModifica { get; set; }
-
-        public virtual tbUsuarios catUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbItems> tbItems { get; set; }
+        public DateTime? itmFechaModifica { get; set; } 
     }
 }

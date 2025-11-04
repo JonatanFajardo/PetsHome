@@ -8,15 +8,8 @@ namespace PetsHome.Contracts.DTOs
     /// <summary>
     /// Entidad que representa la tabla.
     /// </summary>
-    public partial class tbMunicipios
-    {
-        /// <summary>
-        /// Constructor de la clase.
-        /// </summary>
-        public tbMunicipios()
-        {
-            tbRefugios = new HashSet<tbRefugios>();
-        }
+    public partial class MunicipiosDto
+    { 
 
         /// <summary>
         /// Identificador único de la tabla Municipios.
@@ -48,9 +41,6 @@ namespace PetsHome.Contracts.DTOs
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? mpioFechaModifica { get; set; }
-
-        public virtual tbDepartamentos depto { get; set; }
-        public virtual tbUsuarios mpioUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbRefugios> tbRefugios { get; set; }
+         
     }
 }

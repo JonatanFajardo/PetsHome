@@ -5,12 +5,8 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbVacunas
-    {
-        public tbVacunas()
-        {
-            tbHistorialMedicotbVacunas = new HashSet<tbHistorialMedicotbVacunas>();
-        }
+    public partial class VacunasDto
+    { 
 
         /// <summary>
         /// Identificador único de la tabla Vacunas.
@@ -50,8 +46,6 @@ namespace PetsHome.Contracts.DTOs
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
         public DateTime? vacFechaModifica { get; set; }
-
-        public virtual tbUsuarios vacUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbHistorialMedicotbVacunas> tbHistorialMedicotbVacunas { get; set; }
+         
     }
 }

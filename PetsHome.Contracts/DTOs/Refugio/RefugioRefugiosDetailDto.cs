@@ -14,47 +14,47 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int refgId { get; set; }
+        public int refg_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgNombre { get; set; }
+        public string refg_Nombre { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgUbicacion { get; set; }
+        public string refg_Ubicacion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgRTN { get; set; }
+        public string refg_RTN { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgTelefono { get; set; }
+        public string refg_Telefono { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgCorreo { get; set; }
+        public string refg_Correo { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int deptoId { get; set; }
+        public int depto_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int mpioId { get; set; }
+        public int mpio_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgInformacionAdicional { get; set; }
+        public string refg_InformacionAdicional { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -69,7 +69,7 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime refgFechaCrea { get; set; }
+        public DateTime refg_FechaCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -79,6 +79,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? refgFechaModifica { get; set; }
+        public DateTime? refg_FechaModifica { get; set; }
     }
 }

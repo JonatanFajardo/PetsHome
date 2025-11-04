@@ -7,9 +7,9 @@ namespace PetsHome.Contracts.DTOs
 {
     public partial class InventarioEntradasDetallesFindDto
     {
-        public int entdetId { get; set; }
-        public int entId { get; set; }
-        public int itmId { get; set; }
-        public decimal entdetCantidad { get; set; }
+        public int entdet_Id { get; set; }
+        public int ent_Id { get; set; }
+        public int itm_Id { get; set; }
+        public decimal entdet_Cantidad { get; set; }
     }
 }

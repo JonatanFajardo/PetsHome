@@ -13,19 +13,19 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int adopId { get; set; }
+        public int adop_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int solId { get; set; }
+        public int sol_Id { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string adopEstado { get; set; }
+        public string adop_Estado { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int adopUsuarioCrea { get; set; }
+        public int adop_UsuarioCrea { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
@@ -33,11 +33,11 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime adopFechaCrea { get; set; }
+        public DateTime adop_FechaCrea { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? adopUsuarioModifica { get; set; }
+        public int? adop_UsuarioModifica { get; set; }
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
@@ -45,6 +45,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? adopFechaModifica { get; set; }
+        public DateTime? adop_FechaModifica { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbAdopciones
+    public partial class AdopcionesDto
     {
         public int adopId { get; set; }
         public int solId { get; set; }
@@ -14,9 +14,6 @@ namespace PetsHome.Contracts.DTOs
         public int adopUsuarioCrea { get; set; }
         public DateTime adopFechaCrea { get; set; }
         public int? adopUsuarioModifica { get; set; }
-        public DateTime? adopFechaModifica { get; set; }
-
-        public virtual tbUsuarios adopUsuarioCreaNavigation { get; set; }
-        public virtual tbSolicitudes sol { get; set; }
+        public DateTime? adopFechaModifica { get; set; } 
     }
 }

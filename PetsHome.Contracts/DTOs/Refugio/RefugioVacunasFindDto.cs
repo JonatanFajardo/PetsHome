@@ -14,37 +14,37 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int vacId { get; set; }
+        public int vac_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string vacDescripcion { get; set; }
+        public string vac_Descripcion { get; set; }
 
         /// <summary>
         /// Animal al que va dirigida la vacuna.
         /// </summary>
-        public string vacuEspecie { get; set; }
+        public string vacu_Especie { get; set; }
 
         /// <summary>
         /// Cantidad y vía de aplicación.
         /// </summary>
-        public string vacuDosisRecomendada { get; set; }
+        public string vacu_DosisRecomendada { get; set; }
 
         /// <summary>
         /// Tiempo antes de repetir dosis.
         /// </summary>
-        public string vacuPeriodoRefuerzo { get; set; }
+        public string vacu_PeriodoRefuerzo { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool vacEsActivo { get; set; }
+        public bool vac_EsActivo { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int vacUsuarioCrea { get; set; }
+        public int vac_UsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -54,12 +54,12 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime vacFechaCrea { get; set; }
+        public DateTime vac_FechaCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? vacUsuarioModifica { get; set; }
+        public int? vac_UsuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -69,6 +69,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? vacFechaModifica { get; set; }
+        public DateTime? vac_FechaModifica { get; set; }
     }
 }

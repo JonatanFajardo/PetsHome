@@ -14,67 +14,67 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int mascId { get; set; }
+        public int masc_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public byte[] mascImagen { get; set; }
+        public byte[] masc_Imagen { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mascNombre { get; set; }
+        public string masc_Nombre { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string razaDescripcion { get; set; }
+        public string raza_Descripcion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? mascEdad { get; set; }
+        public int? masc_Edad { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mascSexo { get; set; }
+        public string masc_Sexo { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public decimal mascPeso { get; set; }
+        public decimal masc_Peso { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mascColor { get; set; }
+        public string masc_Color { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string mascHistoria { get; set; }
+        public string masc_Historia { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string refgNombre { get; set; }
+        public string refg_Nombre { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string procDescripcion { get; set; }
+        public string proc_Descripcion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool mascEsAdoptado { get; set; }
+        public bool masc_EsAdoptado { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool mascEsReservado { get; set; }
+        public bool masc_EsReservado { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -84,7 +84,7 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime mascFechaCrea { get; set; }
+        public DateTime masc_FechaCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -94,6 +94,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? mascFechaModifica { get; set; }
+        public DateTime? masc_FechaModifica { get; set; }
     }
 }

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbHistorialMedicotbVacunas
+    public partial class HistorialMedicoVacunasDto
     {
         public int medicId { get; set; }
         public int vacId { get; set; }
 
-        public virtual tbHistorialMedico medic { get; set; }
-        public virtual tbVacunas vac { get; set; }
+        public virtual HistorialMedicoDto medic { get; set; }
+        public virtual VacunasDto vac { get; set; }
     }
 }

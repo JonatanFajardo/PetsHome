@@ -8,15 +8,8 @@ namespace PetsHome.Contracts.DTOs
     /// <summary>
     /// Entidad que representa la tabla de recepciones de mercancía.
     /// </summary>
-    public partial class tbRecepcionesMercancia
-    {
-        /// <summary>
-        /// Constructor de la clase.
-        /// </summary>
-        public tbRecepcionesMercancia()
-        {
-            tbRecepcionesDetalles = new HashSet<tbRecepcionesDetalles>();
-        }
+    public partial class RecepcionesMercanciaDto
+    { 
 
         /// <summary>
         /// Identificador único de la recepción de mercancía.
@@ -76,10 +69,6 @@ namespace PetsHome.Contracts.DTOs
         /// <summary>
         /// Número de documento asociado a la recepción.
         /// </summary>
-        public string recepNumeroDocumento { get; set; }
-
-        public virtual tbRefugios refg { get; set; }
-        public virtual tbUsuarios recepUsuarioCreaNavigation { get; set; }
-        public virtual ICollection<tbRecepcionesDetalles> tbRecepcionesDetalles { get; set; }
+        public string recepNumeroDocumento { get; set; } 
     }
 }

@@ -5,13 +5,11 @@ using System.Collections.Generic;
 
 namespace PetsHome.Contracts.DTOs
 {
-    public partial class tbEventostbVoluntarios
+    public partial class EventosVoluntariosDto
     {
         public int evevolId { get; set; }
         public int eveId { get; set; }
         public int volId { get; set; }
 
-        public virtual tbEventos eve { get; set; }
-        public virtual tbVoluntarios vol { get; set; }
     }
 }
