@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="detail-actions">
-                    <a href="@Url.Action("FormDepartamentos", new { id = Model.depto_Id })" class="btn-detail btn-detail-white">
+                    <a href="@Url.Action("FormPartialDepartamento", new { id = Model.depto_Id })" class="btn-detail btn-detail-white">
                         <i class="fas fa-edit"></i>
                         <span>Editar</span>
                     </a>
@@ -172,7 +172,7 @@
                         @{
                             ViewData["depto_Id"] = Model.depto_Id;
                         }
-                        <partial name="_MunicipioPartial" />
+                        <partial name="PartialMunicipio" />
                     </div>
                 </div>
 

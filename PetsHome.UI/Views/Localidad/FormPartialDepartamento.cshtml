@@ -1,43 +1,172 @@
 ﻿@model DepartamentoFormViewModel
 @{
-    ViewData["Title"] = "FormDepartamentos";
+    ViewData["Title"] = Model.depto_Id == 0 ? "Nuevo Departamento" : "Editar Departamento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
-    <div class="row">
-        @if (Model.depto_Id == 0)
-        {
-            //Redirige a la vista para crear
-            <div class="col-md-12">
-                <partial name="FormDepartamento" model="@Model">
-            </div>
-        }
-        else
-        {
-            //Redirige a la vista para editar
-            <div class="col-md-12">
-                <partial name="FormDepartamento" model="@Model">
-                    <div class="card mt-3">
-                        <partial name="Municipio" model="@Model">
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente y información principal -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        @if (Model.depto_Id > 0)
+                        {
+                            <div class="profile-badge">#@Model.depto_Id.ToString().PadLeft(3, '0')</div>
+                        }
                     </div>
+
+                    <div class="profile-info">
+                        <h1>@(Model.depto_Id == 0 ? "Nuevo Departamento" : Model.depto_Descripcion)</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-map"></i>
+                            <span>@(Model.depto_Id == 0 ? "Crear" : "Editar") Departamento</span>
+                        </div>
+                        @if (Model.depto_Id > 0)
+                        {
+                            <div class="profile-meta">
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-code"></i>
+                                    <span>Código: @Model.depto_Codigo</span>
+                                </div>
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-building"></i>
+                                    @{
+                                        var municipiosCount = Model.ListadoMunicipios?.Count() ?? 0;
+                                    }
+                                    <span>@municipiosCount municipio@(municipiosCount != 1 ? "s" : "")</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    @if (Model.depto_Id > 0)
+                    {
+                        <a href="@Url.Action("DetailDepartamento", new { id = Model.depto_Id })" class="btn-detail btn-detail-white">
+                            <i class="fas fa-eye"></i>
+                            <span>Ver Detalle</span>
+                        </a>
+                    }
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                </div>
             </div>
-        }
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Formulario de Departamento -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-edit"></i>
+                        <h3>Información del Departamento</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <form asp-controller="Localidad" asp-action="Add" method="post" autocomplete="off">
+                            <input class="form-control" asp-for="depto_Id" type="hidden" />
+
+                            <div class="form-grid">
+                                <!-- Campo Código -->
+                                <div class="form-group">
+                                    <label asp-for="depto_Codigo">Código</label>
+                                    <input class="form-control" asp-for="depto_Codigo" type="text" placeholder="Ingrese el código del departamento" maxlength="2" />
+                                    <span class="text-danger" asp-validation-for="depto_Codigo"></span>
+                                </div>
+
+                                <!-- Campo Descripción -->
+                                <div class="form-group">
+                                    <label asp-for="depto_Descripcion">Departamento</label>
+                                    <input class="form-control" asp-for="depto_Descripcion" type="text" placeholder="Ingrese el nombre del departamento" maxlength="100" />
+                                    <span class="text-danger" asp-validation-for="depto_Descripcion"></span>
+                                </div>
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="form-actions">
+                                <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                                @if (Model.depto_Id == 0)
+                                {
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-content-save mr-1"></i> Guardar
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-content-save mr-1"></i> Guardar cambios
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Municipios Asociados (solo si está editando) -->
+                @if (Model.depto_Id > 0)
+                {
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fas fa-building"></i>
+                                    <h3>Municipios Asociados</h3>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-modal" id="btn-add-municipio" style="margin: 0;">
+                                    <i class="mdi mdi-plus-thick"></i> Agregar Municipio
+                                </button>
+                            </div>
+                        </div>
+                        <div class="">
+                            @{
+                                ViewData["depto_Id"] = Model.depto_Id;
+                            }
+                            <partial name="PartialMunicipio" />
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
     </div>
 </div>
-@section Scripts{
 
-<script src="~/js/pages/municipio.js"></script>
-<script>
-    Municipio.datatablePartials({
-        //console.log('hola'+@Model.depto_Id);
-        listUrl: "@Url.Action($"ListMunicipios")",
-        id: @Model.depto_Id
-    });
-</script>
-<script>
-    Catalogs.configure({
-        displayName: "municipio",
-        getUrl: "@Url.Action("FindMunicipio")"
-    });
-</script>
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/pages/municipio.js"></script>
+    <script>
+        $(document).ready(function() {
+            @if (Model.depto_Id > 0)
+            {
+                @:Municipio.datatablePartials({
+                    @:listUrl: "@Url.Action("ListMunicipios")",
+                    @:id: @Model.depto_Id
+                @:});
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            Catalogs.configure({
+                displayName: "municipio",
+                getUrl: "@Url.Action("FindMunicipio")"
+            });
+        });
+    </script>
 }

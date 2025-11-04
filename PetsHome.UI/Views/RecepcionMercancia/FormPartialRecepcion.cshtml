@@ -1,42 +1,218 @@
 @model RecepcionMercanciaFormViewModel
 @{
-    ViewData["Title"] = "Editar Recepción de Mercancía";
+    ViewData["Title"] = Model.recep_Id == 0 ? "Nueva Recepción de Mercancía" : "Editar Recepción de Mercancía";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
-    <div class="row">
-        @if (Model.recep_Id == 0)
-        {
-            //Redirige a la vista para crear
-            <div class="col-md-12">
-                <partial name="FormRecepcion" model="@Model">
-            </div>
-        }
-        else
-        {
-            //Redirige a la vista para editar
-            <div class="col-md-12">
-                <partial name="FormRecepcion" model="@Model">
-                    <div class="card mt-3">
-                        <partial name="RecepcionDetalle" model="@Model">
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente y información principal -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        @if (Model.recep_Id > 0)
+                        {
+                            <div class="profile-badge">#@Model.recep_Id.ToString().PadLeft(4, '0')</div>
+                        }
                     </div>
+
+                    <div class="profile-info">
+                        <h1>@(Model.recep_Id == 0 ? "Nueva Recepción de Mercancía" : Model.recep_Descripcion)</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-dolly"></i>
+                            <span>@(Model.recep_Id == 0 ? "Crear" : "Editar") Recepción</span>
+                        </div>
+                        @if (Model.recep_Id > 0)
+                        {
+                            <div class="profile-meta">
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>@Model.recep_Fecha.ToString("dd/MM/yyyy")</span>
+                                </div>
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-tag"></i>
+                                    @{
+                                        var tipoNombre = Model.recep_TipoRecepcion == "C" ? "Compra" :
+                                                        Model.recep_TipoRecepcion == "D" ? "Donación" : "Transferencia";
+                                    }
+                                    <span>@tipoNombre</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    @if (Model.recep_Id > 0)
+                    {
+                        <a href="@Url.Action("Detail", new { id = Model.recep_Id })" class="btn-detail btn-detail-white">
+                            <i class="fas fa-eye"></i>
+                            <span>Ver Detalle</span>
+                        </a>
+                    }
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                </div>
             </div>
-        }
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Formulario de Recepción -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-edit"></i>
+                        <h3>Información de la Recepción</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <form asp-controller="RecepcionMercancia" asp-action="Add" method="post" autocomplete="off">
+                            <input class="form-control" asp-for="recep_Id" type="hidden" />
+
+                            <div class="form-grid">
+                                <!-- Campo Descripción -->
+                                <div class="form-group form-group-full">
+                                    <label asp-for="recep_Descripcion">Descripción</label>
+                                    <input class="form-control" asp-for="recep_Descripcion" type="text" placeholder="Ingrese una descripción de la recepción" maxlength="500" />
+                                    <span class="text-danger" asp-validation-for="recep_Descripcion"></span>
+                                </div>
+
+                                <!-- Campo Fecha -->
+                                <div class="form-group">
+                                    <label asp-for="recep_Fecha">Fecha de Recepción</label>
+                                    <input class="form-control" asp-for="recep_Fecha" type="date" />
+                                    <span class="text-danger" asp-validation-for="recep_Fecha"></span>
+                                </div>
+
+                                <!-- Campo Tipo de Recepción -->
+                                <div class="form-group">
+                                    <label asp-for="recep_TipoRecepcion">Tipo de Recepción</label>
+                                    <select class="form-control" asp-for="recep_TipoRecepcion">
+                                        <option value="">Seleccione...</option>
+                                        <option value="C">Compra</option>
+                                        <option value="D">Donación</option>
+                                        <option value="T">Transferencia</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="recep_TipoRecepcion"></span>
+                                </div>
+
+                                <!-- Campo Refugio -->
+                                <div class="form-group">
+                                    <label asp-for="refg_Id">Refugio</label>
+                                    <select class="form-control" asp-for="refg_Id">
+                                        <option value="">Seleccione un refugio...</option>
+                                        @foreach (var refugio in ViewBag.Refugios)
+                                        {
+                                            <option value="@refugio.refg_Id">@refugio.refg_Nombre</option>
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="refg_Id"></span>
+                                </div>
+
+                                <!-- Campo Origen/Procedencia -->
+                                <div class="form-group">
+                                    <label asp-for="recep_OrigenId">Origen/Procedencia</label>
+                                    <select class="form-control" asp-for="recep_OrigenId">
+                                        <option value="">Seleccione...</option>
+                                        @foreach (var procedencia in ViewBag.Procedencias)
+                                        {
+                                            <option value="@procedencia.proc_Id">@procedencia.proc_Descripcion</option>
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="recep_OrigenId"></span>
+                                </div>
+
+                                <!-- Campo Número de Documento -->
+                                <div class="form-group">
+                                    <label asp-for="recep_NumeroDocumento">Número de Documento</label>
+                                    <input class="form-control" asp-for="recep_NumeroDocumento" type="text" placeholder="Ej: FAC-2025-001" maxlength="50" />
+                                    <span class="text-danger" asp-validation-for="recep_NumeroDocumento"></span>
+                                </div>
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="form-actions">
+                                <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                                @if (Model.recep_Id == 0)
+                                {
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-content-save mr-1"></i> Guardar
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-content-save mr-1"></i> Guardar cambios
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Detalles de Recepción (solo si está editando) -->
+                @if (Model.recep_Id > 0)
+                {
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fas fa-box-open"></i>
+                                    <h3>Items Recibidos</h3>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-modal" id="btn-add-detalle" style="margin: 0;">
+                                    <i class="mdi mdi-plus-thick"></i> Agregar Item
+                                </button>
+                            </div>
+                        </div>
+                        <div class="">
+                            @{
+                                ViewData["recep_Id"] = Model.recep_Id;
+                            }
+                            <partial name="PartialRecepcionDetalle" />
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
     </div>
 </div>
-@section Scripts{
 
-<script src="~/js/pages/recepciondetalle.js"></script>
-<script>
-    RecepcionDetalle.datatablePartials({
-        listUrl: "@Url.Action($"ListDetalles")",
-        id: @Model.recep_Id
-    });
-</script>
-<script>
-    Catalogs.configure({
-        displayName: "detalle",
-        getUrl: "@Url.Action("FindDetalle")"
-    });
-</script>
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/pages/recepciondetalle.js"></script>
+    <script>
+        $(document).ready(function() {
+            @if (Model.recep_Id > 0)
+            {
+                @:RecepcionDetalle.datatablePartials({
+                    @:listUrl: "@Url.Action("ListDetalles")",
+                    @:id: @Model.recep_Id
+                @:});
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            Catalogs.configure({
+                displayName: "detalle de recepción",
+                getUrl: "@Url.Action("FindDetalle")"
+            });
+        });
+    </script>
 }

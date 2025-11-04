@@ -16,7 +16,7 @@
             <div class="pets-title-section">
                 <h2 class="text-white"><i class="fas fa-map-marked-alt mr-2 text-white"></i>Departamentos de Colombia</h2>
                 <p class="text-white-50 mb-0">Explora la informacion de <span id="departamentosCount">0</span> departamentos</p>
-                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("FormPartialDepartamento")'">
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("FormDepartamentos")'">
                     <i class="fas fa-plus mr-2"></i>Nuevo Departamento
                 </button>
             </div>
@@ -194,7 +194,7 @@
             Localidad.init({
                 urlList: "@Url.Action("List")",
                 urlDetail: "@Url.Action("DetailDepartamento")",
-                urlInsert: "@Url.Action("FormDepartamentos")",
+                urlInsert: "@Url.Action("FormDepartamento")",
                 urlUpdate: "@Url.Action("FormPartialDepartamento")"
             });
         });
