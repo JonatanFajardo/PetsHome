@@ -130,7 +130,7 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _municipioService.FindAsync(id);
             if (itemSearched != null)
             {
-                return Json(new { item = itemSearched, success = true });
+                return Json(new { data = itemSearched, success = true });
             }
             else
             {

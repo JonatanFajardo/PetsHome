@@ -135,6 +135,7 @@ var datatablePartials = (function () {
     /**
      * Inicializa el datatable.
      * @param {Object} listUrl Direccion al que se enviaran los datos
+     * @param {Number} id ID del registro padre
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
     obj.init = function (listUrl, id, header) {
@@ -223,12 +224,77 @@ function RedirectEdit(params) {
 }
 
 // Función global para ver detalles en módulos parciales
+// Usa Catalogs.detailGetUrl (o Catalogs.getUrl como fallback) que ya está configurado en las vistas
 function viewDetailPartial(id) {
-    // Obtener el controlador actual desde la URL
-    var pathArray = window.location.pathname.split('/');
-    var controller = pathArray[1] || 'Home';
+    // Verificar si Catalogs está configurado
+    if (typeof Catalogs === 'undefined' || (!Catalogs.detailGetUrl && !Catalogs.getUrl)) {
+        console.error('Catalogs.detailGetUrl o Catalogs.getUrl no están configurados. Usa Catalogs.configure() en tu vista.');
+        console.log('ID solicitado:', id);
+        return;
+    }
 
-    // Redirigir a la página de detalles
-    window.location.href = '/' + controller + '/Detail/' + id;
+    var detailModalId = Catalogs.detailModalId || '#detail-modal';
+
+    // Verificar si existe el modal de detalles
+    if ($(detailModalId).length === 0) {
+        console.error('Modal ' + detailModalId + ' no encontrado');
+        return;
+    }
+
+    // Usar Catalogs.detailGetUrl (preferido) o Catalogs.getUrl como fallback
+    var getUrl = Catalogs.detailGetUrl || Catalogs.getUrl;
+
+    console.log('viewDetailPartial llamado con ID:', id);
+    console.log('URL a usar:', getUrl);
+
+    $.ajax({
+        url: getUrl,
+        type: 'GET',
+        data: { id: id },
+        success: function(response) {
+            console.log('Respuesta recibida:', response);
+            if (response && response.data) {
+                // Llenar dinámicamente el modal con los datos
+                fillDetailModal(response.data);
+
+                // Mostrar el modal
+                $(detailModalId).modal('show');
+            } else {
+                console.error('Respuesta sin datos:', response);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar los detalles:', error);
+            console.error('URL llamada:', getUrl + '?id=' + id);
+            console.error('Response:', xhr.responseText);
+        }
+    });
+}
+
+// Función auxiliar para llenar el modal con los datos
+function fillDetailModal(data) {
+    // Recorrer todas las propiedades del objeto data
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            // Buscar un elemento con el ID correspondiente
+            var elementId = '#detail-' + key.toLowerCase().replace(/_/g, '-');
+            var $element = $(elementId);
+
+            if ($element.length > 0) {
+                var value = data[key];
+
+                // Formatear valores especiales
+                if (value === null || value === undefined) {
+                    value = 'N/A';
+                } else if (typeof value === 'number' && key.toLowerCase().includes('precio')) {
+                    value = 'L. ' + parseFloat(value).toFixed(2);
+                } else if (key.toLowerCase().includes('fecha') && value) {
+                    value = new Date(value).toLocaleDateString('es-HN');
+                }
+
+                $element.text(value);
+            }
+        }
+    }
 }
 

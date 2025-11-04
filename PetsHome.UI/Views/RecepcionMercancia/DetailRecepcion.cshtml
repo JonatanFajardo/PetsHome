@@ -196,7 +196,8 @@
         $(document).ready(function() {
             Catalogs.configure({
                 displayName: "detalle de recepción",
-                getUrl: "@Url.Action("FindDetalle")"
+                getUrl: "@Url.Action("FindDetalle")",  // Para editar
+                detailGetUrl: "@Url.Action("FindDetalleDetail")"  // Para ver detalles
             });
         });
     </script>

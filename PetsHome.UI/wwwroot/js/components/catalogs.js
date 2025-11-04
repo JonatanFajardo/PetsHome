@@ -231,6 +231,14 @@
         if (params.deleteModalId === undefined)
             params.deleteModalId = "#delete-modal";
 
+        if (params.detailModalId === undefined)
+            params.detailModalId = "#detail-modal";
+
+        // Exponer getUrl para editar y detailGetUrl para ver detalles
+        obj.getUrl = params.getUrl;  // Para editar
+        obj.detailGetUrl = params.detailGetUrl || params.getUrl;  // Para ver detalles (por defecto usa getUrl)
+        obj.detailModalId = params.detailModalId;
+
         $(function () {
             createDataTable(params);
             createDeleteModal(params);
