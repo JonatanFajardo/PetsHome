@@ -240,6 +240,72 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbVacunas, VacunaFormViewModel>().ReverseMap();
             CreateMap<tbVoluntarios, VoluntarioFormViewModel>().ReverseMap();
 
+            // Mapeos para módulo médico - TiposConsulta
+            CreateMap<PR_Medico_TiposConsulta_ListResult, TipoConsultaViewModel>().ReverseMap();
+            CreateMap<PR_Medico_TiposConsulta_DetailResult, TipoConsultaViewModel>()
+                .ForMember(dest => dest.tipoCon_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.tipoCon_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_TiposConsulta_FindResult, TipoConsultaViewModel>()
+                .ForMember(dest => dest.tipoCon_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.tipoCon_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<PR_Medico_TiposConsulta_DropdownResult, TipoConsultaViewModel>().ReverseMap();
+            CreateMap<tbTiposConsulta, TipoConsultaViewModel>().ReverseMap();
+
+            // Mapeos para módulo médico - Gravedades
+            CreateMap<PR_Medico_Gravedades_ListResult, GravedadViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Gravedades_DetailResult, GravedadViewModel>()
+                .ForMember(dest => dest.grav_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.grav_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_Gravedades_FindResult, GravedadViewModel>()
+                .ForMember(dest => dest.grav_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.grav_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<PR_Medico_Gravedades_DropdownResult, GravedadViewModel>().ReverseMap();
+            CreateMap<tbGravedades, GravedadViewModel>().ReverseMap();
+
+            // Mapeos para módulo médico - TiposMedicamento
+            CreateMap<PR_Medico_TiposMedicamento_ListResult, TipoMedicamentoViewModel>().ReverseMap();
+            CreateMap<PR_Medico_TiposMedicamento_DetailResult, TipoMedicamentoViewModel>()
+                .ForMember(dest => dest.tipoMed_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.tipoMed_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_TiposMedicamento_FindResult, TipoMedicamentoViewModel>()
+                .ForMember(dest => dest.tipoMed_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.tipoMed_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<PR_Medico_TiposMedicamento_DropdownResult, TipoMedicamentoViewModel>().ReverseMap();
+            CreateMap<tbTiposMedicamento, TipoMedicamentoViewModel>().ReverseMap();
+
+            // Mapeos para módulo médico - ViasAdministracion
+            CreateMap<PR_Medico_ViasAdministracion_ListResult, ViaAdministracionViewModel>().ReverseMap();
+            CreateMap<PR_Medico_ViasAdministracion_DetailResult, ViaAdministracionViewModel>()
+                .ForMember(dest => dest.viaAdmin_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.viaAdmin_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_ViasAdministracion_FindResult, ViaAdministracionViewModel>()
+                .ForMember(dest => dest.viaAdmin_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.viaAdmin_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<PR_Medico_ViasAdministracion_DropdownResult, ViaAdministracionViewModel>().ReverseMap();
+            CreateMap<tbViasAdministracion, ViaAdministracionViewModel>().ReverseMap();
+
+            // Mapeos para módulo médico - TiposParasito
+            CreateMap<PR_Medico_TiposParasito_ListResult, TipoParasitoViewModel>().ReverseMap();
+            CreateMap<PR_Medico_TiposParasito_DetailResult, TipoParasitoViewModel>()
+                .ForMember(dest => dest.tipoPar_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.tipoPar_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_TiposParasito_FindResult, TipoParasitoViewModel>()
+                .ForMember(dest => dest.tipoPar_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.tipoPar_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<PR_Medico_TiposParasito_DropdownResult, TipoParasitoViewModel>().ReverseMap();
+            CreateMap<tbTiposParasito, TipoParasitoViewModel>().ReverseMap();
+
+            // Mapeos para módulo médico - TiposEsterilizacion
+            CreateMap<PR_Medico_TiposEsterilizacion_ListResult, TipoEsterilizacionViewModel>().ReverseMap();
+            CreateMap<PR_Medico_TiposEsterilizacion_DetailResult, TipoEsterilizacionViewModel>()
+                .ForMember(dest => dest.tipoEst_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.tipoEst_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_TiposEsterilizacion_FindResult, TipoEsterilizacionViewModel>()
+                .ForMember(dest => dest.tipoEst_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.tipoEst_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<PR_Medico_TiposEsterilizacion_DropdownResult, TipoEsterilizacionViewModel>().ReverseMap();
+            CreateMap<tbTiposEsterilizacion, TipoEsterilizacionViewModel>().ReverseMap();
+
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
             ////CreateMap<tbContratos, ContratosViewModel>().ReverseMap()();

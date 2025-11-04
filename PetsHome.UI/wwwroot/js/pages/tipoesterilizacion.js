@@ -1,0 +1,16 @@
+var TipoEsterilizacion = (function () {
+    var obj = {};
+
+    obj.datatableCatalogs = function (Direction) {
+        $(function () {
+            var header = new Array();
+            header = [
+                { FieldName: 'tipoEst_Id', Size: 80 },
+                { FieldName: 'tipoEst_Descripcion' },
+                { FieldName: 'tipoEst_Sexo', Size: 150 }
+            ];
+            datatableCatalogs.init(Direction.listUrl, header);
+        })
+    }
+    return obj;
+}());
