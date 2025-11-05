@@ -100,9 +100,9 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        public async Task<IActionResult> Remove(int medic_Id)
+        public async Task<IActionResult> Remove(int cita_Id)
         {
-            Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(medic_Id);
+            Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(cita_Id);
             if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);

@@ -1,259 +1,403 @@
-﻿@model CitaMedicaDetailViewModel
+@model CitaMedicaDetailViewModel
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Detalle de Cita Médica";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Determinar color según tipo de consulta
+    var tipoColor = "status-info";
+    if (Model.TipoConsulta == "Emergencia") tipoColor = "status-emergencia";
+    else if (Model.TipoConsulta == "Cirugía") tipoColor = "status-cirugia";
+    else if (Model.TipoConsulta == "Vacunación") tipoColor = "status-vacunacion";
 }
 
-<div class="container-fluid py-4">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-10">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-gradient-primary text-white">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <div class="avatar-container position-relative">
-                                <div class="avatar-circle bg-light d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-paw text-primary fa-2x"></i>
-                                </div>
-                                <div class="avatar-status bg-success"></div>
-                            </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header con gradiente -->
+        <div class="detail-header">
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-notes-medical"></i>
                         </div>
-                        <div class="col">
-                            <h4 class="mb-1 text-white font-weight-bold">@Model.masc_Nombre</h4>
-                            <div class="mb-2">
-                                <span class="badge badge-light text-white px-3 py-1">
-                                    <i class="fas fa-dna mr-1"></i>@Model.raza_Descripcion
-                                </span>
+                        <div class="profile-badge">#@Model.cita_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.Mascota</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>@Model.TipoConsulta</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>@Model.cita_FechaConsulta.ToString("dd/MM/yyyy")</span>
                             </div>
-                            <p class="text-white-50 mb-0">
-                                <i class="fas fa-calendar-alt mr-1"></i>Consulta: @Model.medic_FechaConsulta.ToString("dd/MM/yyyy")
-                            </p>
+                            @if (!string.IsNullOrEmpty(Model.Gravedad))
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Gravedad: @Model.Gravedad</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Comportamiento))
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-paw"></i>
+                                    <span>@Model.Comportamiento</span>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
 
-                <div class="card-body p-4">
-                    <div class="row">
-                        <!-- Información General -->
-                        <div class="col-md-6">
-                            <div class="info-section">
-                                <h6 class="section-title">
-                                    <i class="fas fa-info-circle text-primary mr-2"></i>Información General
-                                </h6>
-                                <div class="info-group">
-                                    <div class="info-item">
-                                        <span class="info-label">ID Cita:</span>
-                                        <span class="info-value badge badge-outline-primary">@Model.medic_Id</span>
-                                    </div>
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.cita_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.cita_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-                                    <div class="info-item">
-                                        <span class="info-label">Mascota:</span>
-                                        <span class="info-value">@Model.masc_Nombre</span>
-                                    </div>
+        <!-- Contenido principal -->
+        <div class="detail-content">
+            <div class="detail-grid">
 
-                                    <div class="info-item">
-                                        <span class="info-label">Raza:</span>
-                                        <span class="info-value">@Model.raza_Descripcion</span>
-                                    </div>
+                <!-- Información General -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información General</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-paw"></i>
+                                    <span>Mascota</span>
+                                </div>
+                                <div class="detail-value detail-value-large">@Model.Mascota</div>
+                            </div>
 
-                                    <div class="info-item">
-                                        <span class="info-label">Comportamiento:</span>
-                                        <span class="info-value badge badge-info text-white">@Model.com_Descripcion</span>
-                                    </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Fecha de Consulta</span>
+                                </div>
+                                <div class="detail-value">@Model.cita_FechaConsulta.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
 
-                                    <div class="info-item">
-                                        <span class="info-label">Fecha Consulta:</span>
-                                        <span class="info-value">
-                                            <i class="fas fa-calendar-alt text-muted mr-1"></i>
-                                            @Model.medic_FechaConsulta.ToString("dd/MM/yyyy HH:mm")
-                                        </span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Tipo Consulta:</span>
-                                        <span class="info-value badge badge-secondary text-white">@Model.medic_TipoConsulta</span>
-                                    </div>
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-stethoscope"></i>
+                                    <span>Tipo de Consulta</span>
+                                </div>
+                                <div class="detail-value">
+                                    <span class="status-badge @tipoColor">@Model.TipoConsulta</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Información Médica -->
-                        <div class="col-md-6">
-                            <div class="info-section">
-                                <h6 class="section-title">
-                                    <i class="fas fa-stethoscope text-success mr-2"></i>Información Médica
-                                </h6>
-                                <div class="info-group">
-                                    <div class="info-item">
-                                        <span class="info-label">Peso:</span>
-                                        <span class="info-value">
-                                            <i class="fas fa-weight text-muted mr-1"></i>
-                                            @Model.medic_Peso kg
-                                        </span>
+                            @if (!string.IsNullOrEmpty(Model.Gravedad))
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>Gravedad</span>
                                     </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Temperatura:</span>
-                                        <span class="info-value">
-                                            <i class="fas fa-thermometer-half text-muted mr-1"></i>
-                                            @Model.medic_Temperatura°C
-                                        </span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Frec. Cardíaca:</span>
-                                        <span class="info-value">
-                                            <i class="fas fa-heartbeat text-danger mr-1"></i>
-                                            @Model.medic_FrecuenciaCardiaca bpm
-                                        </span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Frec. Respiratoria:</span>
-                                        <span class="info-value">
-                                            <i class="fas fa-lungs text-info mr-1"></i>
-                                            @Model.medic_FrecuenciaRespiratoria rpm
-                                        </span>
-                                    </div>
-
-                                    
+                                    <div class="detail-value">@Model.Gravedad</div>
                                 </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signos Vitales -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-heartbeat"></i>
+                        <h3>Signos Vitales</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            @if (Model.cita_Peso.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-weight"></i>
+                                        <span>Peso</span>
+                                    </div>
+                                    <div class="detail-value">@Model.cita_Peso kg</div>
+                                </div>
+                            }
+
+                            @if (Model.cita_Temperatura.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-thermometer-half"></i>
+                                        <span>Temperatura</span>
+                                    </div>
+                                    <div class="detail-value">@Model.cita_Temperatura°C</div>
+                                </div>
+                            }
+
+                            @if (Model.cita_FrecuenciaCardiaca.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-heartbeat"></i>
+                                        <span>Frecuencia Cardíaca</span>
+                                    </div>
+                                    <div class="detail-value">@Model.cita_FrecuenciaCardiaca bpm</div>
+                                </div>
+                            }
+
+                            @if (Model.cita_FrecuenciaRespiratoria.HasValue)
+                            {
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-lungs"></i>
+                                        <span>Frecuencia Respiratoria</span>
+                                    </div>
+                                    <div class="detail-value">@Model.cita_FrecuenciaRespiratoria rpm</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motivo y Diagnóstico -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Motivo y Diagnóstico</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                @if (!string.IsNullOrEmpty(Model.cita_MotivoConsulta))
+                                {
+                                    <div class="col-md-6">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-comment-medical"></i>
+                                                <span>Motivo de Consulta</span>
+                                            </div>
+                                            <div class="detail-value">@Model.cita_MotivoConsulta</div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.cita_Diagnostico))
+                                {
+                                    <div class="col-md-6">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-notes-medical"></i>
+                                                <span>Diagnóstico</span>
+                                            </div>
+                                            <div class="detail-value">@Model.cita_Diagnostico</div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Información Clínica -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="info-section">
-                                <h6 class="section-title">
-                                    <i class="fas fa-clipboard-list text-warning mr-2"></i>Información Clínica
-                                </h6>
+                <!-- Procedimientos y Resultados -->
+                @if (!string.IsNullOrEmpty(Model.cita_ProcedimientosRealizados) || !string.IsNullOrEmpty(Model.cita_ResultadosExamenes))
+                {
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <i class="fas fa-procedures"></i>
+                            <h3>Procedimientos y Resultados</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="info-group">
-                                            <div class="info-item">
-                                                <span class="info-label">Motivo Consulta:</span>
-                                                <div class="info-value-text">@Model.medic_MotivoConsulta</div>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Diagnóstico:</span>
-                                                <div class="info-value-text">@Model.medic_Diagnostico</div>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Medicamentos Recetados:</span>
-                                                <div class="info-value-text">@Model.medic_MedicamentosRecetados</div>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Dosificación:</span>
-                                                <div class="info-value-text">@Model.medic_Dosificacion</div>
+                                    @if (!string.IsNullOrEmpty(Model.cita_ProcedimientosRealizados))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-user-md"></i>
+                                                    <span>Procedimientos Realizados</span>
+                                                </div>
+                                                <div class="detail-value">@Model.cita_ProcedimientosRealizados</div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="info-group">
-                                            <div class="info-item">
-                                                <span class="info-label">Procedimientos:</span>
-                                                <div class="info-value-text">@Model.medic_ProcedimientosRealizados</div>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Resultados Exámenes:</span>
-                                                <div class="info-value-text">@Model.medic_ResultadosExamenes</div>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Próxima Cita:</span>
-                                                <span class="info-value">
-                                                    <i class="fas fa-calendar-plus text-muted mr-1"></i>
-                                                    @(Model.medic_ProximaCita?.ToString("dd/MM/yyyy") ?? "N/A")
-                                                </span>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Motivo Próxima Cita:</span>
-                                                <div class="info-value-text">@Model.medic_MotivoProximaCita</div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.cita_ResultadosExamenes))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-vial"></i>
+                                                    <span>Resultados de Exámenes</span>
+                                                </div>
+                                                <div class="detail-value">@Model.cita_ResultadosExamenes</div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
+                }
 
-                    <!-- Información de Auditoría -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="info-section">
-                                <h6 class="section-title">
-                                    <i class="fas fa-history text-info mr-2"></i>Información de Auditoría
-                                </h6>
+                <!-- Próxima Cita -->
+                @if (Model.cita_ProximaCita.HasValue || !string.IsNullOrEmpty(Model.cita_MotivoProximaCita))
+                {
+                    <div class="detail-card detail-card-full">
+                        <div class="detail-card-header">
+                            <i class="fas fa-calendar-plus"></i>
+                            <h3>Próxima Cita</h3>
+                        </div>
+                        <div class="detail-card-body">
+                            <div class="detail-list">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="info-group">
-                                            <div class="info-item">
-                                                <span class="info-label">Usuario Creación:</span>
-                                                <span class="info-value">@Model.UsuarioCreacion</span>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Fecha Creación:</span>
-                                                <span class="info-value">
-                                                    <i class="fas fa-plus-circle text-muted mr-1"></i>
-                                                    @Model.medic_FechaCrea.ToString("dd/MM/yyyy HH:mm")
-                                                </span>
+                                    @if (Model.cita_ProximaCita.HasValue)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-calendar-day"></i>
+                                                    <span>Fecha de Próxima Cita</span>
+                                                </div>
+                                                <div class="detail-value">@Model.cita_ProximaCita.Value.ToString("dd/MM/yyyy")</div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="info-group">
-                                            <div class="info-item">
-                                                <span class="info-label">Usuario Modificación:</span>
-                                                <span class="info-value">@(Model.UsuarioModificacion ?? "N/A")</span>
-                                            </div>
-
-                                            <div class="info-item">
-                                                <span class="info-label">Fecha Modificación:</span>
-                                                <span class="info-value">
-                                                    <i class="fas fa-edit text-muted mr-1"></i>
-                                                    @(Model.medic_FechaModifica?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
-                                                </span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.cita_MotivoProximaCita))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <div class="detail-label">
+                                                    <i class="fas fa-clipboard"></i>
+                                                    <span>Motivo de Próxima Cita</span>
+                                                </div>
+                                                <div class="detail-value">@Model.cita_MotivoProximaCita</div>
                                             </div>
                                         </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Información de Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span>Creado por</span>
+                                        </div>
+                                        <div class="detail-value">@Model.UsuarioCreacion</div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Fecha de creación</span>
+                                        </div>
+                                        <div class="detail-value">@Model.cita_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.UsuarioModificacion))
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Modificado por</span>
+                                            </div>
+                                            <div class="detail-value">@Model.UsuarioModificacion</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <span>Última modificación</span>
+                                            </div>
+                                            <div class="detail-value">@(Model.cita_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-footer bg-light no-print">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a href="/CitaMedica/Find/@Model.medic_Id" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit mr-1"></i>Editar
-                            </a>
-                            <button id="btnImprimir" class="btn btn-outline-secondary btn-sm ml-2">
-                                <i class="fas fa-print mr-1"></i>Imprimir
-                            </button>
-                            <button class="btn btn-outline-success btn-sm ml-2">
-                                <i class="fas fa-file-pdf mr-1"></i>Generar PDF
-                            </button>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <small class="text-muted">
-                                <i class="fas fa-clock mr-1"></i>
-                                Última actualización: @(Model.medic_FechaModifica?.ToString("dd/MM/yyyy") ?? "N/A")
-                            </small>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                <input type="hidden" name="medic_Id" id="delete-cita-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
+                    </div>
+                    <h5>¿Está seguro de eliminar esta cita médica?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-cita-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}
