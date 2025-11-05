@@ -14,87 +14,98 @@ namespace PetsHome.Logic.Repositories
 {
     public class CitaMedicaRepository : IGenericRepository<tbCitaMedica>
     {
-        public async Task<IEnumerable<PR_Refugio_CitaMedica_ListResult>> ListAsyncs()
+        public async Task<IEnumerable<PR_Medico_CitaMedica_ListResult>> ListAsync()
         {
-            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_List]";
-            return await DbApp.Select<PR_Refugio_CitaMedica_ListResult>(sqlQuery);
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_List]";
+            return await DbApp.Select<PR_Medico_CitaMedica_ListResult>(sqlQuery);
         }
 
-        public async Task<PR_Refugio_CitaMedica_FindResult> FindAsync(int id)
+        public async Task<PR_Medico_CitaMedica_FindResult> FindAsync(int id)
         {
-            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_Find]";
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Find]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Find<PR_Refugio_CitaMedica_FindResult>(sqlQuery, parameter);
+            parameter.Add("@cita_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Find<PR_Medico_CitaMedica_FindResult>(sqlQuery, parameter);
         }
 
-        public async Task<PR_Refugio_CitaMedica_DetailResult> DetailAsync(int id)
+        public async Task<PR_Medico_CitaMedica_DetailResult> DetailAsync(int id)
         {
-            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_Detail]";
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Detail]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Detail<PR_Refugio_CitaMedica_DetailResult>(sqlQuery, parameter);
+            parameter.Add("@cita_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Detail<PR_Medico_CitaMedica_DetailResult>(sqlQuery, parameter);
         }
 
         public async Task<Boolean> AddAsync(tbCitaMedica entity)
         {
-            entity.medic_UsuarioCrea = 1;
-            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_Insert]";
+            entity.cita_UsuarioCrea = 1;
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_FechaConsulta", entity.cita_FechaConsulta, DbType.DateTime, ParameterDirection.Input);
+            parameter.Add("@tipoCon_Id", entity.tipoCon_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@grav_Id", entity.grav_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_MotivoConsulta", entity.cita_MotivoConsulta, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_Diagnostico", entity.cita_Diagnostico, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_Peso", entity.cita_Peso, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cita_Temperatura", entity.cita_Temperatura, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cita_FrecuenciaCardiaca", entity.cita_FrecuenciaCardiaca, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_FrecuenciaRespiratoria", entity.cita_FrecuenciaRespiratoria, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@com_Id", entity.com_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_FechaConsulta", entity.medic_FechaConsulta, DbType.DateTime, ParameterDirection.Input);
-            parameter.Add("@medic_TipoConsulta", entity.medic_TipoConsulta, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_MotivoConsulta", entity.medic_MotivoConsulta, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_Diagnostico", entity.medic_Diagnostico, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_Peso", entity.medic_Peso, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_Temperatura", entity.medic_Temperatura, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_FrecuenciaCardiaca", entity.medic_FrecuenciaCardiaca, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_FrecuenciaRespiratoria", entity.medic_FrecuenciaRespiratoria, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vac_Id", entity.vac_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_MedicamentosRecetados", entity.medic_MedicamentosRecetados, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_Dosificacion", entity.medic_Dosificacion, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_ProcedimientosRealizados", entity.medic_ProcedimientosRealizados, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_ResultadosExamenes", entity.medic_ResultadosExamenes, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_ProximaCita", entity.medic_ProximaCita, DbType.DateTime, ParameterDirection.Input);
-            parameter.Add("@medic_MotivoProximaCita", entity.medic_MotivoProximaCita, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_UsuarioCrea", entity.medic_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_ProcedimientosRealizados", entity.cita_ProcedimientosRealizados, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_ResultadosExamenes", entity.cita_ResultadosExamenes, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_ProximaCita", entity.cita_ProximaCita, DbType.DateTime, ParameterDirection.Input);
+            parameter.Add("@cita_MotivoProximaCita", entity.cita_MotivoProximaCita, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_UsuarioCrea", entity.cita_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
         public async Task<Boolean> EditAsync(tbCitaMedica entity)
         {
-            entity.medic_UsuarioModifica = 1;
-            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_Update]";
+            entity.cita_UsuarioModifica = 1;
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Update]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", entity.medic_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Id", entity.cita_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_FechaConsulta", entity.cita_FechaConsulta, DbType.DateTime, ParameterDirection.Input);
+            parameter.Add("@tipoCon_Id", entity.tipoCon_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@grav_Id", entity.grav_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_MotivoConsulta", entity.cita_MotivoConsulta, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_Diagnostico", entity.cita_Diagnostico, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_Peso", entity.cita_Peso, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cita_Temperatura", entity.cita_Temperatura, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cita_FrecuenciaCardiaca", entity.cita_FrecuenciaCardiaca, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_FrecuenciaRespiratoria", entity.cita_FrecuenciaRespiratoria, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@com_Id", entity.com_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_FechaConsulta", entity.medic_FechaConsulta, DbType.DateTime, ParameterDirection.Input);
-            parameter.Add("@medic_TipoConsulta", entity.medic_TipoConsulta, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_MotivoConsulta", entity.medic_MotivoConsulta, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_Diagnostico", entity.medic_Diagnostico, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_Peso", entity.medic_Peso, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_Temperatura", entity.medic_Temperatura, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_FrecuenciaCardiaca", entity.medic_FrecuenciaCardiaca, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_FrecuenciaRespiratoria", entity.medic_FrecuenciaRespiratoria, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vac_Id", entity.vac_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_MedicamentosRecetados", entity.medic_MedicamentosRecetados, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_Dosificacion", entity.medic_Dosificacion, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_ProcedimientosRealizados", entity.medic_ProcedimientosRealizados, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_ResultadosExamenes", entity.medic_ResultadosExamenes, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_ProximaCita", entity.medic_ProximaCita, DbType.DateTime, ParameterDirection.Input);
-            parameter.Add("@medic_MotivoProximaCita", entity.medic_MotivoProximaCita, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_UsuarioModifica", entity.medic_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_ProcedimientosRealizados", entity.cita_ProcedimientosRealizados, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_ResultadosExamenes", entity.cita_ResultadosExamenes, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_ProximaCita", entity.cita_ProximaCita, DbType.DateTime, ParameterDirection.Input);
+            parameter.Add("@cita_MotivoProximaCita", entity.cita_MotivoProximaCita, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_UsuarioModifica", entity.cita_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[Refugio].[PR_Refugio_CitaMedica_Delete]";
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Delete]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_UsuarioModifica", 1, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
+        }
+
+        public IEnumerable<PR_Medico_CitaMedica_DropdownResult> Dropdown(int? masc_Id = null)
+        {
+            const string query = "[Medico].[PR_Medico_CitaMedica_Dropdown]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var parameter = new DynamicParameters();
+                parameter.Add("@masc_Id", masc_Id, DbType.Int32, ParameterDirection.Input);
+                var result = db.Query<PR_Medico_CitaMedica_DropdownResult>(query, parameter, commandType: CommandType.StoredProcedure);
+                return result;
+            }
         }
 
         public IEnumerable<PR_Refugio_Comportamiento_ListResult> ComportamientoList()

@@ -308,6 +308,26 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Medico_TiposEsterilizacion_DropdownResult, TipoEsterilizacionViewModel>().ReverseMap();
             CreateMap<tbTiposEsterilizacion, TipoEsterilizacionViewModel>().ReverseMap();
 
+            // Mapeos para módulo médico - Recetas
+            CreateMap<PR_Medico_Recetas_ListResult, RecetaViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Recetas_DetailResult, RecetaViewModel>()
+                .ForMember(dest => dest.receta_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.receta_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_Recetas_FindResult, RecetaViewModel>()
+                .ForMember(dest => dest.receta_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.receta_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<tbRecetas, RecetaViewModel>().ReverseMap();
+
+            // Mapeos para módulo médico - Tratamientos
+            CreateMap<PR_Medico_Tratamientos_ListResult, TratamientoViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Tratamientos_DetailResult, TratamientoViewModel>()
+                .ForMember(dest => dest.trat_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.trat_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_Tratamientos_FindResult, TratamientoViewModel>()
+                .ForMember(dest => dest.trat_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.trat_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<tbTratamientos, TratamientoViewModel>().ReverseMap();
+
             ////Referencia
             ////CreateMap<tbRoles, RoleViewModel>().ReverseMap()();
             ////CreateMap<tbContratos, ContratosViewModel>().ReverseMap()();

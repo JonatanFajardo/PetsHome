@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PetsHome.Business.Services
 {
     /// <summary>
-    /// Servicio que gestiona el historial médico de las mascotas.
+    /// Servicio que gestiona el historial mï¿½dico de las mascotas.
     /// </summary>
     public class CitaMedicaService
     {
@@ -31,14 +31,14 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de todos los registros del historial médico.
+        /// Obtiene una lista de todos los registros del historial mï¿½dico.
         /// </summary>
         /// <returns>Una lista de objetos HistorialMedicoViewModel.</returns>
         public async Task<List<CitaMedicaViewModel>> ListAsync()
         {
             try
             {
-                IEnumerable<PR_Refugio_CitaMedica_ListResult> mappedResult = await _historialmedicoRepository.ListAsyncs();
+                IEnumerable<PR_Medico_CitaMedica_ListResult> mappedResult = await _historialmedicoRepository.ListAsync();
                 return _mapper.Map<List<CitaMedicaViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
@@ -49,15 +49,15 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Busca un registro del historial médico por su identificador.
+        /// Busca un registro del historial mï¿½dico por su identificador.
         /// </summary>
-        /// <param name="id">Identificador del registro del historial médico.</param>
+        /// <param name="id">Identificador del registro del historial mï¿½dico.</param>
         /// <returns>Un objeto HistorialMedicoViewModel que corresponde al registro encontrado.</returns>
         public async Task<CitaMedicaViewModel> FindAsync(int id)
         {
             try
             {
-                PR_Refugio_CitaMedica_FindResult mappedResult = await _historialmedicoRepository.FindAsync(id);
+                PR_Medico_CitaMedica_FindResult mappedResult = await _historialmedicoRepository.FindAsync(id);
                 return _mapper.Map<CitaMedicaViewModel>(mappedResult);
             }
             catch (Exception error)
@@ -68,15 +68,15 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Obtiene los detalles de un registro del historial médico por su identificador.
+        /// Obtiene los detalles de un registro del historial mï¿½dico por su identificador.
         /// </summary>
-        /// <param name="id">Identificador del registro del historial médico.</param>
-        /// <returns>Un objeto HistorialMedicoViewModel que contiene los detalles del registro del historial médico.</returns>
+        /// <param name="id">Identificador del registro del historial mï¿½dico.</param>
+        /// <returns>Un objeto HistorialMedicoViewModel que contiene los detalles del registro del historial mï¿½dico.</returns>
         public async Task<CitaMedicaDetailViewModel> DetailAsync(int id)
         {
             try
             {
-                PR_Refugio_CitaMedica_DetailResult mappedResult = await _historialmedicoRepository.DetailAsync(id);
+                PR_Medico_CitaMedica_DetailResult mappedResult = await _historialmedicoRepository.DetailAsync(id);
                 return _mapper.Map<CitaMedicaDetailViewModel>(mappedResult);
             }
             catch (Exception error)
@@ -87,10 +87,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Agrega un nuevo registro al historial médico.
+        /// Agrega un nuevo registro al historial mï¿½dico.
         /// </summary>
-        /// <param name="model">Datos del registro del historial médico a agregar.</param>
-        /// <returns>True si el registro del historial médico se agregó correctamente, False si ocurrió un error.</returns>
+        /// <param name="model">Datos del registro del historial mï¿½dico a agregar.</param>
+        /// <returns>True si el registro del historial mï¿½dico se agregï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> AddAsync(CitaMedicaViewModel model)
         {
             try
@@ -106,10 +106,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Actualiza un registro existente del historial médico.
+        /// Actualiza un registro existente del historial mï¿½dico.
         /// </summary>
-        /// <param name="model">Datos actualizados del registro del historial médico.</param>
-        /// <returns>True si el registro del historial médico se actualizó correctamente, False si ocurrió un error.</returns>
+        /// <param name="model">Datos actualizados del registro del historial mï¿½dico.</param>
+        /// <returns>True si el registro del historial mï¿½dico se actualizï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> UpdateAsync(CitaMedicaViewModel model)
         {
             try
@@ -125,10 +125,10 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Elimina un registro del historial médico por su identificador.
+        /// Elimina un registro del historial mï¿½dico por su identificador.
         /// </summary>
-        /// <param name="id">Identificador del registro del historial médico a eliminar.</param>
-        /// <returns>True si el registro del historial médico se eliminó correctamente, False si ocurrió un error.</returns>
+        /// <param name="id">Identificador del registro del historial mï¿½dico a eliminar.</param>
+        /// <returns>True si el registro del historial mï¿½dico se eliminï¿½ correctamente, False si ocurriï¿½ un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try
