@@ -90,6 +90,16 @@ namespace PetsHome.Logic.Repositories
 
         #region Dropdown
 
+        public IEnumerable<PR_Refugio_Mascotas_ListResult> MascotasDropdown()
+        {
+            const string query = "[Refugio].[PR_Refugio_Mascotas_List]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = db.Query<PR_Refugio_Mascotas_ListResult>(query, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
         public IEnumerable<PR_Refugio_Raza_DropdownResult> RazaDropdown()
         {
             const string query = "[Refugio].[PR_Refugio_Raza_Dropdown]";

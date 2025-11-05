@@ -1,0 +1,291 @@
+﻿@model CitaMedicaViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+<body>
+    <div class="container py-4" id="formulario">
+                <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
+            @* <input class="form-control" asp-for="emp_Id" type="hidden" /> *@
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-info text-white d-flex align-items-center">
+                <i class="fas fa-info-circle fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2"> Información Básica</h3>
+            </div>
+            <div class="card-body p-4">
+                    <input class="form-control" asp-for="medic_Id" type="hidden" />
+
+                    <div class="row g-3">
+                      @*   <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="masc_Id">Mascota</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                                    <input class="form-control" asp-for="masc_Id" type="text" placeholder="Seleccione la mascota" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="masc_Id"></span>
+                            </div>
+                        </div> *@
+                        <!-- Ejemplo 1: Refugio -->
+                       
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Mascota</label>
+                            <div class="searchable-dropdown" id="mascota-dropdown">
+                                <select class="form-control original-select" asp-for="masc_Id" asp-items="ViewBag.MascotasList">
+                                    <option value="">-- Seleccionar Mascota --</option>
+                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control searchable-input"
+                                           placeholder="Buscar mascota..."
+                                           autocomplete="off"
+                                           readonly />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary dropdown-toggle-btn" type="button">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <i class="fas fa-times clear-selection" style="display: none;"></i>
+                                <div class="dropdown-menu"></div>
+                            </div>
+                            <span asp-validation-for="masc_Id" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_FechaConsulta">Comportamiento</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user-check"></i></span>
+                                    <select class="form-control" asp-for="Com_Id" asp-items="Model.comportamientoList">
+                                        <option value="">-- Seleccionar --</option>
+                                    </select>
+                                </div>
+                                <span class="text-danger" asp-validation-for="Com_Id"></span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_FechaConsulta">Fecha de Consulta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                    <input class="form-control" asp-for="medic_FechaConsulta" type="datetime-local"
+                                           value="@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Central America Standard Time").ToString("yyyy-MM-ddTHH:mm")" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_FechaConsulta"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_TipoConsulta">Tipo de Consulta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clipboard-list"></i></span>
+                                    <input class="form-control" asp-for="medic_TipoConsulta" type="text" placeholder="Ej: Consulta general, Emergencia, Control" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_TipoConsulta"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_MotivoConsulta">Motivo de Consulta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-question-circle"></i></span>
+                                    <input class="form-control" asp-for="medic_MotivoConsulta" type="text" placeholder="Describa el motivo de la consulta" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_MotivoConsulta"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_Diagnostico">Diagnóstico</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
+                                    <input class="form-control" asp-for="medic_Diagnostico" type="text" placeholder="Diagnóstico médico" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_Diagnostico"></span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-vitals text-white d-flex align-items-center">
+                <i class="fas fa-heartbeat fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2"> Signos Vitales</h3>
+            </div>
+            <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_Peso">Peso (gr)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-weight"></i></span>
+                                    <input class="form-control" asp-for="medic_Peso" type="number" min="0" placeholder="0" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_Peso"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_Temperatura">Temperatura (°C)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-thermometer-half"></i></span>
+                                    <input class="form-control" asp-for="medic_Temperatura" type="number" min="0" step="0.1" placeholder="0.0" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_Temperatura"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_FrecuenciaCardiaca">Frecuencia Cardíaca</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-heartbeat"></i></span>
+                                    <input class="form-control" asp-for="medic_FrecuenciaCardiaca" type="number" min="0" placeholder="0" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_FrecuenciaCardiaca"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_FrecuenciaRespiratoria">Frecuencia Respiratoria</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lungs"></i></span>
+                                    <input class="form-control" asp-for="medic_FrecuenciaRespiratoria" type="number" min="0" placeholder="0" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_FrecuenciaRespiratoria"></span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-treatment text-white d-flex align-items-center">
+                <i class="fas fa-pills fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2"> Tratamiento y Procedimientos</h3>
+            </div>
+            <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="vac_Id">Vacuna Aplicada</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-syringe"></i></span>
+                                    <select class="form-control" asp-for="vac_Id" asp-items="Model.VacunaList"></select>
+                                </div>
+                                <span class="text-danger" asp-validation-for="vac_Id"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_MedicamentosRecetados">Medicamentos Recetados</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-prescription-bottle-alt"></i></span>
+                                    <input class="form-control" asp-for="medic_MedicamentosRecetados" type="text" placeholder="Medicamentos prescritos" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_MedicamentosRecetados"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_Dosificacion">Dosificación</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-pills"></i></span>
+                                    <input class="form-control" asp-for="medic_Dosificacion" type="text" placeholder="Dosis y frecuencia" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_Dosificacion"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_ProcedimientosRealizados">Procedimientos Realizados</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-procedures"></i></span>
+                                    <input class="form-control" asp-for="medic_ProcedimientosRealizados" type="text" placeholder="Procedimientos efectuados" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_ProcedimientosRealizados"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_ResultadosExamenes">Resultados de Exámenes</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-file-medical"></i></span>
+                                    <input class="form-control" asp-for="medic_ResultadosExamenes" type="text" placeholder="Resultados de laboratorio y exámenes" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_ResultadosExamenes"></span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header header-appointment text-white d-flex align-items-center">
+                <i class="fas fa-calendar-plus fa-lg me-2"></i>
+                <h3 class="h5 mb-0 text-white ml-2"> Próxima Cita</h3>
+            </div>
+            <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_ProximaCita">Fecha de Próxima Cita</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                    <input class="form-control" asp-for="medic_ProximaCita" type="datetime-local" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_ProximaCita"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="medic_MotivoProximaCita">Motivo de Próxima Cita</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
+                                    <input class="form-control" asp-for="medic_MotivoProximaCita" type="text" placeholder="Motivo de la próxima consulta" />
+                                </div>
+                                <span class="text-danger" asp-validation-for="medic_MotivoProximaCita"></span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+            <div class="actions-wrapper">
+                <div class="actions-title">Acciones</div>
+                <div class="actions-divider"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">* Los cambios se guardarán permanentemente</small>
+                    <div class="d-flex">
+                        <a class="btn btn-modern btn-outline-cancel mr-3" asp-action="Index">
+                            <i class="fas fa-times btn-icon"></i>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-modern btn-solid-save">
+                            <i class="fas fa-check btn-icon"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</body>
+@section Scripts {
+    <script src="~/js/load-dropdownlist.js"></script>
+    <script src="~/js/helpers-custom/image-Extension.js"></script>
+    <script>
+        $(function() {
+            dropdown.inicializarMascotas();
+        });
+    </script>
+}

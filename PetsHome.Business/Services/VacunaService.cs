@@ -106,5 +106,20 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+
+        public IEnumerable<VacunaDropdownViewModel> VacunaDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_Vacunas_ListResult> mappedResult = _vacunaRepository.Dropdown();
+                return _mapper.Map<List<VacunaDropdownViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }

@@ -99,6 +99,7 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_Mascotas_DetailResult, MascotaDetailsViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Mascotas_FindResult, MascotaFormViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Mascotas_ListResult, MascotaListViewModel>().ReverseMap();
+            CreateMap<PR_Refugio_Mascotas_ListResult, MascotaDropdownViewModel>();
             CreateMap<PR_Refugio_Procedencia_DropdownResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_DetailResult, ProcedenciaViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Procedencias_FindResult, ProcedenciaViewModel>().ReverseMap();
@@ -133,6 +134,7 @@ namespace PetsHome.Business.Extensions
                 .ForMember(dest => dest.sol_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
             CreateMap<PR_Refugio_Vacunas_ListResult, VacunaListViewModel>()
                 .ForMember(dest => dest.EsActivo, opt => opt.MapFrom(src => src.EsActivo));
+            CreateMap<PR_Refugio_Vacunas_ListResult, VacunaDropdownViewModel>();
             CreateMap<PR_Refugio_Vacunas_DetailResult, VacunaDetailsViewModel>()
                 .ForMember(dest => dest.EsActivo, opt => opt.MapFrom(src => src.EsActivo))
                 .ForMember(dest => dest.vac_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
