@@ -34,12 +34,12 @@ namespace PetsHome.Business.Services
         /// Obtiene una lista de todos los registros del historial m�dico.
         /// </summary>
         /// <returns>Una lista de objetos HistorialMedicoViewModel.</returns>
-        public async Task<List<CitaMedicaViewModel>> ListAsync()
+        public async Task<List<CitaMedicaListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Medico_CitaMedica_ListResult> mappedResult = await _historialmedicoRepository.ListAsync();
-                return _mapper.Map<List<CitaMedicaViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<CitaMedicaListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -53,12 +53,12 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="id">Identificador del registro del historial m�dico.</param>
         /// <returns>Un objeto HistorialMedicoViewModel que corresponde al registro encontrado.</returns>
-        public async Task<CitaMedicaViewModel> FindAsync(int id)
+        public async Task<CitaMedicaFindViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Medico_CitaMedica_FindResult mappedResult = await _historialmedicoRepository.FindAsync(id);
-                return _mapper.Map<CitaMedicaViewModel>(mappedResult);
+                return _mapper.Map<CitaMedicaFindViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -91,7 +91,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos del registro del historial m�dico a agregar.</param>
         /// <returns>True si el registro del historial m�dico se agreg� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> AddAsync(CitaMedicaViewModel model)
+        public async Task<bool> AddAsync(CitaMedicaFormViewModel model)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace PetsHome.Business.Services
         /// </summary>
         /// <param name="model">Datos actualizados del registro del historial m�dico.</param>
         /// <returns>True si el registro del historial m�dico se actualiz� correctamente, False si ocurri� un error.</returns>
-        public async Task<bool> UpdateAsync(CitaMedicaViewModel model)
+        public async Task<bool> UpdateAsync(CitaMedicaFormViewModel model)
         {
             try
             {

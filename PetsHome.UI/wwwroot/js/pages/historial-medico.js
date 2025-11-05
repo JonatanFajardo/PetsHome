@@ -8,7 +8,7 @@ var HistorialMedico = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'medic_Id', Visibility: false },
+                { FieldName: 'cita_Id', Visibility: false },
                 { FieldName: 'mascota', Size: 200, Visibility: true },
                 { FieldName: 'esterilizacion', Visibility: true },
                 { FieldName: 'comportamiento', Visibility: true },

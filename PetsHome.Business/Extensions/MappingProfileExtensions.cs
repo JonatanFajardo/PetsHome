@@ -338,6 +338,26 @@ namespace PetsHome.Business.Extensions
             ////CreateMap<tbSubmenu, SubmenuViewModel>().ReverseMap();
             ////CreateMap<tbSubmenu_tbModpan, Submenu_tbModpanViewModel>().ReverseMap();
             ////Departamento
+            ///
+            CreateMap<PR_Medico_CitaMedica_ListResult, CitaMedicaListViewModel>()
+                .ForMember(dest => dest.cita_Id, opt => opt.MapFrom(src => src.cita_Id))
+                .ForMember(dest => dest.masc_Nombre, opt => opt.MapFrom(src => src.Mascota))
+                .ForMember(dest => dest.cita_TipoConsulta, opt => opt.MapFrom(src => src.TipoConsulta))
+                .ForMember(dest => dest.cita_Diagnostico, opt => opt.MapFrom(src => src.cita_Diagnostico))
+                .ForMember(dest => dest.cita_Peso, opt => opt.MapFrom(src => src.cita_Peso))
+                .ForMember(dest => dest.cita_Temperatura, opt => opt.MapFrom(src => src.cita_Temperatura))
+                .ForMember(dest => dest.cita_ProximaCita, opt => opt.MapFrom(src => src.cita_ProximaCita))
+                .ForMember(dest => dest.cita_FechaConsulta, opt => opt.MapFrom(src => src.cita_FechaConsulta));
+            CreateMap<PR_Medico_CitaMedica_FindResult, CitaMedicaFindViewModel>().ReverseMap();
+            CreateMap<PR_Medico_CitaMedica_DetailResult, CitaMedicaDetailViewModel>().ReverseMap();
+            CreateMap<tbCitaMedica, CitaMedicaFormViewModel>().ReverseMap();
+            CreateMap<CitaMedicaFindViewModel, CitaMedicaFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.comportamientoList, opt => opt.Ignore())
+                .ForMember(dest => dest.VacunaList, opt => opt.Ignore())
+                .ReverseMap();
+            //CreateMap<PR_Medico_CitaMedica_ListResult, CitaMedicaListViewModel>().ReverseMap();
+
         }
     }
 }

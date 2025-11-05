@@ -14,7 +14,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Id.
         /// </summary>
-        public int medic_Id { get; set; }
+        public int cita_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Mascota.
@@ -24,91 +24,91 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Comportamiento.
         /// </summary>
-        public string medic_Comportamiento { get; set; }
+        public string cita_Comportamiento { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad FechaConsulta.
         /// </summary>
-        public string medic_FechaConsulta { get; set; }
+        public string cita_FechaConsulta { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad TipoConsulta.
         /// </summary>
-        public string medic_TipoConsulta { get; set; }
+        public string cita_TipoConsulta { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad MotivoConsulta.
         /// </summary>
-        public string medic_MotivoConsulta { get; set; }
+        public string cita_MotivoConsulta { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Diagnostico.
         /// </summary>
-        public string medic_Diagnostico { get; set; }
+        public string cita_Diagnostico { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Peso.
         /// </summary>
-        public int? medic_Peso { get; set; }
+        public int? cita_Peso { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Temperatura.
         /// </summary>
-        public int? medic_Temperatura { get; set; }
+        public int? cita_Temperatura { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad FrecuenciaCardiaca.
         /// </summary>
-        public int? medic_FrecuenciaCardiaca { get; set; }
+        public int? cita_FrecuenciaCardiaca { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad FrecuenciaRespiratoria.
         /// </summary>
-        public int? medic_FrecuenciaRespiratoria { get; set; }
+        public int? cita_FrecuenciaRespiratoria { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Vacuna.
         /// </summary>
-        public string medic_Vacuna { get; set; }
+        public string cita_Vacuna { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad MedicamentosRecetados.
         /// </summary>
-        public string medic_MedicamentosRecetados { get; set; }
+        public string cita_MedicamentosRecetados { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad Dosificacion.
         /// </summary>
-        public string medic_Dosificacion { get; set; }
+        public string cita_Dosificacion { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad ProcedimientosRealizados.
         /// </summary>
-        public string medic_ProcedimientosRealizados { get; set; }
+        public string cita_ProcedimientosRealizados { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad ResultadosExamenes.
         /// </summary>
-        public string medic_ResultadosExamenes { get; set; }
+        public string cita_ResultadosExamenes { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad ProximaCita.
         /// </summary>
-        public DateTime? medic_ProximaCita { get; set; }
+        public DateTime? cita_ProximaCita { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad MotivoProximaCita.
         /// </summary>
-        public string medic_MotivoProximaCita { get; set; }
+        public string cita_MotivoProximaCita { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad FechaCreacion.
         /// </summary>
-        public DateTime medic_FechaCreacion { get; set; }
+        public DateTime cita_FechaCreacion { get; set; }
 
         /// <summary>
         /// Obtiene o establece el valor de la propiedad FechaModificacion.
         /// </summary>
-        public DateTime? medic_FechaModificacion { get; set; }
+        public DateTime? cita_FechaModificacion { get; set; }
     }
 }

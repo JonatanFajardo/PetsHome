@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PetsHome.Business.Extensions;
@@ -20,14 +21,16 @@ namespace PetsHome.UI.Controllers
         private readonly MascotaService _mascotaService;
         private readonly ComportamientosService _comportamientosService;
         private readonly VacunaService _vacunaService;
-     
- 
-        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService, ComportamientosService comportamientosService, VacunaService vacunaService)
+        private readonly IMapper _mapper;
+
+
+        public CitaMedicaController(CitaMedicaService historialMedicoService, MascotaService mascotaService, ComportamientosService comportamientosService, VacunaService vacunaService, IMapper mapper)
         {
             _HistorialMedicoService = historialMedicoService;
             _mascotaService = mascotaService;
             _comportamientosService = comportamientosService;
             _vacunaService = vacunaService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -37,10 +40,9 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var model = new CitaMedicaViewModel();
-            //Dropdown(model);
-            var drop = Dropdown(model);
-            
+            var model = new CitaMedicaFormViewModel();
+            var drop = DropdownForm(model);
+
             return View(drop);
         }
 
@@ -63,7 +65,9 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _HistorialMedicoService.FindAsync(id);
             if (itemSearched != null)
             {
-                var dropdown = Dropdown(itemSearched);
+                // Map CitaMedicaFindViewModel to CitaMedicaFormViewModel using AutoMapper
+                var formModel = _mapper.Map<CitaMedicaFormViewModel>(itemSearched);
+                var dropdown = DropdownForm(formModel);
                 return View("Create", dropdown);
             }
             else
@@ -85,7 +89,7 @@ namespace PetsHome.UI.Controllers
             return View(resultado);
         } 
 
-        public async Task<IActionResult> Add(CitaMedicaViewModel model)
+        public async Task<IActionResult> Add(CitaMedicaFormViewModel model)
         {
 
 
@@ -112,9 +116,9 @@ namespace PetsHome.UI.Controllers
                 return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
-        public async Task<IActionResult> Remove(int medic_Id)
+        public async Task<IActionResult> Remove(int cita_Id)
         {
-            Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(medic_Id);
+            Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(cita_Id);
             if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
@@ -135,13 +139,26 @@ namespace PetsHome.UI.Controllers
         //}
 
 
-        public CitaMedicaViewModel Dropdown(CitaMedicaViewModel model)
+        public CitaMedicaFindViewModel Dropdown(CitaMedicaFindViewModel model)
         {
             if (model == null)
-                model = new CitaMedicaViewModel(); // ← protección
+                model = new CitaMedicaFindViewModel(); // ← protección
 
             var mascotaList = _HistorialMedicoService.MascotaDropdown();
             model.MascotaList = new SelectList(mascotaList, "masc_Id", "masc_Nombre");
+
+            model.LoadDropDownList(_comportamientosService.ComportamientoDropdown(), _vacunaService.VacunaDropdown());
+
+            return model;
+        }
+
+        public CitaMedicaFormViewModel DropdownForm(CitaMedicaFormViewModel model)
+        {
+            if (model == null)
+                model = new CitaMedicaFormViewModel();
+
+            var mascotaList = _HistorialMedicoService.MascotaDropdown();
+            model.MascotaList = new SelectList(mascotaList ?? new List<MascotaDropdownViewModel>(), "masc_Id", "masc_Nombre");
 
             model.LoadDropDownList(_comportamientosService.ComportamientoDropdown(), _vacunaService.VacunaDropdown());
 

@@ -59,9 +59,9 @@ namespace PetsHome.Business.Services
                     const string sqlQuery = @"
                         SELECT COUNT(*)
                         FROM Refugio.tbCitaMedica
-                        WHERE medic_ProximaCita IS NOT NULL
-                          AND medic_ProximaCita >= CAST(GETDATE() as DATE)
-                          AND medic_EsEliminado = 0";
+                        WHERE cita_ProximaCita IS NOT NULL
+                          AND cita_ProximaCita >= CAST(GETDATE() as DATE)
+                          AND cita_EsEliminado = 0";
 
                     var resultado = await connection.ExecuteScalarAsync<int>(sqlQuery);
                     return resultado;

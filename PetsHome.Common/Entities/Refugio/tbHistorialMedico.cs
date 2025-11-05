@@ -15,7 +15,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Identificador único de la tabla HistorialMedico.
         /// </summary>
-        public int medic_Id { get; set; }
+        public int cita_Id { get; set; }
         /// <summary>
         /// Identificador de la mascota.
         /// </summary>
@@ -23,7 +23,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si la mascota esta esterilizada.
         /// </summary>
-        public bool medic_Esterilizacion { get; set; }
+        public bool cita_Esterilizacion { get; set; }
         /// <summary>
         /// Indica el tipo de comportamiento tiene la mascota con las personas.
         /// </summary>
@@ -31,35 +31,35 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica el nivel de salud en la que se encuentra.
         /// </summary>
-        public string medic_SaludCuidado { get; set; }
+        public string cita_SaludCuidado { get; set; }
         /// <summary>
         /// Descripción sobre comentario de parte del medico.
         /// </summary>
-        public string medic_InformacionAdicional { get; set; }
+        public string cita_InformacionAdicional { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
-        public bool medic_EsEliminado { get; set; }
+        public bool cita_EsEliminado { get; set; }
         /// <summary>
         /// Indica el identificador del usuario que creó el registro.
         /// </summary>
-        public int medic_UsuarioCrea { get; set; }
+        public int cita_UsuarioCrea { get; set; }
         /// <summary>
         /// Registra la fecha en que se creó el registro.
         /// </summary>
-        public DateTime medic_FechaCrea { get; set; }
+        public DateTime cita_FechaCrea { get; set; }
         /// <summary>
         /// Indica el identificador del último usuario que modificó el registro.
         /// </summary>
-        public int? medic_UsuarioModifica { get; set; }
+        public int? cita_UsuarioModifica { get; set; }
         /// <summary>
         /// Registra la última fecha en que se modificó el registro.
         /// </summary>
-        public DateTime? medic_FechaModifica { get; set; }
+        public DateTime? cita_FechaModifica { get; set; }
 
         public virtual tbComportamientos com { get; set; }
         public virtual tbMascotas masc { get; set; }
-        public virtual tbUsuarios medic_UsuarioCreaNavigation { get; set; }
+        public virtual tbUsuarios cita_UsuarioCreaNavigation { get; set; }
         public virtual ICollection<tbHistorialMedico_tbVacunas> tbHistorialMedico_tbVacunas { get; set; }
     }
 }
