@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\HistorialMedicoService.cs" />
     <Compile Remove="Services\InventariosDetalleService.cs" />
     <Compile Remove="Services\PersonaService.cs" />
   </ItemGroup>
