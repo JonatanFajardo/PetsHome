@@ -7,7 +7,7 @@ namespace PetsHome.Common.Entities
         public int receta_Id { get; set; }
         public int cita_Id { get; set; }
         public int masc_Id { get; set; }
-        public string Mascota { get; set; }
+        public string masc_Nombre { get; set; }
         public string receta_Medicamento { get; set; }
         public int? tipoMed_Id { get; set; }
         public string TipoMedicamento { get; set; }

@@ -106,5 +106,19 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        public List<TipoMedicamentoViewModel> TipoMedicamentoDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Medico_TiposMedicamento_ListResult> mappedResult = _tipoMedicamentoRepository.TipoMedicamentoDropdown();
+                return _mapper.Map<List<TipoMedicamentoViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }

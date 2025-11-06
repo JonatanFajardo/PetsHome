@@ -1,5 +1,7 @@
 using Dapper;
+using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
+using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
 using System;
@@ -61,5 +63,19 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@viaAdmin_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
+
+        #region Dropdown
+
+        public IEnumerable<PR_Medico_ViasAdministracion_ListResult> ViaAdministracionDropdown()
+        {
+            const string query = "[Medico].[PR_Medico_ViasAdministracion_List]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = db.Query<PR_Medico_ViasAdministracion_ListResult>(query, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        #endregion Dropdown
     }
 }

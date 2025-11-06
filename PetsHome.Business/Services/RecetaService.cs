@@ -23,12 +23,12 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<List<RecetaViewModel>> ListAsync()
+        public async Task<List<RecetaListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Medico_Recetas_ListResult> mappedResult = await _recetaRepository.ListAsync();
-                return _mapper.Map<List<RecetaViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<RecetaListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -37,12 +37,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<RecetaViewModel> FindAsync(int id)
+        public async Task<RecetaFormViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Medico_Recetas_FindResult mappedResult = await _recetaRepository.FindAsync(id);
-                return _mapper.Map<RecetaViewModel>(mappedResult);
+                return _mapper.Map<RecetaFormViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -51,12 +51,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<RecetaViewModel> DetailAsync(int id)
+        public async Task<RecetaDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Medico_Recetas_DetailResult mappedResult = await _recetaRepository.DetailAsync(id);
-                return _mapper.Map<RecetaViewModel>(mappedResult);
+                return _mapper.Map<RecetaDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -65,7 +65,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(RecetaViewModel model)
+        public async Task<bool> AddAsync(RecetaFormViewModel model)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(RecetaViewModel model)
+        public async Task<bool> UpdateAsync(RecetaFormViewModel model)
         {
             try
             {
