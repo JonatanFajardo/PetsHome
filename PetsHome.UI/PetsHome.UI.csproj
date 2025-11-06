@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\HistorialMedicoController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
     <Content Remove="Views\HistorialMedico\Index.cshtml" />
   </ItemGroup>
