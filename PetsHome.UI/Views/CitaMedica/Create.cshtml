@@ -1,0 +1,270 @@
+@model CitaMedicaFormViewModel
+@{
+    ViewData["Title"] = Model.isEdit ? "Editar Cita Médica" : "Registrar Cita Médica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-notes-medical mr-2 text-white"></i>@(Model.isEdit ? "Editar" : "Registrar") Cita Médica
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información de la cita médica</p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <form asp-action="Add" method="post" autocomplete="ON" id="citaMedicaForm">
+                    <input class="form-control" asp-for="cita_Id" type="hidden" />
+                    <input class="form-control" asp-for="cita_UsuarioCrea" type="hidden" value="1" />
+
+                    <!-- Datos Básicos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-info-circle mr-2"></i>Información Básica
+                            </h2>
+                            <p class="card-description">Datos generales de la consulta</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Mascota -->
+                                <div class="form-group">
+                                    <label asp-for="masc_Id">Mascota</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="masc_Id" asp-items="Model.MascotaList">
+                                            <option value="">-- Seleccionar Mascota --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="masc_Id"></span>
+                                </div>
+
+                                <!-- Campo Comportamiento -->
+                                <div class="form-group">
+                                    <label asp-for="Com_Id">Comportamiento</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="Com_Id" asp-items="Model.comportamientoList">
+                                            <option value="">-- Seleccionar --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="Com_Id"></span>
+                                </div>
+
+                                <!-- Campo Fecha de Consulta -->
+                                <div class="form-group">
+                                    <label asp-for="cita_FechaConsulta">Fecha de Consulta</label>
+                                    <input class="form-control" asp-for="cita_FechaConsulta" type="datetime-local"
+                                           value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                                    <span class="text-danger" asp-validation-for="cita_FechaConsulta"></span>
+                                </div>
+
+                                <!-- Campo Tipo de Consulta -->
+                                <div class="form-group">
+                                    <label asp-for="cita_TipoConsulta">Tipo de Consulta</label>
+                                    <input class="form-control" asp-for="cita_TipoConsulta" type="text"
+                                           placeholder="Ej: Consulta general, Emergencia, Control" />
+                                    <span class="text-danger" asp-validation-for="cita_TipoConsulta"></span>
+                                </div>
+
+                                <!-- Campo Motivo de Consulta -->
+                                <div class="form-group full-width">
+                                    <label asp-for="cita_MotivoConsulta">Motivo de Consulta</label>
+                                    <textarea class="form-control" asp-for="cita_MotivoConsulta" rows="3"
+                                              placeholder="Describa el motivo de la consulta"></textarea>
+                                    <span class="text-danger" asp-validation-for="cita_MotivoConsulta"></span>
+                                </div>
+
+                                <!-- Campo Diagnóstico -->
+                                <div class="form-group full-width">
+                                    <label asp-for="cita_Diagnostico">Diagnóstico</label>
+                                    <textarea class="form-control" asp-for="cita_Diagnostico" rows="3"
+                                              placeholder="Diagnóstico médico"></textarea>
+                                    <span class="text-danger" asp-validation-for="cita_Diagnostico"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signos Vitales -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-heartbeat mr-2"></i>Signos Vitales
+                            </h2>
+                            <p class="card-description">Mediciones fisiológicas de la mascota</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Peso -->
+                                <div class="form-group">
+                                    <label asp-for="cita_Peso">Peso (kg)</label>
+                                    <input class="form-control" asp-for="cita_Peso" type="number" step="0.01" min="0"
+                                           placeholder="0.00" />
+                                    <span class="text-danger" asp-validation-for="cita_Peso"></span>
+                                </div>
+
+                                <!-- Campo Temperatura -->
+                                <div class="form-group">
+                                    <label asp-for="cita_Temperatura">Temperatura (°C)</label>
+                                    <input class="form-control" asp-for="cita_Temperatura" type="number" step="0.1" min="0"
+                                           placeholder="0.0" />
+                                    <span class="text-danger" asp-validation-for="cita_Temperatura"></span>
+                                </div>
+
+                                <!-- Campo Frecuencia Cardíaca -->
+                                <div class="form-group">
+                                    <label asp-for="cita_FrecuenciaCardiaca">Frecuencia Cardíaca (lpm)</label>
+                                    <input class="form-control" asp-for="cita_FrecuenciaCardiaca" type="number" min="0"
+                                           placeholder="0" />
+                                    <span class="text-danger" asp-validation-for="cita_FrecuenciaCardiaca"></span>
+                                </div>
+
+                                <!-- Campo Frecuencia Respiratoria -->
+                                <div class="form-group">
+                                    <label asp-for="cita_FrecuenciaRespiratoria">Frecuencia Respiratoria (rpm)</label>
+                                    <input class="form-control" asp-for="cita_FrecuenciaRespiratoria" type="number" min="0"
+                                           placeholder="0" />
+                                    <span class="text-danger" asp-validation-for="cita_FrecuenciaRespiratoria"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tratamiento y Procedimientos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-pills mr-2"></i>Tratamiento y Procedimientos
+                            </h2>
+                            <p class="card-description">Medicamentos, vacunas y procedimientos realizados</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Vacuna -->
+                                <div class="form-group">
+                                    <label asp-for="vac_Id">Vacuna Aplicada</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="vac_Id" asp-items="Model.VacunaList">
+                                            <option value="">-- Sin vacuna --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="vac_Id"></span>
+                                </div>
+
+                                <!-- Campo Medicamentos -->
+                                <div class="form-group">
+                                    <label asp-for="cita_MedicamentosRecetados">Medicamentos Recetados</label>
+                                    <input class="form-control" asp-for="cita_MedicamentosRecetados" type="text"
+                                           placeholder="Medicamentos prescritos" />
+                                    <span class="text-danger" asp-validation-for="cita_MedicamentosRecetados"></span>
+                                </div>
+
+                                <!-- Campo Dosificación -->
+                                <div class="form-group full-width">
+                                    <label asp-for="cita_Dosificacion">Dosificación</label>
+                                    <textarea class="form-control" asp-for="cita_Dosificacion" rows="2"
+                                              placeholder="Dosis y frecuencia"></textarea>
+                                    <span class="text-danger" asp-validation-for="cita_Dosificacion"></span>
+                                </div>
+
+                                <!-- Campo Procedimientos -->
+                                <div class="form-group full-width">
+                                    <label asp-for="cita_ProcedimientosRealizados">Procedimientos Realizados</label>
+                                    <textarea class="form-control" asp-for="cita_ProcedimientosRealizados" rows="2"
+                                              placeholder="Procedimientos efectuados"></textarea>
+                                    <span class="text-danger" asp-validation-for="cita_ProcedimientosRealizados"></span>
+                                </div>
+
+                                <!-- Campo Resultados -->
+                                <div class="form-group full-width">
+                                    <label asp-for="cita_ResultadosExamenes">Resultados de Exámenes</label>
+                                    <textarea class="form-control" asp-for="cita_ResultadosExamenes" rows="3"
+                                              placeholder="Resultados de laboratorio y exámenes"></textarea>
+                                    <span class="text-danger" asp-validation-for="cita_ResultadosExamenes"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Próxima Cita -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-calendar-plus mr-2"></i>Próxima Cita
+                            </h2>
+                            <p class="card-description">Programación de seguimiento</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Fecha Próxima Cita -->
+                                <div class="form-group">
+                                    <label asp-for="cita_ProximaCita">Fecha de Próxima Cita</label>
+                                    <input class="form-control" asp-for="cita_ProximaCita" type="datetime-local" />
+                                    <span class="text-danger" asp-validation-for="cita_ProximaCita"></span>
+                                </div>
+
+                                <!-- Campo Motivo Próxima Cita -->
+                                <div class="form-group">
+                                    <label asp-for="cita_MotivoProximaCita">Motivo de Próxima Cita</label>
+                                    <input class="form-control" asp-for="cita_MotivoProximaCita" type="text"
+                                           placeholder="Motivo de la próxima consulta" />
+                                    <span class="text-danger" asp-validation-for="cita_MotivoProximaCita"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">
+                            <i class="fas fa-times mr-1"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-1"></i>@(Model.isEdit ? "Actualizar" : "Guardar") Cita Médica
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Validación del formulario
+        $(document).ready(function() {
+            $('#citaMedicaForm').submit(function(e) {
+                if (!$(this).valid()) {
+                    e.preventDefault();
+
+                    // Scroll al primer error
+                    var firstError = $('.text-danger:visible').first();
+                    if (firstError.length) {
+                        $('html, body').animate({
+                            scrollTop: firstError.closest('.form-group').offset().top - 100
+                        }, 500);
+                    }
+                }
+            });
+        });
+    </script>
+}

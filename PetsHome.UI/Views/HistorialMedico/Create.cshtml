@@ -27,11 +27,11 @@
         </div>
 
         <!-- Contenedor del formulario -->
-        <div style="padding: 24px; background: #fafafa;">
+        <div class="pets-body-full">
             <div class="container-fluid">
 
     <form asp-action="Add" method="post" autocomplete="ON" enctype="multipart/form-data">
-        <input class="form-control" asp-for="medic_Id" type="hidden" />
+        <input class="form-control" asp-for="cita_Id" type="hidden" />
 
         <!-- Información de la Mascota -->
         <div class="card">
@@ -68,24 +68,24 @@
                 <div class="form-grid">
                     <!-- Campo Esterilización -->
                     <div class="form-group">
-                        <label asp-for="medic_Esterilizacion">Esterilización</label>
-                        <input class="form-control" asp-for="medic_Esterilizacion" type="text" placeholder="Ingrese información de esterilización" />
-                        <span class="text-danger" asp-validation-for="medic_Esterilizacion"></span>
+                        <label asp-for="cita_Esterilizacion">Esterilización</label>
+                        <input class="form-control" asp-for="cita_Esterilizacion" type="text" placeholder="Ingrese información de esterilización" />
+                        <span class="text-danger" asp-validation-for="cita_Esterilizacion"></span>
                     </div>
 
                     <!-- Campo Salud Cuidado -->
                     <div class="form-group">
-                        <label asp-for="medic_SaludCuidado">Salud y Cuidado</label>
-                        <input class="form-control" asp-for="medic_SaludCuidado" type="text" placeholder="Ingrese información de salud y cuidado" />
-                        <span class="text-danger" asp-validation-for="medic_SaludCuidado"></span>
+                        <label asp-for="cita_SaludCuidado">Salud y Cuidado</label>
+                        <input class="form-control" asp-for="cita_SaludCuidado" type="text" placeholder="Ingrese información de salud y cuidado" />
+                        <span class="text-danger" asp-validation-for="cita_SaludCuidado"></span>
                     </div>
                 </div>
 
                 <!-- Campo Información Adicional (Full Width) -->
                 <div class="form-group">
-                    <label asp-for="medic_InformacionAdicional">Información Adicional</label>
-                    <textarea class="form-control" asp-for="medic_InformacionAdicional" rows="4" placeholder="Ingrese información adicional del historial médico"></textarea>
-                    <span class="text-danger" asp-validation-for="medic_InformacionAdicional"></span>
+                    <label asp-for="cita_InformacionAdicional">Información Adicional</label>
+                    <textarea class="form-control" asp-for="cita_InformacionAdicional" rows="4" placeholder="Ingrese información adicional del historial médico"></textarea>
+                    <span class="text-danger" asp-validation-for="cita_InformacionAdicional"></span>
                 </div>
             </div>
         </div>

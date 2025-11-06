@@ -1,0 +1,192 @@
+@model RecetaFormViewModel
+@{
+    ViewData["Title"] = "Editar Receta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-edit mr-2 text-white"></i>Editar Receta Médica
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Modifique la información de la receta médica</p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+    <form asp-action="Update" method="post" autocomplete="ON" id="recetaForm">
+        <input class="form-control" asp-for="receta_Id" type="hidden" />
+
+        <!-- Información de la Cita y Mascota -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Información General</h2>
+                <p class="card-description">Datos de la cita y mascota</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Cita Médica -->
+                    <div class="form-group">
+                        <label asp-for="cita_Id">Cita Médica</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="cita_Id" asp-items="Model.CitaMedicaList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="cita_Id"></span>
+                    </div>
+
+                    <!-- Campo Mascota -->
+                    <div class="form-group">
+                        <label asp-for="masc_Id">Mascota</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="masc_Id" asp-items="Model.MascotaList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="masc_Id"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del Medicamento -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Información del Medicamento</h2>
+                <p class="card-description">Datos del medicamento recetado</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Medicamento -->
+                    <div class="form-group">
+                        <label asp-for="receta_Medicamento">Medicamento</label>
+                        <input class="form-control" asp-for="receta_Medicamento" type="text" placeholder="Ingrese el nombre del medicamento" />
+                        <span class="text-danger" asp-validation-for="receta_Medicamento"></span>
+                    </div>
+
+                    <!-- Campo Tipo de Medicamento -->
+                    <div class="form-group">
+                        <label asp-for="tipoMed_Id">Tipo de Medicamento</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="tipoMed_Id" asp-items="Model.TipoMedicamentoList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="tipoMed_Id"></span>
+                    </div>
+
+                    <!-- Campo Vía de Administración -->
+                    <div class="form-group">
+                        <label asp-for="viaAdmin_Id">Vía de Administración</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="viaAdmin_Id" asp-items="Model.ViaAdministracionList">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="viaAdmin_Id"></span>
+                    </div>
+
+                    <!-- Campo Estado -->
+                    <div class="form-group">
+                        <label asp-for="receta_Estado">Estado</label>
+                        <div class="select-wrapper">
+                            <select class="form-control" asp-for="receta_Estado">
+                                <option value="">-- Seleccionar --</option>
+                                <option value="Activa">Activa</option>
+                                <option value="Completada">Completada</option>
+                                <option value="Cancelada">Cancelada</option>
+                            </select>
+                        </div>
+                        <span class="text-danger" asp-validation-for="receta_Estado"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dosificación y Frecuencia -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Dosificación y Frecuencia</h2>
+                <p class="card-description">Detalles de administración del medicamento</p>
+            </div>
+            <div class="card-content">
+                <div class="form-grid">
+                    <!-- Campo Dosis -->
+                    <div class="form-group">
+                        <label asp-for="receta_Dosis">Dosis</label>
+                        <input class="form-control" asp-for="receta_Dosis" type="text" placeholder="Ej: 10mg" />
+                        <span class="text-danger" asp-validation-for="receta_Dosis"></span>
+                    </div>
+
+                    <!-- Campo Frecuencia -->
+                    <div class="form-group">
+                        <label asp-for="receta_Frecuencia">Frecuencia</label>
+                        <input class="form-control" asp-for="receta_Frecuencia" type="text" placeholder="Ej: Cada 8 horas" />
+                        <span class="text-danger" asp-validation-for="receta_Frecuencia"></span>
+                    </div>
+
+                    <!-- Campo Duración -->
+                    <div class="form-group">
+                        <label asp-for="receta_Duracion">Duración</label>
+                        <input class="form-control" asp-for="receta_Duracion" type="text" placeholder="Ej: 7 días" />
+                        <span class="text-danger" asp-validation-for="receta_Duracion"></span>
+                    </div>
+                </div>
+
+                <!-- Fechas -->
+                <div class="form-grid">
+                    <!-- Campo Fecha Inicio -->
+                    <div class="form-group">
+                        <label asp-for="receta_FechaInicio">Fecha de Inicio</label>
+                        <input class="form-control" asp-for="receta_FechaInicio" type="date" />
+                        <span class="text-danger" asp-validation-for="receta_FechaInicio"></span>
+                    </div>
+
+                    <!-- Campo Fecha Fin -->
+                    <div class="form-group">
+                        <label asp-for="receta_FechaFin">Fecha de Fin</label>
+                        <input class="form-control" asp-for="receta_FechaFin" type="date" />
+                        <span class="text-danger" asp-validation-for="receta_FechaFin"></span>
+                    </div>
+                </div>
+
+                <!-- Campo Instrucciones (Full Width) -->
+                <div class="form-group">
+                    <label asp-for="receta_Instrucciones">Instrucciones</label>
+                    <textarea class="form-control" asp-for="receta_Instrucciones" rows="4" placeholder="Ingrese instrucciones adicionales para la administración del medicamento"></textarea>
+                    <span class="text-danger" asp-validation-for="receta_Instrucciones"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Actualizar</button>
+        </div>
+    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/load-dropdownlist.js"></script>
+}
