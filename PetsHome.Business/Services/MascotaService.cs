@@ -158,6 +158,24 @@ namespace PetsHome.Business.Services
         #region Dropdown
 
         /// <summary>
+        /// Obtiene una lista de mascotas para su uso en un dropdown.
+        /// </summary>
+        /// <returns>Una lista de objetos MascotaDropdownViewModel para el dropdown.</returns>
+        public IEnumerable<MascotaDropdownViewModel> MascotaDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_Mascotas_ListResult> mappedResult = _mascotaRepository.MascotasDropdown();
+                return _mapper.Map<List<MascotaDropdownViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Obtiene una lista de razas para su uso en un dropdown.
         /// </summary>
         /// <returns>Una lista de objetos RazaDropdownViewModel para el dropdown.</returns>

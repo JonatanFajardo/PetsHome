@@ -1,0 +1,174 @@
+@model TratamientoFormViewModel
+@{
+    ViewData["Title"] = "Tratamiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-syringe mr-2 text-white"></i>Registro de Tratamiento
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Complete la información del tratamiento</p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <form asp-action="Add" asp-controller="Tratamiento" method="post" autocomplete="ON" id="tratamientoForm">
+                    <input class="form-control" asp-for="trat_Id" type="hidden" />
+
+                    <!-- Información de la Mascota -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-paw mr-2"></i>Información de la mascota
+                            </h2>
+                            <p class="card-description">Datos de la mascota a tratar</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Mascota -->
+                                <div class="form-group">
+                                    <label asp-for="masc_Id">Mascota</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="masc_Id" asp-items="Model.MascotaList">
+                                            <option value="">-- Seleccionar --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="masc_Id"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos del Tratamiento -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Datos del tratamiento</h2>
+                            <p class="card-description">Información del medicamento y aplicación</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <!-- Campo Tipo de Parásito -->
+                                <div class="form-group">
+                                    <label asp-for="tipoPar_Id">Tipo de parásito</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="tipoPar_Id" asp-items="Model.TipoParasitoList">
+                                            <option value="">-- Seleccionar --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="tipoPar_Id"></span>
+                                </div>
+
+                                <!-- Campo Parásito Detectado -->
+                                <div class="form-group">
+                                    <label asp-for="trat_ParasitoDetectado">Parásito detectado</label>
+                                    <input class="form-control" asp-for="trat_ParasitoDetectado" type="text" placeholder="Ingrese el parásito detectado" />
+                                    <span class="text-danger" asp-validation-for="trat_ParasitoDetectado"></span>
+                                </div>
+
+                                <!-- Campo Medicamento -->
+                                <div class="form-group">
+                                    <label asp-for="trat_Medicamento">Medicamento</label>
+                                    <input class="form-control" asp-for="trat_Medicamento" type="text" placeholder="Ingrese el medicamento" />
+                                    <span class="text-danger" asp-validation-for="trat_Medicamento"></span>
+                                </div>
+
+                                <!-- Campo Tipo de Medicamento -->
+                                <div class="form-group">
+                                    <label asp-for="tipoMed_Id">Tipo de medicamento</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="tipoMed_Id" asp-items="Model.TipoMedicamentoList">
+                                            <option value="">-- Seleccionar --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="tipoMed_Id"></span>
+                                </div>
+
+                                <!-- Campo Vía de Administración -->
+                                <div class="form-group">
+                                    <label asp-for="viaAdmin_Id">Vía de administración</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="viaAdmin_Id" asp-items="Model.ViaAdministracionList">
+                                            <option value="">-- Seleccionar --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="viaAdmin_Id"></span>
+                                </div>
+
+                                <!-- Campo Fecha de Aplicación -->
+                                <div class="form-group">
+                                    <label asp-for="trat_FechaAplicacion">Fecha de aplicación</label>
+                                    <input class="form-control" asp-for="trat_FechaAplicacion" type="date" />
+                                    <span class="text-danger" asp-validation-for="trat_FechaAplicacion"></span>
+                                </div>
+
+                                <!-- Campo Aplicado Por -->
+                                <div class="form-group">
+                                    <label asp-for="trat_AplicadoPor">Aplicado por</label>
+                                    <input class="form-control" asp-for="trat_AplicadoPor" type="text" placeholder="Nombre del responsable" />
+                                    <span class="text-danger" asp-validation-for="trat_AplicadoPor"></span>
+                                </div>
+
+                                <!-- Campo Próxima Dosis -->
+                                <div class="form-group">
+                                    <label asp-for="trat_ProximaDosis">Próxima dosis</label>
+                                    <input class="form-control" asp-for="trat_ProximaDosis" type="date" />
+                                    <span class="text-danger" asp-validation-for="trat_ProximaDosis"></span>
+                                </div>
+
+                                <!-- Campo Estado -->
+                                <div class="form-group">
+                                    <label asp-for="trat_Estado">Estado</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="trat_Estado">
+                                            <option value="">-- Seleccionar --</option>
+                                            <option value="Activo">Activo</option>
+                                            <option value="Completado">Completado</option>
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="En Proceso">En Proceso</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="trat_Estado"></span>
+                                </div>
+
+                                <!-- Campo Observaciones -->
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label asp-for="trat_Observaciones">Observaciones</label>
+                                    <textarea class="form-control" asp-for="trat_Observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
+                                    <span class="text-danger" asp-validation-for="trat_Observaciones"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/load-dropdownlist.js"></script>
+}

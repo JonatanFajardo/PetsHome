@@ -1,5 +1,7 @@
 using Dapper;
+using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
+using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
 using System;
@@ -62,6 +64,16 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@tipoPar_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
+        }
+
+        public IEnumerable<PR_Medico_TiposParasito_DropdownResult> TipoParasitoDropdown()
+        {
+            const string query = "[Medico].[PR_Medico_TiposParasito_Dropdown]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = db.Query<PR_Medico_TiposParasito_DropdownResult>(query, commandType: CommandType.StoredProcedure);
+                return result;
+            }
         }
     }
 }

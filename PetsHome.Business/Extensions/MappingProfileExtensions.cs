@@ -326,7 +326,17 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Medico_Recetas_FindResult, RecetaFormViewModel>().ReverseMap();
             CreateMap<tbRecetas, RecetaFormViewModel>().ReverseMap();
 
-            // Mapeos para módulo médico - Tratamientos
+            // Mapeos para módulo médico - Tratamientos (ViewModels separados)
+            CreateMap<PR_Medico_Tratamientos_ListResult, TratamientoListViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Tratamientos_DetailResult, TratamientoDetailsViewModel>()
+                .ForMember(dest => dest.UsuarioCreacion, opt => opt.MapFrom(src => src.UsuarioCreacion))
+                .ForMember(dest => dest.UsuarioModificacion, opt => opt.MapFrom(src => src.UsuarioModificacion));
+            CreateMap<PR_Medico_Tratamientos_FindResult, TratamientoFormViewModel>()
+                .ForMember(dest => dest.trat_NombreUsuarioCrea, opt => opt.MapFrom(src => src.usuarioCrea))
+                .ForMember(dest => dest.trat_NombreUsuarioModifica, opt => opt.MapFrom(src => src.usuarioModifica));
+            CreateMap<tbTratamientos, TratamientoFormViewModel>().ReverseMap();
+
+            // Mantener compatibilidad con TratamientoViewModel antiguo (deprecated)
             CreateMap<PR_Medico_Tratamientos_ListResult, TratamientoViewModel>().ReverseMap();
             CreateMap<PR_Medico_Tratamientos_DetailResult, TratamientoViewModel>()
                 .ForMember(dest => dest.trat_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
