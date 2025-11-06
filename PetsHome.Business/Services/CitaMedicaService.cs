@@ -156,5 +156,19 @@ namespace PetsHome.Business.Services
                 return null;
             }
         }
+
+        public IEnumerable<object> CitaMedicaDropdown(int? masc_Id = null)
+        {
+            try
+            {
+                IEnumerable<PR_Medico_CitaMedica_DropdownResult> mappedResult = _historialmedicoRepository.Dropdown(masc_Id);
+                return mappedResult;
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }

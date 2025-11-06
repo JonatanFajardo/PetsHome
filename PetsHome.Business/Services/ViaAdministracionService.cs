@@ -106,5 +106,19 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        public List<ViaAdministracionViewModel> ViaAdministracionDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Medico_ViasAdministracion_ListResult> mappedResult = _viaAdministracionRepository.ViaAdministracionDropdown();
+                return _mapper.Map<List<ViaAdministracionViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }
