@@ -23,12 +23,16 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<List<TratamientoViewModel>> ListAsync()
+        /// <summary>
+        /// Obtiene una lista de todos los tratamientos.
+        /// </summary>
+        /// <returns>Una lista de objetos TratamientoListViewModel.</returns>
+        public async Task<List<TratamientoListViewModel>> ListAsync()
         {
             try
             {
                 IEnumerable<PR_Medico_Tratamientos_ListResult> mappedResult = await _tratamientoRepository.ListAsync();
-                return _mapper.Map<List<TratamientoViewModel>>(mappedResult.ToList());
+                return _mapper.Map<List<TratamientoListViewModel>>(mappedResult.ToList());
             }
             catch (Exception error)
             {
@@ -37,12 +41,17 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<TratamientoViewModel> FindAsync(int id)
+        /// <summary>
+        /// Busca un tratamiento por su identificador para su edición.
+        /// </summary>
+        /// <param name="id">Identificador del tratamiento.</param>
+        /// <returns>Un objeto TratamientoFormViewModel que corresponde al tratamiento encontrado.</returns>
+        public async Task<TratamientoFormViewModel> FindAsync(int id)
         {
             try
             {
                 PR_Medico_Tratamientos_FindResult mappedResult = await _tratamientoRepository.FindAsync(id);
-                return _mapper.Map<TratamientoViewModel>(mappedResult);
+                return _mapper.Map<TratamientoFormViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -51,12 +60,17 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<TratamientoViewModel> DetailAsync(int id)
+        /// <summary>
+        /// Obtiene los detalles de un tratamiento por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del tratamiento.</param>
+        /// <returns>Un objeto TratamientoDetailsViewModel que contiene los detalles del tratamiento.</returns>
+        public async Task<TratamientoDetailsViewModel> DetailAsync(int id)
         {
             try
             {
                 PR_Medico_Tratamientos_DetailResult mappedResult = await _tratamientoRepository.DetailAsync(id);
-                return _mapper.Map<TratamientoViewModel>(mappedResult);
+                return _mapper.Map<TratamientoDetailsViewModel>(mappedResult);
             }
             catch (Exception error)
             {
@@ -65,7 +79,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(TratamientoViewModel model)
+        /// <summary>
+        /// Agrega un nuevo tratamiento.
+        /// </summary>
+        /// <param name="model">Datos del tratamiento a agregar.</param>
+        /// <returns>True si el tratamiento se agregó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> AddAsync(TratamientoFormViewModel model)
         {
             try
             {
@@ -79,7 +98,12 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(TratamientoViewModel model)
+        /// <summary>
+        /// Actualiza un tratamiento existente.
+        /// </summary>
+        /// <param name="model">Datos actualizados del tratamiento.</param>
+        /// <returns>True si el tratamiento se actualizó correctamente, False si ocurrió un error.</returns>
+        public async Task<bool> UpdateAsync(TratamientoFormViewModel model)
         {
             try
             {
@@ -93,6 +117,11 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Elimina un tratamiento por su identificador.
+        /// </summary>
+        /// <param name="id">Identificador del tratamiento a eliminar.</param>
+        /// <returns>True si el tratamiento se eliminó correctamente, False si ocurrió un error.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             try

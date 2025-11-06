@@ -106,5 +106,19 @@ namespace PetsHome.Business.Services
                 return true;
             }
         }
+
+        public List<TipoParasitoViewModel> TipoParasitoDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Medico_TiposParasito_DropdownResult> mappedResult = _tipoParasitoRepository.TipoParasitoDropdown();
+                return _mapper.Map<List<TipoParasitoViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
     }
 }
