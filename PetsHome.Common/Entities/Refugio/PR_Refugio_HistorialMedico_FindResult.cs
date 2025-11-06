@@ -14,7 +14,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int medic_Id { get; set; }
+        public int cita_Id { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -24,7 +24,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public bool medic_Esterilizacion { get; set; }
+        public bool cita_Esterilizacion { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -39,17 +39,17 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string medic_SaludCuidado { get; set; }
+        public string cita_SaludCuidado { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public string medic_InformacionAdicional { get; set; }
+        public string cita_InformacionAdicional { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int medic_UsuarioCrea { get; set; }
+        public int cita_UsuarioCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -59,12 +59,12 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime medic_FechaCrea { get; set; }
+        public DateTime cita_FechaCrea { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public int? medic_UsuarioModifica { get; set; }
+        public int? cita_UsuarioModifica { get; set; }
         
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
@@ -74,6 +74,6 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
-        public DateTime? medic_FechaModifica { get; set; }
+        public DateTime? cita_FechaModifica { get; set; }
     }
 }

@@ -1,0 +1,171 @@
+@model TratamientoDetailsViewModel
+@{
+    ViewData["Title"] = "Detalle de Tratamiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente -->
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-syringe mr-2 text-white"></i>Detalle de Tratamiento
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">Información completa del tratamiento #@Model.trat_Id</p>
+            </div>
+        </div>
+
+        <!-- Contenedor de detalles -->
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <!-- Información de la Mascota -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-paw mr-2"></i>Información de la mascota
+                        </h2>
+                        <p class="card-description">Datos de la mascota tratada</p>
+                    </div>
+                    <div class="card-content">
+                        <dl class="row">
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Mascota)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Mascota)</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Datos del Tratamiento -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Datos del tratamiento</h2>
+                        <p class="card-description">Información del medicamento y aplicación</p>
+                    </div>
+                    <div class="card-content">
+                        <dl class="row">
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TipoParasito)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.TipoParasito)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CategoriaParasito)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoriaParasito)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_ParasitoDetectado)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.trat_ParasitoDetectado)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_Medicamento)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.trat_Medicamento)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TipoMedicamento)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.TipoMedicamento)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ViaAdministracion)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.ViaAdministracion)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_FechaAplicacion)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.trat_FechaAplicacion)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_AplicadoPor)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.trat_AplicadoPor)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_ProximaDosis)</dt>
+                            <dd class="col-sm-9">
+                                @if (Model.trat_ProximaDosis.HasValue)
+                                {
+                                    @Html.DisplayFor(model => model.trat_ProximaDosis)
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No especificada</span>
+                                }
+                            </dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_Estado)</dt>
+                            <dd class="col-sm-9">
+                                @{
+                                    var badgeClass = "badge-success";
+                                    switch (Model.trat_Estado?.ToLower())
+                                    {
+                                        case "completado":
+                                            badgeClass = "badge-success";
+                                            break;
+                                        case "pendiente":
+                                            badgeClass = "badge-warning";
+                                            break;
+                                        case "en proceso":
+                                            badgeClass = "badge-info";
+                                            break;
+                                        default:
+                                            badgeClass = "badge-primary";
+                                            break;
+                                    }
+                                }
+                                <span class="badge @badgeClass">@Model.trat_Estado</span>
+                            </dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_Observaciones)</dt>
+                            <dd class="col-sm-9">
+                                @if (!string.IsNullOrEmpty(Model.trat_Observaciones))
+                                {
+                                    @Html.DisplayFor(model => model.trat_Observaciones)
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Sin observaciones</span>
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Información de Auditoría -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-info-circle mr-2"></i>Información de auditoría
+                        </h2>
+                        <p class="card-description">Registro de creación y modificación</p>
+                    </div>
+                    <div class="card-content">
+                        <dl class="row">
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UsuarioCreacion)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.UsuarioCreacion)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_FechaCrea)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.trat_FechaCrea)</dd>
+
+                            @if (!string.IsNullOrEmpty(Model.UsuarioModificacion))
+                            {
+                                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UsuarioModificacion)</dt>
+                                <dd class="col-sm-9">@Html.DisplayFor(model => model.UsuarioModificacion)</dd>
+
+                                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.trat_FechaModifica)</dt>
+                                <dd class="col-sm-9">@Html.DisplayFor(model => model.trat_FechaModifica)</dd>
+                            }
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="form-actions">
+                    <a class="btn btn-outline" asp-action="Index">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver
+                    </a>
+                    <a class="btn btn-primary" asp-action="Find" asp-route-id="@Model.trat_Id">
+                        <i class="fas fa-edit mr-2"></i>Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

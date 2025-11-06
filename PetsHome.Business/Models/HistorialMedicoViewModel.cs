@@ -13,7 +13,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Key]
         [Display(Name = "Id ficha medica")]
-        public int medic_Id { get; set; }
+        public int cita_Id { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID de la mascota.
@@ -27,7 +27,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Esterilizacion")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public bool? medic_Esterilizacion { get; set; }
+        public bool? cita_Esterilizacion { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del comportamiento.
@@ -43,7 +43,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Salud Cuidado")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(255)]
-        public string medic_SaludCuidado { get; set; }
+        public string cita_SaludCuidado { get; set; }
 
         /// <summary>
         /// Obtiene o establece información adicional sobre el historial médico de la mascota.
@@ -51,41 +51,41 @@ namespace PetsHome.Business.Models
         [Display(Name = "Informacion Adicional")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(255)]
-        public string medic_InformacionAdicional { get; set; }
+        public string cita_InformacionAdicional { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea el historial médico.
         /// </summary>
-        public int medic_UsuarioCrea { get; set; }
+        public int cita_UsuarioCrea { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que crea el historial médico.
         /// </summary>
         [Display(Name = "Usuario creación")]
-        public string? medic_NombreUsuarioCrea { get; set; }
+        public string? cita_NombreUsuarioCrea { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de creación del historial médico.
         /// </summary>
         [Display(Name = "Fecha modificación")]
-        public DateTime medic_FechaCrea { get; set; }
+        public DateTime cita_FechaCrea { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que modifica el historial médico.
         /// </summary>
-        public int? medic_UsuarioModifica { get; set; }
+        public int? cita_UsuarioModifica { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que modifica el historial médico.
         /// </summary>
         [Display(Name = "Usuario modificación")]
-        public string? medic_NombreUsuarioModifica { get; set; }
+        public string? cita_NombreUsuarioModifica { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de modificación del historial médico.
         /// </summary>
         [Display(Name = "Fecha modificación")]
-        public DateTime? medic_FechaModifica { get; set; }
+        public DateTime? cita_FechaModifica { get; set; }
 
         public string Mascota { get; set; }
 
@@ -102,7 +102,7 @@ namespace PetsHome.Business.Models
         {
             get
             {
-                if (this.medic_Id == 0)
+                if (this.cita_Id == 0)
                     return false;
                 else
                     return true;

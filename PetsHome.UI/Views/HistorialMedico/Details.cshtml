@@ -3,9 +3,9 @@
     ViewData["Title"] = "Detalles de Historial Médico";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var esterilizado = Model.medic_Esterilizacion == true ? "Sí" : "No";
-    var esterilizadoColor = Model.medic_Esterilizacion == true ? "status-activo" : "status-inactivo";
-    var esterilizadoIcono = Model.medic_Esterilizacion == true ? "fa-check-circle" : "fa-times-circle";
+    var esterilizado = Model.cita_Esterilizacion == true ? "Sí" : "No";
+    var esterilizadoColor = Model.cita_Esterilizacion == true ? "status-activo" : "status-inactivo";
+    var esterilizadoIcono = Model.cita_Esterilizacion == true ? "fa-check-circle" : "fa-times-circle";
 }
 
 @section Styles {
@@ -22,11 +22,11 @@
                         <div class="profile-photo-placeholder">
                             <i class="fas fa-file-medical"></i>
                         </div>
-                        <div class="profile-badge">#@Model.medic_Id.ToString().PadLeft(3, '0')</div>
+                        <div class="profile-badge">#@Model.cita_Id.ToString().PadLeft(3, '0')</div>
                     </div>
 
                     <div class="profile-info">
-                        <h1>Ficha Médica #@Model.medic_Id</h1>
+                        <h1>Ficha Médica #@Model.cita_Id</h1>
                         <div class="profile-subtitle">
                             <i class="fas fa-paw"></i>
                             <span>@Model.Mascota</span>
@@ -52,7 +52,7 @@
                         <i class="fas fa-arrow-left"></i>
                         <span>Volver</span>
                     </a>
-                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.medic_Id)">
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.cita_Id)">
                         <i class="fas fa-trash"></i>
                         <span>Eliminar</span>
                     </button>
@@ -111,21 +111,21 @@
                     </div>
                     <div class="detail-card-body">
                         <div class="detail-list">
-                            @if (!string.IsNullOrEmpty(Model.medic_SaludCuidado))
+                            @if (!string.IsNullOrEmpty(Model.cita_SaludCuidado))
                             {
                                 <div class="detail-item">
                                     <div class="detail-label">
                                         <i class="fas fa-heartbeat"></i>
                                         <span>Cuidado de Salud</span>
                                     </div>
-                                    <div class="detail-value">@Model.medic_SaludCuidado</div>
+                                    <div class="detail-value">@Model.cita_SaludCuidado</div>
                                 </div>
                             }
                         </div>
                     </div>
                 </div>
 
-                @if (!string.IsNullOrEmpty(Model.medic_InformacionAdicional))
+                @if (!string.IsNullOrEmpty(Model.cita_InformacionAdicional))
                 {
                     <!-- Información Adicional -->
                     <div class="detail-card detail-card-full">
@@ -136,7 +136,7 @@
                         <div class="detail-card-body">
                             <div class="detail-list">
                                 <div class="detail-item">
-                                    <div class="detail-value">@Model.medic_InformacionAdicional</div>
+                                    <div class="detail-value">@Model.cita_InformacionAdicional</div>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                                             <i class="fas fa-user-plus"></i>
                                             <span>Creado por</span>
                                         </div>
-                                        <div class="detail-value">@(Model.medic_NombreUsuarioCrea ?? "Sistema")</div>
+                                        <div class="detail-value">@(Model.cita_NombreUsuarioCrea ?? "Sistema")</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -167,10 +167,10 @@
                                             <i class="fas fa-calendar-plus"></i>
                                             <span>Fecha de creación</span>
                                         </div>
-                                        <div class="detail-value">@Model.medic_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                        <div class="detail-value">@Model.cita_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
                                     </div>
                                 </div>
-                                @if (Model.medic_UsuarioModifica.HasValue)
+                                @if (Model.cita_UsuarioModifica.HasValue)
                                 {
                                     <div class="col-md-6 mt-3">
                                         <div class="detail-item">
@@ -178,7 +178,7 @@
                                                 <i class="fas fa-user-edit"></i>
                                                 <span>Modificado por</span>
                                             </div>
-                                            <div class="detail-value">@(Model.medic_NombreUsuarioModifica ?? "Sistema")</div>
+                                            <div class="detail-value">@(Model.cita_NombreUsuarioModifica ?? "Sistema")</div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mt-3">
@@ -187,7 +187,7 @@
                                                 <i class="fas fa-calendar-check"></i>
                                                 <span>Última modificación</span>
                                             </div>
-                                            <div class="detail-value">@(Model.medic_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
+                                            <div class="detail-value">@(Model.cita_FechaModifica?.ToString("dd/MM/yyyy hh:mm tt") ?? "N/A")</div>
                                         </div>
                                     </div>
                                 }
@@ -214,7 +214,7 @@
                 </button>
             </div>
             <form asp-action="Remove" method="post">
-                <input type="hidden" name="medic_Id" id="delete-medic-id">
+                <input type="hidden" name="cita_Id" id="delete-medic-id">
                 <div class="modal-body text-center py-4">
                     <div class="mb-3">
                         <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>

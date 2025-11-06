@@ -21,7 +21,7 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Find]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Find<PR_Refugio_HistorialMedico_FindResult>(sqlQuery, parameter);
         }
 
@@ -29,7 +29,7 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Detail]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Detail<PR_Refugio_HistorialMedico_DetailResult>(sqlQuery, parameter);
         }
 
@@ -38,11 +38,11 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_Esterilizacion", entity.medic_Esterilizacion, DbType.Boolean, ParameterDirection.Input);
-            parameter.Add("@medic_Comportamiento", entity.medic_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_SaludCuidado", entity.medic_SaludCuidado, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_InformacionAdicional", entity.medic_InformacionAdicional, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_UsuarioCrea", entity.medic_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Esterilizacion", entity.cita_Esterilizacion, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@cita_Comportamiento", entity.cita_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_SaludCuidado", entity.cita_SaludCuidado, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_InformacionAdicional", entity.cita_InformacionAdicional, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_UsuarioCrea", entity.cita_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
 
@@ -50,13 +50,13 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Update]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", entity.medic_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Id", entity.cita_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
-            parameter.Add("@medic_Esterilizacion", entity.medic_Esterilizacion, DbType.Boolean, ParameterDirection.Input);
-            parameter.Add("@medic_Comportamiento", entity.medic_Id, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_SaludCuidado", entity.medic_SaludCuidado, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_InformacionAdicional", entity.medic_InformacionAdicional, DbType.String, ParameterDirection.Input);
-            parameter.Add("@medic_UsuarioModifica", entity.medic_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Esterilizacion", entity.cita_Esterilizacion, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@cita_Comportamiento", entity.cita_Id, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_SaludCuidado", entity.cita_SaludCuidado, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_InformacionAdicional", entity.cita_InformacionAdicional, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_UsuarioModifica", entity.cita_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
@@ -64,7 +64,7 @@ namespace PetsHome.Logic.Repositories
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_HistorialMedico_Delete]";
             var parameter = new DynamicParameters();
-            parameter.Add("@medic_Id", id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
         }
     }
