@@ -208,6 +208,7 @@
 
 .form-label i {
     color: #667eea;
+    margin-right: 8px;
 }
 
 /* Input Wrapper */
@@ -378,6 +379,7 @@
 /* Login Button */
 .btn-login {
     position: relative;
+    width: 100%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     border-radius: 12px;
@@ -392,6 +394,10 @@
     box-shadow:
         0 4px 15px rgba(102, 126, 234, 0.4),
         inset 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login i {
+    margin-right: 8px;
 }
 
 .btn-login::before {

@@ -99,7 +99,9 @@ namespace PetsHome.UI.Controllers
                 var authProperties = new AuthenticationProperties
                 {
                     IsPersistent = model.RememberMe,
-                    ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : DateTimeOffset.UtcNow.AddHours(8)
+                    // Sin marcar "Recordarme": 8 horas (jornada laboral)
+                    // Con "Recordarme": 7 días
+                    ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(7) : DateTimeOffset.UtcNow.AddHours(8)
                 };
 
                 // Iniciar sesión
