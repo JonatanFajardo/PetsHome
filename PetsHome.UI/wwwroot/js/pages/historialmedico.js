@@ -10,7 +10,7 @@ var HistorialMedico = (function () {
             header = [];
 
             // Usar datatableCatalogs para catálogos simples
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         });
     }
 

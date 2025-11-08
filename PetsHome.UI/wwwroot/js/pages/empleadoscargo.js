@@ -14,7 +14,7 @@ var EmpleadosCargo = (function () {
             ];
 
             // Usar datatableCatalogs para catálogos simples
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         });
     }
 

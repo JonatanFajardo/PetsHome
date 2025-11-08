@@ -7,10 +7,10 @@ var datatablePartials = (function () {
     //serverSide
 
     /**
-     * @param {any} listUrl
+     * @param {Object} directions Objeto con todas las URLs del controlador
      * @param {any} header
      */
-    obj.createDatatable = function (listUrl, id, header) {
+    obj.createDatatable = function (directions, header) {
         var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
         var table = $('#datatable').DataTable({
             //serverSide: true,
@@ -64,8 +64,13 @@ var datatablePartials = (function () {
                 }
             ],
             ajax: function (data, callback, settings) {
+                var url = directions.listUrl;
+                // Si viene un id, agregarlo a la URL
+                if (directions.id) {
+                    url = url + "/" + directions.id;
+                }
                 $.ajax({
-                    url: listUrl + "/" + id,
+                    url: url,
                     type: "GET",
                     dataType: "json",
                     success: function (response) {
@@ -134,13 +139,14 @@ var datatablePartials = (function () {
 
     /**
      * Inicializa el datatable.
-     * @param {Object} listUrl Direccion al que se enviaran los datos
-     * @param {Number} id ID del registro padre
+     * @param {Object} directions Objeto con todas las URLs del controlador (listUrl, detailsUrl, id, etc.)
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
-    obj.init = function (listUrl, id, header) {
+    obj.init = function (directions, header) {
+        // Guardar las direcciones para uso global
+        obj.directions = directions || {};
         this.config();
-        this.createDatatable(listUrl, id, header);
+        this.createDatatable(directions, header);
     };
 
     $('#datatable').on('init.dt', function () {
@@ -224,11 +230,17 @@ function RedirectEdit(params) {
 }
 
 // Función global para ver detalles en módulos parciales
-// Usa Catalogs.detailGetUrl (o Catalogs.getUrl como fallback) que ya está configurado en las vistas
 function viewDetailPartial(id) {
-    // Verificar si Catalogs está configurado
+    // Verificar si datatablePartials.directions tiene detailsUrl configurado
+    if (datatablePartials.directions && datatablePartials.directions.detailsUrl) {
+        // Si hay detailsUrl, redirigir a la página de detalles
+        window.location.href = datatablePartials.directions.detailsUrl + '/' + id;
+        return;
+    }
+
+    // Fallback: Usar Catalogs para modal (comportamiento anterior)
     if (typeof Catalogs === 'undefined' || (!Catalogs.detailGetUrl && !Catalogs.getUrl)) {
-        console.error('Catalogs.detailGetUrl o Catalogs.getUrl no están configurados. Usa Catalogs.configure() en tu vista.');
+        console.error('datatablePartials.directions.detailsUrl no está configurado y Catalogs tampoco. Configura uno de los dos.');
         console.log('ID solicitado:', id);
         return;
     }

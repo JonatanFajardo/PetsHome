@@ -12,7 +12,7 @@ var EmpleadoCargo = (function () {
                 { FieldName: 'cag_Salario' },
                 { FieldName: 'esActivo' }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

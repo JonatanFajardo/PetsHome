@@ -8,7 +8,7 @@ var TipoMedicamento = (function () {
                 { FieldName: 'tipoMed_Id', Size: 200 },
                 { FieldName: 'tipoMed_Descripcion' }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

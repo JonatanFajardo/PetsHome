@@ -11,7 +11,7 @@ var Categoria = (function () {
                 { FieldName: 'cat_Id', Size: 200},
                 { FieldName: 'cat_Descripcion'}
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

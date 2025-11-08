@@ -9,7 +9,7 @@ var TipoParasito = (function () {
                 { FieldName: 'tipoPar_Descripcion' },
                 { FieldName: 'tipoPar_Categoria', Size: 150 }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

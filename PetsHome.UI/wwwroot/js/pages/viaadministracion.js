@@ -8,7 +8,7 @@ var ViaAdministracion = (function () {
                 { FieldName: 'viaAdmin_Id', Size: 200 },
                 { FieldName: 'viaAdmin_Descripcion' }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

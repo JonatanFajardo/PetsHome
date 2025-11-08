@@ -46,7 +46,7 @@
 <script>$(function () { $('[data-toggle="tooltip"]').tooltip(); });</script>
 <script src="~/js/pages/gravedad.js"></script>
 <script>
-Gravedad.datatableCatalogs({ listUrl: "@Url.Action("List")", urlDetail: "@Url.Action("Detail")", urlInsert: "@Url.Action("Create")", urlUpdate: "@Url.Action("Find")" });
+Gravedad.datatableCatalogs({ listUrl: "@Url.Action("List")", detailsUrl: "@Url.Action("Details")", urlInsert: "@Url.Action("Create")", urlUpdate: "@Url.Action("Find")" });
 Catalogs.configure({ displayName: "gravedad", getUrl: "@Url.Action("Find")" });
 $('#globalSearch').on('keyup', function() { $('#datatable').DataTable().search(this.value).draw(); });
 </script>

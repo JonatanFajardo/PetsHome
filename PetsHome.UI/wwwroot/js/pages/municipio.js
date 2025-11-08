@@ -8,7 +8,7 @@ var Municipio = (function () {
             {FieldName: "mpio_Codigo"},
             {FieldName: "mpio_Descripcion"}
         ];
-        datatablePartials.init(Direction.listUrl, Direction.id, header);
+        datatablePartials.init(Direction, header);
     }
 
     return obj;
