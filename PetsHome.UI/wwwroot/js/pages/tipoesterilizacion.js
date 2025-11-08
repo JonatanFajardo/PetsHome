@@ -9,7 +9,7 @@ var TipoEsterilizacion = (function () {
                 { FieldName: 'tipoEst_Descripcion' },
                 { FieldName: 'tipoEst_Sexo', Size: 150 }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

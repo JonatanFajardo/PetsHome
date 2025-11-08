@@ -180,12 +180,14 @@ var datatableCatalogs = (function () {
 
     /**
      * Inicializa el datatable.
-     * @param {Object} listUrl Direccion al que se enviaran los datos
+     * @param {Object} directions Objeto con todas las URLs del controlador (listUrl, detailsUrl, editUrl, deleteUrl, etc.)
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
-    obj.init = function (listUrl, header) {
+    obj.init = function (directions, header) {
+        // Guardar las direcciones para uso global
+        obj.directions = directions || {};
         this.config();
-        this.createDatatable(listUrl, header);
+        this.createDatatable(directions.listUrl, header);
         this.customizeControls();
     };
 
@@ -275,11 +277,15 @@ function RedirectEdit(params) {
 
 // Función global para ver detalles en catálogos
 function viewDetailCatalog(id) {
-    // Obtener el controlador actual desde la URL
-    var pathArray = window.location.pathname.split('/');
-    var controller = pathArray[2] || pathArray[1]; // En catálogos es /Catalogo/NombreCatalogo
-
-    // Redirigir a la página de detalles (sin /Catalogo/ porque el controlador ya maneja la ruta correcta)
-    window.location.href = '/' + controller + '/Details/' + id;
+    // Verificar si hay una URL de detalles configurada
+    if (datatableCatalogs.directions && datatableCatalogs.directions.detailsUrl) {
+        // Usar la URL configurada
+        window.location.href = datatableCatalogs.directions.detailsUrl + '/' + id;
+    } else {
+        // Fallback: Obtener el controlador actual desde la URL
+        var pathArray = window.location.pathname.split('/').filter(function(p) { return p !== ''; });
+        var controller = pathArray.length >= 2 ? pathArray[1] : pathArray[0];
+        window.location.href = '/' + controller + '/Details/' + id;
+    }
 }
 

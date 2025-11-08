@@ -11,7 +11,7 @@ var RecepcionDetalle = (function () {
             { FieldName: "recdet_FechaVencimiento" },
             { FieldName: "recdet_NumeroLote" }
         ];
-        datatablePartials.init(Direction.listUrl, Direction.id, header);
+        datatablePartials.init(Direction, header);
     }
 
     return obj;

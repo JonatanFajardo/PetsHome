@@ -13,7 +13,7 @@ var Vacuna = (function () {
                 { FieldName: "vacu_DosisRecomendada" },
                 { FieldName: "vacu_PeriodoRefuerzo" }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

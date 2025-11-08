@@ -8,7 +8,7 @@ var Gravedad = (function () {
                 { FieldName: 'grav_Id', Size: 200 },
                 { FieldName: 'grav_Descripcion' }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;
