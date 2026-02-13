@@ -212,9 +212,9 @@ var datatable = (function () {
                         }
                     },
                     {
-                        extend: "csvHtml5",
-                        title: "Exportar a CSV",
-                        text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                        extend: "excelHtml5",
+                        title: "Exportar a EXCEL",
+                        text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
                         className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
@@ -226,9 +226,9 @@ var datatable = (function () {
                         exportOptions: exportOptions
                     },
                     {
-                        extend: "excelHtml5",
-                        title: "Exportar a EXCEL",
-                        text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                        extend: "csvHtml5",
+                        title: "Exportar a CSV",
+                        text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
                         className: "btn btn-secondary",
                         exportOptions: exportOptions
                     },
