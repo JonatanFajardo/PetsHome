@@ -1,7 +1,7 @@
 /* ===========================================
    SIDEBAR MODERN STYLES - PETSHOME
-   Consolidated menu styles with red theme
-   Primary Color: #F00C22
+   Consolidated menu styles with purple theme
+   Primary Color: #6C5CE7
    =========================================== */
 
 /* ========================================
@@ -35,16 +35,16 @@
    2. SIDEBAR HEADER (BRAND)
    ======================================== */
 
-/* Brand header with red gradient */
+/* Brand header with purple gradient */
 .sidebar-wrapper .navbar-nav.theme-brand {
-    background: linear-gradient(135deg, #F00C22 0%, #c70a1c 100%) !important;
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%) !important;
     height: 56px;
     padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 4px rgba(240, 12, 34, 0.15);
+    box-shadow: 0 2px 4px rgba(108, 92, 231, 0.15);
 }
 
 .sidebar-wrapper .theme-logo {
@@ -204,18 +204,18 @@
    5. MENU ITEMS - ACTIVE STATE (RED THEME)
    ======================================== */
 
-/* Active menu item with red accent */
+/* Active menu item with purple accent */
 .sidebar-wrapper .menu.active > a,
 .sidebar-wrapper .menu.active > .dropdown-toggle,
 .sidebar-wrapper .menu > a.active,
 .sidebar-wrapper .menu > .dropdown-toggle.active {
-    background-color: #fff1f2;
-    color: #F00C22;
-    border-left-color: #F00C22;
+    background-color: #F8F9FE;
+    color: #6C5CE7;
+    border-left-color: #6C5CE7;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
-    background: #fff1f2;
+    background: #F8F9FE;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg.feather-chevron-right {
@@ -223,18 +223,18 @@
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=false] i {
-    color: #F00C22;
+    color: #6C5CE7;
     stroke-width: 2px;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=false] span {
-    color: #F00C22;
+    color: #6C5CE7;
     font-weight: 600;
 }
 
-/* Active menu item WHEN EXPANDED - keep red background */
+/* Active menu item WHEN EXPANDED - keep purple background */
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] {
-    background: linear-gradient(135deg, #F00C22 0%, #d70a1e 100%) !important;
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%) !important;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] i {
@@ -251,7 +251,7 @@
    6. MENU ITEMS - EXPANDED STATE
    ======================================== */
 
-/* Expanded/open menu items with red background */
+/* Expanded/open menu items with purple background */
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] i {
     color: #fff;
     fill: rgba(255, 255, 255, 0.28);
@@ -265,7 +265,7 @@
 
 #sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle[aria-expanded=true] {
     background: var(--primary-color);
-    background: linear-gradient(135deg, #F00C22 0%, #d70a1e 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
 }
 
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] svg.feather-chevron-right {
@@ -362,38 +362,38 @@
 }
 
 #sidebar ul.menu-categories ul.submenu > li a:hover {
-    color: #F00C22;
+    color: #6C5CE7;
 }
 
 #sidebar ul.menu-categories ul.submenu > li a:hover:before {
-    background-color: #F00C22 !important;
+    background-color: #6C5CE7 !important;
 }
 
 /* Active submenu item */
 .sidebar-wrapper .submenu li a.active {
-    color: #F00C22;
-    background-color: #fff1f2;
-    border-left-color: #F00C22;
+    color: #6C5CE7;
+    background-color: #F8F9FE;
+    border-left-color: #6C5CE7;
     font-weight: 600;
     font-size: 14px;
 }
 
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a:before {
-    background-color: #F00C22;
+    background-color: #6C5CE7;
 }
 
 #sidebar ul.menu-categories ul.submenu > li.active a {
-    color: #F00C22;
+    color: #6C5CE7;
     font-size: 14px;
     font-weight: 700;
 }
 
 #sidebar ul.menu-categories ul.submenu li > [aria-expanded=true]:before {
-    background-color: #F00C22 !important;
+    background-color: #6C5CE7 !important;
 }
 
 #sidebar ul.menu-categories ul.submenu li > a[aria-expanded=true] {
-    color: #F00C22;
+    color: #6C5CE7;
     font-size: 14px;
 }
 
@@ -411,15 +411,15 @@
 }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a {
-    color: #F00C22;
+    color: #6C5CE7;
 }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover {
-    color: #F00C22;
+    color: #6C5CE7;
 }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover:before {
-    background-color: #F00C22;
+    background-color: #6C5CE7;
 }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:before {
@@ -432,7 +432,7 @@
 }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a:before {
-    background-color: #F00C22;
+    background-color: #6C5CE7;
 }
 
 /* ========================================
@@ -529,7 +529,7 @@
 /* Better focus states */
 .sidebar-wrapper a:focus {
     outline: none;
-    box-shadow: inset 0 0 0 2px rgba(240, 12, 34, 0.2);
+    box-shadow: inset 0 0 0 2px rgba(108, 92, 231, 0.2);
 }
 
 /* ========================================

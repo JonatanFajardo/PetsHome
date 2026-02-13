@@ -29,10 +29,10 @@
 
 /* Welcome Card */
 .welcome-card {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #4f46e5 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
     border-radius: 1.5rem;
     padding: 2rem;
-    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 10px 40px rgba(108, 92, 231, 0.3);
     position: relative;
     overflow: hidden;
     border: none;
@@ -82,7 +82,7 @@
 }
 
 .welcome-text p {
-    color: #bfdbfe;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 0.875rem;
     margin-bottom: 1.5rem;
     max-width: 28rem;
@@ -90,7 +90,7 @@
 
 .welcome-btn {
     background: white;
-    color: #3b82f6;
+    color: #6C5CE7;
     padding: 0.625rem 1.5rem;
     border: none;
     border-radius: 0.75rem;
@@ -101,7 +101,7 @@
 }
 
 .welcome-btn:hover {
-    background: #eff6ff;
+    background: #F8F9FE;
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
@@ -374,7 +374,7 @@
 
 .view-all-btn {
     font-size: 0.875rem;
-    color: #3b82f6;
+    color: #6C5CE7;
     background: transparent;
     border: none;
     font-weight: 500;
@@ -383,7 +383,7 @@
 }
 
 .view-all-btn:hover {
-    color: #2563eb;
+    color: #5849C9;
 }
 
 /* ========================================
@@ -514,11 +514,11 @@
    FEATURED PET CARD
    ======================================== */
 .featured-pet-card {
-    background: linear-gradient(135deg, #e9d5ff 0%, #f3e8ff 50%, #fce7f3 100%);
+    background: linear-gradient(135deg, #E8EAFF 0%, #F8F9FE 50%, #E8EAFF 100%);
     border-radius: 1.5rem;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e9d5ff;
+    border: 1px solid #E8EAFF;
     position: relative;
     overflow: hidden;
 }
@@ -536,7 +536,7 @@
     height: 128px;
     top: 0;
     right: 0;
-    background: #c084fc;
+    background: #8B7EF3;
     border-radius: 50%;
     filter: blur(48px);
 }
@@ -558,11 +558,11 @@
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #9333ea;
+    color: #6C5CE7;
 }
 
 .featured-pet-image-container {
-    background: linear-gradient(135deg, #c084fc 0%, #a78bfa 100%);
+    background: linear-gradient(135deg, #8B7EF3 0%, #6C5CE7 100%);
     border-radius: 0.75rem;
     height: 160px;
     display: flex;
@@ -586,7 +586,7 @@
 
 .featured-pet-btn {
     width: 100%;
-    background: linear-gradient(90deg, #a855f7 0%, #ec4899 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8B7EF3 100%);
     color: white;
     padding: 0.625rem;
     border: none;
@@ -598,7 +598,7 @@
 }
 
 .featured-pet-btn:hover {
-    background: linear-gradient(90deg, #9333ea 0%, #db2777 100%);
+    background: linear-gradient(135deg, #5849C9 0%, #6C5CE7 100%);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
@@ -778,10 +778,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #a855f7, #9333ea);
+    background: linear-gradient(to bottom, #8B7EF3, #6C5CE7);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, #9333ea, #7e22ce);
+    background: linear-gradient(to bottom, #6C5CE7, #5849C9);
 }
