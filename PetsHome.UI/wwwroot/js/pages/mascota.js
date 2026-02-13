@@ -10,6 +10,7 @@ var Mascota = (function () {
             header = [
                 {
                     FieldName: 'masc_Id',
+                    Size: 60,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
@@ -17,6 +18,7 @@ var Mascota = (function () {
                 },
                 {
                     FieldName: 'masc_Imagen',
+                    Size: 80,
                     Visibility: true,
                     Render: function(data, type, row) {
                         if (data) {
@@ -35,14 +37,17 @@ var Mascota = (function () {
                 },
                 {
                     FieldName: 'raza_Descripcion',
+                    Size: 130,
                     Visibility: true
                 },
                 {
                     FieldName: 'refg_Nombre',
+                    Size: 150,
                     Visibility: true
                 },
                 {
                     FieldName: 'masc_EsAdoptado',
+                    Size: 120,
                     Visibility: true,
                     Render: function(data, type, row) {
                         var estado = 'Disponible';

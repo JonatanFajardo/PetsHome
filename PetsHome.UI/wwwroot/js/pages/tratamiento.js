@@ -10,6 +10,7 @@ var Tratamiento = (function () {
             header = [
                 {
                     FieldName: 'trat_Id',
+                    Size: 60,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
@@ -24,6 +25,7 @@ var Tratamiento = (function () {
                 },
                 {
                     FieldName: 'trat_Medicamento',
+                    Size: 150,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || 'N/A';
@@ -31,6 +33,7 @@ var Tratamiento = (function () {
                 },
                 {
                     FieldName: 'TipoMedicamento',
+                    Size: 120,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || 'N/A';
@@ -38,6 +41,7 @@ var Tratamiento = (function () {
                 },
                 {
                     FieldName: 'ViaAdministracion',
+                    Size: 130,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || 'N/A';
@@ -45,6 +49,7 @@ var Tratamiento = (function () {
                 },
                 {
                     FieldName: 'trat_FechaAplicacion',
+                    Size: 110,
                     Visibility: true,
                     Render: function(data, type, row) {
                         if (data) {
@@ -56,6 +61,7 @@ var Tratamiento = (function () {
                 },
                 {
                     FieldName: 'trat_ProximaDosis',
+                    Size: 110,
                     Visibility: true,
                     Render: function(data, type, row) {
                         if (data) {
@@ -67,6 +73,7 @@ var Tratamiento = (function () {
                 },
                 {
                     FieldName: 'trat_Estado',
+                    Size: 110,
                     Visibility: true,
                     Render: function(data, type, row) {
                         var badgeClass = 'status-disponible';

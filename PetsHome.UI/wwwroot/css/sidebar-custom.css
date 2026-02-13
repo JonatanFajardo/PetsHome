@@ -670,3 +670,8 @@
     display: block;
     opacity: 0.7;
 }
+
+/* Override DataTables default margin-top */
+table.dataTable {
+    margin-top: 0 !important;
+}
