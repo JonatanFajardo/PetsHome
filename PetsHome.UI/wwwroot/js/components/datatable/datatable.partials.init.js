@@ -29,10 +29,10 @@ var datatablePartials = (function () {
                     titleAttr: 'Exportar esta tabla',
                     buttons: [
                         {
-                            title: "Exportar a CSV",
-                            extend: "csvHtml5",
-                            text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
-                            className: "btn-secondary",
+                            extend: "excelHtml5",
+                            title: "Exportar a EXCEL",
+                            text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                            class: "btn btn-secondary",
                             exportOptions: exportOptions
                         },
                         {
@@ -43,10 +43,10 @@ var datatablePartials = (function () {
                             exportOptions: exportOptions
                         },
                         {
-                            extend: "excelHtml5",
-                            title: "Exportar a EXCEL",
-                            text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
-                            class: "btn btn-secondary",
+                            title: "Exportar a CSV",
+                            extend: "csvHtml5",
+                            text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                            className: "btn-secondary",
                             exportOptions: exportOptions
                         }
                     ]

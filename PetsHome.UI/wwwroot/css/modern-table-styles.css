@@ -512,34 +512,90 @@
 .dataTables_wrapper .dataTables_paginate {
     padding: 1.5rem 2rem;
     background: white;
-    border-top: 1px solid #E5E7EB;
+    border-top: 1px solid #E8EAFF;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 8px 12px;
-    margin: 0 3px;
-    border-radius: 6px;
-    border: 1px solid #E5E7EB;
-    background: white;
-    color: #374151 !important;
+/* Contenedor ul.pagination centrado */
+.dataTables_wrapper .dataTables_paginate .pagination {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cada li sin margen propio */
+.dataTables_wrapper .dataTables_paginate .page-item {
+    margin: 0 !important;
+}
+
+/* Botón base - aplica a todos los page-link */
+.dataTables_wrapper .dataTables_paginate .page-item .page-link {
+    width: 40px;
+    height: 40px;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    border: none !important;
+    background: white !important;
+    color: #636E72 !important;
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.08);
+    line-height: 1;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #F3F4F6;
-    border-color: #D1D5DB;
-    color: #111827 !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+/* Hover */
+.dataTables_wrapper .dataTables_paginate .page-item .page-link:hover {
     background: #6C5CE7 !important;
     color: white !important;
-    border-color: #6C5CE7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+    border: none !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
-    opacity: 0.5;
+/* Página activa */
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+    background: linear-gradient(135deg, #6C5CE7 0%, #8B7EF3 100%) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    transform: none;
+}
+
+/* Deshabilitado (Anterior/Siguiente en extremos) */
+.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link,
+.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link:hover {
+    opacity: 0.4;
     cursor: not-allowed;
+    background: white !important;
+    color: #636E72 !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.08) !important;
+}
+
+/* Anterior/Siguiente: reemplazar texto con flechas */
+.dataTables_wrapper .dataTables_paginate .page-item.previous .page-link,
+.dataTables_wrapper .dataTables_paginate .page-item.next .page-link {
+    font-size: 0 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item.previous .page-link::before {
+    content: "‹";
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item.next .page-link::after {
+    content: "›";
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
 }
 
 /* Responsive Design */
@@ -862,24 +918,6 @@
     animation: shimmer 2s infinite linear;
 }
 
-/* Animación para paginación */
-.dataTables_paginate .pagination .page-item {
-    transition: all 0.3s ease;
-}
-
-.dataTables_paginate .pagination .page-item:hover {
-    transform: translateY(-2px);
-}
-
-.dataTables_paginate .pagination .page-link {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dataTables_paginate .pagination .page-link:hover {
-    background-color: #6C5CE7 !important;
-    color: white !important;
-    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
-}
 
 /* Animación para los controles de búsqueda y filtros */
 .dataTables_filter input,

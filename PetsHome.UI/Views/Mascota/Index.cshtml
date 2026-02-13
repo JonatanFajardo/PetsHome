@@ -34,6 +34,9 @@
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
                     </div>
+                        <button class="btn-export-datatable btn-tour-guide" onclick="startTour()">
+                            <i class="fas fa-question-circle mr-1"></i>Tour
+                        </button>
                         <button class="btn-export-datatable" onclick="location.reload()">
                         Recargar
                     </button>
@@ -217,5 +220,69 @@
         };
         return badges[estado] || badges['Disponible'];
     }
+
+    // =============================================
+    // Tour Interactivo - Intro.js
+    // =============================================
+    function startTour() {
+        introJs().setOptions({
+            nextLabel: 'Siguiente',
+            prevLabel: 'Anterior',
+            doneLabel: 'Entendido',
+            skipLabel: 'Salir',
+            showStepNumbers: false,
+            showBullets: true,
+            overlayOpacity: 0.6,
+            steps: [
+                {
+                    element: document.querySelector('.pets-header-full'),
+                    title: 'Gesti\u00f3n de Mascotas',
+                    intro: 'Desde aqu\u00ed se administran todas las mascotas registradas en los refugios. Puedes ver, crear, editar y eliminar registros.',
+                    position: 'bottom'
+                },
+                {
+                    element: document.querySelector('.btn-nueva-mascota'),
+                    title: 'Registrar Mascota',
+                    intro: 'Abre el formulario para registrar una nueva mascota. Se vincula con el cat\u00e1logo de <strong>Razas</strong> y con los <strong>Refugios</strong> existentes.',
+                    position: 'bottom'
+                },
+                {
+                    element: document.querySelector('#globalSearch'),
+                    title: 'B\u00fasqueda',
+                    intro: 'Filtra la tabla en tiempo real por nombre, raza o refugio.',
+                    position: 'bottom'
+                },
+                {
+                    element: document.querySelector('.view-toggle'),
+                    title: 'Vistas',
+                    intro: 'Alterna entre vista de <strong>tabla</strong> (ideal para gesti\u00f3n) y <strong>tarjetas</strong> (vista m\u00e1s visual de cada mascota).',
+                    position: 'bottom'
+                },
+                {
+                    element: document.querySelector('#tableView'),
+                    title: 'Listado de Mascotas',
+                    intro: 'Muestra cada mascota con su foto, nombre, raza, refugio y estado (<em>Disponible, Adoptado, En Tratamiento</em>). Desde aqu\u00ed se conecta con <strong>Adopciones</strong> y el <strong>Historial M\u00e9dico</strong> de cada mascota.',
+                    position: 'top'
+                },
+                {
+                    element: document.querySelector('#export-buttons-container'),
+                    title: 'Exportar Datos',
+                    intro: 'Descarga los datos en <strong>CSV</strong>, <strong>PDF</strong> o <strong>Excel</strong> para generar reportes.',
+                    position: 'bottom'
+                }
+            ]
+        }).start();
+
+        localStorage.setItem('tour_mascota_seen', 'true');
+    }
+
+    // Mostrar tour autom\u00e1ticamente la primera vez
+    $(document).ready(function() {
+        setTimeout(function() {
+            if (!localStorage.getItem('tour_mascota_seen')) {
+                startTour();
+            }
+        }, 1500);
+    });
 </script>
 }
