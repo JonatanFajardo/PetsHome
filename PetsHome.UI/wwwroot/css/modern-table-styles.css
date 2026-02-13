@@ -204,7 +204,7 @@
     margin: 24px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8EAFF;
     overflow: hidden;
 }
 
@@ -253,26 +253,45 @@
 /* Cuerpo de la tabla */
 .modern-table tbody tr,
 .pets-table tbody tr {
-    border-top: 1px solid #e5e7eb;
-    transition: background-color 0.2s;
+    background-color: #FFFFFF;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.modern-table tbody tr:last-child,
-.pets-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-.modern-table tbody tr:hover,
-.pets-table tbody tr:hover {
-    background-color: #f9fafb;
-}
-
+/* Líneas entre filas: se aplica en td para funcionar con border-collapse */
 .modern-table tbody td,
 .pets-table tbody td {
+    border-bottom: 1px solid #E8EAFF !important;
+    border-top: none !important;
     padding: 16px 24px;
     vertical-align: middle;
     color: #374151;
     font-size: 14px;
+}
+
+.modern-table tbody tr:last-child td,
+.pets-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.modern-table tbody tr:hover,
+.pets-table tbody tr:hover {
+    background-color: #F8F9FE !important;
+    transform: translateX(4px);
+}
+
+/* Override DataTables odd/even striping */
+table.dataTable.display tbody tr.odd,
+table.dataTable.display tbody tr.even,
+table.dataTable tbody tr.odd,
+table.dataTable tbody tr.even {
+    background-color: #FFFFFF !important;
+}
+
+table.dataTable.display tbody tr.odd:hover,
+table.dataTable.display tbody tr.even:hover,
+table.dataTable tbody tr.odd:hover,
+table.dataTable tbody tr.even:hover {
+    background-color: #F8F9FE !important;
 }
 
 .modern-table tbody td:first-child,
@@ -436,7 +455,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
     margin-bottom: 1.5rem;
-    border: 1px solid #E5E7EB;
+    border: 1px solid #E8EAFF;
 }
 
 .pet-card:hover {
@@ -674,7 +693,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
     margin-bottom: 1.5rem;
-    border: 1px solid #E5E7EB;
+    border: 1px solid #E8EAFF;
 }
 
 .card-item:hover {
@@ -860,9 +879,9 @@
 }
 
 #datatable tbody tr:hover {
-    background-color: #f8f9fa !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
+    background-color: #F8F9FE !important;
+    box-shadow: 2px 0 8px rgba(108, 92, 231, 0.08);
+    transform: translateX(4px);
 }
 
 /* Animación en celdas al hacer hover en la fila */
