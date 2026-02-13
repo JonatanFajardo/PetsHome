@@ -10,7 +10,7 @@
 
 /* Header de detalle con foto de perfil */
 .detail-header {
-    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
     padding: 2.5rem;
     color: white;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -83,7 +83,7 @@
     bottom: 5px;
     right: 5px;
     background: white;
-    color: #7c3aed;
+    color: #6C5CE7;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -162,14 +162,14 @@
 
 .btn-detail-white {
     background: white;
-    color: #7c3aed;
+    color: #6C5CE7;
 }
 
 .btn-detail-white:hover {
     background: #f7f7f7;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    color: #7c3aed;
+    color: #6C5CE7;
 }
 
 .btn-detail-outline {
@@ -254,7 +254,7 @@
 }
 
 .detail-card-header i {
-    color: #7c3aed;
+    color: #6C5CE7;
     font-size: 1.25rem;
 }
 
@@ -285,7 +285,7 @@
 }
 
 .detail-label i {
-    color: #7c3aed;
+    color: #6C5CE7;
     font-size: 0.875rem;
 }
 
@@ -317,7 +317,7 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8B7EF3 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -372,7 +372,7 @@
     height: 16px;
     border-radius: 50%;
     background: white;
-    border: 3px solid #7c3aed;
+    border: 3px solid #6C5CE7;
     z-index: 1;
 }
 
@@ -380,7 +380,7 @@
     background: #f9fafb;
     padding: 1rem;
     border-radius: 8px;
-    border-left: 3px solid #7c3aed;
+    border-left: 3px solid #6C5CE7;
 }
 
 .timeline-title {

@@ -12,7 +12,7 @@
 /* Header púrpura completo con gradiente */
 .modern-header-full,
 .pets-header-full {
-    background: linear-gradient(to right, #7c3aed, #6366f1);
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
     padding: 2rem 2.5rem;
     color: white;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -49,7 +49,7 @@
 .btn-nuevo-item,
 .btn-nueva-mascota {
     background: white;
-    color: #7C3AED;
+    color: #6C5CE7;
     border: none;
     border-radius: 8px;
     padding: 10px 24px;
@@ -109,7 +109,7 @@
 .search-container input:focus {
     outline: none;
     background: white;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
 }
 
 /* Botones de acción del header */
@@ -149,7 +149,7 @@
 
 .btn-control.active {
     background: white;
-    color: #7c3aed;
+    color: #6C5CE7;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
@@ -226,7 +226,7 @@
 /* Header de la tabla */
 .modern-table thead,
 .pets-table thead {
-    background: linear-gradient(to right, #7c3aed, #6366f1);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8B7EF3 100%);
     color: white;
 }
 
@@ -366,46 +366,49 @@
 
 /* Botones de acción en la tabla */
 .action-btn {
-    border-radius: 6px;
+    border-radius: 8px;
     width: 32px;
     height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: none;
     border: none;
     cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     margin: 0 4px;
 }
 
-.action-btn:hover {
-    transform: translateY(-1px);
-}
-
 .btn-view {
-    color: #2563eb;
+    background: #E8F4FF;
+    color: #2196F3;
 }
 
 .btn-view:hover {
-    background: #dbeafe;
+    background: #2196F3;
+    color: white;
+    transform: scale(1.1);
 }
 
 .btn-edit {
-    color: #7c3aed;
+    background: #FFF4E6;
+    color: #FF9800;
 }
 
 .btn-edit:hover {
-    background: #f5f3ff;
+    background: #FF9800;
+    color: white;
+    transform: scale(1.1);
 }
 
 .btn-delete {
-    color: #dc2626;
+    background: #FFEBEE;
+    color: #FF4757;
 }
 
 .btn-delete:hover {
-    background: #fee2e2;
+    background: #FF4757;
+    color: white;
+    transform: scale(1.1);
 }
 
 .action-btn i {
@@ -444,7 +447,7 @@
 .pet-card-img {
     width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -461,7 +464,7 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    color: #7C3AED;
+    color: #6C5CE7;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -473,7 +476,7 @@
 }
 
 .modal-header {
-    background: #7C3AED;
+    background: #6C5CE7;
     color: white;
     border-radius: 16px 16px 0 0;
     padding: 1.5rem;
@@ -529,9 +532,9 @@
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #7C3AED !important;
+    background: #6C5CE7 !important;
     color: white !important;
-    border-color: #7C3AED;
+    border-color: #6C5CE7;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
@@ -626,7 +629,7 @@
 .card-item-img {
     width: 100%;
     height: 180px;
-    background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -643,7 +646,7 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    color: #7C3AED;
+    color: #6C5CE7;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -818,55 +821,17 @@
 }
 
 #datatable tbody tr:hover td:first-child {
-    color: #7c3aed;
+    color: #6C5CE7;
 }
 
 /* Animación para botones de acción */
 .action-btn {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.action-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    transform: translate(-50%, -50%);
-    transition: width 0.4s, height 0.4s;
-}
-
-.action-btn:hover::before {
-    width: 100%;
-    height: 100%;
-}
-
-.action-btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
 }
 
 .action-btn:active {
-    transform: translateY(0) scale(0.95);
+    transform: scale(0.95);
     transition: all 0.1s;
-}
-
-/* Animación específica para cada tipo de botón */
-.btn-view:hover {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
-}
-
-.btn-edit:hover {
-    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%) !important;
-}
-
-.btn-delete:hover {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
 }
 
 /* Animación de carga para la tabla */
@@ -911,9 +876,9 @@
 }
 
 .dataTables_paginate .pagination .page-link:hover {
-    background-color: #7c3aed !important;
+    background-color: #6C5CE7 !important;
     color: white !important;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
 }
 
 /* Animación para los controles de búsqueda y filtros */
@@ -925,7 +890,7 @@
 .dataTables_filter input:focus,
 .dataTables_length select:focus {
     transform: scale(1.02);
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
 }
 
 /* Animación para badges/etiquetas en la tabla */
@@ -947,7 +912,7 @@
 }
 
 #datatable thead th:hover {
-    background-color: #6366f1 !important;
+    background-color: #5849C9 !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -1012,7 +977,7 @@ tr.loading-row {
 .btn-nueva-mascota:hover,
 #add-btn:hover {
     animation: bounceSoft 0.6s ease-in-out;
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
 }
 
 /* Transición suave para modales */
@@ -1078,10 +1043,10 @@ tr.loading-row {
 
 /* Tab activa con gradiente púrpura */
 .pets-status-tabs .nav-link.active {
-    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8B7EF3 100%);
     color: white !important;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
     transform: translateY(-2px);
 }
 
@@ -1250,4 +1215,122 @@ tr.loading-row {
         margin-left: 70px;
         margin-right: 70px;
     }
+}
+
+/* ===========================================
+   INTRO.JS - TOUR INTERACTIVO OVERRIDES
+   =========================================== */
+
+/* Botón Tour en el header */
+.btn-tour-guide {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-tour-guide:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.btn-tour-guide::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.15) 50%,
+        transparent 60%
+    );
+    animation: tourShimmer 3s infinite;
+}
+
+@keyframes tourShimmer {
+    0% { transform: translateX(-100%) translateY(-100%); }
+    100% { transform: translateX(100%) translateY(100%); }
+}
+
+/* Tooltip de Intro.js con tema púrpura */
+.introjs-tooltip {
+    border-radius: 12px !important;
+    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.2) !important;
+    border: 1px solid rgba(108, 92, 231, 0.1) !important;
+    max-width: 360px;
+}
+
+.introjs-tooltip-title {
+    color: #6C5CE7 !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+}
+
+.introjs-tooltiptext {
+    color: #374151 !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+/* Botones de navegación del tour */
+.introjs-tooltipbuttons {
+    border-top: 1px solid #f3f4f6 !important;
+}
+
+.introjs-button {
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    padding: 6px 16px !important;
+    text-shadow: none !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.introjs-nextbutton,
+.introjs-donebutton {
+    background: linear-gradient(135deg, #6C5CE7, #8B7EF3) !important;
+    color: white !important;
+}
+
+.introjs-nextbutton:hover,
+.introjs-donebutton:hover {
+    background: linear-gradient(135deg, #5849C9, #6C5CE7) !important;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3) !important;
+}
+
+.introjs-prevbutton {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+}
+
+.introjs-prevbutton:hover {
+    background: #e5e7eb !important;
+}
+
+.introjs-skipbutton {
+    color: #9ca3af !important;
+    font-size: 12px !important;
+}
+
+/* Highlight del elemento activo */
+.introjs-helperLayer {
+    border-radius: 8px !important;
+    box-shadow: 0 0 0 5000px rgba(17, 24, 39, 0.6) !important;
+}
+
+/* Bullets de progreso */
+.introjs-bullets ul li a {
+    background: #d1d5db !important;
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.introjs-bullets ul li a.active {
+    background: #6C5CE7 !important;
+    width: 20px !important;
+    border-radius: 4px !important;
 }
