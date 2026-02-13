@@ -10,6 +10,7 @@ var Voluntario = (function () {
             header = [
                 {
                     FieldName: 'vol_Id',
+                    Size: 60,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
@@ -17,6 +18,7 @@ var Voluntario = (function () {
                 },
                 {
                     FieldName: 'vol_HorasTrabajadas',
+                    Size: 100,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="font-weight: 500;">' + data + ' hrs</span>';
@@ -31,6 +33,7 @@ var Voluntario = (function () {
                 },
                 {
                     FieldName: 'per_Identidad',
+                    Size: 150,
                     Visibility: true
                 }
             ];

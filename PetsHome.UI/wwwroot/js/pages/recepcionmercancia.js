@@ -7,18 +7,18 @@ var RecepcionMercancia = (function () {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'recep_Id' },
+                { FieldName: 'recep_Id', Size: 60 },
                 { FieldName: 'recep_Descripcion' },
-                { FieldName: 'recep_Fecha', render: function(data) {
+                { FieldName: 'recep_Fecha', Size: 110, render: function(data) {
                     if (data) {
                         var date = new Date(data);
                         return date.toLocaleDateString('es-HN');
                     }
                     return '';
                 }},
-                { FieldName: 'refg_Nombre' },
-                { FieldName: 'recep_TipoRecepcion' },
-                { FieldName: 'recep_NumeroDocumento' }
+                { FieldName: 'refg_Nombre', Size: 150 },
+                { FieldName: 'recep_TipoRecepcion', Size: 130 },
+                { FieldName: 'recep_NumeroDocumento', Size: 130 }
             ];
             datatable.init(Direction, header);
         })

@@ -7,11 +7,11 @@ var Solicitud = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: "sol_Id", Size: 200 },
-                { FieldName: "sol_Identidad" },
+                { FieldName: "sol_Id", Size: 60 },
+                { FieldName: "sol_Identidad", Size: 130 },
                 { FieldName: "sol_Nombres" },
-                { FieldName: "masc_Nombre" },
-                { FieldName: "sol_Correo" }
+                { FieldName: "masc_Nombre", Size: 150 },
+                { FieldName: "sol_Correo", Size: 180 }
             ];
             datatable.init(Direction, header);
         })

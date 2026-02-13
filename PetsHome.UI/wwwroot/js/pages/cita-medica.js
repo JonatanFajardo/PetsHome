@@ -10,6 +10,7 @@ var CitaMedica = (function () {
             header = [
                 {
                     FieldName: 'cita_Id',
+                    Size: 60,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
@@ -17,22 +18,10 @@ var CitaMedica = (function () {
                 },
                 {
                     FieldName: 'masc_Nombre',
+                    Size: 150,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<div class="pet-name"><i class="fas fa-paw text-primary mr-2"></i>' + data + '</div>';
-                    }
-                },
-                {
-                    FieldName: 'cita_TipoConsulta',
-                    Visibility: true,
-                    Render: function(data, type, row) {
-                        var badgeClass = 'badge-primary';
-                        if (data === 'Emergencia') badgeClass = 'badge-danger';
-                        else if (data === 'Vacunación') badgeClass = 'badge-success';
-                        else if (data === 'Cirugía') badgeClass = 'badge-warning';
-                        else if (data === 'Control') badgeClass = 'badge-info';
-
-                        return '<span class="badge ' + badgeClass + '">' + data + '</span>';
                     }
                 },
                 {
@@ -45,7 +34,22 @@ var CitaMedica = (function () {
                     }
                 },
                 {
+                    FieldName: 'cita_TipoConsulta',
+                    Size: 120,
+                    Visibility: true,
+                    Render: function(data, type, row) {
+                        var badgeClass = 'badge-primary';
+                        if (data === 'Emergencia') badgeClass = 'badge-danger';
+                        else if (data === 'Vacunación') badgeClass = 'badge-success';
+                        else if (data === 'Cirugía') badgeClass = 'badge-warning';
+                        else if (data === 'Control') badgeClass = 'badge-info';
+
+                        return '<span class="badge ' + badgeClass + '">' + data + '</span>';
+                    }
+                },
+                {
                     FieldName: 'cita_Peso',
+                    Size: 80,
                     Visibility: true,
                     Render: function(data, type, row) {
                         if (!data) return '<span class="text-muted">N/A</span>';
@@ -54,6 +58,7 @@ var CitaMedica = (function () {
                 },
                 {
                     FieldName: 'cita_Temperatura',
+                    Size: 90,
                     Visibility: true,
                     Render: function(data, type, row) {
                         if (!data) return '<span class="text-muted">N/A</span>';
@@ -67,6 +72,7 @@ var CitaMedica = (function () {
                 },
                 {
                     FieldName: 'cita_ProximaCita',
+                    Size: 120,
                     Visibility: true,
                     Render: function(data, type, row) {
                         if (!data) return '<span class="text-muted">Sin programar</span>';

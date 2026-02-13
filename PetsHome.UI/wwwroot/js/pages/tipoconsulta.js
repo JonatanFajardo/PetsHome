@@ -5,7 +5,7 @@ var TipoConsulta = (function () {
         $(function () {
             var header = new Array();
             header = [
-                { FieldName: 'tipoCon_Id', Size: 200 },
+                { FieldName: 'tipoCon_Id', Size: 60 },
                 { FieldName: 'tipoCon_Descripcion' }
             ];
             datatableCatalogs.init(Direction, header);

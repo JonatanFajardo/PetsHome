@@ -10,6 +10,7 @@ var Receta = (function () {
             header = [
                 {
                     FieldName: 'receta_Id',
+                    Size: 60,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
@@ -24,6 +25,7 @@ var Receta = (function () {
                 },
                 {
                     FieldName: 'receta_Medicamento',
+                    Size: 150,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return '<span style="font-weight: 500;">' + data + '</span>';
@@ -31,6 +33,7 @@ var Receta = (function () {
                 },
                 {
                     FieldName: 'TipoMedicamento',
+                    Size: 120,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || '<span style="color: #9CA3AF;">Sin tipo</span>';
@@ -38,6 +41,7 @@ var Receta = (function () {
                 },
                 {
                     FieldName: 'receta_Dosis',
+                    Size: 90,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || '<span style="color: #9CA3AF;">N/A</span>';
@@ -45,6 +49,7 @@ var Receta = (function () {
                 },
                 {
                     FieldName: 'receta_Frecuencia',
+                    Size: 100,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || '<span style="color: #9CA3AF;">N/A</span>';
@@ -52,6 +57,7 @@ var Receta = (function () {
                 },
                 {
                     FieldName: 'receta_Duracion',
+                    Size: 100,
                     Visibility: true,
                     Render: function(data, type, row) {
                         return data || '<span style="color: #9CA3AF;">N/A</span>';
@@ -59,6 +65,7 @@ var Receta = (function () {
                 },
                 {
                     FieldName: 'receta_Estado',
+                    Size: 110,
                     Visibility: true,
                     Render: function(data, type, row) {
                         var estado = data || 'Activa';

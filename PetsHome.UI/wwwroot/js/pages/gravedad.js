@@ -5,7 +5,7 @@ var Gravedad = (function () {
         $(function () {
             var header = new Array();
             header = [
-                { FieldName: 'grav_Id', Size: 200 },
+                { FieldName: 'grav_Id', Size: 60 },
                 { FieldName: 'grav_Descripcion' }
             ];
             datatableCatalogs.init(Direction, header);

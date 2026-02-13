@@ -7,7 +7,7 @@ var Procedencia = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'proc_Id', Size: 200 },
+                { FieldName: 'proc_Id', Size: 60 },
                 { FieldName: 'proc_Descripcion' }
             ];
             datatableCatalogs.init(Direction.listUrl, header);
