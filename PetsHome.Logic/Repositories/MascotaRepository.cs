@@ -110,7 +110,7 @@ namespace PetsHome.Logic.Repositories
 
         public IEnumerable<PR_Refugio_Procedencia_DropdownResult> ProcedenciaDropdown()
         {
-            const string query = "[Refugio].[PR_Refugio_Procedencia_Dropdown]";
+            const string query = "[Refugio].[PR_Refugio_Procedencias_Dropdown]";
             using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
                 var result = db.Query<PR_Refugio_Procedencia_DropdownResult>(query, commandType: CommandType.StoredProcedure);
