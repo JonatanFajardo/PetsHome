@@ -9,6 +9,7 @@ $(document).ready(function () {
 // Inicializar la página
 function initializePage() {
     obtenerDatosClima();
+    initializeTips();
 }
 
 // ============================================
@@ -40,7 +41,7 @@ async function obtenerDatosClima() {
         const data = await $.ajax({
             url: weatherUrl,
             dataType: 'json',
-            timeout: 10000 // Timeout de 10 segundos
+            timeout: 10000
         });
 
         if (data && data.current && data.location) {
@@ -58,61 +59,49 @@ async function obtenerDatosClima() {
 // Actualizar la interfaz con los datos del clima
 function actualizarInterfazClima(data) {
     try {
-        // Actualizar ubicación
         if (weatherElements.location.length) {
             weatherElements.location.text(`${data.location.name}, ${data.location.country}`);
         }
 
-        // Actualizar icono del clima
         if (weatherElements.icon.length && data.current.condition.icon) {
             weatherElements.icon.attr('src', `https:${data.current.condition.icon}`);
             weatherElements.icon.attr('alt', data.current.condition.text);
             weatherElements.icon.show();
-            // Ocultar el icono por defecto
             $('#weather-icon-default').hide();
         }
 
-        // Actualizar temperatura
         if (weatherElements.temperature.length) {
             weatherElements.temperature.text(`${Math.round(data.current.temp_c)}°C`);
         }
 
-        // Actualizar condición del clima
         if (weatherElements.condition.length) {
             weatherElements.condition.text(traducirCondicionClima(data.current.condition.text));
         }
 
-        // Actualizar sensación térmica
         if (weatherElements.feelsLike.length) {
             weatherElements.feelsLike.text(`${Math.round(data.current.feelslike_c)}°C`);
         }
 
-        // Actualizar humedad
         if (weatherElements.humidity.length) {
             weatherElements.humidity.text(`${data.current.humidity}%`);
         }
 
-        // Actualizar velocidad del viento
         if (weatherElements.windSpeed.length) {
             weatherElements.windSpeed.text(`${data.current.wind_kph} km/h`);
         }
 
-        // Actualizar dirección del viento
         if (weatherElements.windDirection.length) {
             weatherElements.windDirection.text(traducirDireccionViento(data.current.wind_dir));
         }
 
-        // Actualizar visibilidad
         if (weatherElements.visibility.length) {
             weatherElements.visibility.text(`${data.current.vis_km} km`);
         }
 
-        // Limpiar mensaje de error
         if (weatherElements.errorMessage.length) {
             weatherElements.errorMessage.text('').hide();
         }
 
-        // Actualizar el mensaje contextual según el clima
         actualizarMensajeContextual(data.current);
 
     } catch (error) {
@@ -159,7 +148,6 @@ function mostrarDatosClimaNoDisponibles() {
         weatherElements.icon.hide();
     }
 
-    // Mostrar el icono por defecto
     $('#weather-icon-default').show();
 
     if (weatherElements.errorMessage.length) {
@@ -173,7 +161,6 @@ function actualizarMensajeContextual(currentWeather) {
     const conditionCode = currentWeather.condition.code;
     let mensaje = 'Perfecto para pasear mascotas';
 
-    // Condiciones de temperatura
     if (temp < 10) {
         mensaje = 'Hace frío, abriga a tus mascotas';
     } else if (temp > 30) {
@@ -182,8 +169,6 @@ function actualizarMensajeContextual(currentWeather) {
         mensaje = 'Clima ideal para actividades al aire libre';
     }
 
-    // Condiciones de clima (lluvia, nieve, etc.)
-    // Códigos de WeatherAPI: https://www.weatherapi.com/docs/weather_conditions.json
     const rainyConditions = [1063, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, 1246];
     const snowConditions = [1066, 1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258];
     const stormConditions = [1087, 1273, 1276, 1279, 1282];
@@ -284,3 +269,65 @@ function traducirDireccionViento(direction) {
 
 // Actualizar clima cada 30 minutos
 setInterval(obtenerDatosClima, 30 * 60 * 1000);
+
+// ============================================
+// MÓDULO DE TIPS DE CUIDADO
+// ============================================
+
+const tips = [
+    "La socialización temprana es clave para el desarrollo saludable de cachorros. Expón a diferentes personas, animales y ambientes de forma controlada.",
+    "El ejercicio regular es fundamental para la salud física y mental de las mascotas. Un perro adulto necesita al menos 30 minutos de actividad diaria.",
+    "La hidratación es vital: asegúrate de que tu mascota siempre tenga acceso a agua fresca y limpia. Cambia el agua al menos dos veces al día.",
+    "Las visitas veterinarias regulares son esenciales. Se recomienda un chequeo completo al menos una vez al año.",
+    "Una dieta balanceada adaptada a la edad, tamaño y condición de salud de tu mascota previene problemas de obesidad.",
+    "El cepillado regular no solo mantiene el pelaje brillante, sino que también ayuda a detectar parásitos o anomalías en la piel.",
+    "Mantén al día el calendario de vacunación de tu mascota. Las vacunas previenen enfermedades graves.",
+    "Los gatos también necesitan actividad física. Proporciona juguetes interactivos y dedica al menos 15 minutos diarios al juego activo.",
+    "La salud dental es crucial: el 80% de los perros mayores de 3 años sufren problemas dentales.",
+    "Nunca dejes a tu mascota en un vehículo cerrado. La temperatura interior puede alcanzar niveles peligrosos en minutos."
+];
+
+let currentTipIndex = 0;
+
+function initializeTips() {
+    var tipIndicators = document.getElementById('tip-indicators');
+    if (!tipIndicators) return;
+
+    // Create indicators
+    tipIndicators.innerHTML = '';
+    for (var i = 0; i < tips.length; i++) {
+        var indicator = document.createElement('span');
+        indicator.className = 'tip-indicator' + (i === 0 ? ' active' : '');
+        indicator.setAttribute('data-index', i);
+        indicator.onclick = function () {
+            goToTip(parseInt(this.getAttribute('data-index')));
+        };
+        tipIndicators.appendChild(indicator);
+    }
+
+    // Auto-rotate every 4 seconds
+    setInterval(function () {
+        var nextIndex = (currentTipIndex + 1) % tips.length;
+        goToTip(nextIndex);
+    }, 4000);
+}
+
+function goToTip(index) {
+    var tipText = document.getElementById('tip-text');
+    if (!tipText) return;
+
+    tipText.classList.add('fade-out');
+
+    setTimeout(function () {
+        currentTipIndex = index;
+        tipText.textContent = tips[currentTipIndex];
+
+        document.querySelectorAll('.tip-indicator').forEach(function (ind, idx) {
+            ind.classList.toggle('active', idx === currentTipIndex);
+        });
+
+        setTimeout(function () {
+            tipText.classList.remove('fade-out');
+        }, 50);
+    }, 350);
+}

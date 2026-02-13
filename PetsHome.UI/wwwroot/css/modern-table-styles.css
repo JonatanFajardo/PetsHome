@@ -1243,3 +1243,11 @@ tr.loading-row {
         font-size: 16px;
     }
 }
+
+/* XL Laptops - padding lateral */
+@media (min-width: 1024) {
+    .pets-table-container {
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+}

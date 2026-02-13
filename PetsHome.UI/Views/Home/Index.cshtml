@@ -1,4 +1,4 @@
-﻿@model PetsHome.Business.Models.HomeViewModel
+@model PetsHome.Business.Models.HomeViewModel
 @using System.Linq
 @{
     ViewData["Title"] = "Home";
@@ -9,401 +9,249 @@
     <link href="~/css/home-style.css" rel="stylesheet" />
 </header>
 
-<body class="coming-soon">
-    <div class="container-fluid px-4">
-        <!-- Welcome Card & Weather -->
-        <div class="row mb-4 align-items-stretch">
-            <div class="col-md-8 d-flex">
-                <div class="card welcome-card h-100 w-100">
-                    <div class="card-body d-flex align-items-center justify-content-between">
-                        <div>
-                            <h2 class="text-white mb-2">¡Bienvenido a PetsHome! 🐾</h2>
-                            <p class="text-white opacity-90 mb-3">Tu centro de gestión integral para el cuidado de mascotas</p>
-                            <button class="btn btn-light">
-                                <i class="fas fa-calendar-alt me-2"></i>Generar Tour
-                            </button>
-                        </div>
-                        <div class="welcome-pet-image">
-                            <img src="~/images/perrita.jpg" class="rounded-circle" alt="Mascota">
-                        </div>
-                    </div>
+<div class="home-container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+            <div class="welcome-bg"></div>
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h2>¡Bienvenido a PetsHome! 🐾</h2>
+                    <p>Tu centro de gestión integral para el cuidado de mascotas</p>
+                    <button class="welcome-btn" onclick="location.href='@Url.Action("Index", "Mascota")'">
+                        <i class="fas fa-compass me-2"></i>Explorar
+                    </button>
                 </div>
-            </div>
-            <div class="col-md-4 d-flex">
-                <div class="card weather-widget h-100 w-100">
-                    <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <img id="weather-icon" src="" alt="Clima" class="weather-icon-img mb-3" style="display: none; width: 64px; height: 64px; margin: 0 auto;">
-                        <i class="fas fa-sun weather-icon mb-3" id="weather-icon-default"></i>
-                        <h2 class="display-3 fw-bold mb-2" id="weather-temperature">24°C</h2>
-                        <p class="mb-1 fw-semibold" id="weather-condition">Perfecto para pasear mascotas</p>
-                        <small class="opacity-90" id="weather-location">La Ermita, Francisco Morazán</small>
-                        <small class="text-danger mt-2" id="weather-error-message" style="display: none;"></small>
-                    </div>
+                <div class="welcome-pet-image">
+                    <img src="~/images/perrita.jpg" alt="Mascota" class="welcome-img">
                 </div>
             </div>
         </div>
 
-        <!-- Stat Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card stat-card primary-gradient">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                            <i class="fas fa-dog"></i>
+        <!-- Weather Card -->
+        <div class="weather-card">
+            <div class="weather-bg"></div>
+            <div class="weather-content">
+                <img id="weather-icon" src="" alt="Clima" class="weather-icon-img" style="display: none;">
+                <i class="fas fa-cloud-sun weather-icon-fa" id="weather-icon-default"></i>
+                <div class="weather-temp" id="weather-temperature">--°C</div>
+                <p class="weather-desc" id="weather-condition">Cargando clima...</p>
+                <p class="weather-date" id="weather-location">Honduras</p>
+                <small class="text-danger mt-2" id="weather-error-message" style="display: none;"></small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+        <div class="stat-card" style="background: linear-gradient(135deg, #ede9fe 0%, #f3e8ff 100%)">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%)">
+                <i class="fas fa-dog"></i>
+            </div>
+            <div class="stat-value">@Model.TotalMascotasRegistradas</div>
+            <div class="stat-label">Mascotas Registradas</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%)">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-value">@Model.ProximasCitasMedicas</div>
+            <div class="stat-label">Próximas Citas Médicas</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%)">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%)">
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="stat-value">@Model.DonacionesRecibidas</div>
+            <div class="stat-label">Donaciones Recibidas</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%)">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%)">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="stat-value">@Model.AdopcionesPendientes</div>
+            <div class="stat-label">Adopciones Pendientes</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions-card">
+        <h3>Acciones Rápidas</h3>
+        <div class="actions-grid">
+            <button class="action-btn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%)" onclick="location.href='@Url.Action("Create", "Mascota")'">
+                <div class="action-content">
+                    <i class="fas fa-plus"></i>
+                    <span>Nueva Mascota</span>
+                </div>
+            </button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%)" onclick="location.href='@Url.Action("Create", "Solicitud")'">
+                <div class="action-content">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Agendar Cita</span>
+                </div>
+            </button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" onclick="location.href='@Url.Action("Index", "Inventario")'">
+                <div class="action-content">
+                    <i class="fas fa-boxes"></i>
+                    <span>Ver Inventario</span>
+                </div>
+            </button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" onclick="location.href='@Url.Action("Index", "Adopcion")'">
+                <div class="action-content">
+                    <i class="fas fa-home"></i>
+                    <span>Adopciones</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+        <!-- Left Column -->
+        <div class="content-left">
+            <!-- Appointments -->
+            <div class="appointments-card">
+                <div class="card-header-custom">
+                    <h3>Próximas Citas</h3>
+                    <span class="card-date">Hoy • @DateTime.Now.ToString("dd MMM yyyy")</span>
+                </div>
+                <div class="appointments-list">
+                    <div class="appointment-item">
+                        <div class="appointment-icon" style="background: #fce7f3">
+                            <i class="fas fa-heartbeat" style="color: #ec4899"></i>
                         </div>
-                        <div>
-                            <h3 class="fw-bold text-white">@Model.TotalMascotasRegistradas</h3>
-                            <p class="mb-0 text-white">Mascotas Registradas</p>
+                        <div class="appointment-info">
+                            <div class="appointment-pet">Consulta General - Max</div>
+                            <div class="appointment-type">Dr. García</div>
+                        </div>
+                        <div class="appointment-time">
+                            <i class="fas fa-clock"></i>
+                            <span>10:30 AM</span>
+                        </div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="appointment-icon" style="background: #dbeafe">
+                            <i class="fas fa-syringe" style="color: #3b82f6"></i>
+                        </div>
+                        <div class="appointment-info">
+                            <div class="appointment-pet">Vacunación - Luna</div>
+                            <div class="appointment-type">Dr. Martínez</div>
+                        </div>
+                        <div class="appointment-time">
+                            <i class="fas fa-clock"></i>
+                            <span>2:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="appointment-icon" style="background: #fef3c7">
+                            <i class="fas fa-cut" style="color: #f59e0b"></i>
+                        </div>
+                        <div class="appointment-info">
+                            <div class="appointment-pet">Cirugía - Buddy</div>
+                            <div class="appointment-type">Dr. López</div>
+                        </div>
+                        <div class="appointment-time">
+                            <i class="fas fa-clock"></i>
+                            <span>Mañana 9:00 AM</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card stat-card success-gradient">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <h3 class="fw-bold text-white">@Model.ProximasCitasMedicas</h3>
-                        <p class="mb-0 text-white">Próximas Citas Médicas</p>
-                    </div>
+
+            <!-- Recent Adoptions -->
+            <div class="adoptions-card">
+                <div class="card-header-custom">
+                    <h3>Adopciones Recientes</h3>
+                    <button class="view-all-btn" onclick="location.href='@Url.Action("Index", "Adopcion")'">Ver todas</button>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card stat-card warning-gradient">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                            <i class="fas fa-hand-holding-heart"></i>
+                <div class="adoptions-list">
+                    @if (Model?.UltimasAdopciones != null && Model.UltimasAdopciones.Any())
+                    {
+                        foreach (var adopcion in Model.UltimasAdopciones)
+                        {
+                            var iconClass = adopcion.adop_Estado == "Aprobado" ? "fa-paw" :
+                                           adopcion.adop_Estado == "Rechazado" ? "fa-times-circle" : "fa-heart";
+                            var iconBg = adopcion.adop_Estado == "Aprobado" ? "#d1fae5" :
+                                        adopcion.adop_Estado == "Rechazado" ? "#fee2e2" : "#fce7f3";
+                            var iconColor = adopcion.adop_Estado == "Aprobado" ? "#10b981" :
+                                           adopcion.adop_Estado == "Rechazado" ? "#ef4444" : "#ec4899";
+                            var estadoTexto = adopcion.adop_Estado ?? "Pendiente";
+                            var nombreMascota = adopcion.masc_Nombre ?? "Mascota";
+                            var nombreAdoptante = adopcion.per_Nombre ?? "una familia";
+                            var diasTranscurridos = (DateTime.Now - adopcion.adop_FechaCrea).Days;
+                            var tiempoTexto = diasTranscurridos == 0 ? "Hoy" :
+                                             diasTranscurridos == 1 ? "Ayer" :
+                                             $"Hace {diasTranscurridos} días";
+
+                            <div class="adoption-activity-item">
+                                <div class="adoption-activity-icon" style="background: @iconBg">
+                                    <i class="fas @iconClass" style="color: @iconColor"></i>
+                                </div>
+                                <div class="adoption-activity-info">
+                                    <div class="adoption-activity-name">@nombreMascota - @estadoTexto</div>
+                                    <div class="adoption-activity-detail">Por @nombreAdoptante</div>
+                                </div>
+                                <div class="adoption-activity-time">@tiempoTexto</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="adoption-activity-item">
+                            <div class="adoption-activity-info text-center w-100">
+                                <small class="text-muted">No hay adopciones recientes</small>
+                            </div>
                         </div>
-                        <h3 class="fw-bold text-white">@Model.DonacionesRecibidas</h3>
-                        <p class="mb-0 text-white">Donaciones Recibidas</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card stat-card info-gradient">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <h3 class="fw-bold text-white">@Model.AdopcionesPendientes</h3>
-                        <p class="mb-0 text-white">Adopciones Pendientes</p>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Section -->
-        <div class="row mb-4">
-            <!-- Quick Actions -->
-            <div class="card col-md-4 mb-4">
-                <h5 class="section-title">Acciones Rápidas</h5>
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="card quick-action-card" onclick="location.href='@Url.Action("Create", "Mascota")'">
-                            <div class="card-body text-center p-3">
-                                <div class="quick-icon-circle bg-danger-light mb-2">
-                                    <i class="fas fa-plus text-danger"></i>
-                                </div>
-                                <p class="mb-0 fw-semibold">Nueva Mascota</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card quick-action-card" onclick="location.href='@Url.Action("Create", "Solicitud")'">
-                            <div class="card-body text-center p-3">
-                                <div class="quick-icon-circle bg-success-light mb-2">
-                                    <i class="fas fa-calendar-plus text-success"></i>
-                                </div>
-                                <p class="mb-0 fw-semibold">Agendar Cita</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card quick-action-card" onclick="location.href='@Url.Action("Index", "Inventario")'">
-                            <div class="card-body text-center p-3">
-                                <div class="quick-icon-circle bg-warning-light mb-2">
-                                    <i class="fas fa-boxes text-warning"></i>
-                                </div>
-                                <p class="mb-0 fw-semibold">Ver Inventario</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card quick-action-card" onclick="location.href='@Url.Action("Index", "Adopcion")'">
-                            <div class="card-body text-center p-3">
-                                <div class="quick-icon-circle bg-info-light mb-2">
-                                    <i class="fas fa-home text-info"></i>
-                                </div>
-                                <p class="mb-0 fw-semibold">Adopciones</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="col-md-4 mb-4">
-                <h5 class="section-title">Adopciones Recientes/Pendientes</h5>
-                <div class="card recent-activity">
-                    <div class="card-body p-0">
-                        @if (Model?.UltimasAdopciones != null && Model.UltimasAdopciones.Any())
-                        {
-                            foreach (var adopcion in Model.UltimasAdopciones)
-                            {
-                                var iconClass = adopcion.adop_Estado == "Aprobado" ? "fa-paw" :
-                                               adopcion.adop_Estado == "Rechazado" ? "fa-times-circle" : "fa-heart";
-                                var iconColor = adopcion.adop_Estado == "Aprobado" ? "bg-success-light" :
-                                               adopcion.adop_Estado == "Rechazado" ? "bg-danger-light" : "bg-pink-light";
-                                var textColor = adopcion.adop_Estado == "Aprobado" ? "text-success" :
-                                               adopcion.adop_Estado == "Rechazado" ? "text-danger" : "text-pink";
-                                var estadoTexto = adopcion.adop_Estado ?? "fue adoptada";
-                                var nombreMascota = adopcion.masc_Nombre ?? "Mascota";
-                                var nombreAdoptante = adopcion.per_Nombre ?? "una familia";
-                                var diasTranscurridos = (DateTime.Now - adopcion.adop_FechaCrea).Days;
-                                var tiempoTexto = diasTranscurridos == 0 ? "Hace 2 horas" :
-                                                 diasTranscurridos == 1 ? "Ayer" :
-                                                 $"Hace {diasTranscurridos} días";
-
-                                <div class="activity-item">
-                                    <div class="d-flex align-items-start">
-                                        <div class="activity-icon @iconColor me-3">
-                                            <i class="fas @iconClass @textColor"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                                <span class="fw-semibold">@nombreMascota @estadoTexto</span>
-                                                <small class="text-muted">@tiempoTexto</small>
-                                            </div>
-                                            <small class="text-muted d-block">Por @nombreAdoptante</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                        else
-                        {
-                            <div class="activity-item">
-                                <div class="d-flex align-items-center justify-content-center p-3">
-                                    <small class="text-muted">No hay adopciones recientes</small>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-
+        <!-- Right Column -->
+        <div class="content-right">
             <!-- Featured Pet -->
-            <div class="col-md-4 mb-4">
-                <h5 class="section-title">Mascotas Destacadas</h5>
-                <div class="card featured-pet-card">
-                    <div class="featured-pet-content">
-                        <div class="featured-pet-badge">
-                            <i class="fas fa-heart me-1"></i>
-                        </div>
-                        <div class="featured-pet-info">
-                            <h4 class="fw-bold mb-2">Rocky</h4>
-                            <span class="badge bg-white text-purple mb-2">
-                                <i class="fas fa-check-circle me-1"></i>Disponible para adopción
-                            </span>
-                            <p class="mb-0 small">Labrador, 1 año</p>
-                        </div>
+            <div class="featured-pet-card">
+                <div class="featured-pet-bg"></div>
+                <div class="featured-pet-content">
+                    <div class="featured-pet-badge">
+                        <span>Disponible</span>
                     </div>
-                    <img src="~/images/PerroFondoMorado (1).jpg" class="featured-pet-image" alt="Rocky">
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Cards: Upcoming Appointments & Tips -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <h5 class="section-title">Próximas Citas</h5>
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
-                                <div>
-                                    <h6 class="mb-1">Consulta General - Max</h6>
-                                    <small class="text-muted">Dr. García • 10:30 AM</small>
-                                </div>
-                                <span class="badge bg-primary rounded-pill">Hoy</span>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
-                                <div>
-                                    <h6 class="mb-1">Vacunación - Luna</h6>
-                                    <small class="text-muted">Dr. Martínez • 2:00 PM</small>
-                                </div>
-                                <span class="badge bg-success rounded-pill">Hoy</span>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
-                                <div>
-                                    <h6 class="mb-1">Cirugía - Buddy</h6>
-                                    <small class="text-muted">Dr. López • 9:00 AM</small>
-                                </div>
-                                <span class="badge bg-warning text-dark rounded-pill">Mañana</span>
-                            </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <a href="@Url.Action("Index", "Citas")" class="btn btn-outline-primary btn-sm">Ver todas las citas</a>
-                        </div>
-                    </div>
+                    <div class="featured-pet-image-container">🐕</div>
+                    <h4 class="featured-pet-name">Rocky</h4>
+                    <p class="featured-pet-details">Labrador • 1 año</p>
+                    <button class="featured-pet-btn" onclick="location.href='@Url.Action("Index", "Adopcion")'">Ver Detalles</button>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <h5 class="section-title">Consejos y Recordatorios</h5>
-                <div class="card tip-card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-start">
-                            <div class="me-3">
-                                <i class="fas fa-lightbulb fa-2x text-warning"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="card-title"> Tip de Cuidado</h6>
-                                <p class="card-text" id="tip-text">El ejercicio regular es fundamental para la salud física y mental de las mascotas. Un perro adulto necesita al menos 30 minutos de actividad diaria.</p>
-                                <small class="text-muted" id="tip-source">Fuente: Asociación Veterinaria Mundial</small>
-                            </div>
-                        </div>
-                        <div class="mt-3 d-flex justify-content-between align-items-center">
-                            <div class="tip-indicators" id="tip-indicators"></div>
-                            <small class="text-muted"><span id="tip-counter">1</span>/<span id="tip-total">10</span></small>
-                        </div>
-                    </div>
+            <!-- Tips -->
+            <div class="tips-card">
+                <h3>💡 Tip de Cuidado</h3>
+                <div class="tip-main">
+                    <p class="tip-text" id="tip-text">La socialización temprana es clave para el desarrollo saludable de cachorros. Expón a diferentes personas, animales y ambientes de forma controlada.</p>
+                    <div class="tip-progress" id="tip-indicators"></div>
                 </div>
-
-                <div class="card mt-3 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="card-title text-danger">⚠️ Recordatorios Importantes</h6>
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-2"><i class="fas fa-exclamation-triangle text-warning me-2"></i>5 medicamentos vencen esta semana</li>
-                            <li class="mb-2"><i class="fas fa-calendar-alt text-info me-2"></i>Revisión de inventario programada para mañana</li>
-                            <li><i class="fas fa-bell text-primary me-2"></i>3 mascotas necesitan refuerzo de vacunas</li>
-                        </ul>
+                <div class="tip-reminders">
+                    <h4>Recordatorios Importantes</h4>
+                    <div class="tip-reminders-list">
+                        <div class="tip-reminder">
+                            <i class="fas fa-exclamation-triangle" style="color: #ea580c"></i>
+                            <span class="tip-reminder-text">5 medicamentos vencen esta semana</span>
+                        </div>
+                        <div class="tip-reminder">
+                            <i class="fas fa-calendar-alt" style="color: #2563eb"></i>
+                            <span class="tip-reminder-text">Revisión de inventario programada para mañana</span>
+                        </div>
+                        <div class="tip-reminder">
+                            <i class="fas fa-stethoscope" style="color: #9333ea"></i>
+                            <span class="tip-reminder-text">3 mascotas necesitan refuerzo de vacunas</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Add click animation to stat cards
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            });
-        });
-
-        // Tips de cuidado rotación automática
-        const tips = [
-            {
-                text: "El ejercicio regular es fundamental para la salud física y mental de las mascotas. Un perro adulto necesita al menos 30 minutos de actividad diaria.",
-                source: "Asociación Veterinaria Mundial"
-            },
-            {
-                text: "La hidratación es vital: asegúrate de que tu mascota siempre tenga acceso a agua fresca y limpia. Cambia el agua al menos dos veces al día.",
-                source: "Colegio de Médicos Veterinarios"
-            },
-            {
-                text: "Las visitas veterinarias regulares son esenciales. Se recomienda un chequeo completo al menos una vez al año, o cada 6 meses para mascotas mayores.",
-                source: "Organización Mundial de Sanidad Animal"
-            },
-            {
-                text: "La socialización temprana es clave para el desarrollo de cachorros. Exponlos a diferentes personas, animales y ambientes de forma controlada.",
-                source: "Academia de Comportamiento Animal"
-            },
-            {
-                text: "Una dieta balanceada adaptada a la edad, tamaño y condición de salud de tu mascota previene problemas de obesidad y enfermedades crónicas.",
-                source: "Nutrición Veterinaria Avanzada"
-            },
-            {
-                text: "El cepillado regular no solo mantiene el pelaje brillante, sino que también ayuda a detectar parásitos, bultos o anomalías en la piel.",
-                source: "Asociación de Cuidado Animal"
-            },
-            {
-                text: "Mantén al día el calendario de vacunación de tu mascota. Las vacunas previenen enfermedades graves y potencialmente mortales.",
-                source: "Centro de Control de Enfermedades Veterinarias"
-            },
-            {
-                text: "Los gatos también necesitan actividad física. Proporciona juguetes interactivos y dedica al menos 15 minutos diarios al juego activo.",
-                source: "Federación Internacional Felina"
-            },
-            {
-                text: "La salud dental es crucial: el 80% de los perros mayores de 3 años sufren problemas dentales. Cepilla sus dientes regularmente y ofrece premios dentales.",
-                source: "Asociación Dental Veterinaria"
-            },
-            {
-                text: "Nunca dejes a tu mascota en un vehículo cerrado, incluso con las ventanas abiertas. La temperatura interior puede alcanzar niveles peligrosos en minutos.",
-                source: "Protección Animal Internacional"
-            }
-        ];
-
-        let currentTipIndex = 0;
-        const tipText = document.getElementById('tip-text');
-        const tipSource = document.getElementById('tip-source');
-        const tipCounter = document.getElementById('tip-counter');
-        const tipTotal = document.getElementById('tip-total');
-        const tipIndicators = document.getElementById('tip-indicators');
-        const tipCard = document.querySelector('.tip-card');
-
-        // Establecer el total de tips
-        tipTotal.textContent = tips.length;
-
-        // Crear indicadores
-        function createIndicators() {
-            tipIndicators.innerHTML = '';
-            for (let i = 0; i < tips.length; i++) {
-                const indicator = document.createElement('span');
-                indicator.className = 'tip-indicator' + (i === 0 ? ' active' : '');
-                indicator.onclick = () => goToTip(i);
-                tipIndicators.appendChild(indicator);
-            }
-        }
-
-        // Cambiar a un tip específico
-        function goToTip(index) {
-            // Añadir animación a la tarjeta completa
-            tipCard.classList.add('changing');
-
-            // Aplicar efecto de fade out con clases CSS
-            tipText.classList.add('fade-out');
-            tipSource.classList.add('fade-out');
-
-            setTimeout(() => {
-                currentTipIndex = index;
-                tipText.textContent = tips[currentTipIndex].text;
-                tipSource.textContent = 'Fuente: ' + tips[currentTipIndex].source;
-                tipCounter.textContent = currentTipIndex + 1;
-
-                // Actualizar indicadores con animación
-                document.querySelectorAll('.tip-indicator').forEach((ind, idx) => {
-                    ind.classList.toggle('active', idx === currentTipIndex);
-                });
-
-                // Aplicar efecto de fade in removiendo las clases
-                setTimeout(() => {
-                    tipText.classList.remove('fade-out');
-                    tipSource.classList.remove('fade-out');
-                    tipCard.classList.remove('changing');
-                }, 50);
-            }, 350);
-        }
-
-        // Cambiar al siguiente tip
-        function nextTip() {
-            const nextIndex = (currentTipIndex + 1) % tips.length;
-            goToTip(nextIndex);
-        }
-
-        // Inicializar indicadores
-        createIndicators();
-
-        // Rotar tips automáticamente cada 4 segundos
-        setInterval(nextTip, 4000);
-    </script>
-</body>
+</div>
 
 @section scripts {
     <script src="~/js/pages/home.js"></script>

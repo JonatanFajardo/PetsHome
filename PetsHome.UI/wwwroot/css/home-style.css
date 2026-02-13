@@ -1,85 +1,109 @@
 /* ========================================
-   PetsHome - Home Page Custom Styles
+   PetsHome - Home Page Styles (New Design)
    ======================================== */
 
-:root {
-    --primary-red: #ef4444;
-    --purple: #a855f7;
-    --cyan: #22d3ee;
-    --orange: #fb923c;
-    --green: #4ade80;
-    --blue: #5b8def;
-    --bg-light: #f0f2f5;
-    --text-dark: #1f2937;
-    --text-muted: #6b7280;
-}
-
-/* Body Background */
-body {
-    background-color: #f0f2f5;
+/* Home Container */
+.home-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* ========================================
-   WELCOME CARD - Azul con círculos
+   WELCOME SECTION
    ======================================== */
+.welcome-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+    .welcome-section {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* Welcome Card */
 .welcome-card {
-    background: linear-gradient(135deg, #5b8def 0%, #4e7dd9 100%);
-    border: none;
-    border-radius: 2rem;
-    box-shadow: 0 8px 24px rgba(91, 141, 239, 0.3);
-    transition: transform 0.3s ease;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #4f46e5 100%);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
     position: relative;
     overflow: hidden;
-    min-height: 200px;
+    border: none;
 }
 
-/* Círculos decorativos grandes */
-.welcome-card::before {
+.welcome-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+}
+
+.welcome-bg::before,
+.welcome-bg::after {
     content: '';
     position: absolute;
-    top: -100px;
-    right: 200px;
-    width: 280px;
-    height: 280px;
-    background: rgba(147, 197, 253, 0.3);
+    background: white;
     border-radius: 50%;
 }
 
-.welcome-card::after {
-    content: '';
-    position: absolute;
-    bottom: -120px;
-    right: -80px;
-    width: 350px;
-    height: 350px;
-    background: rgba(147, 197, 253, 0.2);
-    border-radius: 50%;
+.welcome-bg::before {
+    width: 160px;
+    height: 160px;
+    top: 2.5rem;
+    left: 2.5rem;
 }
 
-.welcome-card .card-body {
+.welcome-bg::after {
+    width: 240px;
+    height: 240px;
+    bottom: 2.5rem;
+    right: 2.5rem;
+}
+
+.welcome-content {
     position: relative;
-    z-index: 1;
-    padding: 2rem;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.welcome-card h2 {
-    font-size: 2rem;
+.welcome-text h2 {
+    font-size: 1.875rem;
     font-weight: 700;
     color: white;
+    margin-bottom: 0.5rem;
 }
 
-.welcome-card p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1rem;
+.welcome-text p {
+    color: #bfdbfe;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    max-width: 28rem;
 }
 
-.welcome-card .btn-light {
-    background-color: white;
+.welcome-btn {
+    background: white;
+    color: #3b82f6;
+    padding: 0.625rem 1.5rem;
     border: none;
-    font-weight: 600;
-    padding: 0.6rem 1.5rem;
     border-radius: 0.75rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.welcome-btn:hover {
+    background: #eff6ff;
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .welcome-pet-image {
@@ -87,415 +111,579 @@ body {
     z-index: 2;
 }
 
-.welcome-pet-image img {
-    width: 140px;
-    height: 140px;
+.welcome-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     object-fit: cover;
-    border: 5px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* ========================================
-   WEATHER WIDGET - Cyan
+   WEATHER CARD
    ======================================== */
-.weather-widget {
-    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
-    border: none;
-    border-radius: 2rem;
-    color: white;
-    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.3);
+.weather-card {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #14b8a6 100%);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3);
     position: relative;
     overflow: hidden;
-    min-height: 200px;
+    border: none;
 }
 
-.weather-widget::before {
+.weather-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+}
+
+.weather-bg::after {
     content: '';
     position: absolute;
-    top: -80px;
-    right: -60px;
-    width: 220px;
-    height: 220px;
-    background: rgba(103, 232, 249, 0.3);
+    width: 128px;
+    height: 128px;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: white;
     border-radius: 50%;
 }
 
-.weather-widget::after {
-    content: '';
-    position: absolute;
-    bottom: -100px;
-    left: -70px;
-    width: 250px;
-    height: 250px;
-    background: rgba(103, 232, 249, 0.2);
-    border-radius: 50%;
-}
-
-.weather-widget .card-body {
+.weather-content {
     position: relative;
-    z-index: 1;
-    padding: 2rem;
+    z-index: 10;
+    color: white;
 }
 
-.weather-icon {
-    font-size: 3.5rem;
-    opacity: 0.95;
+.weather-icon-fa {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
 }
 
 .weather-icon-img {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
-.weather-widget h2 {
-    font-size: 3.5rem;
+.weather-temp {
+    font-size: 3rem;
     font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
 }
 
-.weather-widget p {
-    font-size: 1rem;
+.weather-desc {
+    color: #a5f3fc;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+.weather-date {
+    color: #cffafe;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 /* ========================================
-   STAT CARDS - Colores sólidos con círculos
+   STATS GRID
    ======================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 .stat-card {
-    border: none;
-    border-radius: 1.8rem;
-    transition: all 0.3s ease;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-    min-height: 180px;
-}
-
-/* Círculo decorativo grande en las stat cards */
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: -60px;
-    right: -60px;
-    width: 180px;
-    height: 180px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 50%;
-}
-
-/* Círculo decorativo pequeño */
-.stat-card::after {
-    content: '';
-    position: absolute;
-    bottom: -40px;
-    left: -40px;
-    width: 120px;
-    height: 120px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-}
-
-.stat-card .card-body {
-    position: relative;
-    z-index: 1;
-    padding: 2rem 1.5rem;
 }
 
 .stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Púrpura - Mascotas Registradas */
-.stat-card.primary-gradient {
-    background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+.stat-icon {
+    display: inline-flex;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: transform 0.3s;
     color: white;
+    font-size: 1.25rem;
 }
 
-/* Cyan - Citas Hoy */
-.stat-card.success-gradient {
-    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
-    color: white;
+.stat-card:hover .stat-icon {
+    transform: scale(1.1);
 }
 
-/* Naranja - Medicamentos por Vencer */
-.stat-card.warning-gradient {
-    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-    color: white;
-}
-
-/* Verde - Adopciones Pendientes */
-.stat-card.info-gradient {
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-    color: white;
-}
-
-/* Icon Circle dentro de stat cards */
-.icon-circle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-}
-
-.stat-card h3 {
-    font-size: 3.5rem;
+.stat-value {
+    font-size: 2.25rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    line-height: 1;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
 }
 
-.stat-card p {
-    font-size: 1rem;
-    opacity: 0.95;
+.stat-label {
+    font-size: 0.875rem;
+    color: #475569;
     font-weight: 500;
+}
+
+/* ========================================
+   QUICK ACTIONS
+   ======================================== */
+.quick-actions-card {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.quick-actions-card h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .actions-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.action-btn {
+    padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+    font-weight: 600;
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.action-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-content i {
+    font-size: 1.25rem;
+    transition: transform 0.3s;
+}
+
+.action-btn:hover .action-content i {
+    transform: scale(1.1);
+}
+
+.action-content span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ========================================
+   CONTENT GRID (Two Column Layout)
+   ======================================== */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.content-left,
+.content-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ========================================
+   CARDS (Shared)
+   ======================================== */
+.appointments-card,
+.adoptions-card,
+.tips-card {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.card-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-header-custom h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
     margin: 0;
 }
 
-/* ========================================
-   SECTION TITLES
-   ======================================== */
-.section-title {
-    font-weight: 700;
-    color: #22d3ee !important;
-    margin-bottom: 1.2rem;
-    font-size: 1.1rem;
+.card-date {
+    font-size: 0.75rem;
+    color: #64748b;
 }
 
-/* ========================================
-   QUICK ACTION CARDS - Blancos con iconos de colores
-   ======================================== */
-.quick-action-card {
+.view-all-btn {
+    font-size: 0.875rem;
+    color: #3b82f6;
+    background: transparent;
     border: none;
-    border-radius: 1.2rem;
-    transition: all 0.3s ease;
+    font-weight: 500;
     cursor: pointer;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 0;
 }
 
-.quick-action-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+.view-all-btn:hover {
+    color: #2563eb;
 }
 
-.quick-action-card .card-body {
-    padding: 1.5rem 1rem;
+/* ========================================
+   APPOINTMENTS
+   ======================================== */
+.appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-.quick-icon-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.appointment-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 0.75rem;
+    transition: background 0.2s;
+}
+
+.appointment-item:hover {
+    background: #f1f5f9;
+}
+
+.appointment-icon {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    transition: transform 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
-    font-size: 1.3rem;
 }
 
-.bg-danger-light {
-    background-color: rgba(239, 68, 68, 0.1);
+.appointment-item:hover .appointment-icon {
+    transform: scale(1.1);
 }
 
-.bg-success-light {
-    background-color: rgba(34, 197, 94, 0.1);
+.appointment-icon i {
+    font-size: 1rem;
 }
 
-.bg-warning-light {
-    background-color: rgba(251, 146, 60, 0.1);
+.appointment-info {
+    flex: 1;
 }
 
-.bg-info-light {
-    background-color: rgba(59, 130, 246, 0.1);
+.appointment-pet {
+    font-weight: 600;
+    color: #1e293b;
 }
 
-.bg-pink-light {
-    background-color: rgba(236, 72, 153, 0.1);
+.appointment-type {
+    font-size: 0.875rem;
+    color: #64748b;
 }
 
-.text-pink {
-    color: #ec4899;
+.appointment-time {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #64748b;
 }
 
-.quick-action-card p {
-    font-size: 0.9rem;
-    color: #1f2937;
+.appointment-time i {
+    font-size: 0.75rem;
 }
 
 /* ========================================
-   RECENT ACTIVITY CARD
+   ADOPTIONS (Activity List)
    ======================================== */
-.recent-activity {
-    border: none;
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    background: white;
+.adoptions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-.activity-item {
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid #f3f4f6;
-    transition: background-color 0.2s ease;
+.adoption-activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 0.75rem;
+    transition: background 0.2s;
 }
 
-.activity-item:last-child {
-    border-bottom: none;
+.adoption-activity-item:hover {
+    background: #f1f5f9;
 }
 
-.activity-item:hover {
-    background-color: #f9fafb;
-}
-
-.activity-icon {
+.adoption-activity-icon {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 1.1rem;
+}
+
+.adoption-activity-icon i {
+    font-size: 1rem;
+}
+
+.adoption-activity-info {
+    flex: 1;
+}
+
+.adoption-activity-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.875rem;
+}
+
+.adoption-activity-detail {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.adoption-activity-time {
+    font-size: 0.75rem;
+    color: #64748b;
+    white-space: nowrap;
 }
 
 /* ========================================
-   FEATURED PET CARD - Rosa/Púrpura con imagen
+   FEATURED PET CARD
    ======================================== */
 .featured-pet-card {
-    background: linear-gradient(135deg, #d8b4fe 40%, #c084fc 100%);
-    border: none;
+    background: linear-gradient(135deg, #e9d5ff 0%, #f3e8ff 50%, #fce7f3 100%);
     border-radius: 1.5rem;
-    box-shadow: 0 8px 24px rgba(192, 132, 252, 0.3);
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9d5ff;
     position: relative;
     overflow: hidden;
-    min-height: 280px;
 }
 
-/* Círculo decorativo en featured pet */
-.featured-pet-card::before {
+.featured-pet-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.2;
+}
+
+.featured-pet-bg::after {
     content: '';
     position: absolute;
-    top: -80px;
-    right: -80px;
-    width: 200px;
-    height: 200px;
-    background: rgba(233, 213, 255, 0.4);
+    width: 128px;
+    height: 128px;
+    top: 0;
+    right: 0;
+    background: #c084fc;
     border-radius: 50%;
+    filter: blur(48px);
 }
 
 .featured-pet-content {
     position: relative;
-    z-index: 2;
-    padding: 2rem;
-    color: white;
+    z-index: 10;
 }
 
 .featured-pet-badge {
-    position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
-    background: rgba(255, 255, 255, 0.25);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.featured-pet-badge span {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9333ea;
+}
+
+.featured-pet-image-container {
+    background: linear-gradient(135deg, #c084fc 0%, #a78bfa 100%);
+    border-radius: 0.75rem;
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.featured-pet-name {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.featured-pet-details {
+    font-size: 0.875rem;
+    color: #475569;
+    margin-bottom: 0.75rem;
+}
+
+.featured-pet-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #a855f7 0%, #ec4899 100%);
     color: white;
-}
-
-.featured-pet-info {
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    right: 2rem;
-}
-
-.featured-pet-info h4 {
-    font-size: 2rem;
-    margin: 0;
-}
-
-.featured-pet-info .badge {
-    background-color: white !important;
-    color: #9333ea;
-    padding: 0.5rem 1rem;
+    padding: 0.625rem;
+    border: none;
+    border-radius: 0.75rem;
     font-weight: 600;
-    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
 }
 
-.text-purple {
-    color: #9333ea;
-}
-
-.featured-pet-image {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 45%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.9;
+.featured-pet-btn:hover {
+    background: linear-gradient(90deg, #9333ea 0%, #db2777 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* ========================================
-   TIP CARD
+   TIPS CARD
    ======================================== */
-.tip-card {
-    border: none;
-    border-radius: 1.2rem;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
-    transition: all 0.3s ease;
+.tips-card {
+    background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+    border: 1px solid #fbbf24;
 }
 
-.tip-card.changing {
-    transform: scale(0.99);
-    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);
+.tips-card h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
 }
 
-.tip-card .fa-lightbulb {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.tip-main {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
-.tip-card.changing .fa-lightbulb {
-    transform: rotate(20deg) scale(1.1);
-    color: #f59e0b !important;
-}
-
-.tip-card #tip-text {
+.tip-text {
+    font-size: 0.875rem;
+    color: #334155;
+    margin-bottom: 0.75rem;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center;
 }
 
-.tip-card #tip-source {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tip-card #tip-text.fade-out {
+.tip-text.fade-out {
     opacity: 0;
     transform: translateY(-10px) scale(0.98);
 }
 
-.tip-card #tip-source.fade-out {
-    opacity: 0;
-    transform: translateX(-10px);
-}
-
-/* Indicadores de tips */
-.tip-indicators {
+.tip-progress {
     display: flex;
-    gap: 8px;
-    align-items: center;
+    gap: 0.25rem;
 }
 
+.tip-progress-bar {
+    height: 6px;
+    flex: 1;
+    border-radius: 9999px;
+}
+
+.tip-reminders h4 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 0.5rem;
+}
+
+.tip-reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tip-reminder {
+    display: flex;
+    align-items: start;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+}
+
+.tip-reminder i {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.tip-reminder-text {
+    color: #334155;
+}
+
+/* Tip indicators */
 .tip-indicator {
     width: 8px;
     height: 8px;
@@ -503,6 +691,8 @@ body {
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.3s ease;
+    display: inline-block;
+    margin-right: 4px;
 }
 
 .tip-indicator:hover {
@@ -517,77 +707,20 @@ body {
 }
 
 /* ========================================
-   GENERAL CARD STYLES
-   ======================================== */
-.card {
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.card-body {
-    padding: 1.5rem;
-}
-
-.shadow-sm {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
-}
-
-/* ========================================
-   BUTTONS
-   ======================================== */
-.btn-outline-primary {
-    border-color: #a855f7;
-    color: #a855f7;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    border-radius: 0.6rem;
-}
-
-.btn-outline-primary:hover {
-    background-color: #a855f7;
-    border-color: #a855f7;
-    transform: translateY(-2px);
-}
-
-/* ========================================
-   BADGES
-   ======================================== */
-.badge {
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    font-size: 0.8rem;
-    border-radius: 0.5rem;
-}
-
-/* ========================================
    RESPONSIVE
    ======================================== */
-@media (max-width: 768px) {
-    .stat-card h3 {
+@media (max-width: 640px) {
+    .welcome-img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .welcome-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .weather-temp {
         font-size: 2.5rem;
-    }
-    
-    .welcome-card h2 {
-        font-size: 1.5rem;
-    }
-    
-    .icon-circle {
-        width: 55px;
-        height: 55px;
-        font-size: 1.5rem;
-    }
-    
-    .welcome-pet-image img {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .featured-pet-image {
-        width: 100%;
-        height: 200px;
-        position: relative;
-        top: 0;
-        transform: none;
     }
 }
 
@@ -597,7 +730,7 @@ body {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -605,14 +738,27 @@ body {
     }
 }
 
-.card {
-    animation: fadeInUp 0.6s ease-out;
+.welcome-card,
+.weather-card {
+    animation: fadeInUp 0.5s ease-out;
 }
 
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
+.stat-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.2s; }
+
+.quick-actions-card,
+.appointments-card,
+.adoptions-card,
+.featured-pet-card,
+.tips-card {
+    animation: fadeInUp 0.6s ease-out;
+}
 
 /* ========================================
    SCROLL
