@@ -89,7 +89,7 @@
                                 <div class="form-group">
                                     <label asp-for="raza_Descripcion" class="control-label required"></label>
                                     <input asp-for="raza_Descripcion" class="form-control" maxlength="50" id="Descripcion" />
-                                    <span class="text-danger" id="messageError"></span>
+                                    <span asp-validation-for="raza_Descripcion" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
