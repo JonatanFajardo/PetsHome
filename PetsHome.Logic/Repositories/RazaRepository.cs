@@ -75,7 +75,7 @@ namespace PetsHome.Logic.Repositories
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Razas_Delete]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_Razas_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);
