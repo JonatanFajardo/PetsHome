@@ -16,7 +16,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
-        [Espacios(ErrorMessage = "bebesita")]
+        [Espacios(ErrorMessage = "El campo Descripción no puede comenzar con espacios")]
         public string raza_Descripcion { get; set; }
 
         [Display(Name = "Tamaño")]
