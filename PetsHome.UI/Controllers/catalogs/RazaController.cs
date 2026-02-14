@@ -87,46 +87,19 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _razaService.AddAsync(model, userId);
-                if (!createdItem)
-                {
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
+                return AjaxResult(!createdItem);
             }
             else
             {
                 Boolean updatedItem = await _razaService.UpdateAsync(model, userId);
-                if (!updatedItem)
-                {
-                    ShowAlert("Modificado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return AjaxResult(false);
-                }
+                return AjaxResult(!updatedItem);
             }
         }
 
         public async Task<IActionResult> Remove(int raza_Id)
         {
             Boolean deletedItem = await _razaService.RemoveAsync(raza_Id);
-            if (!deletedItem)
-            {
-                ShowAlert("Eliminado", AlertMessageType.Success);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
-            }
+            return AjaxResult(!deletedItem);
         }
     }
 }
