@@ -10,7 +10,7 @@ var Procedencia = (function () {
                 { FieldName: 'proc_Id', Size: 60 },
                 { FieldName: 'proc_Descripcion' }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

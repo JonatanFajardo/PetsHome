@@ -38,6 +38,12 @@ namespace PetsHome.Business.Models
         public string EsActivo { get; set; }
 
         /// <summary>
+        /// Obtiene o establece si el cargo está activo.
+        /// </summary>
+        [Display(Name = "Estado")]
+        public bool cag_EsActivo { get; set; }
+
+        /// <summary>
         /// Obtiene o establece el ID del usuario que crea el cargo.
         /// </summary>
         public int cag_UsuarioCrea { get; set; }
