@@ -46,6 +46,74 @@
         </div>
     </div>
 
+    <!-- Tip de ayuda -->
+    <div id="filter-tip" class="filter-tip">
+        <div class="filter-tip__text">
+            <i class="fas fa-hand-pointer" style="font-size: 18px;"></i>
+            <span>Toca las tarjetas de abajo para filtrar entre cargos <strong>activos</strong>, <strong>inactivos</strong> o ver <strong>todos</strong>.</span>
+        </div>
+        <button class="filter-tip__close" onclick="document.getElementById('filter-tip').style.display='none'; sessionStorage.setItem('hideCargosFilterTip','1');" title="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <script>
+        if (sessionStorage.getItem('hideCargosFilterTip') === '1') {
+            document.getElementById('filter-tip').style.display = 'none';
+        }
+    </script>
+
+    <!-- Cards de resumen -->
+    <div class="summary-cards-grid">
+        <!-- Card Activos -->
+        <div class="summary-card summary-card--green" id="card-activos" onclick="filterByStatus('Activo')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Activos</div>
+                    <div class="summary-card__count" id="count-activos">0</div>
+                    <div class="summary-card__subtitle">En servicio</div>
+                </div>
+                <div class="summary-card__icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-arrow-right" style="margin-right:4px;"></i>Filtrar activos</span>
+            </div>
+        </div>
+        <!-- Card Inactivos -->
+        <div class="summary-card summary-card--red" id="card-inactivos" onclick="filterByStatus('Inactivo')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Inactivos</div>
+                    <div class="summary-card__count" id="count-inactivos">0</div>
+                    <div class="summary-card__subtitle">Sin servicio</div>
+                </div>
+                <div class="summary-card__icon">
+                    <i class="fas fa-ban"></i>
+                </div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-arrow-right" style="margin-right:4px;"></i>Filtrar inactivos</span>
+            </div>
+        </div>
+        <!-- Card Total -->
+        <div class="summary-card summary-card--purple" id="card-total" onclick="filterByStatus('')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Total Cargos</div>
+                    <div class="summary-card__count" id="count-total">0</div>
+                    <div class="summary-card__subtitle">Registrados</div>
+                </div>
+                <div class="summary-card__icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-list" style="margin-right:4px;"></i>Ver todos</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Vista de Tabla -->
     <div id="tableView" class="pets-table-container">
         <table class="pets-table" id="datatable">
@@ -195,6 +263,48 @@
     // Busqueda global
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();
+    });
+
+    // Actualizar contadores de las cards
+    function updateStatCards() {
+        var table = $('#datatable').DataTable();
+        var data = table.rows().data();
+        var activos = 0, inactivos = 0;
+        data.each(function (row) {
+            if (row.esActivo && row.esActivo.toLowerCase().indexOf('activo') !== -1 && row.esActivo.toLowerCase().indexOf('inactivo') === -1) {
+                activos++;
+            } else {
+                inactivos++;
+            }
+        });
+        $('#count-activos').text(activos);
+        $('#count-inactivos').text(inactivos);
+        $('#count-total').text(data.length);
+    }
+
+    // Filtrar tabla por estado al hacer clic en card
+    var currentFilter = '';
+    function filterByStatus(status) {
+        currentFilter = status;
+        var table = $('#datatable').DataTable();
+        table.column(3).search(status).draw();
+        // Resaltar card activa
+        $('.summary-card').removeClass('summary-card--active-green summary-card--active-red summary-card--active-purple');
+        if (status === 'Activo') {
+            $('#card-activos').addClass('summary-card--active-green');
+        } else if (status === 'Inactivo') {
+            $('#card-inactivos').addClass('summary-card--active-red');
+        } else {
+            $('#card-total').addClass('summary-card--active-purple');
+        }
+    }
+
+    // Actualizar cards despues de que DataTable cargue los datos
+    $('#datatable').on('init.dt', function () {
+        updateStatCards();
+    });
+    $('#datatable').on('xhr.dt', function () {
+        setTimeout(updateStatCards, 100);
     });
 
 

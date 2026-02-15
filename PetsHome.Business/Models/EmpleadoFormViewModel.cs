@@ -25,6 +25,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int cag_Id { get; set; }
 
+        [Display(Name = "Estado")]
         public bool emp_EsActivo { get; set; }
 
         public int emp_UsuarioCrea { get; set; }

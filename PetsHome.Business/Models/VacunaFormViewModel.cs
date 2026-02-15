@@ -29,6 +29,7 @@ namespace PetsHome.Business.Models
         [StringLength(50)]
         public string vacu_PeriodoRefuerzo { get; set; }
 
+        [Display(Name = "Estado")]
         public bool vac_EsActivo { get; set; }
 
         public int vac_UsuarioCrea { get; set; }

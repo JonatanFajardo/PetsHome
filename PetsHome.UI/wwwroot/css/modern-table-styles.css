@@ -1307,6 +1307,147 @@ tr.loading-row {
     animation: tourShimmer 3s infinite;
 }
 
+/* ========================================
+   SUMMARY CARDS (stat cards para catálogos)
+   Reutilizable en cualquier pantalla de catálogo
+   ======================================== */
+.summary-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px 24px 0;
+}
+
+.summary-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.25s;
+    border-left: 4px solid transparent;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card--green  { border-left-color: #10b981; }
+.summary-card--red    { border-left-color: #ef4444; }
+.summary-card--purple { border-left-color: #6C5CE7; }
+.summary-card--blue   { border-left-color: #3b82f6; }
+.summary-card--yellow { border-left-color: #f59e0b; }
+
+.summary-card__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-card__title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-card--green  .summary-card__title  { color: #10b981; }
+.summary-card--red    .summary-card__title  { color: #ef4444; }
+.summary-card--purple .summary-card__title  { color: #6C5CE7; }
+.summary-card--blue   .summary-card__title  { color: #3b82f6; }
+.summary-card--yellow .summary-card__title  { color: #f59e0b; }
+
+.summary-card__count {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.summary-card__subtitle {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.summary-card__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summary-card__icon i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.summary-card--green  .summary-card__icon { background: linear-gradient(135deg, #34d399, #10b981); }
+.summary-card--red    .summary-card__icon { background: linear-gradient(135deg, #f87171, #ef4444); }
+.summary-card--purple .summary-card__icon { background: linear-gradient(135deg, #8B7EF3, #6C5CE7); }
+.summary-card--blue   .summary-card__icon { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+.summary-card--yellow .summary-card__icon { background: linear-gradient(135deg, #fcd34d, #f59e0b); }
+
+.summary-card__footer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.summary-card__action {
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.summary-card--green  .summary-card__action { color: #10b981; }
+.summary-card--red    .summary-card__action { color: #ef4444; }
+.summary-card--purple .summary-card__action { color: #6C5CE7; }
+.summary-card--blue   .summary-card__action { color: #3b82f6; }
+.summary-card--yellow .summary-card__action { color: #f59e0b; }
+
+/* Estado activo al filtrar */
+.summary-card--active-green  { box-shadow: 0 6px 20px rgba(16,185,129,0.3);  transform: translateY(-3px); }
+.summary-card--active-red    { box-shadow: 0 6px 20px rgba(239,68,68,0.3);   transform: translateY(-3px); }
+.summary-card--active-purple { box-shadow: 0 6px 20px rgba(108,92,231,0.3);  transform: translateY(-3px); }
+.summary-card--active-blue   { box-shadow: 0 6px 20px rgba(59,130,246,0.3);  transform: translateY(-3px); }
+.summary-card--active-yellow { box-shadow: 0 6px 20px rgba(245,158,11,0.3);  transform: translateY(-3px); }
+
+/* Tip de ayuda (barra naranja) */
+.filter-tip {
+    margin: 16px 24px 0;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
+    color: #fff;
+}
+
+.filter-tip__text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.filter-tip__close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 0 0 16px;
+    line-height: 1;
+}
+
 @keyframes tourShimmer {
     0% { transform: translateX(-100%) translateY(-100%); }
     100% { transform: translateX(100%) translateY(100%); }

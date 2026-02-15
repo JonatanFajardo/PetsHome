@@ -39,6 +39,7 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@cag_Descripcion", entity.cag_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@cag_Salario", entity.cag_Salario, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cag_EsActivo", entity.cag_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@cag_UsuarioCrea", entity.cag_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }

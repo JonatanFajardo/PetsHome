@@ -12,5 +12,7 @@ namespace PetsHome.Business.Models
         public string refg_RTN { get; set; }
 
         public string refg_Ubicacion { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

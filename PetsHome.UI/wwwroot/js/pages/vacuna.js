@@ -11,7 +11,8 @@ var Vacuna = (function () {
                 { FieldName: "vac_Descripcion" },
                 { FieldName: "vacu_Especie", Size: 120 },
                 { FieldName: "vacu_DosisRecomendada", Size: 130 },
-                { FieldName: "vacu_PeriodoRefuerzo", Size: 130 }
+                { FieldName: "vacu_PeriodoRefuerzo", Size: 130 },
+                { FieldName: "esActivo", Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })
