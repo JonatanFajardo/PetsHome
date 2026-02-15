@@ -54,7 +54,8 @@ namespace PetsHome.UI.Controllers
 
         public JsonResult AjaxResult(Boolean success)
         {
-            return Json(new { success = success });
+            var message = success ? "Operación realizada con éxito." : "Ocurrió un error al procesar la solicitud.";
+            return Json(new { success = success, message = message });
         }
     }
 }

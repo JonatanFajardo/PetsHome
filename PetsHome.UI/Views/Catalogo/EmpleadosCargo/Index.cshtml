@@ -6,6 +6,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
 }
 
 <div class="col-12">
@@ -98,6 +99,20 @@
                                     <span class="text-danger" id="messageSalarioError"></span>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="switch-container">
+                                        <div>
+                                            <label class="switch-label">Estado</label>
+                                            <div class="switch-status" id="estadoStatus">Activo</div>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="cag_EsActivo" id="cag_EsActivo" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
@@ -158,6 +173,11 @@
     // Inicializar tooltips
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    // Switch estado activo/inactivo
+    $('#cag_EsActivo').on('change', function () {
+        $('#estadoStatus').text(this.checked ? 'Activo' : 'Inactivo');
     });
 </script>
 <script src="~/js/pages/empleado-cargo.js"></script>

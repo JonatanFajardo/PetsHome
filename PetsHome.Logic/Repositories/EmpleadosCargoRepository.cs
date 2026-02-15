@@ -38,7 +38,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_EmpleadosCargos_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@cag_Descripcion", entity.cag_Descripcion, DbType.String, ParameterDirection.Input);
-            parameter.Add("@cag_Salario", entity.cag_Salario, DbType.Double, ParameterDirection.Input);
+            parameter.Add("@cag_Salario", entity.cag_Salario, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@cag_UsuarioCrea", entity.cag_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -49,7 +49,8 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@cag_Id", entity.cag_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cag_Descripcion", entity.cag_Descripcion, DbType.String, ParameterDirection.Input);
-            parameter.Add("@cag_Salario", entity.cag_Salario, DbType.Double, ParameterDirection.Input);
+            parameter.Add("@cag_Salario", entity.cag_Salario, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cag_EsActivo", entity.cag_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@cag_UsuarioModifica", entity.cag_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }

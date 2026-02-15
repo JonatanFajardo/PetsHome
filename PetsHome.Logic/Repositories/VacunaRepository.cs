@@ -41,6 +41,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@vacu_Especie", entity.vacu_Especie, DbType.String, ParameterDirection.Input);
             parameter.Add("@vacu_DosisRecomendada", entity.vacu_DosisRecomendada, DbType.String, ParameterDirection.Input);
             parameter.Add("@vacu_PeriodoRefuerzo", entity.vacu_PeriodoRefuerzo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@vac_EsActivo", entity.vac_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@vac_UsuarioCrea", entity.vac_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -54,13 +55,14 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@vacu_Especie", entity.vacu_Especie, DbType.String, ParameterDirection.Input);
             parameter.Add("@vacu_DosisRecomendada", entity.vacu_DosisRecomendada, DbType.String, ParameterDirection.Input);
             parameter.Add("@vacu_PeriodoRefuerzo", entity.vacu_PeriodoRefuerzo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@vac_EsActivo", entity.vac_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@vac_UsuarioModifica", entity.vac_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
 
         public async Task<Boolean> RemoveAsync(int id)
         {
-            const string sqlQuery = "[General].[PR_General_Vacunas_Delete]";
+            const string sqlQuery = "[Refugio].[PR_Refugio_Vacunas_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@vac_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Delete(sqlQuery, parameter);

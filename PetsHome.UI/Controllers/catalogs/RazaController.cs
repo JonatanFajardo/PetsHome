@@ -87,19 +87,19 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _razaService.AddAsync(model, userId);
-                return AjaxResult(!createdItem);
+                return AjaxResult(createdItem);
             }
             else
             {
                 Boolean updatedItem = await _razaService.UpdateAsync(model, userId);
-                return AjaxResult(!updatedItem);
+                return AjaxResult(updatedItem);
             }
         }
 
         public async Task<IActionResult> Remove(int raza_Id)
         {
             Boolean deletedItem = await _razaService.RemoveAsync(raza_Id);
-            return AjaxResult(!deletedItem);
+            return AjaxResult(deletedItem);
         }
     }
 }
