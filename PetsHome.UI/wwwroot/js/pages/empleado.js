@@ -42,13 +42,12 @@ var Empleado = (function () {
                     Visibility: true
                 },
                 {
-                    FieldName: 'emp_EsActivo',
-                    Size: 100,
+                    FieldName: 'esActivo',
+                    Size: 140,
                     Visibility: true,
                     Render: function(data, type, row) {
-                        var estado = data ? 'Activo' : 'Inactivo';
-                        var badgeClass = data ? 'status-disponible' : 'status-adoptado';
-
+                        var estado = (data && data.toLowerCase() === 'activo') ? 'Activo' : 'Inactivo';
+                        var badgeClass = estado === 'Activo' ? 'status-disponible' : 'status-adoptado';
                         return '<span class="status-badge ' + badgeClass + '">' + estado + '</span>';
                     }
                 }

@@ -6,6 +6,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
 }
 
 <div class="col-12">
@@ -45,6 +46,65 @@
                         <!-- Los botones de DataTable se moveran aqui -->
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de tip de filtrado -->
+    <div id="filter-tip" class="filter-tip">
+        <div class="filter-tip__text">
+            <i class="fas fa-hand-pointer" style="font-size: 18px;"></i>
+            <span>Toca las tarjetas de abajo para filtrar entre registros <strong>activos</strong>, <strong>inactivos</strong> o ver <strong>todos</strong>.</span>
+        </div>
+        <button class="filter-tip__close" onclick="document.getElementById('filter-tip').style.display='none'; sessionStorage.setItem('hideEmpleadoFilterTip','1');" title="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <script>
+        if (sessionStorage.getItem('hideEmpleadoFilterTip') === '1') {
+            document.getElementById('filter-tip').style.display = 'none';
+        }
+    </script>
+
+    <!-- Cards de resumen -->
+    <div class="summary-cards-grid">
+        <div class="summary-card summary-card--green" id="card-activos" onclick="filterByStatus('Activo')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Activos</div>
+                    <div class="summary-card__count" id="count-activos">0</div>
+                    <div class="summary-card__subtitle">En servicio</div>
+                </div>
+                <div class="summary-card__icon"><i class="fas fa-check-circle"></i></div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-arrow-right" style="margin-right:4px;"></i>Filtrar activos</span>
+            </div>
+        </div>
+        <div class="summary-card summary-card--red" id="card-inactivos" onclick="filterByStatus('Inactivo')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Inactivos</div>
+                    <div class="summary-card__count" id="count-inactivos">0</div>
+                    <div class="summary-card__subtitle">Sin servicio</div>
+                </div>
+                <div class="summary-card__icon"><i class="fas fa-ban"></i></div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-arrow-right" style="margin-right:4px;"></i>Filtrar inactivos</span>
+            </div>
+        </div>
+        <div class="summary-card summary-card--purple" id="card-total" onclick="filterByStatus('')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Total Empleados</div>
+                    <div class="summary-card__count" id="count-total">0</div>
+                    <div class="summary-card__subtitle">Registrados</div>
+                </div>
+                <div class="summary-card__icon"><i class="fas fa-user-tie"></i></div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-list" style="margin-right:4px;"></i>Ver todos</span>
             </div>
         </div>
     </div>
@@ -160,7 +220,7 @@
             html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron empleados</p></div>';
         } else {
             data.each(function(row) {
-                var estadoBadge = getEstadoBadge(row.emp_EsActivo ? 'Activo' : 'Inactivo');
+                var estadoBadge = getEstadoBadge(row.esActivo);
                 html += `
                     <div class="col-md-6 col-lg-4 col-xl-3">
                         <div class="pet-card">
@@ -221,5 +281,37 @@
         };
         return badges[estado] || badges['Activo'];
     }
+
+    // Actualizar contadores de las cards
+    function updateStatCards() {
+        var table = $('#datatable').DataTable();
+        var data = table.rows().data();
+        var activos = 0, inactivos = 0;
+        data.each(function (row) {
+            if (row.esActivo && row.esActivo.toLowerCase().indexOf('activo') !== -1
+                && row.esActivo.toLowerCase().indexOf('inactivo') === -1) {
+                activos++;
+            } else {
+                inactivos++;
+            }
+        });
+        $('#count-activos').text(activos);
+        $('#count-inactivos').text(inactivos);
+        $('#count-total').text(data.length);
+    }
+
+    var currentFilter = '';
+    function filterByStatus(status) {
+        currentFilter = status;
+        var table = $('#datatable').DataTable();
+        table.column(5).search(status).draw();
+        $('.summary-card').removeClass('summary-card--active-green summary-card--active-red summary-card--active-purple');
+        if (status === 'Activo') $('#card-activos').addClass('summary-card--active-green');
+        else if (status === 'Inactivo') $('#card-inactivos').addClass('summary-card--active-red');
+        else $('#card-total').addClass('summary-card--active-purple');
+    }
+
+    $('#datatable').on('init.dt', function () { updateStatCards(); });
+    $('#datatable').on('xhr.dt', function () { setTimeout(updateStatCards, 100); });
 </script>
 }

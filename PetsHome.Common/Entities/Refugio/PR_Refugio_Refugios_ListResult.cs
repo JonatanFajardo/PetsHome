@@ -30,9 +30,10 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string refg_Ubicacion { get; set; }
-        
+
         /// <summary>
-        /// Obtiene o establece el valor de la propiedad.
+        /// Estado activo/inactivo del refugio.
         /// </summary>
+        public string EsActivo { get; set; }
     }
 }

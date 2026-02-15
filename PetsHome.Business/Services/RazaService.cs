@@ -26,7 +26,7 @@ namespace PetsHome.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<List<RazaListViewModel>> ListAsync()
+        public virtual async Task<List<RazaListViewModel>> ListAsync()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<RazaFormViewModel> FindAsync(int id)
+        public virtual async Task<RazaFormViewModel> FindAsync(int id)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<RazaDetailsViewModel> DetailAsync(int id)
+        public virtual async Task<RazaDetailsViewModel> DetailAsync(int id)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> AddAsync(RazaFormViewModel model, int userId)
+        public virtual async Task<bool> AddAsync(RazaFormViewModel model, int userId)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(RazaFormViewModel model, int userId)
+        public virtual async Task<bool> UpdateAsync(RazaFormViewModel model, int userId)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public virtual async Task<bool> RemoveAsync(int id)
         {
             try
             {

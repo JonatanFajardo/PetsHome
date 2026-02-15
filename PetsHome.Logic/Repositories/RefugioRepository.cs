@@ -45,6 +45,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@refg_InformacionAdicional", entity.refg_InformacionAdicional, DbType.String, ParameterDirection.Input);
             parameter.Add("@depto_Id", entity.depto_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@refg_EsActivo", entity.refg_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@refg_UsuarioCrea", entity.refg_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -62,6 +63,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@refg_InformacionAdicional", entity.refg_InformacionAdicional, DbType.String, ParameterDirection.Input);
             parameter.Add("@depto_Id", entity.depto_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@refg_EsActivo", entity.refg_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@refg_UsuarioModifica", entity.refg_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }

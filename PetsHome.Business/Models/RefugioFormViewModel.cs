@@ -52,6 +52,7 @@ namespace PetsHome.Business.Models
         [StringLength(500)]
         public string refg_InformacionAdicional { get; set; }
 
+        [Display(Name = "Estado")]
         public bool refg_EsActivo { get; set; }
 
         public int refg_UsuarioCrea { get; set; }
