@@ -18,10 +18,10 @@ namespace PetsHome.Business.Models
         [StringLength(10)]
         public string tipoEst_Sexo { get; set; }
 
-        public string EsActivo { get; set; }
+        public string tipoEst_EsActivo { get; set; }
 
         [Display(Name = "Estado")]
-        public bool tipoEst_EsActivo { get; set; }
+        public bool tipoEst_EsActivoBool { get; set; }
 
         public int tipoEst_UsuarioCrea { get; set; }
 

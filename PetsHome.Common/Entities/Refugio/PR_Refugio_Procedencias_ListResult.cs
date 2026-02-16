@@ -21,6 +21,6 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public string proc_Descripcion { get; set; }
 
-        public string EsActivo { get; set; }
+        public string proc_EsActivo { get; set; }
     }
 }

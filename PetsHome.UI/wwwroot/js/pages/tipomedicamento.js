@@ -7,7 +7,7 @@ var TipoMedicamento = (function () {
             header = [
                 { FieldName: 'tipoMed_Id', Size: 60 },
                 { FieldName: 'tipoMed_Descripcion' },
-                { FieldName: 'esActivo', Size: 140 }
+                { FieldName: 'tipoMed_EsActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

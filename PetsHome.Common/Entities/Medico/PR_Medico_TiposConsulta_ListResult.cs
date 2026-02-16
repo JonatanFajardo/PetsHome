@@ -20,6 +20,6 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public string tipoCon_Descripcion { get; set; }
 
-        public string EsActivo { get; set; }
+        public string tipoCon_EsActivo { get; set; }
     }
 }

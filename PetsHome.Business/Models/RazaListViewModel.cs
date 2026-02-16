@@ -19,6 +19,6 @@ namespace PetsHome.Business.Models
 
         public string raza_ImagenUrl { get; set; }
 
-        public string EsActivo { get; set; }
+        public string raza_EsActivo { get; set; }
     }
 }

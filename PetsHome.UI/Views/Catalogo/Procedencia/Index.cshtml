@@ -158,7 +158,7 @@
                                             <div class="switch-status" id="estadoStatus">Activo</div>
                                         </div>
                                         <label class="switch">
-                                            <input type="checkbox" asp-for="proc_EsActivo" id="proc_EsActivo" checked>
+                                            <input type="checkbox" asp-for="proc_EsActivoBool" id="proc_EsActivoBool" checked>
                                             <span class="switch-slider"></span>
                                         </label>
                                     </div>
@@ -280,7 +280,7 @@
     }
 
     // Switch estado activo/inactivo
-    $('#proc_EsActivo').on('change', function () {
+    $('#proc_EsActivoBool').on('change', function () {
         $('#estadoStatus').text(this.checked ? 'Activo' : 'Inactivo');
     });
 
@@ -290,7 +290,7 @@
         var data = table.rows().data();
         var activos = 0, inactivos = 0;
         data.each(function (row) {
-            if (row.esActivo && row.esActivo.toLowerCase().indexOf('activo') !== -1 && row.esActivo.toLowerCase().indexOf('inactivo') === -1) {
+            if (row.proc_EsActivo && row.proc_EsActivo.toLowerCase().indexOf('activo') !== -1 && row.proc_EsActivo.toLowerCase().indexOf('inactivo') === -1) {
                 activos++;
             } else {
                 inactivos++;

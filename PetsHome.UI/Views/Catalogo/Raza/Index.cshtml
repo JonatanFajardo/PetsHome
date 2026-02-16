@@ -348,7 +348,7 @@
         var data = table.rows().data();
         var activos = 0, inactivos = 0;
         data.each(function (row) {
-            if (row.esActivo && row.esActivo.toLowerCase().indexOf('activo') !== -1 && row.esActivo.toLowerCase().indexOf('inactivo') === -1) {
+            if (row.raza_EsActivo && row.raza_EsActivo.toLowerCase().indexOf('activo') !== -1 && row.raza_EsActivo.toLowerCase().indexOf('inactivo') === -1) {
                 activos++;
             } else {
                 inactivos++;

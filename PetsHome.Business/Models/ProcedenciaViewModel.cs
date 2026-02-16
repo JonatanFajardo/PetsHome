@@ -20,10 +20,10 @@ namespace PetsHome.Business.Models
         [StringLength(50)]
         public string proc_Descripcion { get; set; }
 
-        public string EsActivo { get; set; }
+        public string proc_EsActivo { get; set; }
 
         [Display(Name = "Estado")]
-        public bool proc_EsActivo { get; set; }
+        public bool proc_EsActivoBool { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea la procedencia.

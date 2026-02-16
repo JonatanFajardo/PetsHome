@@ -14,10 +14,10 @@ namespace PetsHome.Business.Models
         [StringLength(100)]
         public string viaAdmin_Descripcion { get; set; }
 
-        public string EsActivo { get; set; }
+        public string viaAdmin_EsActivo { get; set; }
 
         [Display(Name = "Estado")]
-        public bool viaAdmin_EsActivo { get; set; }
+        public bool viaAdmin_EsActivoBool { get; set; }
 
         public int viaAdmin_UsuarioCrea { get; set; }
 
