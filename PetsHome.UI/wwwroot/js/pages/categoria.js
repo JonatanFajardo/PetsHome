@@ -9,7 +9,8 @@ var Categoria = (function () {
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
                 { FieldName: 'cat_Id', Size: 60},
-                { FieldName: 'cat_Descripcion'}
+                { FieldName: 'cat_Descripcion' },
+                { FieldName: 'esActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

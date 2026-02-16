@@ -20,6 +20,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
+        public bool? tipoCon_EsActivo { get; set; }
         public bool tipoCon_EsEliminado { get; set; }
 
         /// <summary>

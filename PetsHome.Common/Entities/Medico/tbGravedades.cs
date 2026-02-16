@@ -20,6 +20,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
+        public bool? grav_EsActivo { get; set; }
         public bool grav_EsEliminado { get; set; }
 
         public int grav_UsuarioCrea { get; set; }

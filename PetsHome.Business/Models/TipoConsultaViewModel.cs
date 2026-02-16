@@ -20,6 +20,11 @@ namespace PetsHome.Business.Models
         [StringLength(100)]
         public string tipoCon_Descripcion { get; set; }
 
+        public string EsActivo { get; set; }
+
+        [Display(Name = "Estado")]
+        public bool tipoCon_EsActivo { get; set; }
+
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea el tipo de consulta.
         /// </summary>

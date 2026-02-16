@@ -13,5 +13,7 @@ namespace PetsHome.Common.Entities
         public int? tipoMed_UsuarioModifica { get; set; }
         public string usuarioModifica { get; set; }
         public DateTime? tipoMed_FechaModifica { get; set; }
+
+        public bool tipoMed_EsActivo { get; set; }
     }
 }

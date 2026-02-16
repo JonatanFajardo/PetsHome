@@ -35,6 +35,9 @@ namespace PetsHome.Business.Models
         [StringLength(500)]
         public string raza_ImagenUrl { get; set; }
 
+        [Display(Name = "Estado")]
+        public bool raza_EsActivo { get; set; }
+
         public int raza_UsuarioCrea { get; set; }
 
         [Display(Name = "Usuario creación")]

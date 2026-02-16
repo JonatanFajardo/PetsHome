@@ -8,5 +8,7 @@ namespace PetsHome.Common.Entities
         public int tipoEst_Id { get; set; }
         public string tipoEst_Descripcion { get; set; }
         public string tipoEst_Sexo { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
+        public bool? raza_EsActivo { get; set; }
         public bool raza_EsEliminado { get; set; }
         public int raza_UsuarioCrea { get; set; }
         /// <summary>

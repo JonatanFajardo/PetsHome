@@ -7,5 +7,7 @@ namespace PetsHome.Common.Entities
     {
         public int grav_Id { get; set; }
         public string grav_Descripcion { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

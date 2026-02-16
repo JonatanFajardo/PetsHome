@@ -14,6 +14,11 @@ namespace PetsHome.Business.Models
         [StringLength(100)]
         public string tipoMed_Descripcion { get; set; }
 
+        public string EsActivo { get; set; }
+
+        [Display(Name = "Estado")]
+        public bool tipoMed_EsActivo { get; set; }
+
         public int tipoMed_UsuarioCrea { get; set; }
 
         [Display(Name = "Usuario creación")]

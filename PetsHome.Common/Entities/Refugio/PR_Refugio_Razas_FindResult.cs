@@ -70,5 +70,7 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public DateTime? raza_FechaModifica { get; set; }
+
+        public bool raza_EsActivo { get; set; }
     }
 }

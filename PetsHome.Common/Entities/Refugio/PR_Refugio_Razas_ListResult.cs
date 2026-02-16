@@ -45,6 +45,8 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string raza_ImagenUrl { get; set; }
+
+        public string EsActivo { get; set; }
     }
 
 

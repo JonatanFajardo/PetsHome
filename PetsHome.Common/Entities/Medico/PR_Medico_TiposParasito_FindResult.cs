@@ -14,5 +14,7 @@ namespace PetsHome.Common.Entities
         public int? tipoPar_UsuarioModifica { get; set; }
         public string usuarioModifica { get; set; }
         public DateTime? tipoPar_FechaModifica { get; set; }
+
+        public bool tipoPar_EsActivo { get; set; }
     }
 }

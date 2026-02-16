@@ -13,5 +13,7 @@ namespace PetsHome.Common.Entities
         public int? viaAdmin_UsuarioModifica { get; set; }
         public string usuarioModifica { get; set; }
         public DateTime? viaAdmin_FechaModifica { get; set; }
+
+        public bool viaAdmin_EsActivo { get; set; }
     }
 }

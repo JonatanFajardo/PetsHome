@@ -13,5 +13,7 @@ namespace PetsHome.Common.Entities
         public int? grav_UsuarioModifica { get; set; }
         public string usuarioModifica { get; set; }
         public DateTime? grav_FechaModifica { get; set; }
+
+        public bool grav_EsActivo { get; set; }
     }
 }

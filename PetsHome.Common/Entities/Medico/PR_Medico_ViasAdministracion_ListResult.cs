@@ -7,5 +7,7 @@ namespace PetsHome.Common.Entities
     {
         public int viaAdmin_Id { get; set; }
         public string viaAdmin_Descripcion { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

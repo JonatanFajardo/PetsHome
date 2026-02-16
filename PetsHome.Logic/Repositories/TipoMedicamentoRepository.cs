@@ -41,6 +41,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Medico].[PR_Medico_TiposMedicamento_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@tipoMed_Descripcion", entity.tipoMed_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@tipoMed_EsActivo", entity.tipoMed_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@tipoMed_UsuarioCrea", entity.tipoMed_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -52,6 +53,7 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@tipoMed_Id", entity.tipoMed_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@tipoMed_Descripcion", entity.tipoMed_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@tipoMed_EsActivo", entity.tipoMed_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@tipoMed_UsuarioModifica", entity.tipoMed_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }
