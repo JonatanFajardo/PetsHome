@@ -14,10 +14,10 @@ namespace PetsHome.Business.Models
         [StringLength(50)]
         public string grav_Descripcion { get; set; }
 
-        public string EsActivo { get; set; }
+        public string grav_EsActivo { get; set; }
 
         [Display(Name = "Estado")]
-        public bool grav_EsActivo { get; set; }
+        public bool grav_EsActivoBool { get; set; }
 
         public int grav_UsuarioCrea { get; set; }
 

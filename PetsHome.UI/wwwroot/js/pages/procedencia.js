@@ -9,7 +9,7 @@ var Procedencia = (function () {
             header = [
                 { FieldName: 'proc_Id', Size: 60 },
                 { FieldName: 'proc_Descripcion' },
-                { FieldName: 'esActivo', Size: 140 }
+                { FieldName: 'proc_EsActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

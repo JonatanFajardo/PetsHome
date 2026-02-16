@@ -8,7 +8,7 @@ var TipoEsterilizacion = (function () {
                 { FieldName: 'tipoEst_Id', Size: 80 },
                 { FieldName: 'tipoEst_Descripcion' },
                 { FieldName: 'tipoEst_Sexo', Size: 150 },
-                { FieldName: 'esActivo', Size: 140 }
+                { FieldName: 'tipoEst_EsActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

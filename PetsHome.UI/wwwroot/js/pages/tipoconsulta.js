@@ -7,7 +7,7 @@ var TipoConsulta = (function () {
             header = [
                 { FieldName: 'tipoCon_Id', Size: 60 },
                 { FieldName: 'tipoCon_Descripcion' },
-                { FieldName: 'esActivo', Size: 140 }
+                { FieldName: 'tipoCon_EsActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

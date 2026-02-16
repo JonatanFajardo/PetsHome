@@ -9,6 +9,6 @@ namespace PetsHome.Common.Entities
         public string tipoEst_Descripcion { get; set; }
         public string tipoEst_Sexo { get; set; }
 
-        public string EsActivo { get; set; }
+        public string tipoEst_EsActivo { get; set; }
     }
 }

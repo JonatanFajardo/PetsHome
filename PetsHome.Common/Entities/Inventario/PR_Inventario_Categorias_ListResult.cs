@@ -19,6 +19,6 @@ namespace PetsHome.Common.Entities
         /// </summary>
         public string cat_Descripcion { get; set; }
 
-        public string EsActivo { get; set; }
+        public string cat_EsActivo { get; set; }
     }
 }

@@ -8,7 +8,7 @@ var TipoParasito = (function () {
                 { FieldName: 'tipoPar_Id', Size: 80 },
                 { FieldName: 'tipoPar_Descripcion' },
                 { FieldName: 'tipoPar_Categoria', Size: 150 },
-                { FieldName: 'esActivo', Size: 140 }
+                { FieldName: 'tipoPar_EsActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

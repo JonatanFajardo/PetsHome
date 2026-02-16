@@ -10,7 +10,7 @@ var Categoria = (function () {
             header = [
                 { FieldName: 'cat_Id', Size: 60},
                 { FieldName: 'cat_Descripcion' },
-                { FieldName: 'esActivo', Size: 140 }
+                { FieldName: 'cat_EsActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })
