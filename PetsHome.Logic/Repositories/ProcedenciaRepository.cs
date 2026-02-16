@@ -38,6 +38,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Refugio].[PR_Refugio_Procedencias_Insert]";
             var parameter = new DynamicParameters();
             parameter.Add("@proc_Descripcion", entity.proc_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@proc_EsActivo", entity.proc_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@proc_UsuarioCrea", entity.proc_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -48,6 +49,7 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@proc_Id", entity.proc_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@proc_Descripcion", entity.proc_Descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@proc_EsActivo", entity.proc_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@proc_UsuarioModifica", entity.proc_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }

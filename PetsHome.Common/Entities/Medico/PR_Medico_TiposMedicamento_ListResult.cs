@@ -7,5 +7,7 @@ namespace PetsHome.Common.Entities
     {
         public int tipoMed_Id { get; set; }
         public string tipoMed_Descripcion { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

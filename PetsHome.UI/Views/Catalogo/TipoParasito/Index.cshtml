@@ -6,6 +6,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
 }
 
 <div class="col-12">
@@ -37,6 +38,65 @@
         </div>
     </div>
 
+    <!-- Tip de ayuda -->
+    <div id="filter-tip" class="filter-tip">
+        <div class="filter-tip__text">
+            <i class="fas fa-hand-pointer" style="font-size: 18px;"></i>
+            <span>Toca las tarjetas de abajo para filtrar entre registros <strong>activos</strong>, <strong>inactivos</strong> o ver <strong>todos</strong>.</span>
+        </div>
+        <button class="filter-tip__close" onclick="document.getElementById('filter-tip').style.display='none'; sessionStorage.setItem('hideTipoParFilterTip','1');" title="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+<script>
+        if (sessionStorage.getItem('hideTipoParFilterTip') === '1') {
+            document.getElementById('filter-tip').style.display = 'none';
+        }
+    </script>
+
+    <!-- Cards de resumen -->
+    <div class="summary-cards-grid">
+        <div class="summary-card summary-card--green" id="card-activos" onclick="filterByStatus('Activo')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Activos</div>
+                    <div class="summary-card__count" id="count-activos">0</div>
+                    <div class="summary-card__subtitle">En uso</div>
+                </div>
+                <div class="summary-card__icon"><i class="fas fa-check-circle"></i></div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-arrow-right" style="margin-right:4px;"></i>Filtrar activos</span>
+            </div>
+        </div>
+        <div class="summary-card summary-card--red" id="card-inactivos" onclick="filterByStatus('Inactivo')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Inactivos</div>
+                    <div class="summary-card__count" id="count-inactivos">0</div>
+                    <div class="summary-card__subtitle">Sin uso</div>
+                </div>
+                <div class="summary-card__icon"><i class="fas fa-ban"></i></div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-arrow-right" style="margin-right:4px;"></i>Filtrar inactivos</span>
+            </div>
+        </div>
+        <div class="summary-card summary-card--purple" id="card-total" onclick="filterByStatus('')">
+            <div class="summary-card__body">
+                <div>
+                    <div class="summary-card__title">Total Tipos</div>
+                    <div class="summary-card__count" id="count-total">0</div>
+                    <div class="summary-card__subtitle">Registrados</div>
+                </div>
+                <div class="summary-card__icon"><i class="fas fa-bug"></i></div>
+            </div>
+            <div class="summary-card__footer">
+                <span class="summary-card__action"><i class="fas fa-list" style="margin-right:4px;"></i>Ver todos</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Vista de Tabla -->
     <div id="tableView" class="pets-table-container">
         <table class="pets-table" id="datatable">
@@ -45,6 +105,7 @@
                     <th width="80">ID</th>
                     <th>Descripción</th>
                     <th>Categoría</th>
+                    <th width="140">Estado</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -91,6 +152,20 @@
                                         <option value="Externo">Externo</option>
                                         <option value="Mixto">Mixto</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="switch-container">
+                                        <div>
+                                            <label class="switch-label">Estado</label>
+                                            <div class="switch-status" id="estadoStatus">Activo</div>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" asp-for="tipoPar_EsActivo" id="tipoPar_EsActivo" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,5 +246,45 @@
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();
     });
+
+    // Switch estado activo/inactivo
+    $('#tipoPar_EsActivo').on('change', function () {
+        $('#estadoStatus').text(this.checked ? 'Activo' : 'Inactivo');
+    });
+
+    // Actualizar contadores de las cards
+    function updateStatCards() {
+        var table = $('#datatable').DataTable();
+        var data = table.rows().data();
+        var activos = 0, inactivos = 0;
+        data.each(function (row) {
+            if (row.esActivo && row.esActivo.toLowerCase().indexOf('activo') !== -1 && row.esActivo.toLowerCase().indexOf('inactivo') === -1) {
+                activos++;
+            } else {
+                inactivos++;
+            }
+        });
+        $('#count-activos').text(activos);
+        $('#count-inactivos').text(inactivos);
+        $('#count-total').text(data.length);
+    }
+
+    var currentFilter = '';
+    function filterByStatus(status) {
+        currentFilter = status;
+        var table = $('#datatable').DataTable();
+        table.column(3).search(status).draw();
+        $('.summary-card').removeClass('summary-card--active-green summary-card--active-red summary-card--active-purple');
+        if (status === 'Activo') {
+            $('#card-activos').addClass('summary-card--active-green');
+        } else if (status === 'Inactivo') {
+            $('#card-inactivos').addClass('summary-card--active-red');
+        } else {
+            $('#card-total').addClass('summary-card--active-purple');
+        }
+    }
+
+    $('#datatable').on('init.dt', function () { updateStatCards(); });
+    $('#datatable').on('xhr.dt', function () { setTimeout(updateStatCards, 100); });
 </script>
 }

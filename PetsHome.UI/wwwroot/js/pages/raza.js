@@ -17,7 +17,8 @@
                 { FieldName: "raza_Descripcion" },
                 { FieldName: "raza_TipoAnimal", Size: 150 },
                 { FieldName: "raza_Tamano", Size: 120 },
-                { FieldName: "raza_TipoPelaje", Size: 150 }
+                { FieldName: "raza_TipoPelaje", Size: 150 },
+                { FieldName: "esActivo", Size: 140 }
             ]
 
             //header = [

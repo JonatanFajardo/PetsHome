@@ -6,7 +6,8 @@ var ViaAdministracion = (function () {
             var header = new Array();
             header = [
                 { FieldName: 'viaAdmin_Id', Size: 60 },
-                { FieldName: 'viaAdmin_Descripcion' }
+                { FieldName: 'viaAdmin_Descripcion' },
+                { FieldName: 'esActivo', Size: 140 }
             ];
             datatableCatalogs.init(Direction, header);
         })

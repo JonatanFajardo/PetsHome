@@ -32,7 +32,7 @@
                         $editModal.modal("show");
                     }
                     else {
-                        alertConfig.alert(response.message, 'error');
+                        toastr.error(response.message);
                     }
                 },
                 complete: function () {
@@ -54,12 +54,12 @@
                     btn.start();
                 },
                 success: function (response) {
-                    if (!response.success) {
+                    if (response.success) {
                         assignSettings(response.item);
                         $editModal.modal("show");
                     }
                     else {
-                        alertConfig.alert(response.message, response.type);
+                        toastr.error(response.message);
                     }
                 },
                 complete: function () {
@@ -96,7 +96,7 @@
                         $deleteModal.modal("show");
                     }
                     else {
-                        alertConfig.alert('Parece que ocurrio un error inesperado.', 'error');
+                        toastr.error('Parece que ocurrió un error inesperado.');
                     }
                 },
                 complete: function () {
@@ -112,10 +112,11 @@
         // obtiene el input con el name de la propiedad enviada
         var $input = $('#edit-modal form input[name="' + n + '" i]');
         if ($input.length > 0) {
-            if ($input.attr("type") == "text" || $input.attr("type") == "hidden") {
-                $input.val(v);
-            } else if ($input.attr("type") == "checkbox") {
+            var type = $input.attr("type");
+            if (type == "checkbox" || type == "radio") {
                 $input.prop("checked", v);
+            } else {
+                $input.val(v);
             }
         }
         else {
@@ -257,18 +258,18 @@
     };
 
     obj.success = function (data, status, xhr) {
-        
+
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
             table.DataTable().ajax.reload(null, false);
+            toastr.success(data.message);
         }
         else {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
-            alertConfig.alert(data.message, 'error');
+            toastr.error(data.message);
         }
-        alertConfig.alert(data.message, data.type);
     };
 
     obj.failure = function (xhr, status, error) {

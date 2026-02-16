@@ -42,6 +42,7 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@tipoPar_Descripcion", entity.tipoPar_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@tipoPar_Categoria", entity.tipoPar_Categoria, DbType.String, ParameterDirection.Input);
+            parameter.Add("@tipoPar_EsActivo", entity.tipoPar_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@tipoPar_UsuarioCrea", entity.tipoPar_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, parameter);
         }
@@ -54,6 +55,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@tipoPar_Id", entity.tipoPar_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@tipoPar_Descripcion", entity.tipoPar_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@tipoPar_Categoria", entity.tipoPar_Categoria, DbType.String, ParameterDirection.Input);
+            parameter.Add("@tipoPar_EsActivo", entity.tipoPar_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@tipoPar_UsuarioModifica", entity.tipoPar_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Update(sqlQuery, parameter);
         }

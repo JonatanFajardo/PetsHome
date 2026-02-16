@@ -19,5 +19,7 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece la descripción del tipo de consulta.
         /// </summary>
         public string tipoCon_Descripcion { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

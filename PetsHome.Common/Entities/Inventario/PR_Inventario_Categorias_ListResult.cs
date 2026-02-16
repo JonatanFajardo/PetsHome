@@ -18,5 +18,7 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string cat_Descripcion { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

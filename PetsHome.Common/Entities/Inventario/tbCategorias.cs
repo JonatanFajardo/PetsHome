@@ -20,6 +20,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
+        public bool? cat_EsActivo { get; set; }
         public bool cat_EsEliminado { get; set; }
         /// <summary>
         /// Indica el identificador del usuario que creó el registro.

@@ -18,5 +18,7 @@ namespace PetsHome.Business.Models
         public string raza_TipoPelaje { get; set; }
 
         public string raza_ImagenUrl { get; set; }
+
+        public string EsActivo { get; set; }
     }
 }

@@ -23,6 +23,11 @@ namespace PetsHome.Business.Models
         [StringLength(100)]
         public string cat_Descripcion { get; set; }
 
+        public string EsActivo { get; set; }
+
+        [Display(Name = "Estado")]
+        public bool cat_EsActivo { get; set; }
+
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea la categoría.
         /// </summary>

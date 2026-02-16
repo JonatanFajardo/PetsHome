@@ -20,6 +20,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
+        public bool? viaAdmin_EsActivo { get; set; }
         public bool viaAdmin_EsEliminado { get; set; }
 
         public int viaAdmin_UsuarioCrea { get; set; }
