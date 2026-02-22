@@ -126,6 +126,7 @@
                     </button>
                 </div>
                 <form asp-action="Add" method="post" autocomplete="off"
+                      data-ajax="true"
                       data-ajax-begin="Catalogs.begin"
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
@@ -174,7 +175,7 @@
                         <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
                             <i class="fas fa-times mr-2"></i>Cancelar
                         </button>
-                        <button type="submit" class="btn btn-primary px-4"></button>
+                        <button type="submit" class="btn btn-primary px-4 ladda-button" data-style="expand-right"></button>
                     </div>
                 </form>
             </div>
@@ -195,6 +196,7 @@
                     </button>
                 </div>
                 <form asp-action="Remove" method="post" autocomplete="off"
+                      data-ajax="true"
                       data-ajax-begin="Catalogs.begin"
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
@@ -211,7 +213,7 @@
                         <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
                             <i class="fas fa-times mr-2"></i>Cancelar
                         </button>
-                        <button type="submit" class="btn btn-danger px-4">
+                        <button type="submit" class="btn btn-danger px-4 ladda-button" data-style="expand-right">
                             <i class="fas fa-trash mr-2"></i>Eliminar
                         </button>
                     </div>

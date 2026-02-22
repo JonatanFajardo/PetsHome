@@ -88,6 +88,10 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Refugio_EmpleadosCargos_DropdownResult, EmpleadoCargoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_EmpleadosCargos_FindResult, EmpleadoCargoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_EmpleadosCargos_ListResult, EmpleadoCargoViewModel>().ReverseMap();
+            CreateMap<tbEmpleadosCargos, EmpleadoCargoViewModel>()
+                .ForMember(dest => dest.EsActivo, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(dest => dest.cag_EsActivo, opt => opt.MapFrom(src => (bool?)src.cag_EsActivo));
             CreateMap<PR_Refugio_Eventos_DetailResult, EventoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Eventos_FindResult, EventoViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Eventos_ListResult, EventoViewModel>().ReverseMap();

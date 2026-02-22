@@ -296,7 +296,7 @@ var TipoConsulta = (function () {
                 { FieldName: 'tipoCon_Id', Size: 200 },
                 { FieldName: 'tipoCon_Descripcion' }
             ];
-            datatableCatalogs.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

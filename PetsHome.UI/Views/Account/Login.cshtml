@@ -151,9 +151,19 @@
             });
 
             // Form submission with loading state
-            $('#loginForm').on('submit', function() {
-                const button = $('#loginButton');
-                button.addClass('loading').prop('disabled', true);
+            $('#loginForm').on('submit', function(e) {
+                console.log('=== FORM SUBMIT EVENT ===');
+                console.log('Action:', this.action);
+                console.log('Method:', this.method);
+                console.log('Username val:', $('[name="Username"]').val());
+                console.log('Password val:', $('[name="Password"]').val() ? 'HAS VALUE' : 'EMPTY');
+                console.log('Token:', $('[name="__RequestVerificationToken"]').length > 0 ? 'EXISTS' : 'MISSING');
+
+                // Delay disable to not block submission
+                var btn = $('#loginButton');
+                setTimeout(function() {
+                    btn.addClass('loading').prop('disabled', true);
+                }, 50);
             });
 
             // Input focus effects

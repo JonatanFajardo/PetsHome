@@ -136,21 +136,23 @@ namespace PetsHome.DataAccess.Extensions
         /// <returns>True si la actualización se realizó correctamente, False en caso contrario.</returns>
         public static async Task<bool> Update(string sqlQuery, DynamicParameters parameters)
         {
-            bool resultSql;
             using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
-                database.Open();
-                var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-                if (result.Count() != 0)
+                try
                 {
-                    return true;
+                    database.Open();
+                    var result = await database.ExecuteAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                    database.Close();
+                    database.Dispose();
+                    // result == -1 when SP uses SET NOCOUNT ON (success, row count suppressed)
+                    return result > 0 || result == -1;
                 }
-
-                resultSql = false;
-
-                database.Close();
-                database.Dispose();
-                return resultSql;
+                catch
+                {
+                    database.Close();
+                    database.Dispose();
+                    return false;
+                }
             }
         }
 
@@ -162,18 +164,23 @@ namespace PetsHome.DataAccess.Extensions
         /// <returns>True si la inserción se realizó correctamente, False en caso contrario.</returns>
         public static async Task<bool> Insert(string sqlQuery, DynamicParameters parameters)
         {
-            bool resultSql;
             using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
-                database.Open();
-                var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-                if (result.Count() != 0)
+                try
                 {
+                    database.Open();
+                    var result = await database.ExecuteAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                    database.Close();
+                    database.Dispose();
+                    // result == -1 when SP uses SET NOCOUNT ON (success, row count suppressed)
+                    return result > 0 || result == -1;
                 }
-                resultSql = false;
-                database.Close();
-                database.Dispose();
-                return resultSql;
+                catch
+                {
+                    database.Close();
+                    database.Dispose();
+                    return false;
+                }
             }
         }
 
@@ -221,18 +228,23 @@ namespace PetsHome.DataAccess.Extensions
         /// <returns>True si la eliminación se realizó correctamente, False en caso contrario.</returns>
         public static async Task<Boolean> Delete(string sqlQuery, DynamicParameters parameters)
         {
-            bool resultSql;
             using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
-                database.Open();
-                var result = await database.QueryAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-                if (result.Count() != 0)
+                try
                 {
+                    database.Open();
+                    var result = await database.ExecuteAsync(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                    database.Close();
+                    database.Dispose();
+                    // result == -1 when SP uses SET NOCOUNT ON (success, row count suppressed)
+                    return result > 0 || result == -1;
                 }
-                resultSql = false;
-                database.Close();
-                database.Dispose();
-                return resultSql;
+                catch
+                {
+                    database.Close();
+                    database.Dispose();
+                    return false;
+                }
             }
         }
     }

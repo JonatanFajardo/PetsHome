@@ -56,15 +56,17 @@ namespace PetsHome.UI.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
 
             try
             {
                 // Autenticar usuario
+                System.Diagnostics.Debug.WriteLine("=== LOGIN ATTEMPT: " + model.Username + " ===");
                 var usuario = await _usuarioService.AuthenticateAsync(model.Username, model.Password);
+                System.Diagnostics.Debug.WriteLine("=== LOGIN RESULT: " + (usuario != null ? "SUCCESS - " + usuario.usu_NombreCompleto : "NULL") + " ===");
 
                 if (usuario == null)
                 {
@@ -122,6 +124,7 @@ namespace PetsHome.UI.Controllers
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("=== LOGIN EXCEPTION: " + ex.ToString() + " ===");
                 ModelState.AddModelError(string.Empty, "Error al iniciar sesión. Intente nuevamente.");
                 ShowAlert("Error al iniciar sesión. Intente nuevamente.", AlertMessageType.Error);
                 // Log del error aquí
