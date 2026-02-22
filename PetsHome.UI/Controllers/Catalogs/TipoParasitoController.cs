@@ -75,7 +75,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoParasitoService.AddAsync(model);
-                if (!createdItem)
+                if (createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
                     return RedirectToAction("Index");
@@ -108,12 +108,12 @@ namespace PetsHome.UI.Controllers
             if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
-                return RedirectToAction("Index");
+                return AjaxResult(true);
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
+                return AjaxResult(true);
             }
         }
     }

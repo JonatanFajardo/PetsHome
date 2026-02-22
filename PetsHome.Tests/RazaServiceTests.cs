@@ -142,7 +142,7 @@ namespace PetsHome.Tests
 
             // Verifica que se asignó el usuario y la fecha de creación antes de insertar
             Assert.Equal(idUsuario, entidad.raza_UsuarioCrea);
-            Assert.NotNull(entidad.raza_FechaCrea);
+            Assert.NotEqual(default(DateTime), entidad.raza_FechaCrea);
         }
 
         [Fact]
@@ -183,14 +183,13 @@ namespace PetsHome.Tests
             // Assert
             Assert.True(resultado);
             Assert.Equal(idUsuario, entidad.raza_UsuarioModifica);
-            Assert.NotNull(entidad.raza_FechaModifica);
+            Assert.True(entidad.raza_FechaModifica.HasValue);
         }
 
         [Fact]
-        public async Task UpdateAsync_CuandoRepoLanzaExcepcion_RetornaTrue()
+        public async Task UpdateAsync_CuandoRepoLanzaExcepcion_RetornaFalse()
         {
-            // Nota: el servicio retorna `true` cuando hay excepción en Update
-            // (comportamiento actual del código — la prueba documenta eso)
+            // RazaService.UpdateAsync retorna `false` cuando hay excepción (bloque catch devuelve false)
             var modelo = new RazaFormViewModel { raza_Id = 5, raza_Descripcion = "Bulldog" };
             var entidad = new tbRazas();
 
@@ -199,7 +198,7 @@ namespace PetsHome.Tests
 
             bool resultado = await _servicio.UpdateAsync(modelo, 1);
 
-            Assert.True(resultado);
+            Assert.False(resultado);
         }
 
         // -----------------------------------------------------------------------

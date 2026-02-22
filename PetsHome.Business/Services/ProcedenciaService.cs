@@ -99,7 +99,7 @@ namespace PetsHome.Business.Services
             catch (Exception error)
             {
                 _logger.LogError(error, error.Message);
-                return true;
+                return false;
             }
         }
 
@@ -120,7 +120,7 @@ namespace PetsHome.Business.Services
             catch (Exception error)
             {
                 _logger.LogError(error, error.Message);
-                return true;
+                return false;
             }
         }
 
@@ -139,7 +139,7 @@ namespace PetsHome.Business.Services
             catch (Exception error)
             {
                 _logger.LogError(error, error.Message);
-                return true;
+                return false;
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class CategoriaController : BaseController
     {
         private readonly CategoriaService _CategoriaService;
@@ -42,12 +44,12 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _CategoriaService.FindAsync(id);
             if (itemSearched != null)
             {
-                return Json(new { item = itemSearched, success = true });
+                return AjaxResult(itemSearched, true);
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
+                return AjaxResult(itemSearched, true);
             }
         }
 
@@ -72,7 +74,6 @@ namespace PetsHome.UI.Controllers
             }
         }
 
-
         public async Task<IActionResult> Add(CategoriaViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -86,46 +87,19 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _CategoriaService.AddAsync(model, userId);
-                if (!createdItem)
-                {
-                    ShowAlert("Insertado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
+                return AjaxResult(createdItem);
             }
             else
             {
                 Boolean updatedItem = await _CategoriaService.UpdateAsync(model, userId);
-                if (!updatedItem)
-                {
-                    ShowAlert("Modificado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
-                }
+                return AjaxResult(updatedItem);
             }
         }
 
         public async Task<IActionResult> Remove(int cat_Id)
         {
             Boolean deletedItem = await _CategoriaService.RemoveAsync(cat_Id);
-            if (!deletedItem)
-            {
-                ShowAlert("Eliminado", AlertMessageType.Success);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
-            }
+            return AjaxResult(deletedItem);
         }
     }
 }

@@ -258,18 +258,37 @@
     };
 
     obj.success = function (data, status, xhr) {
+        var message = data.message;
+        var isSuccess = data.success;
 
-        if (data.success) {
-            $editModal.modal("hide");
-            $deleteModal.modal("hide");
-            table.DataTable().ajax.reload(null, false);
-            toastr.success(data.message);
-        }
-        else {
-            $editModal.modal("hide");
-            $deleteModal.modal("hide");
-            toastr.error(data.message);
-        }
+        // Cerrar modales
+        $editModal.modal("hide");
+        $deleteModal.modal("hide");
+
+        // Recargar tabla
+        table.DataTable().ajax.reload(null, false);
+
+        // Mostrar notificación después de que el modal se cierre completamente
+        setTimeout(function () {
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            if (isSuccess) {
+                toastr.success(message);
+            } else {
+                toastr.error(message);
+            }
+        }, 500);
     };
 
     obj.failure = function (xhr, status, error) {

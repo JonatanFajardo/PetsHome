@@ -27,6 +27,12 @@
 
     @* alertas *@
     <link href="~/plugins/toastr/toastr.css" rel="stylesheet" />
+    <style>
+        /* Fix: Bootstrap .toast { opacity: 0 } oculta las notificaciones del plugin toastr */
+        #toast-container > .toast {
+            opacity: 1 !important;
+        }
+    </style>
 
     @* DataTables Styles *@
     <link href="~/plugins/datatables.net/css/dataTables.bootstrap4.min.css" rel="stylesheet" />

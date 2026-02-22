@@ -78,7 +78,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoConsultaService.AddAsync(model);
-                if (!createdItem)
+                if (createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
                     return RedirectToAction("Index");

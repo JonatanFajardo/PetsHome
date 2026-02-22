@@ -76,7 +76,8 @@ var datatableCatalogs = (function () {
                     console.log("Error en el envio de la peticion de listado: " + errorMsg);
                 });
             },
-            columnDefs: obj.dataHeader(header)
+            columnDefs: obj.dataHeader(header),
+            stateSave: false
 
         });
     }

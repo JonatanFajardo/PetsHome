@@ -41,12 +41,12 @@ namespace PetsHome.UI.Controllers
             var itemSearched = await _tipoEsterilizacionService.FindAsync(id);
             if (itemSearched != null)
             {
-                return Json(new { item = itemSearched, success = true });
+                return AjaxResult(itemSearched, true);
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
+                return AjaxResult(itemSearched, false);
             }
         }
 
@@ -75,29 +75,29 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoEsterilizacionService.AddAsync(model);
-                if (!createdItem)
+                if (createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
+                    return AjaxResult(true);
                 }
                 else
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
+                    return AjaxResult(false);
                 }
             }
             else
             {
                 Boolean updatedItem = await _tipoEsterilizacionService.UpdateAsync(model);
-                if (!updatedItem)
+                if (updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
-                    return RedirectToAction("Index");
+                    return AjaxResult(true);
                 }
                 else
                 {
                     ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                    return RedirectToAction("Index");
+                    return AjaxResult(false);
                 }
             }
         }
@@ -105,15 +105,15 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int tipoEst_Id)
         {
             Boolean deletedItem = await _tipoEsterilizacionService.RemoveAsync(tipoEst_Id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
-                return RedirectToAction("Index");
+                return AjaxResult(true);
             }
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return RedirectToAction("Index");
+                return AjaxResult(false);
             }
         }
     }
