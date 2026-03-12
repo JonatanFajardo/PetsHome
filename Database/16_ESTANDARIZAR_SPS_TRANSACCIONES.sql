@@ -829,7 +829,7 @@ BEGIN
         IF EXISTS (
             SELECT 1 FROM Refugio.tbEmpleados e
             INNER JOIN General.tbPersonas p ON e.per_Id = p.per_Id
-            WHERE p.per_Identidad = @per_Identidad AND e.emp_EsEliminado = 0
+            WHERE p.per_Identidad = @per_Identidad AND p.per_EsEliminado = 0
         )
         BEGIN
             SELECT -3 AS CodeStatus, 'Ya existe un empleado con esa identidad.' AS MessageStatus
@@ -866,9 +866,9 @@ BEGIN
                 SET @per_Id = SCOPE_IDENTITY()
             END
             INSERT INTO Refugio.tbEmpleados
-                (emp_Codigo, per_Id, refg_Id, cag_Id, emp_EsActivo, emp_UsuarioCrea, emp_FechaCrea)
+                (emp_Codigo, per_Id, refg_Id, cag_Id, emp_EsActivo)
             VALUES
-                (@emp_Codigo, @per_Id, @refg_Id, @cag_Id, @emp_EsActivo, @per_UsuarioCrea, GETDATE())
+                (@emp_Codigo, @per_Id, @refg_Id, @cag_Id, @emp_EsActivo)
         COMMIT TRANSACTION
         SELECT 1 AS CodeStatus, 'Empleado creado correctamente.' AS MessageStatus
     END TRY
@@ -900,7 +900,11 @@ AS
 BEGIN
     SET NOCOUNT ON
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Refugio.tbEmpleados WHERE emp_Id = @emp_Id AND emp_EsEliminado = 0)
+        IF NOT EXISTS (
+            SELECT 1 FROM Refugio.tbEmpleados e
+            INNER JOIN General.tbPersonas p ON e.per_Id = p.per_Id
+            WHERE e.emp_Id = @emp_Id AND p.per_EsEliminado = 0
+        )
         BEGIN
             SELECT -1 AS CodeStatus, 'El empleado no fue encontrado.' AS MessageStatus
             RETURN
@@ -920,12 +924,10 @@ BEGIN
                 per_FechaModifica   = GETDATE()
             WHERE per_Id = @per_Id
             UPDATE Refugio.tbEmpleados
-            SET emp_Codigo           = @emp_Codigo,
-                refg_Id              = @refg_Id,
-                cag_Id               = @cag_Id,
-                emp_EsActivo         = @emp_EsActivo,
-                emp_UsuarioModifica  = @per_UsuarioModifica,
-                emp_FechaModifica    = GETDATE()
+            SET emp_Codigo   = @emp_Codigo,
+                refg_Id      = @refg_Id,
+                cag_Id       = @cag_Id,
+                emp_EsActivo = @emp_EsActivo
             WHERE emp_Id = @emp_Id
         COMMIT TRANSACTION
         SELECT 1 AS CodeStatus, 'Empleado actualizado correctamente.' AS MessageStatus
@@ -943,13 +945,19 @@ AS
 BEGIN
     SET NOCOUNT ON
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Refugio.tbEmpleados WHERE emp_Id = @emp_Id AND emp_EsEliminado = 0)
+        IF NOT EXISTS (
+            SELECT 1 FROM Refugio.tbEmpleados e
+            INNER JOIN General.tbPersonas p ON e.per_Id = p.per_Id
+            WHERE e.emp_Id = @emp_Id AND p.per_EsEliminado = 0
+        )
         BEGIN
             SELECT -1 AS CodeStatus, 'El empleado no fue encontrado.' AS MessageStatus
             RETURN
         END
         BEGIN TRANSACTION
-            UPDATE Refugio.tbEmpleados SET emp_EsEliminado = 1 WHERE emp_Id = @emp_Id
+            UPDATE General.tbPersonas
+            SET per_EsEliminado = 1
+            WHERE per_Id = (SELECT per_Id FROM Refugio.tbEmpleados WHERE emp_Id = @emp_Id)
         COMMIT TRANSACTION
         SELECT 1 AS CodeStatus, 'Empleado eliminado correctamente.' AS MessageStatus
     END TRY
@@ -984,7 +992,7 @@ BEGIN
         IF EXISTS (
             SELECT 1 FROM Refugio.tbVoluntarios v
             INNER JOIN General.tbPersonas p ON v.per_Id = p.per_Id
-            WHERE p.per_Identidad = @per_Identidad AND v.vol_EsEliminado = 0
+            WHERE p.per_Identidad = @per_Identidad AND p.per_EsEliminado = 0
         )
         BEGIN
             SELECT -3 AS CodeStatus, 'Ya existe un voluntario con esa identidad.' AS MessageStatus
@@ -1021,9 +1029,9 @@ BEGIN
                 SET @per_Id = SCOPE_IDENTITY()
             END
             INSERT INTO Refugio.tbVoluntarios
-                (vol_HorasTrabajadas, per_Id, vol_Recurrente, vol_UsuarioCrea, vol_FechaCrea)
+                (vol_HorasTrabajadas, per_Id, vol_Recurrente)
             VALUES
-                (@vol_HorasTrabajadas, @per_Id, @vol_Recurrente, @per_UsuarioCrea, GETDATE())
+                (@vol_HorasTrabajadas, @per_Id, @vol_Recurrente)
         COMMIT TRANSACTION
         SELECT 1 AS CodeStatus, 'Voluntario creado correctamente.' AS MessageStatus
     END TRY
@@ -1053,7 +1061,11 @@ AS
 BEGIN
     SET NOCOUNT ON
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Refugio.tbVoluntarios WHERE vol_Id = @vol_Id AND vol_EsEliminado = 0)
+        IF NOT EXISTS (
+            SELECT 1 FROM Refugio.tbVoluntarios v
+            INNER JOIN General.tbPersonas p ON v.per_Id = p.per_Id
+            WHERE v.vol_Id = @vol_Id AND p.per_EsEliminado = 0
+        )
         BEGIN
             SELECT -1 AS CodeStatus, 'El voluntario no fue encontrado.' AS MessageStatus
             RETURN
@@ -1073,10 +1085,8 @@ BEGIN
                 per_FechaModifica   = GETDATE()
             WHERE per_Id = @per_Id
             UPDATE Refugio.tbVoluntarios
-            SET vol_HorasTrabajadas  = @vol_HorasTrabajadas,
-                vol_Recurrente       = @vol_Recurrente,
-                vol_UsuarioModifica  = @per_UsuarioModifica,
-                vol_FechaModifica    = GETDATE()
+            SET vol_HorasTrabajadas = @vol_HorasTrabajadas,
+                vol_Recurrente      = @vol_Recurrente
             WHERE vol_Id = @vol_Id
         COMMIT TRANSACTION
         SELECT 1 AS CodeStatus, 'Voluntario actualizado correctamente.' AS MessageStatus
@@ -1094,13 +1104,19 @@ AS
 BEGIN
     SET NOCOUNT ON
     BEGIN TRY
-        IF NOT EXISTS (SELECT 1 FROM Refugio.tbVoluntarios WHERE vol_Id = @vol_Id AND vol_EsEliminado = 0)
+        IF NOT EXISTS (
+            SELECT 1 FROM Refugio.tbVoluntarios v
+            INNER JOIN General.tbPersonas p ON v.per_Id = p.per_Id
+            WHERE v.vol_Id = @vol_Id AND p.per_EsEliminado = 0
+        )
         BEGIN
             SELECT -1 AS CodeStatus, 'El voluntario no fue encontrado.' AS MessageStatus
             RETURN
         END
         BEGIN TRANSACTION
-            UPDATE Refugio.tbVoluntarios SET vol_EsEliminado = 1 WHERE vol_Id = @vol_Id
+            UPDATE General.tbPersonas
+            SET per_EsEliminado = 1
+            WHERE per_Id = (SELECT per_Id FROM Refugio.tbVoluntarios WHERE vol_Id = @vol_Id)
         COMMIT TRANSACTION
         SELECT 1 AS CodeStatus, 'Voluntario eliminado correctamente.' AS MessageStatus
     END TRY
@@ -1437,6 +1453,139 @@ BEGIN
     WHERE rd.recep_Id = @recep_Id
       AND rd.recdet_EsEliminado = 0
     ORDER BY rd.recdet_Id ASC
+END
+GO
+
+-- ============================================================
+-- Razas: Insert, Update, Delete
+-- ============================================================
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Razas_Insert]
+    @raza_Descripcion   NVARCHAR(100),
+    @raza_Tamano        NVARCHAR(20)  = NULL,
+    @raza_TipoAnimal    NVARCHAR(50)  = NULL,
+    @raza_TipoPelaje    NVARCHAR(30)  = NULL,
+    @raza_ImagenUrl     NVARCHAR(500) = NULL,
+    @raza_EsActivo      BIT           = 1,
+    @raza_UsuarioCrea   INT
+AS
+BEGIN
+    SET NOCOUNT ON
+    BEGIN TRY
+        IF EXISTS (
+            SELECT 1 FROM Refugio.tbRazas
+            WHERE raza_Descripcion = @raza_Descripcion AND raza_EsEliminado = 0
+        )
+        BEGIN
+            SELECT -3 AS CodeStatus, 'Ya existe una raza con esa descripción.' AS MessageStatus
+            RETURN
+        END
+        BEGIN TRANSACTION
+            INSERT INTO Refugio.tbRazas
+                (raza_Descripcion, raza_Tamano, raza_TipoAnimal, raza_TipoPelaje,
+                 raza_ImagenUrl, raza_EsActivo, raza_EsEliminado,
+                 raza_UsuarioCrea, raza_FechaCrea)
+            VALUES
+                (@raza_Descripcion, @raza_Tamano, @raza_TipoAnimal, @raza_TipoPelaje,
+                 @raza_ImagenUrl, @raza_EsActivo, 0,
+                 @raza_UsuarioCrea, GETDATE())
+        COMMIT TRANSACTION
+        SELECT 1 AS CodeStatus, 'Raza creada correctamente.' AS MessageStatus
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
+        SELECT -5 AS CodeStatus, ERROR_MESSAGE() AS MessageStatus
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Razas_Update]
+    @raza_Id            INT,
+    @raza_Descripcion   NVARCHAR(100),
+    @raza_Tamano        NVARCHAR(20)  = NULL,
+    @raza_TipoAnimal    NVARCHAR(50)  = NULL,
+    @raza_TipoPelaje    NVARCHAR(30)  = NULL,
+    @raza_ImagenUrl     NVARCHAR(500) = NULL,
+    @raza_EsActivo      BIT           = 1,
+    @raza_UsuarioModifica INT
+AS
+BEGIN
+    SET NOCOUNT ON
+    BEGIN TRY
+        IF NOT EXISTS (
+            SELECT 1 FROM Refugio.tbRazas
+            WHERE raza_Id = @raza_Id AND raza_EsEliminado = 0
+        )
+        BEGIN
+            SELECT -1 AS CodeStatus, 'La raza no fue encontrada.' AS MessageStatus
+            RETURN
+        END
+        BEGIN TRANSACTION
+            UPDATE Refugio.tbRazas
+            SET raza_Descripcion    = @raza_Descripcion,
+                raza_Tamano         = @raza_Tamano,
+                raza_TipoAnimal     = @raza_TipoAnimal,
+                raza_TipoPelaje     = @raza_TipoPelaje,
+                raza_ImagenUrl      = @raza_ImagenUrl,
+                raza_EsActivo       = @raza_EsActivo,
+                raza_UsuarioModifica = @raza_UsuarioModifica,
+                raza_FechaModifica  = GETDATE()
+            WHERE raza_Id = @raza_Id
+        COMMIT TRANSACTION
+        SELECT 1 AS CodeStatus, 'Raza actualizada correctamente.' AS MessageStatus
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
+        SELECT -5 AS CodeStatus, ERROR_MESSAGE() AS MessageStatus
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Razas_Delete]
+    @raza_Id INT
+AS
+BEGIN
+    SET NOCOUNT ON
+    BEGIN TRY
+        IF NOT EXISTS (
+            SELECT 1 FROM Refugio.tbRazas
+            WHERE raza_Id = @raza_Id AND raza_EsEliminado = 0
+        )
+        BEGIN
+            SELECT -1 AS CodeStatus, 'La raza no fue encontrada.' AS MessageStatus
+            RETURN
+        END
+        BEGIN TRANSACTION
+            UPDATE Refugio.tbRazas
+            SET raza_EsEliminado = 1
+            WHERE raza_Id = @raza_Id
+        COMMIT TRANSACTION
+        SELECT 1 AS CodeStatus, 'Raza eliminada correctamente.' AS MessageStatus
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
+        SELECT -5 AS CodeStatus, ERROR_MESSAGE() AS MessageStatus
+    END CATCH
+END
+GO
+
+-- ============================================================
+-- Validaciones de duplicados (SPs de consulta)
+-- ============================================================
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Razas_Existe]
+    @raza_Descripcion NVARCHAR(100),
+    @raza_Id          INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Refugio.tbRazas
+        WHERE raza_Descripcion = @raza_Descripcion
+          AND raza_EsEliminado = 0
+          AND raza_Id != @raza_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
 END
 GO
 

@@ -1,6 +1,8 @@
 ﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using PetsHome.Common;
 using PetsHome.Common.Entities;
+using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using System.Collections.Generic;
 using System.Data;
@@ -67,6 +69,18 @@ namespace PetsHome.Logic.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
+
+        public virtual async Task<bool> ExisteAsync(string descripcion, int id)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Razas_Existe]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@raza_Descripcion", descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                return await db.QueryFirstOrDefaultAsync<bool>(sqlQuery, parameter, commandType: CommandType.StoredProcedure);
+            }
         }
     }
 }

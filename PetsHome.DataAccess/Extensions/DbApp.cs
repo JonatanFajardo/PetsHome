@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using PetsHome.Common;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -232,21 +233,23 @@ namespace PetsHome.DataAccess.Extensions
         {
             using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
-                try
+                database.Open();
+                var result = await database.QueryFirstOrDefaultAsync<RequestResult>(
+                    sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+
+                if (result == null)
                 {
-                    database.Open();
-                    var result = await database.QueryFirstOrDefaultAsync<RequestResult>(
-                        sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-                    database.Close();
-                    database.Dispose();
-                    return result ?? RequestResult.Error("El procedimiento no retornó resultado.");
+                    Log.Warning("SP {Query} no retornó resultado (el SP no tiene SELECT de retorno).", sqlQuery);
+                    return new RequestResult { CodeStatus = 1, MessageStatus = "Operación completada." };
                 }
-                catch (Exception e)
+
+                if (result.CodeStatus == -5)
                 {
-                    database.Close();
-                    database.Dispose();
-                    return RequestResult.Error(e.Message);
-                }
+                    Log.Error("SP {Query} error interno: {Message}", sqlQuery, result.MessageStatus);
+                    result.MessageStatus = "Ocurrió un error interno.";
+                        }
+
+                return result;
             }
         }
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
 using System;
@@ -132,7 +133,8 @@ namespace PetsHome.Tests
             int idUsuario = 7;
 
             _mapperMock.Setup(m => m.Map<tbRazas>(modelo)).Returns(entidad);
-            _repoMock.Setup(r => r.AddAsync(entidad)).ReturnsAsync(true);
+            _repoMock.Setup(r => r.AddAsync(entidad))
+                     .ReturnsAsync(new RequestResult { CodeStatus = 1, MessageStatus = "Éxito" });
 
             // Act
             bool resultado = await _servicio.AddAsync(modelo, idUsuario);
@@ -153,7 +155,8 @@ namespace PetsHome.Tests
             var entidad = new tbRazas();
 
             _mapperMock.Setup(m => m.Map<tbRazas>(modelo)).Returns(entidad);
-            _repoMock.Setup(r => r.AddAsync(entidad)).ReturnsAsync(false);
+            _repoMock.Setup(r => r.AddAsync(entidad))
+                     .ReturnsAsync(new RequestResult { CodeStatus = -3, MessageStatus = "Ya existe" });
 
             // Act
             bool resultado = await _servicio.AddAsync(modelo, 1);
@@ -175,7 +178,8 @@ namespace PetsHome.Tests
             int idUsuario = 10;
 
             _mapperMock.Setup(m => m.Map<tbRazas>(modelo)).Returns(entidad);
-            _repoMock.Setup(r => r.EditAsync(entidad)).ReturnsAsync(true);
+            _repoMock.Setup(r => r.EditAsync(entidad))
+                     .ReturnsAsync(new RequestResult { CodeStatus = 1, MessageStatus = "Éxito" });
 
             // Act
             bool resultado = await _servicio.UpdateAsync(modelo, idUsuario);
@@ -209,7 +213,8 @@ namespace PetsHome.Tests
         public async Task RemoveAsync_CuandoEliminacionExitosa_RetornaTrue()
         {
             // Arrange
-            _repoMock.Setup(r => r.RemoveAsync(4)).ReturnsAsync(true);
+            _repoMock.Setup(r => r.RemoveAsync(4))
+                     .ReturnsAsync(new RequestResult { CodeStatus = 1, MessageStatus = "Éxito" });
 
             // Act
             bool resultado = await _servicio.RemoveAsync(4);
@@ -222,7 +227,8 @@ namespace PetsHome.Tests
         public async Task RemoveAsync_CuandoEliminacionFalla_RetornaFalse()
         {
             // Arrange
-            _repoMock.Setup(r => r.RemoveAsync(4)).ReturnsAsync(false);
+            _repoMock.Setup(r => r.RemoveAsync(4))
+                     .ReturnsAsync(new RequestResult { CodeStatus = -1, MessageStatus = "No encontrado" });
 
             // Act
             bool resultado = await _servicio.RemoveAsync(4);
@@ -235,7 +241,8 @@ namespace PetsHome.Tests
         public async Task RemoveAsync_LlamaAlRepositorioConElIdCorrecto()
         {
             // Arrange
-            _repoMock.Setup(r => r.RemoveAsync(It.IsAny<int>())).ReturnsAsync(true);
+            _repoMock.Setup(r => r.RemoveAsync(It.IsAny<int>()))
+                     .ReturnsAsync(new RequestResult { CodeStatus = 1, MessageStatus = "Éxito" });
 
             // Act
             await _servicio.RemoveAsync(8);

@@ -101,5 +101,12 @@ namespace PetsHome.UI.Controllers
             Boolean deletedItem = await _razaService.RemoveAsync(raza_Id);
             return AjaxResult(deletedItem);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidarDescripcion(string raza_Descripcion, int? raza_Id)
+        {
+            bool existe = await _razaService.ExisteAsync(raza_Descripcion, raza_Id ?? 0);
+            return Json(!existe);
+        }
     }
 }

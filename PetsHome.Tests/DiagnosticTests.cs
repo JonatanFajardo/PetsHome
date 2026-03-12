@@ -1,6 +1,8 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
+using PetsHome.Common;
 using PetsHome.DataAccess;
+using PetsHome.DataAccess.Extensions;
 using System;
 using System.Data;
 using System.Linq;
@@ -273,8 +275,9 @@ namespace PetsHome.Tests
 
             // Call repository directly
             var repo = new PetsHome.Logic.Repositories.RecepcionMercanciaRepository();
-            bool addResult = await repo.AddAsync(entity);
-            _output.WriteLine($"repo.AddAsync result: {addResult}");
+            var addRequestResult = await repo.AddAsync(entity);
+            bool addResult = addRequestResult.Success;
+            _output.WriteLine($"repo.AddAsync result: {addResult} (CodeStatus={addRequestResult.CodeStatus})");
 
             // Query DB directly
             var rawCheck = await db.QueryAsync("SELECT recep_Id, recep_Descripcion FROM [Inventario].[tbRecepcionesMercancia] WHERE recep_Descripcion = @desc AND recep_EsEliminado = 0",
@@ -378,6 +381,37 @@ namespace PetsHome.Tests
                     _output.WriteLine($"INNER: {ex.InnerException.Message}");
                 Assert.True(false, $"AutoMapper mapping RecepcionMercanciaFormViewModel -> tbRecepcionesMercancia failed: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Fuerza un error -5 en un SP para verificar que DbApp.ExecuteWithResult
+        /// loguee el error en Serilog y reemplace el mensaje técnico.
+        ///
+        /// Paso previo: ejecutar en SSMS:
+        /// CREATE OR ALTER PROCEDURE [Refugio].[PR_Test_Error]
+        /// AS BEGIN SET NOCOUNT ON BEGIN TRY SELECT 1/0 END TRY
+        /// BEGIN CATCH SELECT -5 AS CodeStatus, ERROR_MESSAGE() AS MessageStatus END CATCH END
+        /// </summary>
+        [Fact]
+        public async Task Diagnostico_DbApp_ErrorMenos5_SerilogLoguea()
+        {
+            // Arrange
+            PetsHomeDbContext.BuildConnectionString(_cs);
+
+            // Act - llamar SP que fuerza error -5
+            var result = await DbApp.ExecuteWithResult("[Refugio].[PR_Test_Error]", new DynamicParameters());
+
+            // Assert
+            _output.WriteLine($"CodeStatus: {result.CodeStatus}");
+            _output.WriteLine($"MessageStatus: {result.MessageStatus}");
+            _output.WriteLine($"Success: {result.Success}");
+
+            Assert.NotNull(result);
+            Assert.Equal(-5, result.CodeStatus);
+            Assert.False(result.Success);
+            // El mensaje técnico debe estar oculto
+            Assert.Equal("Ocurrió un error interno.", result.MessageStatus);
+            _output.WriteLine("OK: Serilog debió registrar 'Divide by zero...' en el log");
         }
 
         [Fact]
