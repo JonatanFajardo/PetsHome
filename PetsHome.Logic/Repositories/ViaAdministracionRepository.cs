@@ -1,10 +1,10 @@
-using Dapper;
+﻿using Dapper;
+using PetsHome.Common;
 using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Medico_ViasAdministracion_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbViasAdministracion entity)
+        public async Task<RequestResult> AddAsync(tbViasAdministracion entity)
         {
             entity.viaAdmin_UsuarioCrea = 1;
             const string sqlQuery = "[Medico].[PR_Medico_ViasAdministracion_Insert]";
@@ -43,10 +43,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@viaAdmin_Descripcion", entity.viaAdmin_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@viaAdmin_EsActivo", entity.viaAdmin_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@viaAdmin_UsuarioCrea", entity.viaAdmin_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbViasAdministracion entity)
+        public async Task<RequestResult> EditAsync(tbViasAdministracion entity)
         {
             entity.viaAdmin_UsuarioModifica = 1;
             const string sqlQuery = "[Medico].[PR_Medico_ViasAdministracion_Update]";
@@ -55,15 +55,15 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@viaAdmin_Descripcion", entity.viaAdmin_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@viaAdmin_EsActivo", entity.viaAdmin_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@viaAdmin_UsuarioModifica", entity.viaAdmin_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Medico].[PR_Medico_ViasAdministracion_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@viaAdmin_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         #region Dropdown

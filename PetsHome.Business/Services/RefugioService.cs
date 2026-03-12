@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,7 +87,7 @@ namespace PetsHome.Business.Services
                 tbRefugios mappedResult = _mapper.Map<tbRefugios>(model);
                 mappedResult.refg_UsuarioCrea = userId;
                 mappedResult.refg_FechaCrea = DateTime.Now;
-                return await _refugioRepository.AddAsync(mappedResult);
+                return (await _refugioRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -106,7 +106,7 @@ namespace PetsHome.Business.Services
                 tbRefugios mappedResult = _mapper.Map<tbRefugios>(model);
                 mappedResult.refg_UsuarioModifica = userId;
                 mappedResult.refg_FechaModifica = DateTime.Now;
-                return await _refugioRepository.EditAsync(mappedResult);
+                return (await _refugioRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -122,8 +122,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _refugioRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _refugioRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

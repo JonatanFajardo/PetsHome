@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,7 +75,7 @@ namespace PetsHome.Business.Services
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
                 mappedResult.raza_UsuarioCrea = userId;
                 mappedResult.raza_FechaCrea = DateTime.Now;
-                return await _razaRepository.AddAsync(mappedResult);
+                return (await _razaRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -91,7 +91,7 @@ namespace PetsHome.Business.Services
                 tbRazas mappedResult = _mapper.Map<tbRazas>(model);
                 mappedResult.raza_UsuarioModifica = userId;
                 mappedResult.raza_FechaModifica = DateTime.Now;
-                return await _razaRepository.EditAsync(mappedResult);
+                return (await _razaRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -104,7 +104,7 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                return await _razaRepository.RemoveAsync(id);
+                return (await _razaRepository.RemoveAsync(id)).Success;
             }
             catch (Exception error)
             {

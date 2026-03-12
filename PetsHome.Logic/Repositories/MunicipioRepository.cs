@@ -1,7 +1,8 @@
 ﻿using Dapper;
+using PetsHome.Common;
+using System;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.SelectById<PR_General_Municipios_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbMunicipios entity)
+        public async Task<RequestResult> AddAsync(tbMunicipios entity)
         {
             const string sqlQuery = "[General].[PR_General_Municipios_Insert]";
             var parameter = new DynamicParameters();
@@ -32,7 +33,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@mpio_Descripcion", entity.mpio_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@depto_Id", entity.depto_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@mpio_UsuarioCrea", entity.mpio_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         public async Task<PR_General_Municipios_FindResult> FindAsync(int id)
@@ -51,7 +52,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_General_Municipios_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbMunicipios entity)
+        public async Task<RequestResult> EditAsync(tbMunicipios entity)
         {
             const string sqlQuery = "[General].[PR_General_Municipios_Update]";
             var parameter = new DynamicParameters();
@@ -59,15 +60,15 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@mpio_Codigo", entity.mpio_Codigo, DbType.String, ParameterDirection.Input);
             parameter.Add("@mpio_Descripcion", entity.mpio_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@mpio_UsuarioModifica", entity.mpio_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[General].[PR_General_Municipios_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@mpio_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         public IEnumerable<tbPersonas> ValidationPersonas(int mpio_Id)

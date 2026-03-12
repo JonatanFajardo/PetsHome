@@ -1,7 +1,7 @@
-using Dapper;
+﻿using Dapper;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -46,7 +46,7 @@ namespace PetsHome.Logic.Repositories
         /// </summary>
         /// <param name="entity">Entidad de detalle de recepción.</param>
         /// <returns>Verdadero si la operación fue exitosa.</returns>
-        public async Task<Boolean> AddAsync(tbRecepcionesDetalles entity)
+        public async Task<RequestResult> AddAsync(tbRecepcionesDetalles entity)
         {
             entity.recdet_UsuarioCrea = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesDetalles_Insert]";
@@ -58,7 +58,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@recdet_FechaVencimiento", entity.recdet_FechaVencimiento, DbType.DateTime, ParameterDirection.Input);
             parameter.Add("@recdet_NumeroLote", entity.recdet_NumeroLote, DbType.String, ParameterDirection.Input);
             parameter.Add("@recdet_UsuarioCrea", entity.recdet_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace PetsHome.Logic.Repositories
         /// </summary>
         /// <param name="entity">Entidad de detalle de recepción.</param>
         /// <returns>Verdadero si la operación fue exitosa.</returns>
-        public async Task<Boolean> EditAsync(tbRecepcionesDetalles entity)
+        public async Task<RequestResult> EditAsync(tbRecepcionesDetalles entity)
         {
             entity.recdet_UsuarioModifica = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesDetalles_Update]";
@@ -79,7 +79,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@recdet_FechaVencimiento", entity.recdet_FechaVencimiento, DbType.DateTime, ParameterDirection.Input);
             parameter.Add("@recdet_NumeroLote", entity.recdet_NumeroLote, DbType.String, ParameterDirection.Input);
             parameter.Add("@recdet_UsuarioModifica", entity.recdet_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         /// <summary>
@@ -87,12 +87,12 @@ namespace PetsHome.Logic.Repositories
         /// </summary>
         /// <param name="id">ID del detalle de recepción.</param>
         /// <returns>Verdadero si la operación fue exitosa.</returns>
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesDetalles_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@recdet_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         #endregion Consultas

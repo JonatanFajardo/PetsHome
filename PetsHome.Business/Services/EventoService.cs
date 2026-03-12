@@ -94,7 +94,7 @@ namespace PetsHome.Business.Services
                 tbEventos mappedResult = _mapper.Map<tbEventos>(model);
                 mappedResult.eve_UsuarioCrea = userId;
                 mappedResult.eve_FechaCrea = DateTime.Now;
-                return await _eventoRepository.AddAsync(mappedResult);
+                return (await _eventoRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
                 tbEventos mappedResult = _mapper.Map<tbEventos>(model);
                 mappedResult.eve_UsuarioModifica = userId;
                 mappedResult.eve_FechaModifica = DateTime.Now;
-                return await _eventoRepository.EditAsync(mappedResult);
+                return (await _eventoRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _eventoRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _eventoRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

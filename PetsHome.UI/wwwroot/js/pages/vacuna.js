@@ -7,7 +7,7 @@ var Vacuna = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: "vac_Id", Size: 60 },
+                { FieldName: "vac_Id", Size: 60, Visibility: false},
                 { FieldName: "vac_Descripcion" },
                 { FieldName: "vacu_Especie", Size: 120 },
                 { FieldName: "vacu_DosisRecomendada", Size: 130 },

@@ -219,7 +219,7 @@ var datatableCatalogs = (function () {
             })
 
             // Entra si se desea deshabilitar la columna
-            if (_header[i].Visibility == false || _header[i].Visibility != undefined) {
+            if (_header[i].Visibility === false) {
                 head[i]['visible'] = false
             }
 

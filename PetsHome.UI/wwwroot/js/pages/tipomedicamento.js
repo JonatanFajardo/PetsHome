@@ -5,7 +5,7 @@ var TipoMedicamento = (function () {
         $(function () {
             var header = new Array();
             header = [
-                { FieldName: 'tipoMed_Id', Size: 60 },
+                { FieldName: 'tipoMed_Id', Size: 60, Visibility: false},
                 { FieldName: 'tipoMed_Descripcion' },
                 { FieldName: 'tipoMed_EsActivo', Size: 140 }
             ];

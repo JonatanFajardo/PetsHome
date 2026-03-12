@@ -50,7 +50,7 @@ var Adopcion = (function () {
 
             var header = [];
             header = [
-                { FieldName: 'masc_Id', Size: 60 },
+                { FieldName: 'masc_Id', Size: 60, Visibility: false},
                 { FieldName: 'masc_Nombre' },
                 { FieldName: 'raza_Descripcion', Size: 130 },
                 { FieldName: 'raza_TipoAnimal', Size: 120 },

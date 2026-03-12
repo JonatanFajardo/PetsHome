@@ -1,7 +1,7 @@
 ﻿using Dapper;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Inventario_Items_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbItems entity)
+        public async Task<RequestResult> AddAsync(tbItems entity)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Insert]";
             var parameter = new DynamicParameters();
@@ -41,10 +41,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cat_Id", entity.cat_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@itm_Precio", entity.itm_Precio, DbType.Double, ParameterDirection.Input);
             parameter.Add("@itm_UsuarioCrea", entity.itm_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbItems entity)
+        public async Task<RequestResult> EditAsync(tbItems entity)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Update]";
             var parameter = new DynamicParameters();
@@ -54,15 +54,15 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cat_Id", entity.cat_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@itm_Precio", entity.itm_Precio, DbType.Double, ParameterDirection.Input);
             parameter.Add("@itm_UsuarioModifica", entity.itm_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@itm_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         #region Dropdown

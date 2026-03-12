@@ -5,7 +5,7 @@ var Gravedad = (function () {
         $(function () {
             var header = new Array();
             header = [
-                { FieldName: 'grav_Id', Size: 60 },
+                { FieldName: 'grav_Id', Size: 60, Visibility: false},
                 { FieldName: 'grav_Descripcion' },
                 { FieldName: 'grav_EsActivo', Size: 140 }
             ];

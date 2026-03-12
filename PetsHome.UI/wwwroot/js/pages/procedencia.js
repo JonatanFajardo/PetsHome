@@ -7,7 +7,7 @@ var Procedencia = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'proc_Id', Size: 60 },
+                { FieldName: 'proc_Id', Size: 60, Visibility: false},
                 { FieldName: 'proc_Descripcion' },
                 { FieldName: 'proc_EsActivo', Size: 140 }
             ];

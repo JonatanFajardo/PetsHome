@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using PetsHome.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -217,6 +218,35 @@ namespace PetsHome.DataAccess.Extensions
                 database.Close();
                 database.Dispose();
                 return result;
+            }
+        }
+
+        /// <summary>
+        /// Ejecuta un SP de escritura (Insert/Update/Delete) que retorna
+        /// un SELECT con CodeStatus y MessageStatus, y devuelve un RequestResult.
+        /// </summary>
+        /// <param name="sqlQuery">La consulta SQL (Stored Procedure).</param>
+        /// <param name="parameters">Los parámetros de la consulta.</param>
+        /// <returns>RequestResult con CodeStatus y MessageStatus del SP.</returns>
+        public static async Task<RequestResult> ExecuteWithResult(string sqlQuery, DynamicParameters parameters)
+        {
+            using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                try
+                {
+                    database.Open();
+                    var result = await database.QueryFirstOrDefaultAsync<RequestResult>(
+                        sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                    database.Close();
+                    database.Dispose();
+                    return result ?? RequestResult.Error("El procedimiento no retornó resultado.");
+                }
+                catch (Exception e)
+                {
+                    database.Close();
+                    database.Dispose();
+                    return RequestResult.Error(e.Message);
+                }
             }
         }
 

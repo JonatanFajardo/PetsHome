@@ -94,7 +94,7 @@ namespace PetsHome.Business.Services
                 tbItems mappedResult = _mapper.Map<tbItems>(model);
                 mappedResult.itm_UsuarioCrea = userId;
                 mappedResult.itm_FechaCrea = DateTime.Now;
-                return await _itemRepository.AddAsync(mappedResult);
+                return (await _itemRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
                 tbItems mappedResult = _mapper.Map<tbItems>(model);
                 mappedResult.itm_UsuarioModifica = userId;
                 mappedResult.itm_FechaModifica = DateTime.Now;
-                return await _itemRepository.EditAsync(mappedResult);
+                return (await _itemRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _itemRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _itemRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

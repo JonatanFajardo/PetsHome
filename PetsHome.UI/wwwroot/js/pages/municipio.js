@@ -4,7 +4,7 @@ var Municipio = (function () {
 
     obj.datatablePartials = function (Direction) {
         var header = [
-            {FieldName: "mpio_Id", Size: 60},
+            {FieldName: "mpio_Id", Size: 60, Visibility: false},
             {FieldName: "mpio_Codigo", Size: 100},
             {FieldName: "mpio_Descripcion"}
         ];

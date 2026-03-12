@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -96,7 +96,7 @@ namespace PetsHome.Business.Services
             try
             {
                 tbCitaMedica mappedResult = _mapper.Map<tbCitaMedica>(model);
-                return await _historialmedicoRepository.AddAsync(mappedResult);
+                return (await _historialmedicoRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
             try
             {
                 tbCitaMedica mappedResult = _mapper.Map<tbCitaMedica>(model);
-                return await _historialmedicoRepository.EditAsync(mappedResult);
+                return (await _historialmedicoRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _historialmedicoRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _historialmedicoRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

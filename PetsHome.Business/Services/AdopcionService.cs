@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -94,7 +94,7 @@ namespace PetsHome.Business.Services
                 tbAdopciones mappedResult = _mapper.Map<tbAdopciones>(model);
                 mappedResult.adop_UsuarioCrea = userId;
                 mappedResult.adop_FechaCrea = DateTime.Now;
-                return await _adopcionRepository.AddAsync(mappedResult);
+                return (await _adopcionRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
                 tbAdopciones mappedResult = _mapper.Map<tbAdopciones>(model);
                 mappedResult.adop_UsuarioModifica = userId;
                 mappedResult.adop_FechaModifica = DateTime.Now;
-                return await _adopcionRepository.EditAsync(mappedResult);
+                return (await _adopcionRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                Boolean mappedResult = await _adopcionRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _adopcionRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

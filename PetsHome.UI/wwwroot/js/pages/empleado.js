@@ -11,7 +11,7 @@ var Empleado = (function () {
                 {
                     FieldName: 'emp_Id',
                     Size: 60,
-                    Visibility: true,
+                    Visibility: false,
                     Render: function(data, type, row) {
                         return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
                     }

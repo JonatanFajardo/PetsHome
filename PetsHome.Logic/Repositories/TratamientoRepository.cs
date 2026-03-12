@@ -1,10 +1,10 @@
-using Dapper;
+﻿using Dapper;
+using PetsHome.Common;
 using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Medico_Tratamientos_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbTratamientos entity)
+        public async Task<RequestResult> AddAsync(tbTratamientos entity)
         {
             entity.trat_UsuarioCrea = 1;
             const string sqlQuery = "[Medico].[PR_Medico_Tratamientos_Insert]";
@@ -54,10 +54,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@trat_Estado", entity.trat_Estado, DbType.String, ParameterDirection.Input);
             parameter.Add("@trat_Observaciones", entity.trat_Observaciones, DbType.String, ParameterDirection.Input);
             parameter.Add("@trat_UsuarioCrea", entity.trat_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbTratamientos entity)
+        public async Task<RequestResult> EditAsync(tbTratamientos entity)
         {
             entity.trat_UsuarioModifica = 1;
             const string sqlQuery = "[Medico].[PR_Medico_Tratamientos_Update]";
@@ -77,16 +77,16 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@trat_Estado", entity.trat_Estado, DbType.String, ParameterDirection.Input);
             parameter.Add("@trat_Observaciones", entity.trat_Observaciones, DbType.String, ParameterDirection.Input);
             parameter.Add("@trat_UsuarioModifica", entity.trat_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Medico].[PR_Medico_Tratamientos_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@trat_Id", id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@trat_UsuarioModifica", 1, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         public IEnumerable<PR_Medico_Tratamientos_DropdownResult> Dropdown(int? masc_Id = null)

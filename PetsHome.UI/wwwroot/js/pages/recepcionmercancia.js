@@ -7,7 +7,7 @@ var RecepcionMercancia = (function () {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'recep_Id', Size: 60 },
+                { FieldName: 'recep_Id', Size: 60, Visibility: false},
                 { FieldName: 'recep_Descripcion' },
                 { FieldName: 'recep_Fecha', Size: 110, render: function(data) {
                     if (data) {

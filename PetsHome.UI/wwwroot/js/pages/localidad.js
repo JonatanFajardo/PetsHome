@@ -13,7 +13,7 @@ var Localidad = (function () {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'depto_Id' },
+                { FieldName: 'depto_Id', Visibility: false},
                 { FieldName: 'depto_Codigo' },
                 { FieldName: 'depto_Descripcion' },
                 { FieldName: 'depto_Capital' },

@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 
 using Microsoft.Extensions.Logging;
 
@@ -173,7 +173,7 @@ namespace PetsHome.Business.Services
 
                 mappedResult.cag_FechaCrea = DateTime.Now;
 
-                return await _empleadoscargoRepository.AddAsync(mappedResult);
+                return (await _empleadoscargoRepository.AddAsync(mappedResult)).Success;
 
             }
 
@@ -210,7 +210,7 @@ namespace PetsHome.Business.Services
 
                 mappedResult.cag_FechaModifica = DateTime.Now;
 
-                return await _empleadoscargoRepository.EditAsync(mappedResult);
+                return (await _empleadoscargoRepository.EditAsync(mappedResult)).Success;
 
             }
 
@@ -242,9 +242,9 @@ namespace PetsHome.Business.Services
 
             {
 
-                Boolean mappedResult = await _empleadoscargoRepository.RemoveAsync(id);
+                var mappedResult = await _empleadoscargoRepository.RemoveAsync(id);
 
-                return mappedResult;
+                return mappedResult.Success;
 
             }
 

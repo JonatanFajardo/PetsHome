@@ -8,7 +8,7 @@ var Categoria = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'cat_Id', Size: 60},
+                { FieldName: 'cat_Id', Size: 60, Visibility: false},
                 { FieldName: 'cat_Descripcion' },
                 { FieldName: 'cat_EsActivo', Size: 140 }
             ];

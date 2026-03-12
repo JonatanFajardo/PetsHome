@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Logic.Repositories;
 
@@ -58,7 +58,7 @@ namespace PetsHome.Business.Services
         //    try
         //    {
         //        tbPersonas mappedResult = _mapper.Map<tbPersonas>(model);
-        //        return await _personaRepository.AddAsync(mappedResult);
+        //        return (await _personaRepository.AddAsync(mappedResult)).Success;
         //    }
         //    catch (Exception error)
         //    {
@@ -70,7 +70,7 @@ namespace PetsHome.Business.Services
         //    try
         //    {
         //        tbPersonas mappedResult = _mapper.Map<tbPersonas>(model);
-        //        return await _personaRepository.EditAsync(mappedResult);
+        //        return (await _personaRepository.EditAsync(mappedResult)).Success;
         //    }
         //    catch (Exception error)
         //    {
@@ -81,8 +81,8 @@ namespace PetsHome.Business.Services
         //{
         //    try
         //    {
-        //        Boolean mappedResult = await _personaRepository.RemoveAsync(id);
-        //        return mappedResult;
+        //        var mappedResult = await _personaRepository.RemoveAsync(id);
+        //        return mappedResult.Success;
         //    }
         //    catch (Exception error)
         //    {
