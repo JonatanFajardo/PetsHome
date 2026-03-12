@@ -112,5 +112,18 @@ namespace PetsHome.Business.Services
                 return false;
             }
         }
+
+        public virtual async Task<bool> ExisteAsync(string descripcion, int id)
+        {
+            try
+            {
+                return await _razaRepository.ExisteAsync(descripcion, id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
     }
 }
