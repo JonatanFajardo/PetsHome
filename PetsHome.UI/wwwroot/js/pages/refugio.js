@@ -7,7 +7,7 @@ var Refugio = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: "refg_Id", Size: 60 },
+                { FieldName: "refg_Id", Size: 60, Visibility: false},
                 { FieldName: "refg_Nombre" },
                 { FieldName: "refg_RTN", Size: 130 },
                 { FieldName: "refg_Ubicacion", Size: 200 },

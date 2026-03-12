@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -117,7 +117,7 @@ namespace PetsHome.Business.Services
                 tbDepartamentos mappedResult = _mapper.Map<tbDepartamentos>(model);
                 mappedResult.depto_UsuarioCrea = userId;
                 mappedResult.depto_FechaCrea = DateTime.Now;
-                return await _departamentoRepository.AddAsync(mappedResult);
+                return (await _departamentoRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -138,7 +138,7 @@ namespace PetsHome.Business.Services
                 tbDepartamentos mappedResult = _mapper.Map<tbDepartamentos>(model);
                 mappedResult.depto_UsuarioModifica = userId;
                 mappedResult.depto_FechaModifica = DateTime.Now;
-                return await _departamentoRepository.EditAsync(mappedResult);
+                return (await _departamentoRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -156,8 +156,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                Boolean mappedResult = await _departamentoRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _departamentoRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

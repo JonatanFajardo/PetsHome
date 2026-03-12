@@ -82,7 +82,8 @@ var datatablePartials = (function () {
                     console.log("Error en el envio de la peticion de listado " + jqXHR.responseJSON);
                 });
             },
-            columnDefs: obj.dataHeader(header)
+            columnDefs: obj.dataHeader(header),
+            stateSave: false
 
         });
     }
@@ -176,7 +177,7 @@ var datatablePartials = (function () {
             })
 
             // Entra si se desea deshabilitar la columna
-            if (_header[i].Visibility == false || _header[i].Visibility != undefined) {
+            if (_header[i].Visibility === false) {
                 head[i]['visible'] = false
             }
 

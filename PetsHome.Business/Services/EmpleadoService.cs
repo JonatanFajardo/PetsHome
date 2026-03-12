@@ -95,7 +95,7 @@ namespace PetsHome.Business.Services
                 }
                 mappedResult.per.per_UsuarioCrea = userId;
                 mappedResult.per.per_FechaCrea = DateTime.Now;
-                return await _empleadoRepository.AddAsync(mappedResult);
+                return (await _empleadoRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -118,7 +118,7 @@ namespace PetsHome.Business.Services
                 }
                 mappedResult.per.per_UsuarioModifica = userId;
                 mappedResult.per.per_FechaModifica = DateTime.Now;
-                return await _empleadoRepository.EditAsync(mappedResult);
+                return (await _empleadoRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -134,8 +134,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _empleadoRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _empleadoRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

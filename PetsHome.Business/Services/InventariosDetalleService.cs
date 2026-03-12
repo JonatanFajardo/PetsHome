@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Logic.Repositories;
 
@@ -81,8 +81,8 @@ namespace PetsHome.Business.Services
         //{
         //    try
         //    {
-        //        Boolean mappedResult = await _inventariosdetalleRepository.RemoveAsync(id);
-        //        return mappedResult;
+        //        var mappedResult = await _inventariosdetalleRepository.RemoveAsync(id);
+        //        return mappedResult.Success;
         //    }
         //    catch (Exception error)
         //    {

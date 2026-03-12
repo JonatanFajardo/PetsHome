@@ -281,7 +281,8 @@ var datatable = (function () {
                         }
                     });
                 },
-                columnDefs: obj.dataHeader(header)
+                columnDefs: obj.dataHeader(header),
+                stateSave: false
 
             });
 
@@ -367,7 +368,7 @@ var datatable = (function () {
             })
             // Entra si se desea deshabilitar la columna
             if (header[i].Visibility == false) {
-                head[i]['visible'] = "false"
+                head[i]['visible'] = false
             }
             //if (header[i].Visibility == false || header[i].Visibility !== undefined) {
             //    head[i]['visible'] = false

@@ -4,7 +4,7 @@ var RecepcionDetalle = (function () {
 
     obj.datatablePartials = function (Direction) {
         var header = [
-            { FieldName: "recdet_Id" },
+            { FieldName: "recdet_Id", Visibility: false},
             { FieldName: "itm_Descripcion" },
             { FieldName: "recdet_Cantidad" },
             { FieldName: "recdet_PrecioUnitario" },

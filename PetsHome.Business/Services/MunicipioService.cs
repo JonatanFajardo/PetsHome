@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
@@ -79,7 +79,7 @@ namespace PetsHome.Business.Services
                 tbMunicipios mappedResult = _mapper.Map<tbMunicipios>(model);
                 mappedResult.mpio_UsuarioCrea = userId;
                 mappedResult.mpio_FechaCrea = DateTime.Now;
-                return await _municipioRepository.AddAsync(mappedResult);
+                return (await _municipioRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -100,7 +100,7 @@ namespace PetsHome.Business.Services
                 tbMunicipios mappedResult = _mapper.Map<tbMunicipios>(model);
                 mappedResult.mpio_UsuarioModifica = userId;
                 mappedResult.mpio_FechaModifica = DateTime.Now;
-                return await _municipioRepository.EditAsync(mappedResult);
+                return (await _municipioRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -118,8 +118,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _municipioRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _municipioRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

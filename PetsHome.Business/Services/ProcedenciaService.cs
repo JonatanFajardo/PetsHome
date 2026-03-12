@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -94,7 +94,7 @@ namespace PetsHome.Business.Services
                 tbProcedencias mappedResult = _mapper.Map<tbProcedencias>(model);
                 mappedResult.proc_UsuarioCrea = userId;
                 mappedResult.proc_FechaCrea = DateTime.Now;
-                return await _procedenciaRepository.AddAsync(mappedResult);
+                return (await _procedenciaRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
                 tbProcedencias mappedResult = _mapper.Map<tbProcedencias>(model);
                 mappedResult.proc_UsuarioModifica = userId;
                 mappedResult.proc_FechaModifica = DateTime.Now;
-                return await _procedenciaRepository.EditAsync(mappedResult);
+                return (await _procedenciaRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _procedenciaRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _procedenciaRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

@@ -5,7 +5,7 @@ var TipoConsulta = (function () {
         $(function () {
             var header = new Array();
             header = [
-                { FieldName: 'tipoCon_Id', Size: 60 },
+                { FieldName: 'tipoCon_Id', Size: 60, Visibility: false},
                 { FieldName: 'tipoCon_Descripcion' },
                 { FieldName: 'tipoCon_EsActivo', Size: 140 }
             ];

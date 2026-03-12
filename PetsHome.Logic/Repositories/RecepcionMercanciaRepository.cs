@@ -1,7 +1,7 @@
-using Dapper;
+﻿using Dapper;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -56,7 +56,7 @@ namespace PetsHome.Logic.Repositories
         /// </summary>
         /// <param name="entity">Entidad de recepción de mercancía.</param>
         /// <returns>Verdadero si la operación fue exitosa.</returns>
-        public async Task<Boolean> AddAsync(tbRecepcionesMercancia entity)
+        public async Task<RequestResult> AddAsync(tbRecepcionesMercancia entity)
         {
             entity.recep_UsuarioCrea = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_Insert]";
@@ -68,7 +68,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@recep_OrigenId", entity.recep_OrigenId, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@recep_NumeroDocumento", entity.recep_NumeroDocumento, DbType.String, ParameterDirection.Input);
             parameter.Add("@recep_UsuarioCrea", entity.recep_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace PetsHome.Logic.Repositories
         /// </summary>
         /// <param name="entity">Entidad de recepción de mercancía.</param>
         /// <returns>Verdadero si la operación fue exitosa.</returns>
-        public async Task<Boolean> EditAsync(tbRecepcionesMercancia entity)
+        public async Task<RequestResult> EditAsync(tbRecepcionesMercancia entity)
         {
             entity.recep_UsuarioModifica = 1;
             const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_Update]";
@@ -89,7 +89,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@recep_OrigenId", entity.recep_OrigenId, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@recep_NumeroDocumento", entity.recep_NumeroDocumento, DbType.String, ParameterDirection.Input);
             parameter.Add("@recep_UsuarioModifica", entity.recep_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         /// <summary>
@@ -97,12 +97,12 @@ namespace PetsHome.Logic.Repositories
         /// </summary>
         /// <param name="id">ID de la recepción.</param>
         /// <returns>Verdadero si la operación fue exitosa.</returns>
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_RecepcionesMercancia_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@recep_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         #endregion Consultas

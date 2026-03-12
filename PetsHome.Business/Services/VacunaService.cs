@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -72,7 +72,7 @@ namespace PetsHome.Business.Services
                 tbVacunas mappedResult = _mapper.Map<tbVacunas>(model);
                 mappedResult.vac_UsuarioCrea = userId;
                 mappedResult.vac_FechaCrea = DateTime.Now;
-                return await _vacunaRepository.AddAsync(mappedResult);
+                return (await _vacunaRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -88,7 +88,7 @@ namespace PetsHome.Business.Services
                 tbVacunas mappedResult = _mapper.Map<tbVacunas>(model);
                 mappedResult.vac_UsuarioModifica = userId;
                 mappedResult.vac_FechaModifica = DateTime.Now;
-                return await _vacunaRepository.EditAsync(mappedResult);
+                return (await _vacunaRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -101,8 +101,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _vacunaRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _vacunaRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

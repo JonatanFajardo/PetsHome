@@ -1,8 +1,8 @@
 ﻿using Dapper;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Refugio_Refugios_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbRefugios entity)
+        public async Task<RequestResult> AddAsync(tbRefugios entity)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Refugios_Insert]";
             var parameter = new DynamicParameters();
@@ -47,10 +47,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@refg_EsActivo", entity.refg_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@refg_UsuarioCrea", entity.refg_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbRefugios entity)
+        public async Task<RequestResult> EditAsync(tbRefugios entity)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Refugios_Update]";
             var parameter = new DynamicParameters();
@@ -65,15 +65,15 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@mpio_Id", entity.mpio_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@refg_EsActivo", entity.refg_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@refg_UsuarioModifica", entity.refg_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Refugio].[PR_Refugio_Refugios_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@refg_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         #region Dropdown

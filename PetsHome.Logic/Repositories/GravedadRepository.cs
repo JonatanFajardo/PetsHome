@@ -1,8 +1,8 @@
-using Dapper;
+﻿using Dapper;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Medico_Gravedades_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbGravedades entity)
+        public async Task<RequestResult> AddAsync(tbGravedades entity)
         {
             entity.grav_UsuarioCrea = 1;
             const string sqlQuery = "[Medico].[PR_Medico_Gravedades_Insert]";
@@ -41,10 +41,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@grav_Descripcion", entity.grav_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@grav_EsActivo", entity.grav_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@grav_UsuarioCrea", entity.grav_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbGravedades entity)
+        public async Task<RequestResult> EditAsync(tbGravedades entity)
         {
             entity.grav_UsuarioModifica = 1;
             const string sqlQuery = "[Medico].[PR_Medico_Gravedades_Update]";
@@ -53,15 +53,15 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@grav_Descripcion", entity.grav_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@grav_EsActivo", entity.grav_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@grav_UsuarioModifica", entity.grav_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Medico].[PR_Medico_Gravedades_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@grav_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
     }
 }

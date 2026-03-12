@@ -8,7 +8,7 @@ var Item = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: 'itm_Id', Size: 60, Visibility: true },
+                { FieldName: 'itm_Id', Size: 60, Visibility: false },
                 { FieldName: 'itm_Codigo', Size: 100, Visibility: true },
                 { FieldName: 'itm_Descripcion', Visibility: true },
                 { FieldName: 'cat_Descripcion', Size: 140, Visibility: true },

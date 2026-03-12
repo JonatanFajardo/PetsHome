@@ -7,7 +7,7 @@ var Solicitud = (function () {
             var header = new Array();
             //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
-                { FieldName: "sol_Id", Size: 60 },
+                { FieldName: "sol_Id", Size: 60, Visibility: false},
                 { FieldName: "sol_Identidad", Size: 130 },
                 { FieldName: "sol_Nombres" },
                 { FieldName: "masc_Nombre", Size: 150 },

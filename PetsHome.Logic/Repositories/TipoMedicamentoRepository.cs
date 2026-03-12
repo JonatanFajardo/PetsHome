@@ -1,10 +1,10 @@
-using Dapper;
+﻿using Dapper;
+using PetsHome.Common;
 using Microsoft.Data.SqlClient;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Detail<PR_Medico_TiposMedicamento_DetailResult>(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> AddAsync(tbTiposMedicamento entity)
+        public async Task<RequestResult> AddAsync(tbTiposMedicamento entity)
         {
             entity.tipoMed_UsuarioCrea = 1;
             const string sqlQuery = "[Medico].[PR_Medico_TiposMedicamento_Insert]";
@@ -43,10 +43,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@tipoMed_Descripcion", entity.tipoMed_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@tipoMed_EsActivo", entity.tipoMed_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@tipoMed_UsuarioCrea", entity.tipoMed_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Insert(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> EditAsync(tbTiposMedicamento entity)
+        public async Task<RequestResult> EditAsync(tbTiposMedicamento entity)
         {
             entity.tipoMed_UsuarioModifica = 1;
             const string sqlQuery = "[Medico].[PR_Medico_TiposMedicamento_Update]";
@@ -55,15 +55,15 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@tipoMed_Descripcion", entity.tipoMed_Descripcion, DbType.String, ParameterDirection.Input);
             parameter.Add("@tipoMed_EsActivo", entity.tipoMed_EsActivo, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@tipoMed_UsuarioModifica", entity.tipoMed_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Update(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-        public async Task<Boolean> RemoveAsync(int id)
+        public async Task<RequestResult> RemoveAsync(int id)
         {
             const string sqlQuery = "[Medico].[PR_Medico_TiposMedicamento_Delete]";
             var parameter = new DynamicParameters();
             parameter.Add("@tipoMed_Id", id, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.Delete(sqlQuery, parameter);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
         #region Dropdown

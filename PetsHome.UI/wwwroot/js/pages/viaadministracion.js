@@ -5,7 +5,7 @@ var ViaAdministracion = (function () {
         $(function () {
             var header = new Array();
             header = [
-                { FieldName: 'viaAdmin_Id', Size: 60 },
+                { FieldName: 'viaAdmin_Id', Size: 60, Visibility: false},
                 { FieldName: 'viaAdmin_Descripcion' },
                 { FieldName: 'viaAdmin_EsActivo', Size: 140 }
             ];

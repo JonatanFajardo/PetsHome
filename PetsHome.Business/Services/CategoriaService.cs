@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
 using PetsHome.Common.Entities;
@@ -94,7 +94,7 @@ namespace PetsHome.Business.Services
                 tbCategorias mappedResult = _mapper.Map<tbCategorias>(model);
                 mappedResult.cat_UsuarioCrea = userId;
                 mappedResult.cat_FechaCrea = DateTime.Now;
-                return await _categoriaRepository.AddAsync(mappedResult);
+                return (await _categoriaRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
                 tbCategorias mappedResult = _mapper.Map<tbCategorias>(model);
                 mappedResult.cat_UsuarioModifica = userId;
                 mappedResult.cat_FechaModifica = DateTime.Now;
-                return await _categoriaRepository.EditAsync(mappedResult);
+                return (await _categoriaRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                Boolean mappedResult = await _categoriaRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _categoriaRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {

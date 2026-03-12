@@ -94,7 +94,7 @@ namespace PetsHome.Business.Services
                 tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
                 mappedResult.medic_UsuarioCrea = userId;
                 mappedResult.medic_FechaCrea = DateTime.Now;
-                return await _historialmedicoRepository.AddAsync(mappedResult);
+                return (await _historialmedicoRepository.AddAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -115,7 +115,7 @@ namespace PetsHome.Business.Services
                 tbHistorialMedico mappedResult = _mapper.Map<tbHistorialMedico>(model);
                 mappedResult.medic_UsuarioModifica = userId;
                 mappedResult.medic_FechaModifica = DateTime.Now;
-                return await _historialmedicoRepository.EditAsync(mappedResult);
+                return (await _historialmedicoRepository.EditAsync(mappedResult)).Success;
             }
             catch (Exception error)
             {
@@ -133,8 +133,8 @@ namespace PetsHome.Business.Services
         {
             try
             {
-                bool mappedResult = await _historialmedicoRepository.RemoveAsync(id);
-                return mappedResult;
+                var mappedResult = await _historialmedicoRepository.RemoveAsync(id);
+                return mappedResult.Success;
             }
             catch (Exception error)
             {
