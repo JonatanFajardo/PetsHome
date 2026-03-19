@@ -55,7 +55,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@vacu_Especie", entity.vacu_Especie, DbType.String, ParameterDirection.Input);
             parameter.Add("@vacu_DosisRecomendada", entity.vacu_DosisRecomendada, DbType.String, ParameterDirection.Input);
             parameter.Add("@vacu_PeriodoRefuerzo", entity.vacu_PeriodoRefuerzo, DbType.String, ParameterDirection.Input);
-            parameter.Add("@vac_EsActivo", entity.vac_EsActivo ?? true, DbType.Boolean, ParameterDirection.Input);
+            parameter.Add("@vac_EsActivo", entity.vac_EsActivo ?? false, DbType.Boolean, ParameterDirection.Input);
             parameter.Add("@vac_UsuarioModifica", entity.vac_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
