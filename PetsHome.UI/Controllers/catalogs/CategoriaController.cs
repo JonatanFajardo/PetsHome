@@ -49,7 +49,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return AjaxResult(itemSearched, true);
+                return AjaxResult(itemSearched, false);
             }
         }
 
