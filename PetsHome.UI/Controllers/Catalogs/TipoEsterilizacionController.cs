@@ -75,7 +75,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoEsterilizacionService.AddAsync(model);
-                if (createdItem)
+                if (!createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
                     return AjaxResult(true);
@@ -105,7 +105,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int tipoEst_Id)
         {
             Boolean deletedItem = await _tipoEsterilizacionService.RemoveAsync(tipoEst_Id);
-            if (deletedItem)
+            if (!deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
                 return AjaxResult(true);

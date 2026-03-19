@@ -92,7 +92,7 @@ namespace PetsHome.UI.Controllers
             {
                 bool createdItem = await _mascotaService.AddAsync(model, userId);
                 bool validation = Validation.IsInsert(createdItem, ModelState.IsValid);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
                 return RedirectToAction("Create");

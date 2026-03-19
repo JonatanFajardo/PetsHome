@@ -87,7 +87,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _HistorialMedicoService.AddAsync(model, userId);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
 
                 ShowAlert(AlertMessaje.SuccessSave, AlertMessageType.Success);
