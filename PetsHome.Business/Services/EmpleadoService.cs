@@ -40,7 +40,7 @@ namespace PetsHome.Business.Services
             catch (Exception error)
             {
                 _logger.LogError(error, error.Message);
-                throw;
+                return null;
             }
         }
 
