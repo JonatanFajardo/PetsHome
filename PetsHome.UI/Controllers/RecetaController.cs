@@ -4,9 +4,11 @@ using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class RecetaController : BaseController
     {
         private readonly RecetaService _recetaService;
@@ -88,6 +90,12 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(RecetaFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada, por favor inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _recetaService.AddAsync(model);
@@ -114,7 +122,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Update(RecetaFormViewModel model)
         {
             Boolean updatedItem = await _recetaService.UpdateAsync(model);
-            if (!updatedItem)
+            if (updatedItem)
             {
                 ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);
                 return RedirectToAction("Index");
@@ -130,7 +138,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int receta_Id)
         {
             Boolean deletedItem = await _recetaService.RemoveAsync(receta_Id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
                 return RedirectToAction("Index");

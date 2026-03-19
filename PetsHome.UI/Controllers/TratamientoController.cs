@@ -5,9 +5,11 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class TratamientoController : BaseController
     {
         private readonly TratamientoService _tratamientoService;
@@ -84,6 +86,12 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(TratamientoFormViewModel model)
         {
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada, por favor inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
+
             if (!model.isEdit)
             {
                 bool createdItem = await _tratamientoService.AddAsync(model);
@@ -111,7 +119,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int trat_Id)
         {
             bool deletedItem = await _tratamientoService.RemoveAsync(trat_Id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
                 return RedirectToAction("Index");

@@ -12,9 +12,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class CitaMedicaController : BaseController
     {
         private readonly CitaMedicaService _HistorialMedicoService;
@@ -73,7 +75,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 ShowAlert(AlertMessaje.Error, AlertMessageType.Error);
-                return AjaxResult(itemSearched, true);
+                return AjaxResult(itemSearched, false);
             }
         }
 
@@ -91,7 +93,11 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(CitaMedicaFormViewModel model)
         {
-
+            if (!CurrentUserId.HasValue)
+            {
+                ShowAlert("Sesión expirada, por favor inicie sesión nuevamente.", AlertMessageType.Error);
+                return RedirectToAction("Login", "Account");
+            }
 
             if (!model.isEdit)
             {
@@ -119,7 +125,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int cita_Id)
         {
             Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(cita_Id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
                 return RedirectToAction("Index");
