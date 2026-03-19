@@ -5,7 +5,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace PetsHome.DataAccess.Extensions
@@ -28,9 +28,6 @@ namespace PetsHome.DataAccess.Extensions
                 try
                 {
                     var result = await database.QueryAsync<T>(sqlQuery, commandType: CommandType.StoredProcedure);
-                    if (result == null && result.Count() > 0)
-                    {
-                    }
                     database.Close();
                     database.Dispose();
                     return result;
@@ -58,9 +55,6 @@ namespace PetsHome.DataAccess.Extensions
                 try
                 {
                     var result = await database.QueryAsync<T>(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-                    if (result == null && result.Count() > 0)
-                    {
-                    }
                     database.Close();
                     database.Dispose();
                     return result;
@@ -114,9 +108,6 @@ namespace PetsHome.DataAccess.Extensions
                 try
                 {
                     var result = database.Query<T>(sqlQuery, commandType: CommandType.StoredProcedure);
-                    if (result == null && result.Count() > 0)
-                    {
-                    }
                     database.Close();
                     database.Dispose();
                     return result;
