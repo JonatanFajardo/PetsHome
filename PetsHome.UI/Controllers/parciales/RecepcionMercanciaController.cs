@@ -141,7 +141,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _recepcionService.AddAsync(model);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
                 ShowAlert("Recepción insertada correctamente", AlertMessageType.Success);
                 return RedirectToAction(nameof(FormPartialRecepcion));
@@ -174,7 +174,7 @@ namespace PetsHome.UI.Controllers
             if (!model.Detalle.isEdit)
             {
                 Boolean createdItem = await _detalleService.AddAsync(model.Detalle);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
                 ShowAlert("Detalle insertado correctamente", AlertMessageType.Success);
                 return RedirectToAction(nameof(FormPartialRecepcion), routeValues: new { id = model.Detalle.recep_Id });

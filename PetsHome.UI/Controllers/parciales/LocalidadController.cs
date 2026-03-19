@@ -74,7 +74,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _departamentoService.AddAsync(model, userId);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
                 return RedirectToAction("FormPartialDepartamento");
@@ -106,7 +106,7 @@ namespace PetsHome.UI.Controllers
             if (!model.Municipio.isEdit)
             {
                 Boolean createdItem = await _municipioService.AddAsync(model.Municipio, userId);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
                 return RedirectToAction("FormPartialDepartamento", routeValues: new { id = model.Municipio.depto_Id });
