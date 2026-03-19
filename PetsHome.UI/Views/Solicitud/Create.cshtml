@@ -43,42 +43,42 @@
                 <div class="form-grid">
                     <!-- Campo Identidad -->
                     <div class="form-group">
-                        <label asp-for="sol_Identidad">Identidad</label>
+                        <label asp-for="sol_Identidad">Identidad <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Identidad" type="number" placeholder="Ingrese el número de identidad" />
                         <span class="text-danger" asp-validation-for="sol_Identidad"></span>
                     </div>
 
                     <!-- Campo Nombres -->
                     <div class="form-group">
-                        <label asp-for="sol_Nombres">Nombres</label>
+                        <label asp-for="sol_Nombres">Nombres <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Nombres" type="text" placeholder="Ingrese los nombres" />
                         <span class="text-danger" asp-validation-for="sol_Nombres"></span>
                     </div>
 
                     <!-- Campo Apellidos -->
                     <div class="form-group">
-                        <label asp-for="sol_Apellidos">Apellidos</label>
+                        <label asp-for="sol_Apellidos">Apellidos <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Apellidos" type="text" placeholder="Ingrese los apellidos" />
                         <span class="text-danger" asp-validation-for="sol_Apellidos"></span>
                     </div>
 
                     <!-- Campo Teléfono -->
                     <div class="form-group">
-                        <label asp-for="sol_Telefono">Teléfono</label>
+                        <label asp-for="sol_Telefono">Teléfono <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Telefono" type="number" placeholder="Ingrese el teléfono" />
                         <span class="text-danger" asp-validation-for="sol_Telefono"></span>
                     </div>
 
                     <!-- Campo Correo -->
                     <div class="form-group">
-                        <label asp-for="sol_Correo">Correo</label>
+                        <label asp-for="sol_Correo">Correo <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Correo" type="email" placeholder="correo@ejemplo.com" />
                         <span class="text-danger" asp-validation-for="sol_Correo"></span>
                     </div>
 
                     <!-- Campo Fecha -->
                     <div class="form-group">
-                        <label asp-for="sol_Fecha">Fecha</label>
+                        <label asp-for="sol_Fecha">Fecha <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Fecha" type="date" />
                         <span class="text-danger" asp-validation-for="sol_Fecha"></span>
                     </div>
@@ -138,7 +138,7 @@
                     <div class="form-grid">
                         <!-- Campo Mascota -->
                         <div class="form-group">
-                            <label asp-for="masc_Id">Mascota</label>
+                            <label asp-for="masc_Id">Mascota <span class="required">*</span></label>
                             <input class="form-control" asp-for="masc_Id" type="number" placeholder="Ingrese el ID de la mascota" />
                             <span class="text-danger" asp-validation-for="masc_Id"></span>
                         </div>
@@ -159,6 +159,7 @@
 </div>
 
 @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
 }

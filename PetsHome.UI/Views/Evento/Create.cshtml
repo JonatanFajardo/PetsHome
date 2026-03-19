@@ -43,7 +43,7 @@
                 <div class="form-grid">
                     <!-- Campo Descripción -->
                     <div class="form-group">
-                        <label asp-for="eve_Descripcion">Descripción</label>
+                        <label asp-for="eve_Descripcion">Descripción <span class="required">*</span></label>
                         <input class="form-control" asp-for="eve_Descripcion" type="text" placeholder="Ingrese la descripción del evento" />
                         <span class="text-danger" asp-validation-for="eve_Descripcion"></span>
                     </div>
@@ -61,7 +61,7 @@
 
                     <!-- Campo Fecha -->
                     <div class="form-group">
-                        <label asp-for="eve_Fecha">Fecha</label>
+                        <label asp-for="eve_Fecha">Fecha <span class="required">*</span></label>
                         <input class="form-control" asp-for="eve_Fecha" type="date" />
                         <span class="text-danger" asp-validation-for="eve_Fecha"></span>
                     </div>
@@ -95,6 +95,7 @@
 </div>
 
 @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
 }
