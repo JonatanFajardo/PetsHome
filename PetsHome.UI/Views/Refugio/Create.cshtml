@@ -147,6 +147,10 @@
 @section Scripts{
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/pages/refugio.js"></script>
+    <script>
+        Refugio.initValidation("@Url.Action("ValidarNombre")");
+    </script>
     <script>
         // Toggle switch functionality
         document.addEventListener('DOMContentLoaded', function() {

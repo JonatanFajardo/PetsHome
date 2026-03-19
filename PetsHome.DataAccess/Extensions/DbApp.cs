@@ -233,23 +233,35 @@ namespace PetsHome.DataAccess.Extensions
         {
             using (var database = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
-                database.Open();
-                var result = await database.QueryFirstOrDefaultAsync<RequestResult>(
-                    sqlQuery, parameters, commandType: CommandType.StoredProcedure);
-
-                if (result == null)
+                try
                 {
-                    Log.Warning("SP {Query} no retornó resultado (el SP no tiene SELECT de retorno).", sqlQuery);
-                    return new RequestResult { CodeStatus = 1, MessageStatus = "Operación completada." };
+                    database.Open();
+                    var result = await database.QueryFirstOrDefaultAsync<RequestResult>(
+                        sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+                    database.Close();
+                    database.Dispose();
+
+                    if (result == null)
+                    {
+                        Log.Warning("SP {Query} no retornó resultado (el SP no tiene SELECT de retorno).", sqlQuery);
+                        return RequestResult.Ok();
+                    }
+
+                    if (result.CodeStatus == -5)
+                    {
+                        Log.Error("SP {Query} error interno: {Message}", sqlQuery, result.MessageStatus);
+                        result.MessageStatus = "Ocurrió un error interno.";
+                    }
+
+                    return result;
                 }
-
-                if (result.CodeStatus == -5)
+                catch (Exception e)
                 {
-                    Log.Error("SP {Query} error interno: {Message}", sqlQuery, result.MessageStatus);
-                    result.MessageStatus = "Ocurrió un error interno.";
-                        }
-
-                return result;
+                    database.Close();
+                    database.Dispose();
+                    Log.Error(e, "Error ejecutando SP {Query}: {Message}", sqlQuery, e.Message);
+                    return RequestResult.Error(e.Message);
+                }
             }
         }
 

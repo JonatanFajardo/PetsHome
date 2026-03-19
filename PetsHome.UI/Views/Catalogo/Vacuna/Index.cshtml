@@ -271,6 +271,9 @@
         getUrl: "@Url.Action("Find")"
     });
 
+    // Validación de duplicados
+    Vacuna.initValidation("@Url.Action("ValidarDescripcion")");
+
     // Búsqueda global
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();

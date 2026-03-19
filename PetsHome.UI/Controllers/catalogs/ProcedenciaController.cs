@@ -129,5 +129,15 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidarDescripcion(string proc_Descripcion, int? proc_Id)
+        {
+            if (string.IsNullOrWhiteSpace(proc_Descripcion))
+                return Json(true);
+
+            bool existe = await _procedenciaService.DescripcionExistsAsync(proc_Descripcion, proc_Id ?? 0);
+            return Json(!existe);
+        }
     }
 }

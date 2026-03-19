@@ -113,11 +113,11 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public virtual async Task<bool> ExisteAsync(string descripcion, int id)
+        public virtual async Task<bool> DescripcionExistsAsync(string descripcion, int id)
         {
             try
             {
-                return await _razaRepository.ExisteAsync(descripcion, id);
+                return await _razaRepository.DescripcionExistsAsync(descripcion, id);
             }
             catch (Exception error)
             {

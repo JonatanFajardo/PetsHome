@@ -13,6 +13,9 @@ namespace PetsHome.Common
         /// </summary>
         public bool Success => CodeStatus > 0;
 
+        public static RequestResult Ok(string message = "Operación completada.") =>
+            new RequestResult { CodeStatus = 1, MessageStatus = message };
+
         public static RequestResult Error(string message) =>
             new RequestResult { CodeStatus = -5, MessageStatus = message };
     }

@@ -144,6 +144,19 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public virtual async Task<bool> IdentidadExistsAsync(string identidad, int empleadoId)
+        {
+            try
+            {
+                return await _empleadoRepository.IdentidadExistsAsync(identidad, empleadoId);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Obtiene una lista de opciones de cargo de empleados de forma asincrona.
         /// </summary>

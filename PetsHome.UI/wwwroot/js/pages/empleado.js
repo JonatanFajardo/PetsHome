@@ -58,6 +58,45 @@ var Empleado = (function () {
         });
     }
 
+    obj.initValidation = function (validarUrl) {
+        if (!$.validator.methods.noSpaceAtStart) {
+            $.validator.addMethod("noSpaceAtStart", function (value) {
+                return value.length === 0 || value[0] !== ' ';
+            }, "No puede comenzar con espacios.");
+        }
+        $(function () {
+            var $form = $("form");
+            $form.validate({
+                rules: {
+                    "per.per_Identidad": {
+                        required: true,
+                        maxlength: 20,
+                        noSpaceAtStart: true,
+                        remote: {
+                            url: validarUrl,
+                            type: "GET",
+                            data: {
+                                per_Identidad: function () { return $("#per_per_Identidad").val(); },
+                                emp_Id: function () { return $("#emp_Id").val(); }
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    "per.per_Identidad": {
+                        required: "La identidad es requerida.",
+                        maxlength: "Máximo 20 caracteres.",
+                        remote: "Ya existe un empleado con esa identidad."
+                    }
+                },
+                errorElement: "span",
+                errorClass: "text-danger",
+                highlight: function (el) { $(el).addClass("is-invalid"); },
+                unhighlight: function (el) { $(el).removeClass("is-invalid"); }
+            });
+        });
+    };
+
     return obj;
 
 }());

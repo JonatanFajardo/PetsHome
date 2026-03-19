@@ -61,5 +61,14 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cat_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
+
+        public virtual async Task<bool> DescripcionExistsAsync(string descripcion, int id)
+        {
+            const string sqlQuery = "[Inventario].[PR_Inventario_Categorias_Existe]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@cat_Descripcion", descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cat_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Find<bool>(sqlQuery, parameter);
+        }
     }
 }

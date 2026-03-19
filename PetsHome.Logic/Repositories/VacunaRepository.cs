@@ -74,5 +74,13 @@ namespace PetsHome.Logic.Repositories
             return DbApp.Dropdown<PR_Refugio_Vacunas_ListResult>(sqlQuery);
         }
 
+        public virtual async Task<bool> DescripcionExistsAsync(string descripcion, int id)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Vacunas_Existe]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@vac_Descripcion", descripcion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@vac_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Find<bool>(sqlQuery, parameter);
+        }
     }
 }

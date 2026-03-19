@@ -143,6 +143,19 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public virtual async Task<bool> CodigoExistsAsync(string codigo, int id)
+        {
+            try
+            {
+                return await _itemRepository.CodigoExistsAsync(codigo, id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
+
         #region Dropdown
 
         /// <summary>

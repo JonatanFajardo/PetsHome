@@ -260,6 +260,19 @@ namespace PetsHome.Business.Services
 
         }
 
+        public virtual async Task<bool> DescripcionExistsAsync(string descripcion, int id)
+        {
+            try
+            {
+                return await _empleadoscargoRepository.DescripcionExistsAsync(descripcion, id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
+
     }
 
 }

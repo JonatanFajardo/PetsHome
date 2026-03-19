@@ -142,5 +142,18 @@ namespace PetsHome.Business.Services
                 return false;
             }
         }
+
+        public virtual async Task<bool> DescripcionExistsAsync(string descripcion, int id)
+        {
+            try
+            {
+                return await _categoriaRepository.DescripcionExistsAsync(descripcion, id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
     }
 }

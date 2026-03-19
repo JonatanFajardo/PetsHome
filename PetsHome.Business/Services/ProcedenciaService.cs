@@ -149,6 +149,19 @@ namespace PetsHome.Business.Services
         /// Obtiene una lista de procedencias para dropdowns.
         /// </summary>
         /// <returns>Lista de procedencias para dropdowns.</returns>
+        public virtual async Task<bool> DescripcionExistsAsync(string descripcion, int id)
+        {
+            try
+            {
+                return await _procedenciaRepository.DescripcionExistsAsync(descripcion, id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
+
         public IEnumerable<ProcedenciaViewModel> ProcedenciaDropdown()
         {
             try

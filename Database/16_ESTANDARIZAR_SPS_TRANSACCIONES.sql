@@ -1589,5 +1589,155 @@ BEGIN
 END
 GO
 
+-- ============================================================
+-- SPs _Existe para validación de duplicados
+-- ============================================================
+
+CREATE OR ALTER PROCEDURE [Inventario].[PR_Inventario_Categorias_Existe]
+    @cat_Descripcion NVARCHAR(100),
+    @cat_Id          INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Inventario.tbCategorias
+        WHERE cat_Descripcion = @cat_Descripcion
+          AND cat_EsEliminado = 0
+          AND cat_Id != @cat_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Vacunas_Existe]
+    @vac_Descripcion NVARCHAR(100),
+    @vac_Id          INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Refugio.tbVacunas
+        WHERE vac_Descripcion = @vac_Descripcion
+          AND vac_EsEliminado = 0
+          AND vac_Id != @vac_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Procedencias_Existe]
+    @proc_Descripcion NVARCHAR(100),
+    @proc_Id          INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Refugio.tbProcedencias
+        WHERE proc_Descripcion = @proc_Descripcion
+          AND proc_EsEliminado = 0
+          AND proc_Id != @proc_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_EmpleadosCargos_Existe]
+    @cag_Descripcion NVARCHAR(100),
+    @cag_Id          INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Refugio.tbEmpleadosCargos
+        WHERE cag_Descripcion = @cag_Descripcion
+          AND cag_EsEliminado = 0
+          AND cag_Id != @cag_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Refugios_Existe]
+    @refg_Nombre NVARCHAR(100),
+    @refg_Id     INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Refugio.tbRefugios
+        WHERE refg_Nombre = @refg_Nombre
+          AND refg_EsEliminado = 0
+          AND refg_Id != @refg_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Inventario].[PR_Inventario_Items_Existe]
+    @itm_Codigo NVARCHAR(100),
+    @itm_Id     INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM Inventario.tbItems
+        WHERE itm_Codigo = @itm_Codigo
+          AND itm_EsEliminado = 0
+          AND itm_Id != @itm_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Empleados_Existe]
+    @per_Identidad NVARCHAR(20),
+    @emp_Id        INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM General.tbPersonas p
+        INNER JOIN Refugio.tbEmpleados e ON p.per_Id = e.per_Id
+        WHERE p.per_Identidad = @per_Identidad
+          AND p.per_EsEliminado = 0
+          AND e.emp_Id != @emp_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
+CREATE OR ALTER PROCEDURE [Refugio].[PR_Refugio_Voluntarios_Existe]
+    @per_Identidad NVARCHAR(20),
+    @vol_Id        INT = 0
+AS
+BEGIN
+    SET NOCOUNT ON
+    IF EXISTS (
+        SELECT 1 FROM General.tbPersonas p
+        INNER JOIN Refugio.tbVoluntarios v ON p.per_Id = v.per_Id
+        WHERE p.per_Identidad = @per_Identidad
+          AND p.per_EsEliminado = 0
+          AND v.vol_Id != @vol_Id
+    )
+        SELECT CAST(1 AS BIT) AS Existe
+    ELSE
+        SELECT CAST(0 AS BIT) AS Existe
+END
+GO
+
 PRINT 'Script 16 completado: todos los SPs estandarizados con TRY/CATCH y codigos de retorno.'
 GO

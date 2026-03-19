@@ -105,7 +105,10 @@ namespace PetsHome.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> ValidarDescripcion(string raza_Descripcion, int? raza_Id)
         {
-            bool existe = await _razaService.ExisteAsync(raza_Descripcion, raza_Id ?? 0);
+            if (string.IsNullOrWhiteSpace(raza_Descripcion))
+                return Json(true);
+
+            bool existe = await _razaService.DescripcionExistsAsync(raza_Descripcion, raza_Id ?? 0);
             return Json(!existe);
         }
     }

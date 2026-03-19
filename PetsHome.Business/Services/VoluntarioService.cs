@@ -123,5 +123,18 @@ namespace PetsHome.Business.Services
                 return false;
             }
         }
+
+        public virtual async Task<bool> IdentidadExistsAsync(string identidad, int voluntarioId)
+        {
+            try
+            {
+                return await _voluntarioRepository.IdentidadExistsAsync(identidad, voluntarioId);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
     }
 }
