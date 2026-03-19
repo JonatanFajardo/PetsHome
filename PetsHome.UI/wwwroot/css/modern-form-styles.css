@@ -99,6 +99,11 @@
     letter-spacing: -0.01em;
 }
 
+.form-group label .required {
+    color: #ef4444;
+    margin-left: 2px;
+}
+
 /* Modern Form Controls */
 .form-group input.form-control,
 .form-group textarea.form-control,
