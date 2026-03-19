@@ -653,7 +653,7 @@ namespace PetsHome.UI.Controllers
             {
                 bool createdItem = await _[nombreTabla]Service.AddAsync(model);
                 bool validation = Validation.IsInsert(createdItem, ModelState.IsValid);
-                if (createdItem)
+                if (!createdItem)
                     goto ErrorResult;
                 ShowAlert("Insertado", AlertMessageType.Success);
                 return RedirectToAction("Create");
@@ -661,8 +661,8 @@ namespace PetsHome.UI.Controllers
             else
             {
                 bool updatedItem = await _[nombreTabla]Service.UpdateAsync(model);
-                bool validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
-                if (updatedItem)
+                bool validation = Validation.IsUpdate(!updatedItem, ModelState.IsValid);
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert("Actualizado", AlertMessageType.Success);
