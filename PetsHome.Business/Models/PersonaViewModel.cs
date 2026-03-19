@@ -19,6 +19,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [MaxLength(13, ErrorMessage = "Ingrese solamente 13 dígitos")]
         [MinLength(13, ErrorMessage = "El mínimo de dígitos es 13")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "La {0} solo debe contener dígitos")]
         public string per_Identidad { get; set; }
 
         /// <summary>
@@ -27,14 +28,15 @@ namespace PetsHome.Business.Models
         [Display(Name = "Primer Nombre")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*$", ErrorMessage = "El {0} solo debe contener letras, sin espacios al inicio o final")]
         public string per_PrimerNombre { get; set; }
 
         /// <summary>
         /// Obtiene o establece el segundo nombre de la persona.
         /// </summary>
         [Display(Name = "Segundo Nombre")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^(?:[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*)?$", ErrorMessage = "El {0} solo debe contener letras, sin espacios al inicio o final")]
         public string per_SegundoNombre { get; set; }
 
         /// <summary>
@@ -43,14 +45,15 @@ namespace PetsHome.Business.Models
         [Display(Name = "Apellido Paterno")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*$", ErrorMessage = "El {0} solo debe contener letras, sin espacios al inicio o final")]
         public string per_ApellidoPaterno { get; set; }
 
         /// <summary>
         /// Obtiene o establece el apellido materno de la persona.
         /// </summary>
         [Display(Name = "Apellido Materno")]
-        //[Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^(?:[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*)?$", ErrorMessage = "El {0} solo debe contener letras, sin espacios al inicio o final")]
         public string per_ApellidoMaterno { get; set; }
 
         /// <summary>
@@ -77,6 +80,7 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(8, ErrorMessage = "Ingrese solamente 8 dígitos")]
         [MinLength(8, ErrorMessage = "El mínimo de dígitos es 8")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "El {0} solo debe contener dígitos")]
         public string per_Telefono { get; set; }
 
         /// <summary>
@@ -85,6 +89,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Correo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(150)]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido")]
         public string per_Correo { get; set; }
 
         /// <summary>
