@@ -105,7 +105,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _HistorialMedicoService.UpdateAsync(model);
-                if (updatedItem)
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);

@@ -100,7 +100,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _ItemService.UpdateAsync(model, userId);
-                if (updatedItem)
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert(AlertMessaje.SuccessEdit, AlertMessageType.Success);

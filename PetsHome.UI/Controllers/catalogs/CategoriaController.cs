@@ -92,7 +92,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _CategoriaService.UpdateAsync(model, userId);
-                return AjaxResult(updatedItem);
+                return AjaxResult(!updatedItem);
             }
         }
 

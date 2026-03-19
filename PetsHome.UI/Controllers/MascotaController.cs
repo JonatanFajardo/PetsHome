@@ -100,8 +100,8 @@ namespace PetsHome.UI.Controllers
             else
             {
                 bool updatedItem = await _mascotaService.UpdateAsync(model, userId);
-                bool validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
-                if (updatedItem)
+                bool validation = Validation.IsUpdate(!updatedItem, ModelState.IsValid);
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert("Actualizado", AlertMessageType.Success);
