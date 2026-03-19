@@ -43,14 +43,14 @@
                 <div class="form-grid">
                     <!-- Campo Solicitud -->
                     <div class="form-group">
-                        <label asp-for="sol_Id">Solicitud</label>
+                        <label asp-for="sol_Id">Solicitud <span class="required">*</span></label>
                         <input class="form-control" asp-for="sol_Id" type="text" placeholder="Ingrese el ID de la solicitud" />
                         <span class="text-danger" asp-validation-for="sol_Id"></span>
                     </div>
 
                     <!-- Campo Estado -->
                     <div class="form-group">
-                        <label asp-for="adop_Estado">Estado de Aprobación</label>
+                        <label asp-for="adop_Estado">Estado de Aprobación <span class="required">*</span></label>
                         <select class="form-control" asp-for="adop_Estado">
                             <option value="">Seleccione un estado</option>
                             <option value="Pendiente">Pendiente</option>
@@ -75,6 +75,7 @@
 </div>
 
 @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
 }

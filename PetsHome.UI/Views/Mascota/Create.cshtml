@@ -109,14 +109,14 @@
                             <div class="form-grid">
                                 <!-- Campo Nombre -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Nombre">Nombre</label>
+                                    <label asp-for="masc_Nombre">Nombre <span class="required">*</span></label>
                                     <input class="form-control" asp-for="masc_Nombre" type="text" placeholder="Ingrese el nombre de la mascota" />
                                     <span class="text-danger" asp-validation-for="masc_Nombre"></span>
                                 </div>
 
                                 <!-- Campo Raza -->
                                 <div class="form-group">
-                                    <label asp-for="raza_Id">Raza</label>
+                                    <label asp-for="raza_Id">Raza <span class="required">*</span></label>
                                     <div class="select-wrapper">
                                         <select class="form-control" asp-for="raza_Id" asp-items="Model.razaList">
                                             <option value="">-- Seleccionar --</option>
@@ -127,14 +127,14 @@
 
                                 <!-- Campo Edad -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Edad">Edad</label>
+                                    <label asp-for="masc_Edad">Edad <span class="required">*</span></label>
                                     <input class="form-control" asp-for="masc_Edad" type="number" placeholder="Ingrese la edad en años" />
                                     <span class="text-danger" asp-validation-for="masc_Edad"></span>
                                 </div>
 
                                 <!-- Campo Sexo -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Sexo">Sexo</label>
+                                    <label asp-for="masc_Sexo">Sexo <span class="required">*</span></label>
                                     <div class="select-wrapper">
                                         <select class="form-control" asp-for="masc_Sexo" asp-items="Model.sexoList">
                                             <option value="">-- Seleccionar --</option>
@@ -145,28 +145,28 @@
 
                                 <!-- Campo Peso -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Peso">Peso</label>
+                                    <label asp-for="masc_Peso">Peso <span class="required">*</span></label>
                                     <input class="form-control" asp-for="masc_Peso" type="number" placeholder="Ingrese el peso en kg" />
                                     <span class="text-danger" asp-validation-for="masc_Peso"></span>
                                 </div>
 
                                 <!-- Campo Talla -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Talla">Talla</label>
+                                    <label asp-for="masc_Talla">Talla <span class="required">*</span></label>
                                     <input class="form-control" asp-for="masc_Talla" type="number" placeholder="Ingrese la talla en cm" />
                                     <span class="text-danger" asp-validation-for="masc_Talla"></span>
                                 </div>
 
                                 <!-- Campo Color -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Color">Color</label>
+                                    <label asp-for="masc_Color">Color <span class="required">*</span></label>
                                     <input class="form-control" asp-for="masc_Color" type="text" placeholder="Ingrese el color" />
                                     <span class="text-danger" asp-validation-for="masc_Color"></span>
                                 </div>
 
                                 <!-- Campo Historia -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Historia">Historia</label>
+                                    <label asp-for="masc_Historia">Historia <span class="required">*</span></label>
                                     <input class="form-control" asp-for="masc_Historia" type="text" placeholder="Ingrese la historia de la mascota" />
                                     <span class="text-danger" asp-validation-for="masc_Historia"></span>
                                 </div>
@@ -184,7 +184,7 @@
                             <div class="form-grid">
                                 <!-- Campo Refugio -->
                                 <div class="form-group">
-                                    <label asp-for="refg_Id">Refugio</label>
+                                    <label asp-for="refg_Id">Refugio <span class="required">*</span></label>
                                     <div class="select-wrapper">
                                         <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
                                             <option value="">-- Seleccionar --</option>
@@ -195,7 +195,7 @@
 
                                 <!-- Campo Procedencia -->
                                 <div class="form-group">
-                                    <label asp-for="proc_Id">Procedencia</label>
+                                    <label asp-for="proc_Id">Procedencia <span class="required">*</span></label>
                                     <div class="select-wrapper">
                                         <select class="form-control" asp-for="proc_Id" asp-items="Model.procedenciaList">
                                             <option value="">-- Seleccionar --</option>
@@ -219,6 +219,7 @@
 </div>
 
 @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
 }

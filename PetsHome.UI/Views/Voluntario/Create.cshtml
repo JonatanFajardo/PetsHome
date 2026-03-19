@@ -44,7 +44,7 @@
                             <div class="form-grid">
                                 <!-- Campo Primer Nombre -->
                                 <div class="form-group">
-                                    <label asp-for="per.per_PrimerNombre">Primer Nombre</label>
+                                    <label asp-for="per.per_PrimerNombre">Primer Nombre <span class="required">*</span></label>
                                     <input class="form-control" asp-for="per.per_PrimerNombre" type="text" placeholder="Ingrese el primer nombre" />
                                     <span class="text-danger" asp-validation-for="per.per_PrimerNombre"></span>
                                 </div>
@@ -58,7 +58,7 @@
 
                                 <!-- Campo Apellido Paterno -->
                                 <div class="form-group">
-                                    <label asp-for="per.per_ApellidoPaterno">Apellido Paterno</label>
+                                    <label asp-for="per.per_ApellidoPaterno">Apellido Paterno <span class="required">*</span></label>
                                     <input class="form-control" asp-for="per.per_ApellidoPaterno" type="text" placeholder="Ingrese el apellido paterno" />
                                     <span class="text-danger" asp-validation-for="per.per_ApellidoPaterno"></span>
                                 </div>
@@ -72,28 +72,28 @@
 
                                 <!-- Campo Identidad -->
                                 <div class="form-group">
-                                    <label asp-for="per.per_Identidad">Identidad</label>
+                                    <label asp-for="per.per_Identidad">Identidad <span class="required">*</span></label>
                                     <input class="form-control" asp-for="per.per_Identidad" type="text" placeholder="Ingrese el número de identidad" />
                                     <span class="text-danger" asp-validation-for="per.per_Identidad"></span>
                                 </div>
 
                                 <!-- Campo Fecha Nacimiento -->
                                 <div class="form-group">
-                                    <label asp-for="per.per_FechaNacimiento">Fecha Nacimiento</label>
+                                    <label asp-for="per.per_FechaNacimiento">Fecha Nacimiento <span class="required">*</span></label>
                                     <input class="form-control" asp-for="per.per_FechaNacimiento" type="date" />
                                     <span class="text-danger" asp-validation-for="per.per_FechaNacimiento"></span>
                                 </div>
 
                                 <!-- Campo Correo Electrónico -->
                                 <div class="form-group">
-                                    <label asp-for="per.per_Correo">Correo Electrónico</label>
+                                    <label asp-for="per.per_Correo">Correo Electrónico <span class="required">*</span></label>
                                     <input class="form-control" asp-for="per.per_Correo" type="email" placeholder="correo@ejemplo.com" />
                                     <span class="text-danger" asp-validation-for="per.per_Correo"></span>
                                 </div>
 
                                 <!-- Campo Teléfono -->
                                 <div class="form-group">
-                                    <label asp-for="per.per_Telefono">Teléfono</label>
+                                    <label asp-for="per.per_Telefono">Teléfono <span class="required">*</span></label>
                                     <input class="form-control" asp-for="per.per_Telefono" type="tel" placeholder="Ingrese el número de teléfono" />
                                     <span class="text-danger" asp-validation-for="per.per_Telefono"></span>
                                 </div>
@@ -101,7 +101,7 @@
 
                             <!-- Campo Domicilio (Full Width) -->
                             <div class="form-group">
-                                <label asp-for="per.per_Domicilio">Domicilio</label>
+                                <label asp-for="per.per_Domicilio">Domicilio <span class="required">*</span></label>
                                 <textarea class="form-control" asp-for="per.per_Domicilio" rows="3" placeholder="Ingrese la dirección completa"></textarea>
                                 <span class="text-danger" asp-validation-for="per.per_Domicilio"></span>
                             </div>
@@ -118,7 +118,7 @@
                             <div class="form-grid">
                                 <!-- Campo Horas Trabajadas -->
                                 <div class="form-group">
-                                    <label asp-for="vol_HorasTrabajadas">Horas Trabajadas</label>
+                                    <label asp-for="vol_HorasTrabajadas">Horas Trabajadas <span class="required">*</span></label>
                                     <input class="form-control" asp-for="vol_HorasTrabajadas" type="number" placeholder="Ingrese las horas trabajadas" />
                                     <span class="text-danger" asp-validation-for="vol_HorasTrabajadas"></span>
                                 </div>
@@ -152,6 +152,7 @@
 </div>
 
 @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
     <script src="~/js/pages/voluntario.js"></script>

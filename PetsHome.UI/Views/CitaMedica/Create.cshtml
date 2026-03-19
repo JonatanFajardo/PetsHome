@@ -46,7 +46,7 @@
                             <div class="form-grid">
                                 <!-- Campo Mascota -->
                                 <div class="form-group">
-                                    <label asp-for="masc_Id">Mascota</label>
+                                    <label asp-for="masc_Id">Mascota <span class="required">*</span></label>
                                     <div class="select-wrapper">
                                         <select class="form-control" asp-for="masc_Id" asp-items="Model.MascotaList">
                                             <option value="">-- Seleccionar Mascota --</option>
@@ -57,7 +57,7 @@
 
                                 <!-- Campo Comportamiento -->
                                 <div class="form-group">
-                                    <label asp-for="Com_Id">Comportamiento</label>
+                                    <label asp-for="Com_Id">Comportamiento <span class="required">*</span></label>
                                     <div class="select-wrapper">
                                         <select class="form-control" asp-for="Com_Id" asp-items="Model.comportamientoList">
                                             <option value="">-- Seleccionar --</option>
@@ -68,7 +68,7 @@
 
                                 <!-- Campo Fecha de Consulta -->
                                 <div class="form-group">
-                                    <label asp-for="cita_FechaConsulta">Fecha de Consulta</label>
+                                    <label asp-for="cita_FechaConsulta">Fecha de Consulta <span class="required">*</span></label>
                                     <input class="form-control" asp-for="cita_FechaConsulta" type="datetime-local"
                                            value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                                     <span class="text-danger" asp-validation-for="cita_FechaConsulta"></span>
