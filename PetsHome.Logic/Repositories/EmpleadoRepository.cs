@@ -86,6 +86,15 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
+        public virtual async Task<bool> IdentidadExistsAsync(string identidad, int empleadoId)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Empleados_Existe]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@per_Identidad", identidad, DbType.String, ParameterDirection.Input);
+            parameter.Add("@emp_Id", empleadoId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Find<bool>(sqlQuery, parameter);
+        }
+
         #endregion Consultas
 
         #region Dropdown

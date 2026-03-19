@@ -130,6 +130,16 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ValidarIdentidad(string per_Identidad, int? emp_Id)
+        {
+            if (string.IsNullOrWhiteSpace(per_Identidad))
+                return Json(true);
+
+            bool existe = await _EmpleadoService.IdentidadExistsAsync(per_Identidad, emp_Id ?? 0);
+            return Json(!existe);
+        }
+
         public EmpleadoFormViewModel Dropdown(EmpleadoFormViewModel model)
         {
             model.LoadDropDownList(_RefugioService.RefugioDropdown(), _EmpleadoService.EmpleadoCargoDropdown());

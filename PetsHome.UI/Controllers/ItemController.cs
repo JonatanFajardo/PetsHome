@@ -127,6 +127,16 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ValidarCodigo(string itm_Codigo, int? itm_Id)
+        {
+            if (string.IsNullOrWhiteSpace(itm_Codigo))
+                return Json(true);
+
+            bool existe = await _ItemService.CodigoExistsAsync(itm_Codigo, itm_Id ?? 0);
+            return Json(!existe);
+        }
+
         public ItemViewModel Dropdown(ItemViewModel model)
         {
             model.LoadDropDownList(_ItemService.CategoriaDropdown());

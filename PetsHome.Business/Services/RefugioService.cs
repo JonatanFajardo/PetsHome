@@ -132,6 +132,19 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public virtual async Task<bool> NombreExistsAsync(string nombre, int id)
+        {
+            try
+            {
+                return await _refugioRepository.NombreExistsAsync(nombre, id);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Obtiene una lista de refugios para dropdowns.
         /// </summary>

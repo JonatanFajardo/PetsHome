@@ -123,5 +123,15 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidarIdentidad(string per_Identidad, int? vol_Id)
+        {
+            if (string.IsNullOrWhiteSpace(per_Identidad))
+                return Json(true);
+
+            bool existe = await _VoluntarioService.IdentidadExistsAsync(per_Identidad, vol_Id ?? 0);
+            return Json(!existe);
+        }
     }
 }

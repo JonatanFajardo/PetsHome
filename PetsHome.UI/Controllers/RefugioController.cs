@@ -133,6 +133,16 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ValidarNombre(string refg_Nombre, int? refg_Id)
+        {
+            if (string.IsNullOrWhiteSpace(refg_Nombre))
+                return Json(true);
+
+            bool existe = await _RefugioService.NombreExistsAsync(refg_Nombre, refg_Id ?? 0);
+            return Json(!existe);
+        }
+
         public RefugioFormViewModel Dropdown(RefugioFormViewModel model)
         {
             model.LoadDropDownList(

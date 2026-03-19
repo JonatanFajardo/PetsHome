@@ -29,11 +29,13 @@
         })
     }
     obj.initValidation = function (validarUrl) {
-        $.validator.addMethod("noSpaceAtStart", function (value) {
-            return value.length === 0 || value[0] !== ' ';
-        }, "No puede comenzar con espacios.");
+        if (!$.validator.methods.noSpaceAtStart) {
+            $.validator.addMethod("noSpaceAtStart", function (value) {
+                return value.length === 0 || value[0] !== ' ';
+            }, "No puede comenzar con espacios.");
+        }
 
-        $("#edit-modal").on("shown.bs.modal", function () {
+        $("#edit-modal").one("shown.bs.modal", function () {
             var $form = $(this).find("form");
             $form.removeData("validator").removeData("unobtrusiveValidation");
             $form.validate({

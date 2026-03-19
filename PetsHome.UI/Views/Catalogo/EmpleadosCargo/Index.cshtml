@@ -262,6 +262,9 @@
         getUrl: "@Url.Action("Find")"
     });
 
+    // Validación de duplicados
+    EmpleadosCargo.initValidation("@Url.Action("ValidarDescripcion")");
+
     // Busqueda global
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();

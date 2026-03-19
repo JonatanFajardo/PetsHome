@@ -65,6 +65,15 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
+        public virtual async Task<bool> CodigoExistsAsync(string codigo, int id)
+        {
+            const string sqlQuery = "[Inventario].[PR_Inventario_Items_Existe]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@itm_Codigo", codigo, DbType.String, ParameterDirection.Input);
+            parameter.Add("@itm_Id", id, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Find<bool>(sqlQuery, parameter);
+        }
+
         #region Dropdown
 
         public IEnumerable<PR_Inventario_Categorias_DropdownResult> CategoriaDropdown()

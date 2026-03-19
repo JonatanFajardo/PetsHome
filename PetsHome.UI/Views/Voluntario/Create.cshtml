@@ -154,6 +154,10 @@
 @section Scripts{
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
+    <script src="~/js/pages/voluntario.js"></script>
+    <script>
+        Voluntario.initValidation("@Url.Action("ValidarIdentidad")");
+    </script>
     <script>
         // Recurrente Switch Handler
         document.addEventListener('DOMContentLoaded', function () {
