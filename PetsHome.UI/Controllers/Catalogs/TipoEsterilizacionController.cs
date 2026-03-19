@@ -89,7 +89,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _tipoEsterilizacionService.UpdateAsync(model);
-                if (updatedItem)
+                if (!updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
                     return AjaxResult(true);

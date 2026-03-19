@@ -149,7 +149,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _recepcionService.UpdateAsync(model);
-                if (updatedItem)
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert("Recepción actualizada correctamente", AlertMessageType.Success);
@@ -182,7 +182,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _detalleService.UpdateAsync(model.Detalle);
-                if (updatedItem)
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert("Detalle actualizado correctamente", AlertMessageType.Success);

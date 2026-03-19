@@ -96,8 +96,8 @@ namespace PetsHome.UI.Controllers
             else
             {
                 bool updatedItem = await _tratamientoService.UpdateAsync(model);
-                bool validation = Validation.IsUpdate(updatedItem, ModelState.IsValid);
-                if (updatedItem)
+                bool validation = Validation.IsUpdate(!updatedItem, ModelState.IsValid);
+                if (!updatedItem)
                     goto ErrorResult;
 
                 ShowAlert("Actualizado", AlertMessageType.Success);
