@@ -5,12 +5,14 @@ using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
     /// <summary>
     /// Controlador para gestionar las recepciones de mercancía.
     /// </summary>
+    [Authorize]
     public class RecepcionMercanciaController : BaseController
     {
         private readonly RecepcionMercanciaService _recepcionService;
@@ -243,7 +245,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             Boolean deletedItem = await _recepcionService.RemoveAsync(id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Recepción eliminada correctamente", AlertMessageType.Success);
             }
@@ -264,7 +266,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> RemoveDetalle(int recdet_Id, int recep_Id)
         {
             Boolean deletedItem = await _detalleService.RemoveAsync(recdet_Id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Detalle eliminado correctamente", AlertMessageType.Success);
             }

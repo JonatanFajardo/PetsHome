@@ -5,9 +5,11 @@ using PetsHome.Business.Services;
 using PetsHome.UI.Models;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
     public class TipoEsterilizacionController : BaseController
     {
         private readonly TipoEsterilizacionService _tipoEsterilizacionService;
@@ -75,7 +77,7 @@ namespace PetsHome.UI.Controllers
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoEsterilizacionService.AddAsync(model);
-                if (!createdItem)
+                if (createdItem)
                 {
                     ShowAlert("Insertado", AlertMessageType.Success);
                     return AjaxResult(true);
@@ -89,7 +91,7 @@ namespace PetsHome.UI.Controllers
             else
             {
                 Boolean updatedItem = await _tipoEsterilizacionService.UpdateAsync(model);
-                if (!updatedItem)
+                if (updatedItem)
                 {
                     ShowAlert("Modificado", AlertMessageType.Success);
                     return AjaxResult(true);
@@ -105,7 +107,7 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> Remove(int tipoEst_Id)
         {
             Boolean deletedItem = await _tipoEsterilizacionService.RemoveAsync(tipoEst_Id);
-            if (!deletedItem)
+            if (deletedItem)
             {
                 ShowAlert("Eliminado", AlertMessageType.Success);
                 return AjaxResult(true);
