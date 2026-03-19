@@ -25,6 +25,7 @@
     -moz-box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
     box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
     border-right: 1px solid #e0e6ed;
+    overflow: hidden;
 }
 
 .sidebar-theme {
@@ -457,22 +458,22 @@
     display: none;
 }
 
-.sidebar-closed .sidebar-wrapper.sidebar-closed .theme-text,
-.sidebar-closed .sidebar-wrapper.sidebar-closed .menu span {
+.sidebar-closed > .sidebar-wrapper .theme-text,
+.sidebar-closed > .sidebar-wrapper .menu span {
     display: none;
 }
 
-.sidebar-closed .sidebar-wrapper.sidebar-closed .theme-brand {
+.sidebar-closed > .sidebar-wrapper .theme-brand {
     justify-content: center;
 }
 
-.sidebar-closed .sidebar-wrapper.sidebar-closed .menu > a,
-.sidebar-closed .sidebar-wrapper.sidebar-closed .menu > .dropdown-toggle {
+.sidebar-closed > .sidebar-wrapper .menu > a,
+.sidebar-closed > .sidebar-wrapper .menu > .dropdown-toggle {
     justify-content: center;
     padding: 12px;
 }
 
-.sidebar-closed .sidebar-wrapper.sidebar-closed .menu i {
+.sidebar-closed > .sidebar-wrapper .menu i {
     margin-right: 0;
 }
 
@@ -516,6 +517,26 @@
 
 .sidebar-closed .sidebar-wrapper:hover .sidebar-user-section {
     display: block;
+}
+
+/* Restore text on hover when collapsed */
+.sidebar-closed > .sidebar-wrapper:hover .theme-text,
+.sidebar-closed > .sidebar-wrapper:hover .menu span {
+    display: inline;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover .theme-brand {
+    justify-content: space-between;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover .menu > a,
+.sidebar-closed > .sidebar-wrapper:hover .menu > .dropdown-toggle {
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+.sidebar-closed > .sidebar-wrapper:hover .menu i {
+    margin-right: 12px;
 }
 
 /* ========================================
@@ -669,6 +690,13 @@
 .overlay.show {
     display: block;
     opacity: 0.7;
+}
+
+/* Overlay solo visible en móvil, en desktop no debe interceptar clics */
+@media (min-width: 992px) {
+    .overlay {
+        display: none !important;
+    }
 }
 
 /* Override DataTables default margin-top */
