@@ -22,6 +22,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+)*$", ErrorMessage = "El {0} no debe tener espacios al inicio o final")]
         public string masc_Nombre { get; set; }
 
         [Display(Name = "Id raza")]
@@ -35,6 +36,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Edad")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
+        [Range(0, 100, ErrorMessage = "La {0} debe estar entre {1} y {2}")]
         public int? masc_Edad { get; set; }
 
         [Display(Name = "Sexo")]
@@ -44,16 +46,19 @@ namespace PetsHome.Business.Models
         [Display(Name = "Peso")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [Column(TypeName = "decimal(18, 0)")]
+        [Range(0.1, 500, ErrorMessage = "El {0} debe estar entre {1} y {2}")]
         public decimal? masc_Peso { get; set; }
 
         [Display(Name = "Talla")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [Column(TypeName = "decimal(18, 0)")]
+        [Range(1, 300, ErrorMessage = "La {0} debe estar entre {1} y {2}")]
         public decimal? masc_Talla { get; set; }
 
         [Display(Name = "Color")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*$", ErrorMessage = "El {0} solo debe contener letras, sin espacios al inicio o final")]
         public string masc_Color { get; set; }
 
         [Display(Name = "Historia")]

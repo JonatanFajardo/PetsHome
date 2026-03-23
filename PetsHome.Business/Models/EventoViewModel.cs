@@ -21,6 +21,7 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Descripcion")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(200, ErrorMessage = "La {0} no puede exceder {1} caracteres")]
         public string eve_Descripcion { get; set; }
 
         /// <summary>

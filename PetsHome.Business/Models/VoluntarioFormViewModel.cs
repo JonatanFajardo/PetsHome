@@ -14,6 +14,7 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Horas Trabajadas")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
+        [Range(0, 10000, ErrorMessage = "Las {0} deben estar entre {1} y {2}")]
         public int? vol_HorasTrabajadas { get; set; }
 
         [Display(Name = "Id")]
