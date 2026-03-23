@@ -34,7 +34,6 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Comportamiento")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [StringLength(255)]
         public int com_Id { get; set; }
 
         /// <summary>

@@ -61,6 +61,7 @@ namespace PetsHome.Business.Models
         [Display(Name = "Precio")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [Column(TypeName = "decimal(10, 2)")]
+        [Range(0.01, 999999.99, ErrorMessage = "El {0} debe estar entre {1} y {2}")]
         public decimal itm_Precio { get; set; }
 
         /// <summary>

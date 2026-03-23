@@ -27,16 +27,21 @@ namespace PetsHome.Business.Models
         [Display(Name = "RTN")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(14)]
+        [MinLength(14, ErrorMessage = "El mínimo de dígitos es 14")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "El {0} solo debe contener dígitos")]
         public string refg_RTN { get; set; }
 
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(8)]
+        [MinLength(8, ErrorMessage = "El mínimo de dígitos es 8")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "El {0} solo debe contener dígitos")]
         public string refg_Telefono { get; set; }
 
         [Display(Name = "Correo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(150)]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido")]
         public string refg_Correo { get; set; }
 
         [Display(Name = "Departamento")]

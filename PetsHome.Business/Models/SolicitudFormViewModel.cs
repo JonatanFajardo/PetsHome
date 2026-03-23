@@ -16,26 +16,33 @@ namespace PetsHome.Business.Models
         [Display(Name = "Identidad")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(13)]
+        [MinLength(13, ErrorMessage = "El mínimo de dígitos es 13")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "La {0} solo debe contener dígitos")]
         public string sol_Identidad { get; set; }
 
         [Display(Name = "Nombres")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*$", ErrorMessage = "El campo {0} solo debe contener letras, sin espacios al inicio o final")]
         public string sol_Nombres { get; set; }
 
         [Display(Name = "Apellidos")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)*$", ErrorMessage = "El campo {0} solo debe contener letras, sin espacios al inicio o final")]
         public string sol_Apellidos { get; set; }
 
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(8)]
+        [MinLength(8, ErrorMessage = "El mínimo de dígitos es 8")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "El {0} solo debe contener dígitos")]
         public string sol_Telefono { get; set; }
 
         [Display(Name = "Correo")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(150)]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido")]
         public string sol_Correo { get; set; }
 
         [Display(Name = "Fecha")]
