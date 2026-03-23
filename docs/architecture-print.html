@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>PetsHome — Resumen de Arquitectura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @page {
+            size: letter;
+            margin: 12mm 10mm 10mm 10mm;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 7.5pt;
+            color: #1e293b;
+            width: 215.9mm;
+            min-height: 279.4mm;
+            max-height: 279.4mm;
+            overflow: hidden;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #6366f1;
+            margin-bottom: 7px;
+        }
+        .header h1 {
+            font-size: 15pt;
+            color: #0f172a;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header h1 i { color: #6366f1; margin-right: 4px; }
+        .header .subtitle {
+            font-size: 7.5pt;
+            color: #64748b;
+            font-weight: 400;
+        }
+        .tech-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+        .tech-badges span {
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 6.5pt;
+            font-weight: 600;
+            border: 1px solid;
+        }
+        .badge-indigo { background: #eef2ff; color: #4f46e5; border-color: #c7d2fe; }
+        .badge-purple { background: #faf5ff; color: #7c3aed; border-color: #ddd6fe; }
+        .badge-emerald { background: #ecfdf5; color: #059669; border-color: #a7f3d0; }
+        .badge-amber { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+        .badge-cyan { background: #ecfeff; color: #0891b2; border-color: #a5f3fc; }
+        .badge-rose { background: #fff1f2; color: #e11d48; border-color: #fecdd3; }
+
+        /* Sections */
+        .section-title {
+            font-size: 8.5pt;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .section-title i { color: #6366f1; font-size: 8pt; }
+
+        /* Layout grid */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .main-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 8px; margin-bottom: 7px; }
+
+        /* Architecture layers */
+        .layer-flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .layer-box {
+            padding: 4px 5px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 6pt;
+            font-weight: 600;
+            min-width: 68px;
+        }
+        .layer-box .label { display: block; font-weight: 400; font-size: 5pt; color: #64748b; }
+        .layer-arrow { color: #6366f1; font-size: 9pt; margin: 0 1px; font-weight: bold; }
+        .l-ui { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+        .l-biz { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+        .l-logic { background: #ecfeff; color: #0891b2; border: 1px solid #a5f3fc; }
+        .l-data { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+        .l-common { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+
+        /* Cards */
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 5px 6px;
+        }
+        .card h4 {
+            font-size: 7pt;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 2px;
+        }
+        .card h4 i { margin-right: 3px; }
+        .card p, .card li {
+            font-size: 6.5pt;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { padding: 0.5px 0; }
+        .card ul li i { width: 10px; text-align: center; margin-right: 2px; font-size: 5.5pt; }
+
+        /* Module cards with colored left border */
+        .mod-card { border-left: 3px solid; }
+        .mod-indigo { border-left-color: #6366f1; }
+        .mod-pink { border-left-color: #ec4899; }
+        .mod-emerald { border-left-color: #10b981; }
+        .mod-amber { border-left-color: #f59e0b; }
+        .mod-blue { border-left-color: #3b82f6; }
+        .mod-cyan { border-left-color: #06b6d4; }
+        .mod-teal { border-left-color: #14b8a6; }
+        .mod-red { border-left-color: #ef4444; }
+
+        /* Flow code */
+        .flow-mono {
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            font-size: 6.5pt;
+            background: #f1f5f9;
+            border-radius: 3px;
+            padding: 3px 5px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        /* Stats */
+        .stat { text-align: center; }
+        .stat .num { font-size: 12pt; font-weight: 800; line-height: 1.1; }
+        .stat .lbl { font-size: 5.5pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.3px; }
+        .c-indigo { color: #6366f1; }
+        .c-purple { color: #8b5cf6; }
+        .c-cyan { color: #06b6d4; }
+        .c-emerald { color: #10b981; }
+        .c-amber { color: #f59e0b; }
+        .c-rose { color: #f43f5e; }
+        .c-pink { color: #ec4899; }
+        .c-blue { color: #3b82f6; }
+        .c-teal { color: #14b8a6; }
+
+        /* Patterns */
+        .pattern-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 4px;
+        }
+        .pattern-item {
+            background: #f1f5f9;
+            border-radius: 3px;
+            padding: 3px 5px;
+            text-align: center;
+        }
+        .pattern-item i { display: block; font-size: 9pt; margin-bottom: 1px; }
+        .pattern-item strong { font-size: 6.5pt; color: #334155; display: block; }
+        .pattern-item span { font-size: 5.5pt; color: #94a3b8; }
+
+        /* Footer */
+        .footer {
+            margin-top: 6px;
+            padding-top: 4px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 6pt;
+            color: #94a3b8;
+        }
+
+        @media print {
+            body { width: auto; min-height: auto; max-height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1><i class="fas fa-paw"></i>PetsHome</h1>
+            <span class="subtitle">Sistema de gestión para refugios de mascotas — Adopciones, historial médico, inventario, empleados, voluntarios y eventos</span>
+        </div>
+        <div class="tech-badges">
+            <span class="badge-indigo">.NET Core 3.1</span>
+            <span class="badge-indigo">ASP.NET MVC</span>
+            <span class="badge-purple">SQL Server</span>
+            <span class="badge-emerald">Dapper 2.0</span>
+            <span class="badge-amber">AutoMapper 11</span>
+            <span class="badge-cyan">xUnit + Moq</span>
+        </div>
+    </div>
+
+    <!-- ARCHITECTURE + STATS -->
+    <div class="main-grid">
+        <div>
+            <div class="section-title"><i class="fas fa-layer-group"></i> Arquitectura por Capas</div>
+            <div class="layer-flow">
+                <div class="layer-box l-ui">PetsHome.UI<span class="label">Capa 5 — Controllers + Razor</span></div>
+                <span class="layer-arrow">&rarr;</span>
+                <div class="layer-box l-biz">PetsHome.Business<span class="label">Capa 4 — Services + AutoMapper</span></div>
+                <span class="layer-arrow">&rarr;</span>
+                <div class="layer-box l-logic">PetsHome.Logic<span class="label">Capa 3 — Repositories + Dapper</span></div>
+                <span class="layer-arrow">&rarr;</span>
+                <div class="layer-box l-data">PetsHome.DataAccess<span class="label">Capa 2 — DbContext + DbApp</span></div>
+                <span class="layer-arrow">&rarr;</span>
+                <div class="layer-box l-common">PetsHome.Common<span class="label">Capa 1 — Entities</span></div>
+            </div>
+            <div class="flow-mono" style="margin-top:4px">
+                Browser → Controller → Service → Repository → Dapper → Stored Procedure → SQL Server
+            </div>
+            <p style="font-size:6pt;color:#94a3b8;margin-top:2px">
+                5 capas con separación clara de responsabilidades. Dapper como micro ORM + Stored Procedures. AutoMapper para transformación Entity ↔ ViewModel.
+            </p>
+        </div>
+        <div>
+            <div class="section-title"><i class="fas fa-chart-bar"></i> Métricas del Proyecto</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:5px">
+                <div class="stat"><div class="num c-indigo">31</div><div class="lbl">Controllers</div></div>
+                <div class="stat"><div class="num c-purple">29</div><div class="lbl">Services</div></div>
+                <div class="stat"><div class="num c-cyan">28</div><div class="lbl">Repositories</div></div>
+                <div class="stat"><div class="num c-emerald">80+</div><div class="lbl">ViewModels</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">
+                <div class="stat"><div class="num c-amber">90</div><div class="lbl">Views</div></div>
+                <div class="stat"><div class="num c-rose">53</div><div class="lbl">JS Pages</div></div>
+                <div class="stat"><div class="num c-pink">5</div><div class="lbl">Capas</div></div>
+                <div class="stat"><div class="num c-teal">6</div><div class="lbl">DB Schemas</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PATRONES DE DISEÑO -->
+    <div style="margin-bottom:7px">
+        <div class="section-title"><i class="fas fa-cogs"></i> Patrones de Diseño</div>
+        <div class="pattern-list">
+            <div class="pattern-item">
+                <i class="fas fa-archive c-indigo"></i>
+                <strong>Repository</strong>
+                <span>IGenericRepository&lt;T&gt; + interfaces específicas por entidad</span>
+            </div>
+            <div class="pattern-item">
+                <i class="fas fa-layer-group c-purple"></i>
+                <strong>Service Layer</strong>
+                <span>29 servicios con lógica de negocio y AutoMapper</span>
+            </div>
+            <div class="pattern-item">
+                <i class="fas fa-clone c-cyan"></i>
+                <strong>ViewModel</strong>
+                <span>Variantes: List, Form, Details y Dropdown por entidad</span>
+            </div>
+            <div class="pattern-item">
+                <i class="fas fa-syringe c-emerald"></i>
+                <strong>Dependency Injection</strong>
+                <span>ServiceConfiguration.cs con extension methods</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULES + DATA FLOW -->
+    <div class="two-col" style="margin-bottom:7px">
+        <!-- Módulos -->
+        <div>
+            <div class="section-title"><i class="fas fa-th-large"></i> Módulos del Sistema</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                <div class="card mod-card mod-indigo">
+                    <h4><i class="fas fa-home c-indigo"></i>Refugio</h4>
+                    <p>Mascotas, refugios, razas, procedencias, comportamientos. Soporte para fotos con ImageSharp.</p>
+                </div>
+                <div class="card mod-card mod-pink">
+                    <h4><i class="fas fa-heart c-pink"></i>Adopciones</h4>
+                    <p>Solicitudes de adopción, adopciones aprobadas, voluntarios y eventos.</p>
+                </div>
+                <div class="card mod-card mod-emerald">
+                    <h4><i class="fas fa-stethoscope c-emerald"></i>Médico</h4>
+                    <p>Historial médico, citas veterinarias, vacunas, recetas y tratamientos.</p>
+                </div>
+                <div class="card mod-card mod-amber">
+                    <h4><i class="fas fa-boxes c-amber"></i>Inventario</h4>
+                    <p>Categorías, items, recepciones de mercancía y detalles de entrada.</p>
+                </div>
+                <div class="card mod-card mod-blue">
+                    <h4><i class="fas fa-user-tie c-blue"></i>Empleados</h4>
+                    <p>Empleados, cargos y gestión de personas.</p>
+                </div>
+                <div class="card mod-card mod-teal">
+                    <h4><i class="fas fa-book-medical c-teal"></i>Catálogos Médicos</h4>
+                    <p>Gravedades, tipos de esterilización, medicamento, parásito y vías de administración.</p>
+                </div>
+                <div class="card mod-card mod-cyan">
+                    <h4><i class="fas fa-globe-americas c-cyan"></i>General</h4>
+                    <p>Departamentos y municipios de Honduras.</p>
+                </div>
+                <div class="card mod-card mod-red">
+                    <h4><i class="fas fa-shield-alt c-rose"></i>Seguridad</h4>
+                    <p>Usuarios, registro de eventos y Cookie Authentication.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Flow + DB -->
+        <div>
+            <div class="section-title"><i class="fas fa-exchange-alt"></i> Flujo de Datos y Base de Datos</div>
+
+            <div class="card" style="margin-bottom:4px">
+                <h4><i class="fas fa-arrow-right c-indigo"></i>Request (Ida)</h4>
+                <div class="flow-mono" style="font-size:6pt;padding:2px 4px">
+                    Browser HTTP → Controller (ViewModel) → Service (AutoMapper → Entity) → Repository (DynamicParameters) → SP
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom:4px">
+                <h4><i class="fas fa-arrow-left c-emerald"></i>Response (Vuelta)</h4>
+                <div class="flow-mono" style="font-size:6pt;padding:2px 4px">
+                    SQL Server (Result Set) → Repository (Dapper → SP Result) → Service (AutoMapper → ViewModel) → View() o Json()
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom:4px">
+                <h4><i class="fas fa-database c-purple"></i>Schemas de Base de Datos</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;font-size:6.5pt">
+                    <span><span style="color:#6366f1;font-weight:bold">Refugio</span> — Mascotas, Adopciones</span>
+                    <span><span style="color:#10b981;font-weight:bold">Medico</span> — Historial, Citas</span>
+                    <span><span style="color:#f59e0b;font-weight:bold">Inventario</span> — Items, Entradas</span>
+                    <span><span style="color:#06b6d4;font-weight:bold">General</span> — Departamentos</span>
+                    <span><span style="color:#ef4444;font-weight:bold">Seguridad</span> — Usuarios, Eventos</span>
+                    <span><span style="color:#94a3b8;font-weight:bold">dbo</span> — Stored Procedures</span>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom:4px">
+                <h4><i class="fas fa-code c-purple"></i>Convención de Stored Procedures</h4>
+                <div class="flow-mono" style="font-size:6pt;padding:2px 4px">
+                    PR_[Schema]_[Tabla]_[Operación]<br>
+                    PR_Refugio_Mascotas_List | _Find | _Detail | _Insert | _Update | _Delete
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom:4px">
+                <h4><i class="fas fa-syringe c-amber"></i>Dependency Injection Pipeline</h4>
+                <div class="flow-mono" style="font-size:6pt;padding:2px 4px">
+                    Startup.cs<br>
+                    &nbsp;&nbsp;→ services.AddLogicLayer(connStr) <span style="color:#94a3b8">// 28 Repositories</span><br>
+                    &nbsp;&nbsp;→ services.AddBusinessLogic() <span style="color:#94a3b8">// 29 Services + AutoMapper</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4><i class="fas fa-table c-cyan"></i>DataTables — 3 Tipos</h4>
+                <ul>
+                    <li><i class="fas fa-circle c-indigo" style="font-size:4pt"></i> <strong>datatable.init.js</strong> — 12 pantallas principales: CRUD completo</li>
+                    <li><i class="fas fa-circle c-purple" style="font-size:4pt"></i> <strong>datatable.catalogs.init.js</strong> — 5 catálogos: CRUD modal</li>
+                    <li><i class="fas fa-circle c-cyan" style="font-size:4pt"></i> <strong>datatable.partials.init.js</strong> — 6 parciales: master-detail</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div style="margin-bottom:4px">
+        <div class="section-title"><i class="fas fa-folder-open"></i> Estructura de la Solución</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:5px">
+            <div class="flow-mono" style="line-height:1.6">
+                <strong style="color:#d97706">Common/</strong><br>
+                &nbsp;&nbsp;├── Entities/<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;├── Refugio/ <span style="color:#94a3b8">— 10+</span><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;├── Medico/ <span style="color:#94a3b8">— 15+</span><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;├── Inventario/<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;└── Seguridad/<br>
+                &nbsp;&nbsp;└── InternalEntities/
+            </div>
+            <div class="flow-mono" style="line-height:1.6">
+                <strong style="color:#059669">DataAccess/</strong><br>
+                &nbsp;&nbsp;├── PetsHomeDbContext<br>
+                &nbsp;&nbsp;└── Extensions/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── DbApp.cs<br>
+                <span style="color:#94a3b8;font-size:5.5pt">Dapper + EF Core</span>
+            </div>
+            <div class="flow-mono" style="line-height:1.6">
+                <strong style="color:#0891b2">Logic/</strong><br>
+                &nbsp;&nbsp;├── Interfaces/ <span style="color:#94a3b8">— 15+</span><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;└── IGenericRepo<br>
+                &nbsp;&nbsp;└── Repositories/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8">28 repos</span>
+            </div>
+            <div class="flow-mono" style="line-height:1.6">
+                <strong style="color:#7c3aed">Business/</strong><br>
+                &nbsp;&nbsp;├── Models/ <span style="color:#94a3b8">— 80+ VM</span><br>
+                &nbsp;&nbsp;├── Services/ <span style="color:#94a3b8">— 29</span><br>
+                &nbsp;&nbsp;├── Extensions/<br>
+                &nbsp;&nbsp;└── ServiceConfig.cs<br>
+                <span style="color:#94a3b8;font-size:5.5pt">AutoMapper + ImageSharp</span>
+            </div>
+            <div class="flow-mono" style="line-height:1.6">
+                <strong style="color:#4f46e5">UI/</strong><br>
+                &nbsp;&nbsp;├── Controllers/ <span style="color:#94a3b8">— 16</span><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;├── catalogs/ <span style="color:#94a3b8">— 11</span><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;└── parciales/ <span style="color:#94a3b8">— 3</span><br>
+                &nbsp;&nbsp;├── Views/ <span style="color:#94a3b8">— ~90</span><br>
+                &nbsp;&nbsp;└── wwwroot/js/ <span style="color:#94a3b8">— 53</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        PetsHome &bull; Sistema de Gestión para Refugios de Mascotas &bull; .NET Core 3.1 + SQL Server + Dapper + AutoMapper + xUnit &bull; Documentación de Arquitectura &copy; 2026
+    </div>
+
+</body>
+</html>
