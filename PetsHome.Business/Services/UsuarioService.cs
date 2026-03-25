@@ -2,6 +2,7 @@ using AutoMapper;
 using PetsHome.Business.Models;
 using PetsHome.Logic.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,44 @@ namespace PetsHome.Business.Services
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
         }
+
+        #region CRUD
+
+        public async Task<IEnumerable<UsuarioCrudViewModel>> ListAsync()
+        {
+            var result = await _usuarioRepository.ListAsync();
+            return _mapper.Map<IEnumerable<UsuarioCrudViewModel>>(result);
+        }
+
+        public async Task<UsuarioCrudViewModel> FindAsync(int id)
+        {
+            var result = await _usuarioRepository.FindAsync(id);
+            return _mapper.Map<UsuarioCrudViewModel>(result);
+        }
+
+        public async Task<bool> CreateAsync(UsuarioCrudViewModel model)
+        {
+            string passwordHash = HashPassword(model.Usu_Nombre);
+            return await _usuarioRepository.InsertAsync(model.Usu_Nombre, model.Emp_Id, model.Rol_Id, 0, model.Usu_EsActivo);
+        }
+
+        public async Task<bool> EditAsync(UsuarioCrudViewModel model)
+        {
+            return await _usuarioRepository.UpdateAsync(model.usu_Id, model.Usu_Nombre, model.Emp_Id, model.Rol_Id, model.Usu_EsActivo);
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _usuarioRepository.DeleteAsync(id);
+        }
+
+        public async Task<UsuarioCrudViewModel> ExistAsync(string nombre)
+        {
+            var result = await _usuarioRepository.ExistAsync(nombre);
+            return result != null ? new UsuarioCrudViewModel { usu_Id = result.usu_Id, Usu_Nombre = result.Usu_Nombre } : null;
+        }
+
+        #endregion
 
         #region Autenticación
 
