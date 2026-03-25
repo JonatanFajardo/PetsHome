@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 using PetsHome.UI.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
+    [PantallaAuthorize("Listado de tipos de consulta")]
     public class TipoConsultaController : BaseController
     {
         private readonly TipoConsultaService _tipoConsultaService;

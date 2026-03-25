@@ -1,11 +1,12 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
@@ -13,6 +14,7 @@ namespace PetsHome.UI.Controllers
     /// Controlador para gestionar las recepciones de mercancía.
     /// </summary>
     [Authorize]
+    [PantallaAuthorize("Listado de recepciones")]
     public class RecepcionMercanciaController : BaseController
     {
         private readonly RecepcionMercanciaService _recepcionService;

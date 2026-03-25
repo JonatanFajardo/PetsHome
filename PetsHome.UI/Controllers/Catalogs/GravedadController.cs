@@ -1,13 +1,17 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 using PetsHome.UI.Models;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
+    [PantallaAuthorize("Listado de gravedades")]
     public class GravedadController : BaseController
     {
         private readonly GravedadService _gravedadService;

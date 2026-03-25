@@ -18,10 +18,12 @@ namespace PetsHome.UI.Controllers
     public class AccountController : BaseController
     {
         private readonly UsuarioService _usuarioService;
+        private readonly RolService _rolService;
 
-        public AccountController(UsuarioService usuarioService)
+        public AccountController(UsuarioService usuarioService, RolService rolService)
         {
             _usuarioService = usuarioService;
+            _rolService = rolService;
         }
 
         #region Login
@@ -89,6 +91,13 @@ namespace PetsHome.UI.Controllers
                 {
                     claims.Add(new Claim(ClaimTypes.Role, usuario.rol_Descripcion ?? "Usuario"));
                     claims.Add(new Claim("RoleId", usuario.rol_Id.Value.ToString()));
+                }
+
+                // Cargar pantallas del rol como claim
+                if (usuario.rol_Id.HasValue)
+                {
+                    var pantallas = await _rolService.GetPantallasStringByRolAsync(usuario.rol_Id.Value);
+                    claims.Add(new Claim("Pantallas", pantallas ?? ""));
                 }
 
                 // Agregar imagen de perfil si existe

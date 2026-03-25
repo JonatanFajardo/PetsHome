@@ -1,13 +1,17 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 using PetsHome.UI.Models;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
+    [Authorize]
+    [PantallaAuthorize("Listado de tipos de parasito")]
     public class TipoParasitoController : BaseController
     {
         private readonly TipoParasitoService _tipoParasitoService;

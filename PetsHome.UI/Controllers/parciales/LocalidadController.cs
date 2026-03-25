@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 using System;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
 {
     [Authorize]
+    [PantallaAuthorize("Listado de localidades")]
     public class LocalidadController : BaseController
     {
         private readonly MunicipioService _municipioService;
