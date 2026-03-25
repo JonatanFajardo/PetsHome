@@ -136,3 +136,16 @@
     </div>
 </div>
 
+@section scripts{
+    <script src="~/js/pages/usuarios.js"></script>
+    <script>
+        Usuarios.init({
+            urlList: "@Url.Action("List", "Usuarios")",
+            urlFind: "@Url.Action("Find", "Usuarios")",
+            urlCreate: "@Url.Action("Create", "Usuarios")",
+            urlDelete: "@Url.Action("Delete", "Usuarios")",
+            urlExist: "@Url.Action("Exist", "Usuarios")",
+            urlRolesDropdown: "@Url.Action("RolesDropdown", "Usuarios")"
+        });
+    </script>
+}
