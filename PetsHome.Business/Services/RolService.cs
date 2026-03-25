@@ -89,5 +89,19 @@ namespace PetsHome.Business.Services
             var result = await _pantallaRepository.NombresByRolAsync(rolId);
             return string.Join(",", result.Select(r => r.pan_Descripcion));
         }
+
+        public async Task<string> GetPermisosJsonByRolAsync(int rolId)
+        {
+            var result = await _pantallaRepository.PermisosByRolAsync(rolId);
+            var permisos = result.Select(r => new
+            {
+                pantalla = r.pan_Descripcion,
+                consultar = r.ropan_Consultar,
+                insertar = r.ropan_Insertar,
+                editar = r.ropan_Editar,
+                eliminar = r.ropan_Eliminar
+            });
+            return System.Text.Json.JsonSerializer.Serialize(permisos);
+        }
     }
 }

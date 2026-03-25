@@ -72,6 +72,37 @@
     @*<link href="~/css/app-rtl.min.css" id="app-rtl" rel="stylesheet" type="text/css" />
         <link href="~/css/app.min.css" id="app-light" rel="stylesheet" type="text/css" />*@
 
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            window._currentPantalla = '@(ViewData["CurrentPantalla"] ?? "")';
+            window.PetsPermisos = @Html.Raw(User.FindFirst("PermisosCRUD")?.Value ?? "[]");
+            window.PetsPermisosHelper = {
+                tiene: function(pantalla, operacion) {
+                    var permisos = window.PetsPermisos || [];
+                    for (var i = 0; i < permisos.length; i++) {
+                        if (permisos[i].pantalla && permisos[i].pantalla.toLowerCase() === pantalla.toLowerCase()) {
+                            return permisos[i][operacion] === true;
+                        }
+                    }
+                    return false;
+                },
+                consultar: function(pantalla) { return this.tiene(pantalla, 'consultar'); },
+                insertar: function(pantalla) { return this.tiene(pantalla, 'insertar'); },
+                editar: function(pantalla) { return this.tiene(pantalla, 'editar'); },
+                eliminar: function(pantalla) { return this.tiene(pantalla, 'eliminar'); },
+                aplicar: function() {
+                    var p = window._currentPantalla;
+                    if (!p) return;
+                    if (!this.insertar(p)) {
+                        document.querySelectorAll('.btn-nueva-mascota, #add-btn-header, #add-btn').forEach(function(el) { el.style.display = 'none'; });
+                    }
+                }
+            };
+            // Aplicar permisos cuando el DOM este listo
+            document.addEventListener('DOMContentLoaded', function() { window.PetsPermisosHelper.aplicar(); });
+        </script>
+    }
 </head>
 
 <body class="sidebar-noneoverflow" data-spy="scroll" data-target="#navSection" data-offset="140">

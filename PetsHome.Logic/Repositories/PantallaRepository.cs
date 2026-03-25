@@ -31,6 +31,14 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.SelectById<PR_Seguridad_Pantallas_NombresByRolResult>(sqlQuery, parameter);
         }
 
+        public async Task<IEnumerable<PR_Seguridad_Pantallas_PermisosByRolResult>> PermisosByRolAsync(int rolId)
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Pantallas_PermisosByRol]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@rol_Id", rolId, DbType.Int32);
+            return await DbApp.SelectById<PR_Seguridad_Pantallas_PermisosByRolResult>(sqlQuery, parameter);
+        }
+
         public async Task<bool> SaveByRolAsync(int rolId, string permisosJson)
         {
             const string sqlQuery = "[Seguridad].[PR_Seguridad_RolesPantallas_Save]";
