@@ -266,6 +266,18 @@ namespace PetsHome.Business.Extensions
             // Mapeos para Usuario (Login/Seguridad)
             CreateMap<PR_Seguridad_Usuarios_LoginResult, UsuarioViewModel>().ReverseMap();
 
+            // Mapeos para Seguridad - CRUD Usuarios
+            CreateMap<PR_Seguridad_Usuarios_ListResult, UsuarioCrudViewModel>().ReverseMap();
+            CreateMap<PR_Seguridad_Usuarios_FindResult, UsuarioCrudViewModel>().ReverseMap();
+
+            // Mapeos para Seguridad - Roles
+            CreateMap<PR_Seguridad_Roles_ListResult, RolViewModel>().ReverseMap();
+            CreateMap<PR_Seguridad_Roles_FindResult, RolViewModel>().ReverseMap();
+            CreateMap<PR_Seguridad_Roles_DropdownResult, RolDropdownViewModel>().ReverseMap();
+
+            // Mapeos para Seguridad - Pantallas
+            CreateMap<PR_Seguridad_Pantallas_ListResult, PantallaItemViewModel>().ReverseMap();
+
             // Mapeos para módulo médico - TiposConsulta
             CreateMap<PR_Medico_TiposConsulta_ListResult, TipoConsultaViewModel>().ReverseMap();
             CreateMap<PR_Medico_TiposConsulta_DetailResult, TipoConsultaViewModel>()

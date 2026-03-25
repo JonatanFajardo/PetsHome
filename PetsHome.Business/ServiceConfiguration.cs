@@ -38,6 +38,8 @@ namespace PetsHome.Business
             services.AddScoped<RecepcionMercanciaRepository>();
             services.AddScoped<RecepcionDetalleRepository>();
             services.AddScoped<UsuarioRepository>();
+            services.AddScoped<RolRepository>();
+            services.AddScoped<PantallaRepository>();
             services.AddScoped<TipoConsultaRepository>();
             services.AddScoped<GravedadRepository>();
             services.AddScoped<TipoMedicamentoRepository>();
@@ -83,6 +85,7 @@ namespace PetsHome.Business
             services.AddScoped<RecepcionMercanciaService>();
             services.AddScoped<RecepcionDetalleService>();
             services.AddScoped<UsuarioService>();
+            services.AddScoped<RolService>();
             services.AddScoped<TipoConsultaService>();
             services.AddScoped<GravedadService>();
             services.AddScoped<TipoMedicamentoService>();

@@ -1,0 +1,197 @@
+@model PetsHome.Business.Models.RolViewModel
+@{
+    ViewData["Title"] = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <style>
+        .pantallas-tree { padding: 0; list-style: none; }
+        .pantallas-tree .grupo-item { margin-bottom: 12px; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+        .pantallas-tree .grupo-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: #f9fafb; cursor: pointer; font-weight: 600; font-size: 14px; color: #1f2937; border-bottom: 1px solid #e5e7eb; }
+        .pantallas-tree .grupo-header:hover { background: #f3f4f6; }
+        .pantallas-tree .grupo-header .badge { font-size: 11px; }
+        .pantallas-tree .grupo-header i.grupo-icon { margin-right: 8px; color: #6366f1; }
+        .pantallas-tree .grupo-header .grupo-actions { display: flex; align-items: center; gap: 8px; }
+        .pantallas-tree .grupo-header .grupo-toggle-all { font-size: 11px; color: #6b7280; cursor: pointer; padding: 2px 8px; border-radius: 4px; border: 1px solid #d1d5db; background: white; }
+        .pantallas-tree .grupo-header .grupo-toggle-all:hover { background: #e0e7ff; color: #4338ca; border-color: #a5b4fc; }
+        .pantallas-tree .grupo-content { padding: 8px 15px; }
+        .pantallas-tree .pantalla-item { padding: 4px 0; }
+        .pantallas-tree .pantalla-item label { font-weight: 400; font-size: 13px; color: #374151; cursor: pointer; margin-left: 6px; }
+        .pantallas-tree .chevron { transition: transform 0.2s; }
+        .pantallas-tree .chevron.collapsed { transform: rotate(-90deg); }
+    </style>
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <div class="pets-header-full">
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-shield-alt mr-2 text-white"></i>Gestion de Roles</h2>
+                    <button class="btn-nueva-mascota" data-toggle="modal" data-target="#edit-modal" id="add-btn-header">
+                        <i class="fas fa-plus mr-2"></i>Nuevo Rol
+                    </button>
+                </div>
+                <div class="pets-controls">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Buscar rol...">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-export-datatable" onclick="$('#datatable').DataTable().ajax.reload()">
+                            <i class="fas fa-sync-alt mr-1"></i>Recargar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" id="datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Descripcion</th>
+                            <th>Pantallas</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Crear/Editar -->
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-shield-alt mr-2"></i>Gestion de Rol</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form-rol">
+                <div class="modal-body">
+                    <input type="hidden" id="item-id" name="rol_Id" value="0" />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="form-label">Descripcion del Rol <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="rol_Descripcion" name="rol_Descripcion" placeholder="Ej: Administrador" required maxlength="100" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Estado</label>
+                                <div class="mt-2">
+                                    <input type="checkbox" id="rol_Estado" name="rol_Estado" value="true" checked />
+                                    <label for="rol_Estado">Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="fas fa-times mr-1"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-1"></i>Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 440px;">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body text-center px-5 pb-4">
+                <div class="mb-3">
+                    <div style="width:70px;height:70px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+                        <i class="fas fa-exclamation-triangle text-danger fa-2x"></i>
+                    </div>
+                </div>
+                <h5 class="mb-2">Eliminar rol</h5>
+                <p class="text-muted mb-3">Esta seguro de eliminar el rol <strong id="delete-item-name"></strong>?</p>
+                <input type="hidden" id="delete-item-id" />
+            </div>
+            <div class="modal-footer border-0 px-5 pb-4" style="gap:12px;">
+                <button type="button" class="btn btn-secondary flex-fill" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger flex-fill" id="btn-confirm-delete">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Asignar Pantallas -->
+<div class="modal fade" id="pantallas-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-shield-alt mr-2"></i>Asignar Pantallas al Rol</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="pantallas-rol-id" />
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-primary mr-1" id="btn-select-all">
+                            <i class="fas fa-check-double mr-1"></i>Seleccionar todas
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-deselect-all">
+                            <i class="fas fa-times mr-1"></i>Deseleccionar todas
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-info mr-1" id="btn-expand-all">
+                            <i class="fas fa-expand-arrows-alt mr-1"></i>Expandir
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info" id="btn-collapse-all">
+                            <i class="fas fa-compress-arrows-alt mr-1"></i>Colapsar
+                        </button>
+                    </div>
+                </div>
+                <div id="pantallas-tree-container" style="max-height:400px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px;padding:12px;">
+                    <!-- Tree se carga dinamicamente -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-1"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-save-pantallas">
+                    <i class="fas fa-save mr-1"></i>Guardar Pantallas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/pages/roles.js"></script>
+    <script>
+        Roles.init({
+            urlList: "@Url.Action("List")",
+            urlFind: "@Url.Action("Find")",
+            urlCreate: "@Url.Action("Create")",
+            urlDelete: "@Url.Action("Delete")",
+            urlExist: "@Url.Action("Exist")",
+            urlPantallasList: "@Url.Action("PantallasList")",
+            urlPantallasByRol: "@Url.Action("PantallasByRol")",
+            urlSavePantallas: "@Url.Action("SavePantallas")"
+        });
+    </script>
+}
