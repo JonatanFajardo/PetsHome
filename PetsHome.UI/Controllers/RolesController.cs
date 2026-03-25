@@ -88,9 +88,9 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SavePantallas(int rolId, string pantallaIds)
+        public async Task<IActionResult> SavePantallas(int rolId, string permisosJson)
         {
-            bool result = await _rolService.SavePantallasAsync(rolId, pantallaIds ?? "");
+            bool result = await _rolService.SavePantallasAsync(rolId, permisosJson ?? "[]");
             if (result)
             {
                 return Json(new { success = true, message = "Pantallas asignadas exitosamente. Los cambios se veran reflejados en el proximo inicio de sesion." });
