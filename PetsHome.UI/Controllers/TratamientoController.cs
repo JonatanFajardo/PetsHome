@@ -1,15 +1,17 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
-using Microsoft.AspNetCore.Authorization;
+using PetsHome.UI.Filters;
 
 namespace PetsHome.UI.Controllers
 {
     [Authorize]
+    [PantallaAuthorize("Listado de tratamientos")]
     public class TratamientoController : BaseController
     {
         private readonly TratamientoService _tratamientoService;

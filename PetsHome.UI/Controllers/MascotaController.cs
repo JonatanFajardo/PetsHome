@@ -7,10 +7,12 @@ using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 
 namespace PetsHome.UI.Controllers
 {
     [Authorize]
+    [PantallaAuthorize("Listado de mascotas")]
     public class MascotaController : BaseController
     {
         private readonly MascotaService _mascotaService;

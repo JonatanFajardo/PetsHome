@@ -13,10 +13,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using PetsHome.UI.Filters;
 
 namespace PetsHome.UI.Controllers
 {
     [Authorize]
+    [PantallaAuthorize("Listado de citas medicas")]
     public class CitaMedicaController : BaseController
     {
         private readonly CitaMedicaService _HistorialMedicoService;

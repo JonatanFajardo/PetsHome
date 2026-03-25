@@ -1,6 +1,7 @@
 using Dapper;
 using PetsHome.Common.Entities;
 using PetsHome.DataAccess.Extensions;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -11,6 +12,64 @@ namespace PetsHome.Logic.Repositories
     /// </summary>
     public class UsuarioRepository
     {
+        #region CRUD
+
+        public async Task<IEnumerable<PR_Seguridad_Usuarios_ListResult>> ListAsync()
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Usuarios_List]";
+            return await DbApp.Select<PR_Seguridad_Usuarios_ListResult>(sqlQuery);
+        }
+
+        public async Task<PR_Seguridad_Usuarios_FindResult> FindAsync(int id)
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Usuarios_Find]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@usu_Id", id, DbType.Int32);
+            return await DbApp.Find<PR_Seguridad_Usuarios_FindResult>(sqlQuery, parameter);
+        }
+
+        public async Task<bool> InsertAsync(string nombre, int empId, int rolId, int conId, bool esActivo)
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Usuarios_Insert]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Usu_Nombre", nombre, DbType.String);
+            parameter.Add("@Emp_Id", empId, DbType.Int32);
+            parameter.Add("@Rol_Id", rolId, DbType.Int32);
+            parameter.Add("@Con_Id", conId, DbType.Int32);
+            parameter.Add("@Usu_EsActivo", esActivo, DbType.Boolean);
+            return await DbApp.Insert(sqlQuery, parameter);
+        }
+
+        public async Task<bool> UpdateAsync(int id, string nombre, int empId, int rolId, bool esActivo)
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Usuarios_Update]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@usu_Id", id, DbType.Int32);
+            parameter.Add("@Usu_Nombre", nombre, DbType.String);
+            parameter.Add("@Emp_Id", empId, DbType.Int32);
+            parameter.Add("@Rol_Id", rolId, DbType.Int32);
+            parameter.Add("@Usu_EsActivo", esActivo, DbType.Boolean);
+            return await DbApp.Update(sqlQuery, parameter);
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Usuarios_Delete]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@usu_Id", id, DbType.Int32);
+            return await DbApp.Delete(sqlQuery, parameter);
+        }
+
+        public async Task<PR_Seguridad_Usuarios_ExistResult> ExistAsync(string nombre)
+        {
+            const string sqlQuery = "[Seguridad].[PR_Seguridad_Usuarios_Exist]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Usu_Nombre", nombre, DbType.String);
+            return await DbApp.Find<PR_Seguridad_Usuarios_ExistResult>(sqlQuery, parameter);
+        }
+
+        #endregion
+
         #region Login y Autenticación
 
         /// <summary>

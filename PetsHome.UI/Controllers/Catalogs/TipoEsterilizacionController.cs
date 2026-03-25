@@ -1,15 +1,17 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
 using PetsHome.UI.Models;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PetsHome.UI.Controllers
 {
     [Authorize]
+    [PantallaAuthorize("Listado de tipos de esterilizacion")]
     public class TipoEsterilizacionController : BaseController
     {
         private readonly TipoEsterilizacionService _tipoEsterilizacionService;

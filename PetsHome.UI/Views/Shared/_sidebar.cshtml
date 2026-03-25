@@ -1,3 +1,15 @@
+@using System.Security.Claims
+@using PetsHome.UI.Filters
+
+@{
+    var pantallas = User.FindFirst("Pantallas")?.Value ?? "";
+    var listaPantallas = pantallas.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                  .Select(p => p.Trim())
+                                  .ToList();
+    Func<string, bool> tiene = (nombre) => listaPantallas
+        .Any(p => p.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+}
+
 <!--  BEGIN SIDEBAR  -->
 <div class="sidebar-wrapper sidebar-theme">
             <ul class="navbar-nav theme-brand flex-row text-center text-white">
@@ -11,21 +23,10 @@
                     <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><i class="fa-solid fa-bars"></i></a>
                 </li>
             </ul>
-            
+
     <nav id="sidebar" class="d-flex flex-column"  >
-        
-        @*  <div class="profile-info">
-            <figure class="user-cover-image"></figure>
-            <div class="user-info">
-            <img src="assets/img/90x90.jpg" alt="avatar">
-            <h6 class="">Sonia Shaw</h6>
-            <p class="">Project Leader</p>
-            </div>
-            </div>
-            <div class="shadow-bottom"></div>*@
 
         <ul class="list-unstyled menu-categories" id="accordionExample" >
-
 
             <li class="menu">
                 <div class="dropdown-toggle">
@@ -36,150 +37,211 @@
                 </div>
             </li>
 
+            @if (tiene("Listado de empleados") || tiene("Listado de voluntarios"))
+            {
+                <li class="menu">
+                    <a href="#Cuenta" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Cuenta</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Cuenta" data-parent="#accordionExample">
+                        @if (tiene("Listado de empleados"))
+                        {
+                            <li>@Html.ActionLink("Empleado", "Index", "Empleado")</li>
+                        }
+                        @if (tiene("Listado de voluntarios"))
+                        {
+                            <li>@Html.ActionLink("Voluntario", "Index", "Voluntario")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Cuenta" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="fa-solid fa-user"></i>
-                        <span>Cuenta</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Cuenta" data-parent="#accordionExample">
-                    <li>
-                        @Html.ActionLink("Empleado", "Index", "Empleado")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Voluntario", "Index", "Voluntario")
-                    </li>
-                </ul>
-            </li>
+            @if (tiene("Listado de recepciones") || tiene("Listado de items"))
+            {
+                <li class="menu">
+                    <a href="#Inventario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-box-archive"></i>
+                            <span>Inventario</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Inventario" data-parent="#accordionExample">
+                        @if (tiene("Listado de recepciones"))
+                        {
+                            <li>@Html.ActionLink("Recepciones", "Index", "RecepcionMercancia")</li>
+                        }
+                        @if (tiene("Listado de items"))
+                        {
+                            <li>@Html.ActionLink("Item", "Index", "Item")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
+            @if (tiene("Listado de cargos") || tiene("Listado de refugios") || tiene("Listado de localidades") || tiene("Listado de categorias") || tiene("Listado de eventos"))
+            {
+                <li class="menu">
+                    <a href="#Administracion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-bars-progress"></i>
+                            <span>Administracion</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Administracion" data-parent="#accordionExample">
+                        @if (tiene("Listado de cargos"))
+                        {
+                            <li>@Html.ActionLink("EmpleadosCargo", "Index", "EmpleadosCargo")</li>
+                        }
+                        @if (tiene("Listado de refugios"))
+                        {
+                            <li>@Html.ActionLink("Refugio", "Index", "Refugio")</li>
+                        }
+                        @if (tiene("Listado de localidades"))
+                        {
+                            <li>@Html.ActionLink("Localidad", "Index", "localidad")</li>
+                        }
+                        @if (tiene("Listado de categorias"))
+                        {
+                            <li>@Html.ActionLink("Categoria", "Index", "Categoria")</li>
+                        }
+                        @if (tiene("Listado de eventos"))
+                        {
+                            <li>@Html.ActionLink("Evento", "Index", "Evento")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Inventario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="fa-solid fa-box-archive"></i>
-                        <span>Inventario</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Inventario" data-parent="#accordionExample">
-                   
-                    <li>
-                        @Html.ActionLink("Recepciones", "Index", "RecepcionMercancia")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Item", "Index", "Item")
-                    </li>
-                </ul>
-            </li>
+            @if (tiene("Listado de mascotas") || tiene("Listado de adopciones") || tiene("Listado de solicitudes"))
+            {
+                <li class="menu">
+                    <a href="#Adopcion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-dog"></i>
+                            <span>Adopcion</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Adopcion" data-parent="#accordionExample">
+                        @if (tiene("Listado de mascotas"))
+                        {
+                            <li>@Html.ActionLink("Mascota", "Index", "Mascota")</li>
+                        }
+                        @if (tiene("Listado de adopciones"))
+                        {
+                            <li>@Html.ActionLink("Adopcion", "Index", "Adopcion")</li>
+                        }
+                        @if (tiene("Listado de solicitudes"))
+                        {
+                            <li>@Html.ActionLink("Solicitud", "Index", "Solicitud")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Administración" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="fa-solid fa-bars-progress"></i>
-                        <span>Administración</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Administración" data-parent="#accordionExample">
-                    <li>
-                        @Html.ActionLink("EmpleadosCargo", "Index", "EmpleadosCargo")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Refugio", "Index", "Refugio")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Localidad", "Index", "localidad")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Categoria", "Index", "Categoria")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Evento", "Index", "Evento")
-                    </li>
-                </ul>
-            </li>
+            @if (tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
+            {
+                <li class="menu">
+                    <a href="#Medicamento" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-suitcase-medical" style="width: 24px;"></i>
+                            <span>Medicamento</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Medicamento" data-parent="#accordionExample">
+                        @if (tiene("Listado de citas medicas"))
+                        {
+                            <li>@Html.ActionLink("Citas Medicas", "Index", "CitaMedica")</li>
+                        }
+                        @if (tiene("Listado de recetas"))
+                        {
+                            <li>@Html.ActionLink("Recetas", "Index", "Receta")</li>
+                        }
+                        @if (tiene("Listado de tratamientos"))
+                        {
+                            <li>@Html.ActionLink("Tratamientos", "Index", "Tratamiento")</li>
+                        }
+                        @if (tiene("Listado de vacunas"))
+                        {
+                            <li>@Html.ActionLink("Vacuna", "Index", "Vacuna")</li>
+                        }
+                        @if (tiene("Listado de procedencias"))
+                        {
+                            <li>@Html.ActionLink("Procedencia", "Index", "Procedencia")</li>
+                        }
+                        @if (tiene("Listado de razas"))
+                        {
+                            <li>@Html.ActionLink("Raza", "Index", "Raza")</li>
+                        }
+                        @if (tiene("Listado de tipos de consulta"))
+                        {
+                            <li>@Html.ActionLink("Tipos de Consulta", "Index", "TipoConsulta")</li>
+                        }
+                        @if (tiene("Listado de gravedades"))
+                        {
+                            <li>@Html.ActionLink("Gravedades", "Index", "Gravedad")</li>
+                        }
+                        @if (tiene("Listado de tipos de medicamento"))
+                        {
+                            <li>@Html.ActionLink("Tipos de Medicamento", "Index", "TipoMedicamento")</li>
+                        }
+                        @if (tiene("Listado de vias de administracion"))
+                        {
+                            <li>@Html.ActionLink("Vias de Administracion", "Index", "ViaAdministracion")</li>
+                        }
+                        @if (tiene("Listado de tipos de parasito"))
+                        {
+                            <li>@Html.ActionLink("Tipos de Parasito", "Index", "TipoParasito")</li>
+                        }
+                        @if (tiene("Listado de tipos de esterilizacion"))
+                        {
+                            <li>@Html.ActionLink("Tipos de Esterilizacion", "Index", "TipoEsterilizacion")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Adopción" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="fa-solid fa-dog"></i>
-                        <span>Adopción</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Adopción" data-parent="#accordionExample">
-                    <li>
-                        @Html.ActionLink("Mascota", "Index", "Mascota")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Adopcion", "Index", "Adopcion")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Solicitud", "Index", "Solicitud")
-                    </li>
-                </ul>
-            </li>
-
-            <li class="menu">
-                <a href="#Medicamento" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i class="fa-solid fa-suitcase-medical" style="width: 24px;"></i>
-                        <span>Medicamento</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Medicamento" data-parent="#accordionExample">
-                    <li>
-                        @Html.ActionLink("Citas Médicas", "Index", "CitaMedica")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Recetas", "Index", "Receta")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tratamientos", "Index", "Tratamiento")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Vacuna", "Index", "Vacuna")
-                    </li> 
-                    <li>
-                        @Html.ActionLink("Procedencia", "Index", "Procedencia")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Raza", "Index", "Raza")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tipos de Consulta", "Index", "TipoConsulta")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Gravedades", "Index", "Gravedad")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tipos de Medicamento", "Index", "TipoMedicamento")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Vías de Administración", "Index", "ViaAdministracion")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tipos de Parásito", "Index", "TipoParasito")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tipos de Esterilización", "Index", "TipoEsterilizacion")
-                    </li>
-                </ul>
-            </li>
+            @if (tiene("Listado de usuarios") || tiene("Listado de roles"))
+            {
+                <li class="menu">
+                    <a href="#Seguridad" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Seguridad</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Seguridad" data-parent="#accordionExample">
+                        @if (tiene("Listado de usuarios"))
+                        {
+                            <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+                        }
+                        @if (tiene("Listado de roles"))
+                        {
+                            <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
         </ul>
         <div class="w-100 sidebar-user-section">
@@ -191,4 +253,3 @@
 
 </div>
 <!--  END SIDEBAR  -->
-
