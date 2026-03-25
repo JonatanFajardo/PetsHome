@@ -17,11 +17,24 @@
         .pantallas-tree .grupo-header .grupo-actions { display: flex; align-items: center; gap: 8px; }
         .pantallas-tree .grupo-header .grupo-toggle-all { font-size: 11px; color: #6b7280; cursor: pointer; padding: 2px 8px; border-radius: 4px; border: 1px solid #d1d5db; background: white; }
         .pantallas-tree .grupo-header .grupo-toggle-all:hover { background: #e0e7ff; color: #4338ca; border-color: #a5b4fc; }
-        .pantallas-tree .grupo-content { padding: 8px 15px; }
-        .pantallas-tree .pantalla-item { padding: 4px 0; }
-        .pantallas-tree .pantalla-item label { font-weight: 400; font-size: 13px; color: #374151; cursor: pointer; margin-left: 6px; }
+        .pantallas-tree .grupo-content { padding: 0; }
         .pantallas-tree .chevron { transition: transform 0.2s; }
         .pantallas-tree .chevron.collapsed { transform: rotate(-90deg); }
+
+        /* CRUD Table */
+        .crud-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .crud-table thead tr { background: #f5f3ff; }
+        .crud-table th { padding: 8px 10px; font-weight: 600; color: #4338ca; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e0e7ff; }
+        .crud-th-pantalla { text-align: left; min-width: 200px; }
+        .crud-th-all { text-align: center; width: 50px; }
+        .crud-th { text-align: center; width: 90px; }
+        .crud-th i { margin-right: 3px; font-size: 11px; }
+        .crud-table tbody tr { border-bottom: 1px solid #f3f4f6; transition: background 0.15s; }
+        .crud-table tbody tr:hover { background: #faf5ff; }
+        .crud-table tbody tr:last-child { border-bottom: none; }
+        .crud-td-pantalla { padding: 8px 10px; font-weight: 500; color: #374151; }
+        .crud-td-check { text-align: center; padding: 8px 4px; }
+        .crud-td-check input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #6366f1; }
     </style>
 }
 
@@ -138,7 +151,7 @@
 
 <!-- Modal Asignar Pantallas -->
 <div class="modal fade" id="pantallas-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title"><i class="fas fa-shield-alt mr-2"></i>Asignar Pantallas al Rol</h5>

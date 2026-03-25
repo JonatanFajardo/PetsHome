@@ -169,12 +169,14 @@ var Roles = (function () {
     function initPantallas() {
         // Select/deselect all
         $('#btn-select-all').on('click', function () {
-            $('.pantalla-check').prop('checked', true);
+            $('.crud-check').prop('checked', true);
+            $('.crud-row-all, .crud-col-all').prop('checked', true);
             updateAllGroupBadges();
         });
 
         $('#btn-deselect-all').on('click', function () {
-            $('.pantalla-check').prop('checked', false);
+            $('.crud-check').prop('checked', false);
+            $('.crud-row-all, .crud-col-all').prop('checked', false);
             updateAllGroupBadges();
         });
 
@@ -189,12 +191,27 @@ var Roles = (function () {
             $('.chevron').addClass('collapsed');
         });
 
-        // Save pantallas
+        // Save pantallas with CRUD permissions
         $('#btn-save-pantallas').on('click', function () {
             var rolId = $('#pantallas-rol-id').val();
-            var selectedIds = [];
-            $('.pantalla-check:checked').each(function () {
-                selectedIds.push($(this).val());
+            var permisos = [];
+
+            $('.crud-row').each(function () {
+                var panId = $(this).data('pan-id');
+                var consultar = $('.crud-check[data-pan-id="' + panId + '"][data-crud="consultar"]').is(':checked');
+                var insertar = $('.crud-check[data-pan-id="' + panId + '"][data-crud="insertar"]').is(':checked');
+                var editar = $('.crud-check[data-pan-id="' + panId + '"][data-crud="editar"]').is(':checked');
+                var eliminar = $('.crud-check[data-pan-id="' + panId + '"][data-crud="eliminar"]').is(':checked');
+
+                if (consultar || insertar || editar || eliminar) {
+                    permisos.push({
+                        pan_Id: panId,
+                        ropan_Consultar: consultar,
+                        ropan_Insertar: insertar,
+                        ropan_Editar: editar,
+                        ropan_Eliminar: eliminar
+                    });
+                }
             });
 
             var $btn = $(this);
@@ -203,7 +220,7 @@ var Roles = (function () {
             $.ajax({
                 url: urls.urlSavePantallas,
                 type: "POST",
-                data: { rolId: rolId, pantallaIds: selectedIds.join(',') },
+                data: { rolId: rolId, permisosJson: JSON.stringify(permisos) },
                 dataType: "json",
                 success: function (response) {
                     $('#pantallas-modal').modal('hide');
@@ -229,24 +246,29 @@ var Roles = (function () {
         var container = $('#pantallas-tree-container');
         container.html('<div class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x" style="color:#6366f1;"></i><p class="mt-2 text-muted">Cargando pantallas...</p></div>');
 
-        // Load all pantallas
         $.ajax({
             url: urls.urlPantallasList,
             type: "GET",
             dataType: "json",
             success: function (allResponse) {
-                // Load assigned pantallas
                 $.ajax({
                     url: urls.urlPantallasByRol + "?id=" + rolId,
                     type: "GET",
                     dataType: "json",
                     success: function (assignedResponse) {
-                        var assignedIds = [];
+                        var permisos = {};
                         if (assignedResponse && assignedResponse.data) {
-                            assignedIds = assignedResponse.data.map(function (x) { return x.pan_Id; });
+                            $.each(assignedResponse.data, function (i, p) {
+                                permisos[p.pan_Id] = {
+                                    consultar: p.ropan_Consultar,
+                                    insertar: p.ropan_Insertar,
+                                    editar: p.ropan_Editar,
+                                    eliminar: p.ropan_Eliminar
+                                };
+                            });
                         }
                         var pantallas = allResponse.data || allResponse;
-                        buildTree(container, pantallas, assignedIds);
+                        buildTree(container, pantallas, permisos);
                     },
                     error: function () {
                         container.html('<p class="text-danger text-center py-3">Error al cargar pantallas asignadas</p>');
@@ -259,13 +281,19 @@ var Roles = (function () {
         });
     }
 
-    function buildTree(container, pantallas, assignedIds) {
+    var crudLabels = [
+        { key: 'consultar', label: 'Consultar', icon: 'fa-eye' },
+        { key: 'insertar', label: 'Insertar', icon: 'fa-plus' },
+        { key: 'editar', label: 'Editar', icon: 'fa-edit' },
+        { key: 'eliminar', label: 'Eliminar', icon: 'fa-trash' }
+    ];
+
+    function buildTree(container, pantallas, permisos) {
         if (!pantallas || pantallas.length === 0) {
             container.html('<p class="text-muted text-center py-3">No hay pantallas disponibles</p>');
             return;
         }
 
-        // Group by pan_Grupo
         var grupos = {};
         $.each(pantallas, function (i, p) {
             var grupo = p.pan_Grupo || 'General';
@@ -289,15 +317,9 @@ var Roles = (function () {
             var grupoId = grupoName.replace(/\s+/g, '_').toLowerCase();
             var icon = grupoIcons[grupoName] || 'fas fa-folder';
 
-            var totalItems = items.length;
-            var checkedItems = 0;
-            $.each(items, function (i, p) {
-                if (assignedIds.indexOf(p.pan_Id) >= 0) checkedItems++;
-            });
-
             html += '<li class="grupo-item">';
             html += '<div class="grupo-header" data-grupo="' + grupoId + '">';
-            html += '<div><i class="' + icon + ' grupo-icon"></i>' + grupoName + ' <span class="badge badge-secondary grupo-badge" data-grupo="' + grupoId + '">' + checkedItems + '/' + totalItems + '</span></div>';
+            html += '<div><i class="' + icon + ' grupo-icon"></i>' + grupoName + ' <span class="badge badge-secondary grupo-badge" data-grupo="' + grupoId + '"></span></div>';
             html += '<div class="grupo-actions">';
             html += '<button type="button" class="grupo-toggle-all" data-grupo="' + grupoId + '">marcar todo</button>';
             html += '<i class="fas fa-chevron-down chevron" data-grupo="' + grupoId + '"></i>';
@@ -305,14 +327,32 @@ var Roles = (function () {
             html += '</div>';
             html += '<div class="grupo-content" data-grupo="' + grupoId + '">';
 
+            html += '<table class="crud-table">';
+            html += '<thead><tr>';
+            html += '<th class="crud-th-pantalla">Pantalla</th>';
+            html += '<th class="crud-th-all"><input type="checkbox" class="crud-col-all" data-grupo="' + grupoId + '" title="Todos"></th>';
+            $.each(crudLabels, function (i, c) {
+                html += '<th class="crud-th"><i class="fas ' + c.icon + '" title="' + c.label + '"></i> ' + c.label + '</th>';
+            });
+            html += '</tr></thead><tbody>';
+
             $.each(items, function (i, p) {
-                var checked = assignedIds.indexOf(p.pan_Id) >= 0 ? 'checked' : '';
-                html += '<div class="pantalla-item">';
-                html += '<input type="checkbox" class="pantalla-check" id="pan_' + p.pan_Id + '" value="' + p.pan_Id + '" data-grupo="' + grupoId + '" ' + checked + '>';
-                html += '<label for="pan_' + p.pan_Id + '">' + p.pan_Descripcion + '</label>';
-                html += '</div>';
+                var perm = permisos[p.pan_Id] || {};
+                var allChecked = perm.consultar && perm.insertar && perm.editar && perm.eliminar;
+
+                html += '<tr class="crud-row" data-pan-id="' + p.pan_Id + '" data-grupo="' + grupoId + '">';
+                html += '<td class="crud-td-pantalla">' + p.pan_Descripcion + '</td>';
+                html += '<td class="crud-td-check"><input type="checkbox" class="crud-row-all" data-pan-id="' + p.pan_Id + '" ' + (allChecked ? 'checked' : '') + ' title="Todos"></td>';
+
+                $.each(crudLabels, function (i, c) {
+                    var checked = perm[c.key] ? 'checked' : '';
+                    html += '<td class="crud-td-check"><input type="checkbox" class="crud-check" data-pan-id="' + p.pan_Id + '" data-crud="' + c.key + '" data-grupo="' + grupoId + '" ' + checked + '></td>';
+                });
+
+                html += '</tr>';
             });
 
+            html += '</tbody></table>';
             html += '</div>';
             html += '</li>';
         });
@@ -320,7 +360,7 @@ var Roles = (function () {
         html += '</ul>';
         container.html(html);
 
-        // Bind tree events
+        updateAllGroupBadges();
         bindTreeEvents();
     }
 
@@ -333,34 +373,81 @@ var Roles = (function () {
             $(this).find('.chevron').toggleClass('collapsed');
         });
 
-        // Toggle all in group
+        // Toggle all in group (all CRUD for all pantallas)
         $('.grupo-toggle-all').off('click').on('click', function (e) {
             e.stopPropagation();
             var grupoId = $(this).data('grupo');
-            var $checks = $('.pantalla-check[data-grupo="' + grupoId + '"]');
+            var $checks = $('.crud-check[data-grupo="' + grupoId + '"]');
             var allChecked = $checks.length === $checks.filter(':checked').length;
             $checks.prop('checked', !allChecked);
+            $('.crud-row[data-grupo="' + grupoId + '"]').each(function () {
+                updateRowAllCheckbox($(this).data('pan-id'));
+            });
+            updateColAllCheckbox(grupoId);
             updateGroupBadge(grupoId);
         });
 
-        // Update badge on checkbox change
-        $('.pantalla-check').off('change').on('change', function () {
-            var grupoId = $(this).data('grupo');
+        // Row "all" checkbox - toggle all CRUD for one pantalla
+        $('.crud-row-all').off('change').on('change', function () {
+            var panId = $(this).data('pan-id');
+            var isChecked = $(this).is(':checked');
+            $('.crud-check[data-pan-id="' + panId + '"]').prop('checked', isChecked);
+            var grupoId = $(this).closest('.crud-row').data('grupo');
+            updateColAllCheckbox(grupoId);
             updateGroupBadge(grupoId);
         });
+
+        // Individual CRUD checkbox change
+        $('.crud-check').off('change').on('change', function () {
+            var panId = $(this).data('pan-id');
+            var grupoId = $(this).data('grupo');
+            updateRowAllCheckbox(panId);
+            updateColAllCheckbox(grupoId);
+            updateGroupBadge(grupoId);
+        });
+
+        // Column "all" checkbox - toggle all CRUD for all pantallas in group
+        $('.crud-col-all').off('change').on('change', function () {
+            var grupoId = $(this).data('grupo');
+            var isChecked = $(this).is(':checked');
+            $('.crud-check[data-grupo="' + grupoId + '"]').prop('checked', isChecked);
+            $('.crud-row[data-grupo="' + grupoId + '"]').each(function () {
+                updateRowAllCheckbox($(this).data('pan-id'));
+            });
+            updateGroupBadge(grupoId);
+        });
+    }
+
+    function updateRowAllCheckbox(panId) {
+        var $checks = $('.crud-check[data-pan-id="' + panId + '"]');
+        var allChecked = $checks.length === $checks.filter(':checked').length;
+        $('.crud-row-all[data-pan-id="' + panId + '"]').prop('checked', allChecked);
+    }
+
+    function updateColAllCheckbox(grupoId) {
+        var $checks = $('.crud-check[data-grupo="' + grupoId + '"]');
+        var allChecked = $checks.length === $checks.filter(':checked').length;
+        $('.crud-col-all[data-grupo="' + grupoId + '"]').prop('checked', allChecked);
     }
 
     function updateGroupBadge(grupoId) {
-        var $checks = $('.pantalla-check[data-grupo="' + grupoId + '"]');
-        var total = $checks.length;
-        var checked = $checks.filter(':checked').length;
-        $('.grupo-badge[data-grupo="' + grupoId + '"]').text(checked + '/' + total);
+        var $rows = $('.crud-row[data-grupo="' + grupoId + '"]');
+        var total = $rows.length;
+        var withPerms = 0;
+        $rows.each(function () {
+            var panId = $(this).data('pan-id');
+            if ($('.crud-check[data-pan-id="' + panId + '"]:checked').length > 0) withPerms++;
+        });
+        $('.grupo-badge[data-grupo="' + grupoId + '"]').text(withPerms + '/' + total);
     }
 
     function updateAllGroupBadges() {
+        var grupos = [];
         $('.grupo-badge').each(function () {
-            updateGroupBadge($(this).data('grupo'));
+            var g = $(this).data('grupo');
+            if (grupos.indexOf(g) < 0) grupos.push(g);
         });
+        $.each(grupos, function (i, g) { updateGroupBadge(g); });
     }
 
     // ==========================================

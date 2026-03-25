@@ -66,15 +66,22 @@ namespace PetsHome.Business.Services
             return _mapper.Map<IEnumerable<PantallaItemViewModel>>(result);
         }
 
-        public async Task<IEnumerable<PantallaIdViewModel>> PantallasByRolAsync(int rolId)
+        public async Task<IEnumerable<PantallaPermisoViewModel>> PantallasByRolAsync(int rolId)
         {
             var result = await _pantallaRepository.ByRolAsync(rolId);
-            return result.Select(r => new PantallaIdViewModel { pan_Id = r.pan_Id });
+            return result.Select(r => new PantallaPermisoViewModel
+            {
+                pan_Id = r.pan_Id,
+                ropan_Consultar = r.ropan_Consultar,
+                ropan_Insertar = r.ropan_Insertar,
+                ropan_Editar = r.ropan_Editar,
+                ropan_Eliminar = r.ropan_Eliminar
+            });
         }
 
-        public async Task<bool> SavePantallasAsync(int rolId, string pantallaIds)
+        public async Task<bool> SavePantallasAsync(int rolId, string permisosJson)
         {
-            return await _pantallaRepository.SaveByRolAsync(rolId, pantallaIds);
+            return await _pantallaRepository.SaveByRolAsync(rolId, permisosJson);
         }
 
         public async Task<string> GetPantallasStringByRolAsync(int rolId)
