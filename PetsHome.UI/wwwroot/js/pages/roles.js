@@ -169,14 +169,14 @@ var Roles = (function () {
     function initPantallas() {
         // Select/deselect all
         $('#btn-select-all').on('click', function () {
-            $('.crud-check').prop('checked', true);
-            $('.crud-row-all, .crud-col-all').prop('checked', true);
+            $('.crud-visible').prop('checked', true);
+            $('.crud-check').prop('checked', true).prop('disabled', false);
             updateAllGroupBadges();
         });
 
         $('#btn-deselect-all').on('click', function () {
-            $('.crud-check').prop('checked', false);
-            $('.crud-row-all, .crud-col-all').prop('checked', false);
+            $('.crud-visible').prop('checked', false);
+            $('.crud-check').prop('checked', false).prop('disabled', true);
             updateAllGroupBadges();
         });
 
@@ -330,7 +330,7 @@ var Roles = (function () {
             html += '<table class="crud-table">';
             html += '<thead><tr>';
             html += '<th class="crud-th-pantalla">Pantalla</th>';
-            html += '<th class="crud-th-all"><input type="checkbox" class="crud-col-all" data-grupo="' + grupoId + '" title="Todos"></th>';
+            html += '<th class="crud-th-visible"><i class="fas fa-eye" title="Visible en menu"></i> Visible</th>';
             $.each(crudLabels, function (i, c) {
                 html += '<th class="crud-th"><i class="fas ' + c.icon + '" title="' + c.label + '"></i> ' + c.label + '</th>';
             });
@@ -338,15 +338,16 @@ var Roles = (function () {
 
             $.each(items, function (i, p) {
                 var perm = permisos[p.pan_Id] || {};
-                var allChecked = perm.consultar && perm.insertar && perm.editar && perm.eliminar;
+                var anyChecked = perm.consultar || perm.insertar || perm.editar || perm.eliminar;
 
                 html += '<tr class="crud-row" data-pan-id="' + p.pan_Id + '" data-grupo="' + grupoId + '">';
                 html += '<td class="crud-td-pantalla">' + p.pan_Descripcion + '</td>';
-                html += '<td class="crud-td-check"><input type="checkbox" class="crud-row-all" data-pan-id="' + p.pan_Id + '" ' + (allChecked ? 'checked' : '') + ' title="Todos"></td>';
+                html += '<td class="crud-td-check"><input type="checkbox" class="crud-visible" data-pan-id="' + p.pan_Id + '" ' + (anyChecked ? 'checked' : '') + ' title="Visible en menu"></td>';
 
                 $.each(crudLabels, function (i, c) {
                     var checked = perm[c.key] ? 'checked' : '';
-                    html += '<td class="crud-td-check"><input type="checkbox" class="crud-check" data-pan-id="' + p.pan_Id + '" data-crud="' + c.key + '" data-grupo="' + grupoId + '" ' + checked + '></td>';
+                    var disabled = !anyChecked ? 'disabled' : '';
+                    html += '<td class="crud-td-check"><input type="checkbox" class="crud-check" data-pan-id="' + p.pan_Id + '" data-crud="' + c.key + '" data-grupo="' + grupoId + '" ' + checked + ' ' + disabled + '></td>';
                 });
 
                 html += '</tr>';
@@ -373,27 +374,35 @@ var Roles = (function () {
             $(this).find('.chevron').toggleClass('collapsed');
         });
 
-        // Toggle all in group (all CRUD for all pantallas)
+        // Toggle all in group (mark all visible + all CRUD)
         $('.grupo-toggle-all').off('click').on('click', function (e) {
             e.stopPropagation();
             var grupoId = $(this).data('grupo');
+            var $visibles = $('.crud-visible').filter(function () { return $(this).closest('.crud-row').data('grupo') === grupoId; });
             var $checks = $('.crud-check[data-grupo="' + grupoId + '"]');
-            var allChecked = $checks.length === $checks.filter(':checked').length;
-            $checks.prop('checked', !allChecked);
-            $('.crud-row[data-grupo="' + grupoId + '"]').each(function () {
-                updateRowAllCheckbox($(this).data('pan-id'));
-            });
-            updateColAllCheckbox(grupoId);
+            var allChecked = $visibles.length === $visibles.filter(':checked').length && $checks.length === $checks.filter(':checked').length;
+            var newState = !allChecked;
+            $visibles.prop('checked', newState);
+            $checks.prop('checked', newState).prop('disabled', !newState);
             updateGroupBadge(grupoId);
         });
 
-        // Row "all" checkbox - toggle all CRUD for one pantalla
-        $('.crud-row-all').off('change').on('change', function () {
+        // Visible checkbox - controls sidebar visibility and enables/disables CRUD
+        $('.crud-visible').off('change').on('change', function () {
             var panId = $(this).data('pan-id');
             var isChecked = $(this).is(':checked');
-            $('.crud-check[data-pan-id="' + panId + '"]').prop('checked', isChecked);
+            var $crudChecks = $('.crud-check[data-pan-id="' + panId + '"]');
+
+            if (isChecked) {
+                // Al marcar visible, habilitar CRUDs y marcar Consultar por defecto
+                $crudChecks.prop('disabled', false);
+                $crudChecks.filter('[data-crud="consultar"]').prop('checked', true);
+            } else {
+                // Al desmarcar visible, desmarcar y deshabilitar todos los CRUD
+                $crudChecks.prop('checked', false).prop('disabled', true);
+            }
+
             var grupoId = $(this).closest('.crud-row').data('grupo');
-            updateColAllCheckbox(grupoId);
             updateGroupBadge(grupoId);
         });
 
@@ -401,33 +410,15 @@ var Roles = (function () {
         $('.crud-check').off('change').on('change', function () {
             var panId = $(this).data('pan-id');
             var grupoId = $(this).data('grupo');
-            updateRowAllCheckbox(panId);
-            updateColAllCheckbox(grupoId);
+            // Si se desmarcaron todos los CRUD, desmarcar visible
+            var $crudChecks = $('.crud-check[data-pan-id="' + panId + '"]');
+            var anyChecked = $crudChecks.filter(':checked').length > 0;
+            $('.crud-visible[data-pan-id="' + panId + '"]').prop('checked', anyChecked);
+            if (!anyChecked) {
+                $crudChecks.prop('disabled', true);
+            }
             updateGroupBadge(grupoId);
         });
-
-        // Column "all" checkbox - toggle all CRUD for all pantallas in group
-        $('.crud-col-all').off('change').on('change', function () {
-            var grupoId = $(this).data('grupo');
-            var isChecked = $(this).is(':checked');
-            $('.crud-check[data-grupo="' + grupoId + '"]').prop('checked', isChecked);
-            $('.crud-row[data-grupo="' + grupoId + '"]').each(function () {
-                updateRowAllCheckbox($(this).data('pan-id'));
-            });
-            updateGroupBadge(grupoId);
-        });
-    }
-
-    function updateRowAllCheckbox(panId) {
-        var $checks = $('.crud-check[data-pan-id="' + panId + '"]');
-        var allChecked = $checks.length === $checks.filter(':checked').length;
-        $('.crud-row-all[data-pan-id="' + panId + '"]').prop('checked', allChecked);
-    }
-
-    function updateColAllCheckbox(grupoId) {
-        var $checks = $('.crud-check[data-grupo="' + grupoId + '"]');
-        var allChecked = $checks.length === $checks.filter(':checked').length;
-        $('.crud-col-all[data-grupo="' + grupoId + '"]').prop('checked', allChecked);
     }
 
     function updateGroupBadge(grupoId) {

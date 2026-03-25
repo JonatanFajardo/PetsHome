@@ -328,6 +328,14 @@ var datatable = (function () {
                 window.location = `${DirectionUrls.urlInsert}`;
             });
 
+            // Ocultar botón Nuevo si no tiene permiso de insertar
+            var p = window._currentPantalla || '';
+            var h = window.PetsPermisosHelper;
+            if (p && h && !h.insertar(p)) {
+                addBtn.hide();
+                $('.btn-nueva-mascota, #add-btn-header').hide();
+            }
+
 
 
         });
@@ -390,14 +398,19 @@ var datatable = (function () {
             render: function (data, type, row) {
                 botones = "";
                 var head = _header[0].FieldName;
+                var p = window._currentPantalla || '';
+                var h = window.PetsPermisosHelper;
                 if (type == "display") {
                     botones += '<div class="action-buttons-wrapper">';
                     // Botón Ver Detalles
-                    botones += '<button class="action-btn btn-view" onclick="viewDetail(' + row[head] + ')" title="Ver detalles"><i class="fas fa-eye"></i></button>';
+                    if (!p || !h || h.consultar(p))
+                        botones += '<button class="action-btn btn-view" onclick="viewDetail(' + row[head] + ')" title="Ver detalles"><i class="fas fa-eye"></i></button>';
                     // Botón Editar
-                    botones += '<button class="action-btn btn-edit edit-btn" data-id="' + row[head] + '" title="Editar"><i class="fas fa-edit"></i></button>';
+                    if (!p || !h || h.editar(p))
+                        botones += '<button class="action-btn btn-edit edit-btn" data-id="' + row[head] + '" title="Editar"><i class="fas fa-edit"></i></button>';
                     // Botón Eliminar
-                    botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
+                    if (!p || !h || h.eliminar(p))
+                        botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
                     botones += '</div>';
                 }
                 return botones;

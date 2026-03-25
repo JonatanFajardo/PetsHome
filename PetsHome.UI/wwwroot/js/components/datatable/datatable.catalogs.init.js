@@ -190,12 +190,27 @@ var datatableCatalogs = (function () {
         this.config();
         this.createDatatable(directions.listUrl, header);
         this.customizeControls();
+
+        // Ocultar botón Nuevo si no tiene permiso de insertar
+        var p = window._currentPantalla || '';
+        var h = window.PetsPermisosHelper;
+        if (p && h && !h.insertar(p)) {
+            $('#add-btn').hide();
+            $('.btn-nueva-mascota, #add-btn-header').hide();
+        }
     };
 
     $('#datatable').on('init.dt', function () {
         $('#add-btn')
             .attr('data-toggle', 'modal')
             .attr('data-target', '#edit-modal');
+
+        // Ocultar botón Nuevo si no tiene permiso
+        var p = window._currentPantalla || '';
+        var h = window.PetsPermisosHelper;
+        if (p && h && !h.insertar(p)) {
+            $('#add-btn').hide();
+        }
     });
 
     /**
@@ -238,14 +253,19 @@ var datatableCatalogs = (function () {
             render: function (data, type, row) {
                 botones = "";
                 var head = _header[0].FieldName;
+                var p = window._currentPantalla || '';
+                var h = window.PetsPermisosHelper;
                 if (type == "display") {
                     botones += '<div class="action-buttons-wrapper">';
                     // Botón Ver Detalles
-                    botones += '<button class="action-btn btn-view" onclick="viewDetailCatalog(' + row[head] + ')" title="Ver detalles"><i class="fas fa-eye"></i></button>';
+                    if (!p || !h || h.consultar(p))
+                        botones += '<button class="action-btn btn-view" onclick="viewDetailCatalog(' + row[head] + ')" title="Ver detalles"><i class="fas fa-eye"></i></button>';
                     // Botón Editar
-                    botones += '<button class="action-btn btn-edit edit-btn" data-id="' + row[head] + '" title="Editar"><i class="fas fa-edit"></i></button>';
+                    if (!p || !h || h.editar(p))
+                        botones += '<button class="action-btn btn-edit edit-btn" data-id="' + row[head] + '" title="Editar"><i class="fas fa-edit"></i></button>';
                     // Botón Eliminar
-                    botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
+                    if (!p || !h || h.eliminar(p))
+                        botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
                     botones += '</div>';
                 }
                 return botones;

@@ -98,6 +98,9 @@ namespace PetsHome.UI.Controllers
                 {
                     var pantallas = await _rolService.GetPantallasStringByRolAsync(usuario.rol_Id.Value);
                     claims.Add(new Claim("Pantallas", pantallas ?? ""));
+
+                    var permisosJson = await _rolService.GetPermisosJsonByRolAsync(usuario.rol_Id.Value);
+                    claims.Add(new Claim("PermisosCRUD", permisosJson ?? "[]"));
                 }
 
                 // Agregar imagen de perfil si existe
