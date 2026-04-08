@@ -94,8 +94,15 @@
                 aplicar: function() {
                     var p = window._currentPantalla;
                     if (!p) return;
-                    if (!this.insertar(p)) {
-                        document.querySelectorAll('.btn-nueva-mascota, #add-btn-header, #add-btn').forEach(function(el) { el.style.display = 'none'; });
+                    var h = this;
+                    if (!h.insertar(p)) {
+                        document.querySelectorAll('.btn-nueva-mascota, #add-btn-header, #add-btn, .btn-insertar').forEach(function(el) { el.style.display = 'none'; });
+                    }
+                    if (!h.editar(p)) {
+                        document.querySelectorAll('.btn-edit, .edit-btn, .btn-editar').forEach(function(el) { el.style.display = 'none'; });
+                    }
+                    if (!h.eliminar(p)) {
+                        document.querySelectorAll('.btn-delete, .delete-btn, .btn-eliminar').forEach(function(el) { el.style.display = 'none'; });
                     }
                 }
             };
