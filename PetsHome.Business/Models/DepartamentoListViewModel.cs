@@ -42,5 +42,11 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Área (km²)")]
         public decimal? depto_AreaKm2 { get; set; }
+
+        /// <summary>
+        /// Cantidad de municipios asociados al departamento.
+        /// </summary>
+        [Display(Name = "Municipios")]
+        public int municipiosCount { get; set; }
     }
 }

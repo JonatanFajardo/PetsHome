@@ -60,6 +60,13 @@ namespace PetsHome.UI.Controllers
         public async Task<IActionResult> List()
         {
             var itemListing = await _departamentoService.ListAsync();
+
+            var countTasks = itemListing.Select(async d => {
+                var municipios = await _municipioService.ListIdAsync(d.depto_Id);
+                d.municipiosCount = municipios.Count;
+            });
+            await Task.WhenAll(countTasks);
+
             return Json(new { data = itemListing });
         }
 
