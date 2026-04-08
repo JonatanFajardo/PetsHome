@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /.claude/settings.local.json
 /CLAUDE.md
 /AGENTS.md
+.claude/
