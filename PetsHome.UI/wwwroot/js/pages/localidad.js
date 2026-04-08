@@ -38,7 +38,7 @@ var Localidad = (function () {
                 {
                     FieldName: 'municipiosCount',
                     Render: function (data, type, row) {
-                        return '<span class="badge badge-info">0</span>';
+                        return '<span class="badge badge-info">' + (data || 0) + '</span>';
                     }
                 }
             ];
@@ -114,7 +114,7 @@ var Localidad = (function () {
         const area = dept.depto_AreaKm2 ? parseFloat(dept.depto_AreaKm2).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' km²' : 'N/A';
         clone.querySelector('[data-field="area"]').textContent = 'Área: ' + area;
 
-        const municipiosCount = 0;
+        const municipiosCount = dept.municipiosCount || 0;
         clone.querySelector('[data-field="municipalities"]').textContent = 'Municipios: ' + municipiosCount;
 
         const card = clone.querySelector('.department-card');
