@@ -76,6 +76,10 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(TipoEsterilizacionViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de tipos de esterilizacion", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoEsterilizacionService.AddAsync(model);
@@ -106,6 +110,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de tipos de esterilizacion", "eliminar")]
         public async Task<IActionResult> Remove(int tipoEst_Id)
         {
             Boolean deletedItem = await _tipoEsterilizacionService.RemoveAsync(tipoEst_Id);

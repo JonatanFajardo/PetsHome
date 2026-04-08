@@ -76,6 +76,10 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(TipoMedicamentoViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de tipos de medicamento", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoMedicamentoService.AddAsync(model);
@@ -106,6 +110,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de tipos de medicamento", "eliminar")]
         public async Task<IActionResult> Remove(int tipoMed_Id)
         {
             Boolean deletedItem = await _tipoMedicamentoService.RemoveAsync(tipoMed_Id);

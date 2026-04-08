@@ -142,6 +142,10 @@ namespace PetsHome.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(RecepcionMercanciaFormViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de recepciones", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _recepcionService.AddAsync(model);
@@ -175,6 +179,10 @@ namespace PetsHome.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDetalle(RecepcionMercanciaFormViewModel model)
         {
+            var operacion = model.Detalle.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de recepciones", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.Detalle.isEdit)
             {
                 Boolean createdItem = await _detalleService.AddAsync(model.Detalle);
@@ -244,6 +252,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="id">ID de la recepción.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
         [HttpPost]
+        [PantallaAuthorize("Listado de recepciones", "eliminar")]
         public async Task<IActionResult> Remove(int id)
         {
             Boolean deletedItem = await _recepcionService.RemoveAsync(id);
@@ -265,6 +274,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="recep_Id">ID de la recepción padre.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
         [HttpPost]
+        [PantallaAuthorize("Listado de recepciones", "eliminar")]
         public async Task<IActionResult> RemoveDetalle(int recdet_Id, int recep_Id)
         {
             Boolean deletedItem = await _detalleService.RemoveAsync(recdet_Id);

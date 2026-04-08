@@ -25,6 +25,7 @@ namespace PetsHome.UI.Controllers
             return View(new VoluntarioListViewModel());
         }
 
+        [PantallaAuthorize("Listado de voluntarios", "insertar")]
         public IActionResult Create()
         {
             return View(new VoluntarioFormViewModel());
@@ -44,6 +45,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de voluntarios", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _VoluntarioService.FindAsync(id);
@@ -86,6 +88,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de voluntarios", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -111,6 +117,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de voluntarios", "eliminar")]
         public async Task<IActionResult> Remove(int vol_Id)
         {
             Boolean deletedItem = await _VoluntarioService.RemoveAsync(vol_Id);

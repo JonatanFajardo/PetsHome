@@ -32,6 +32,7 @@ namespace PetsHome.UI.Controllers
             return View(new RefugioFormViewModel());
         }
 
+        [PantallaAuthorize("Listado de refugios", "insertar")]
         public IActionResult Create()
         {
             var model = new RefugioFormViewModel();
@@ -53,6 +54,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de refugios", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _RefugioService.FindAsync(id);
@@ -95,6 +97,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de refugios", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -120,6 +126,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de refugios", "eliminar")]
         public async Task<IActionResult> Remove(int refg_Id)
         {
             Boolean deletedItem = await _RefugioService.RemoveAsync(refg_Id);

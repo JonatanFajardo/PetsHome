@@ -84,6 +84,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de razas", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -98,6 +102,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de razas", "eliminar")]
         public async Task<IActionResult> Remove(int raza_Id)
         {
             Boolean deletedItem = await _razaService.RemoveAsync(raza_Id);

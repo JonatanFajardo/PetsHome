@@ -26,6 +26,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de eventos", "insertar")]
         public IActionResult Create()
         {
             var model = new EventoViewModel();
@@ -47,6 +48,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de eventos", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _EventoService.FindAsync(id);
@@ -90,6 +92,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de eventos", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -115,6 +121,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de eventos", "eliminar")]
         public async Task<IActionResult> Remove(int eve_Id)
         {
             Boolean deletedItem = await _EventoService.RemoveAsync(eve_Id);

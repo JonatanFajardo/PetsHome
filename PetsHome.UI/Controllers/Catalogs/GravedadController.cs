@@ -76,6 +76,10 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(GravedadViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de gravedades", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _gravedadService.AddAsync(model);
@@ -106,6 +110,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de gravedades", "eliminar")]
         public async Task<IActionResult> Remove(int grav_Id)
         {
             Boolean deletedItem = await _gravedadService.RemoveAsync(grav_Id);

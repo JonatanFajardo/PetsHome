@@ -84,6 +84,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de categorias", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -98,6 +102,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de categorias", "eliminar")]
         public async Task<IActionResult> Remove(int cat_Id)
         {
             Boolean deletedItem = await _CategoriaService.RemoveAsync(cat_Id);

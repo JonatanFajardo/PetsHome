@@ -6,6 +6,7 @@ using PetsHome.Business.Models;
 using PetsHome.Business.Services;
 using PetsHome.UI.Filters;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -78,6 +79,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de localidades", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -109,6 +114,10 @@ namespace PetsHome.UI.Controllers
                 ShowAlert("Sesión expirada. Por favor, inicie sesión nuevamente.", AlertMessageType.Error);
                 return RedirectToAction("Login", "Account");
             }
+
+            var operacion = model.Municipio.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de localidades", operacion))
+                return RedirectToAction("AccessDenied", "Account");
 
             int userId = CurrentUserId.Value;
 

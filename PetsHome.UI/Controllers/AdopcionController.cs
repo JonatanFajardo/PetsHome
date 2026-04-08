@@ -24,6 +24,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de adopciones", "insertar")]
         public IActionResult Create()
         {
             return View();
@@ -111,6 +112,9 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(AdopcionViewModel model, int userId)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de adopciones", operacion))
+                return RedirectToAction("AccessDenied", "Account");
 
             if (!model.isEdit)
             {
@@ -142,6 +146,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de adopciones", "eliminar")]
         public async Task<IActionResult> Remove(int adop_Id)
         {
             Boolean deletedItem = await _AdopcionService.RemoveAsync(adop_Id);
@@ -159,6 +164,7 @@ namespace PetsHome.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PantallaAuthorize("Listado de adopciones", "insertar")]
         public async Task<IActionResult> ElegirAdoptante(int sol_Id, int masc_Id)
         {
             if (!CurrentUserId.HasValue)

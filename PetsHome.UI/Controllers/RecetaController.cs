@@ -35,6 +35,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de recetas", "insertar")]
         public async Task<IActionResult> Create()
         {
             var model = new RecetaFormViewModel();
@@ -56,6 +57,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de recetas", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _recetaService.FindAsync(id);
@@ -98,6 +100,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de recetas", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _recetaService.AddAsync(model);
@@ -121,6 +127,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de recetas", "editar")]
         public async Task<IActionResult> Update(RecetaFormViewModel model)
         {
             Boolean updatedItem = await _recetaService.UpdateAsync(model);
@@ -137,6 +144,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de recetas", "eliminar")]
         public async Task<IActionResult> Remove(int receta_Id)
         {
             Boolean deletedItem = await _recetaService.RemoveAsync(receta_Id);

@@ -41,6 +41,10 @@ namespace PetsHome.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(UsuarioCrudViewModel model)
         {
+            var operacion = model.usu_Id == 0 ? "insertar" : "editar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de usuarios", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (model.usu_Id == 0)
             {
                 bool result = await _usuarioService.CreateAsync(model);
@@ -54,6 +58,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [PantallaAuthorize("Listado de usuarios", "eliminar")]
         public async Task<IActionResult> Delete(int usu_Id)
         {
             bool result = await _usuarioService.DeleteAsync(usu_Id);

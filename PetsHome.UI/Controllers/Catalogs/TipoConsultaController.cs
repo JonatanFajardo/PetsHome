@@ -79,6 +79,10 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(TipoConsultaViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de tipos de consulta", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoConsultaService.AddAsync(model);
@@ -109,6 +113,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de tipos de consulta", "eliminar")]
         public async Task<IActionResult> Remove(int tipoCon_Id)
         {
             Boolean deletedItem = await _tipoConsultaService.RemoveAsync(tipoCon_Id);

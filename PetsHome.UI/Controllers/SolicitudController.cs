@@ -27,6 +27,7 @@ namespace PetsHome.UI.Controllers
             return View(new SolicitudFormViewModel());
         }
 
+        [PantallaAuthorize("Listado de solicitudes", "insertar")]
         public async Task<IActionResult> Create(int? masc_Id)
         {
             // Si viene una mascota seleccionada, precargar datos de la mascota
@@ -69,6 +70,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de solicitudes", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _SolicitudService.FindAsync(id);
@@ -110,6 +112,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de solicitudes", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -135,6 +141,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de solicitudes", "eliminar")]
         public async Task<IActionResult> Remove(int sol_Id)
         {
             Boolean deletedItem = await _SolicitudService.RemoveAsync(sol_Id);

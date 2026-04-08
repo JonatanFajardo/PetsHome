@@ -39,6 +39,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de tratamientos", "insertar")]
         public IActionResult Create()
         {
             var model = new TratamientoFormViewModel();
@@ -52,6 +53,7 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
+        [PantallaAuthorize("Listado de tratamientos", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             if (id != 0)
@@ -94,6 +96,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de tratamientos", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 bool createdItem = await _tratamientoService.AddAsync(model);
@@ -118,6 +124,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de tratamientos", "eliminar")]
         public async Task<IActionResult> Remove(int trat_Id)
         {
             bool deletedItem = await _tratamientoService.RemoveAsync(trat_Id);

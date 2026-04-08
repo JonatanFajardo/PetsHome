@@ -76,6 +76,10 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(ViaAdministracionViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de vias de administracion", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _viaAdministracionService.AddAsync(model);
@@ -106,6 +110,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de vias de administracion", "eliminar")]
         public async Task<IActionResult> Remove(int viaAdmin_Id)
         {
             Boolean deletedItem = await _viaAdministracionService.RemoveAsync(viaAdmin_Id);

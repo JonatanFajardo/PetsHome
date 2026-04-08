@@ -42,6 +42,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de citas medicas", "insertar")]
         public async Task<IActionResult> Create()
         {
             var model = new CitaMedicaFormViewModel();
@@ -64,6 +65,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de citas medicas", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _HistorialMedicoService.FindAsync(id);
@@ -101,6 +103,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de citas medicas", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _HistorialMedicoService.AddAsync(model);
@@ -124,6 +130,7 @@ namespace PetsHome.UI.Controllers
                 return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de citas medicas", "eliminar")]
         public async Task<IActionResult> Remove(int cita_Id)
         {
             Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(cita_Id);

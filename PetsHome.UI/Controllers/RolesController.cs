@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace PetsHome.UI.Controllers
 {
     [Authorize]
-    //[PantallaAuthorize("Listado de roles")]
+    [PantallaAuthorize("Listado de roles")]
     public class RolesController : BaseController
     {
         private readonly RolService _rolService;
@@ -40,6 +40,10 @@ namespace PetsHome.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RolViewModel model)
         {
+            var operacion = model.rol_Id == 0 ? "insertar" : "editar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de roles", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId ?? 0;
 
             if (model.rol_Id == 0)
@@ -55,6 +59,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [PantallaAuthorize("Listado de roles", "eliminar")]
         public async Task<IActionResult> Delete(int rol_Id)
         {
             bool result = await _rolService.DeleteAsync(rol_Id);
@@ -88,6 +93,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [PantallaAuthorize("Listado de roles", "editar")]
         public async Task<IActionResult> SavePantallas(int rolId, string permisosJson)
         {
             bool result = await _rolService.SavePantallasAsync(rolId, permisosJson ?? "[]");

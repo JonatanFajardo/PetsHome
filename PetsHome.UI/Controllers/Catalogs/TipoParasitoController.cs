@@ -76,6 +76,10 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> Add(TipoParasitoViewModel model)
         {
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de tipos de parasito", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!model.isEdit)
             {
                 Boolean createdItem = await _tipoParasitoService.AddAsync(model);
@@ -106,6 +110,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de tipos de parasito", "eliminar")]
         public async Task<IActionResult> Remove(int tipoPar_Id)
         {
             Boolean deletedItem = await _tipoParasitoService.RemoveAsync(tipoPar_Id);

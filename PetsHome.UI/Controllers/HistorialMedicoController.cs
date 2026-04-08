@@ -24,6 +24,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de mascotas", "insertar")]
         public IActionResult Create()
         {
             return View();
@@ -84,6 +85,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de mascotas", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -109,6 +114,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de mascotas", "eliminar")]
         public async Task<IActionResult> Remove(int cita_Id)
         {
             Boolean deletedItem = await _HistorialMedicoService.RemoveAsync(cita_Id);

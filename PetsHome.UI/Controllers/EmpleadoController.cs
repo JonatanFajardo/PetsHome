@@ -28,6 +28,7 @@ namespace PetsHome.UI.Controllers
             return View();
         }
 
+        [PantallaAuthorize("Listado de empleados", "insertar")]
         public async Task<IActionResult> Create()
         {
             var model = new EmpleadoFormViewModel();
@@ -49,6 +50,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de empleados", "editar")]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _EmpleadoService.FindAsync(id);
@@ -92,6 +94,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de empleados", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -117,6 +123,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [PantallaAuthorize("Listado de empleados", "eliminar")]
         public async Task<IActionResult> Remove(int Empleado_Id)
         {
             Boolean deletedItem = await _EmpleadoService.RemoveAsync(Empleado_Id);

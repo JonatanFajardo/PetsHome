@@ -85,6 +85,10 @@ namespace PetsHome.UI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var operacion = model.isEdit ? "editar" : "insertar";
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "Listado de vacunas", operacion))
+                return RedirectToAction("AccessDenied", "Account");
+
             int userId = CurrentUserId.Value;
 
             if (!model.isEdit)
@@ -117,6 +121,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [PantallaAuthorize("Listado de vacunas", "eliminar")]
         public async Task<IActionResult> Remove(int vac_Id)
         {
             Boolean deletedItem = await _vacunaService.RemoveAsync(vac_Id);
