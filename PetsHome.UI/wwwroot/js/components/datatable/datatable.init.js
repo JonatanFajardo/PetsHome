@@ -174,8 +174,8 @@ var datatable = (function () {
                     lengthMenu: " _MENU_ ",
                     zeroRecords: "No se encontraron resultados",
                     emptyTable: "Ningún dato disponible en esta tabla",
-                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    info: "Mostrando _START_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 al 0 de un total de 0 registros",
                     infoFiltered: "(filtrado de un total de _MAX_ registros)",
                     infoPostFix: "",
                     search: "",
@@ -386,8 +386,8 @@ var datatable = (function () {
                 head[i]['width'] = _header[i].Size
             }
             // Entra si se desea personalizar el render de la columna
-            if (_header[i].Render != undefined) {
-                head[i]['render'] = _header[i].Render
+            if (_header[i].render != undefined) {
+                head[i]['render'] = _header[i].render
             }
         }
 
