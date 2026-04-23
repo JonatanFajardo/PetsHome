@@ -6,39 +6,58 @@ var Voluntario = (function () {
         $(function () {
             var header = new Array();
 
-            // Definir headers con configuración personalizada
             header = [
+                { FieldName: 'vol_Id', Size: 60, Visibility: false },
+
                 {
-                    FieldName: 'vol_Id',
-                    Size: 60,
-                    Visibility: false,
-                    Render: function(data, type, row) {
-                        return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
+                    FieldName: 'vol_Nombres',
+                    Visibility: true,
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            var nombre = data.toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+                            return '<span style="font-weight:500;color:#111827;">' + nombre + '</span>';
+                        }
+                        return data;
                     }
                 },
+
+                {
+                    FieldName: 'per_Identidad',
+                    Size: 150,
+                    Visibility: true,
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            var limpio = String(data).replace(/\D/g, '');
+                            var formateado = limpio.length === 13
+                                ? limpio.slice(0, 4) + '-' + limpio.slice(4, 8) + '-' + limpio.slice(8)
+                                : data;
+                            return '<span style="font-family:monospace;font-size:13px;letter-spacing:0.5px;color:#374151;">' + formateado + '</span>';
+                        }
+                        return data;
+                    }
+                },
+
                 {
                     FieldName: 'vol_HorasTrabajadas',
                     Size: 100,
                     Visibility: true,
-                    Render: function(data, type, row) {
-                        return '<span style="font-weight: 500;">' + data + ' hrs</span>';
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (data === null || data === undefined || data === '') {
+                                return '<span style="color:#9ca3af;">—</span>';
+                            }
+                            var num = parseFloat(data);
+                            var color = num >= 100 ? '#15803d' : num >= 50 ? '#1d4ed8' : '#374151';
+                            return '<span style="font-weight:600;color:' + color + ';">' + num + '</span>'
+                                 + '<span style="color:#9ca3af;font-size:12px;"> hrs</span>';
+                        }
+                        return data;
                     }
-                },
-                {
-                    FieldName: 'vol_Nombres',
-                    Visibility: true,
-                    Render: function(data, type, row) {
-                        return '<div class="pet-name">' + data + '</div>';
-                    }
-                },
-                {
-                    FieldName: 'per_Identidad',
-                    Size: 150,
-                    Visibility: true
                 }
             ];
 
-            // Inicializar datatable
             datatable.init(Direction, header);
         });
     }

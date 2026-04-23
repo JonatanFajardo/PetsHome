@@ -1,19 +1,48 @@
 var EmpleadosCargo = (function () {
-
     var obj = {};
-
     obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
-
             header = [
-                { FieldName: 'cag_Id', Size: 60, Visibility: false},
-                { FieldName: 'cag_Descripcion' },
-                { FieldName: 'cag_Salario', Size: 100 },
-                { FieldName: 'esActivo', Size: 100 }
+                { FieldName: 'cag_Id', Size: 60, Visibility: false },
+                {
+                    FieldName: 'cag_Descripcion',
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            return `<div style="display:flex;align-items:center;gap:10px;">
+                                        <div style="background:#ede9fe;border-radius:8px;padding:7px 9px;">
+                                            <i class="fas fa-briefcase" style="color:#7c3aed;font-size:13px;"></i>
+                                        </div>
+                                        <span>${data ?? ''}</span>
+                                    </div>`;
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'cag_Salario',
+                    Size: 100,
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            return `$${Number(data).toLocaleString('en-US')}`;
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'esActivo',
+                    Size: 100,
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            var activo = data === true || data === 1 || data === "Activo";
+                            return activo
+                                ? `<span class="status-badge status-activo">Activo</span>`
+                                : `<span class="status-badge status-inactivo">Inactivo</span>`;
+                        }
+                        return data;
+                    }
+                }
             ];
-
-            // Usar datatableCatalogs para catálogos simples
             datatableCatalogs.init(Direction, header);
         });
     }
@@ -57,7 +86,5 @@ var EmpleadosCargo = (function () {
             });
         });
     };
-
     return obj;
-
 }());

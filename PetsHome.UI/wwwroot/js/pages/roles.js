@@ -49,26 +49,45 @@ var Roles = (function () {
                 },
                 {
                     data: "rol_Descripcion",
-                    render: function (data) {
-                        return '<div class="pet-name"><i class="fas fa-shield-alt mr-2" style="color:#6366f1;"></i>' + data + '</div>';
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            var label = data.toString().toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+                            return '<span style="display:inline-flex;align-items:center;gap:8px;">'
+                                 +   '<span style="display:inline-flex;align-items:center;justify-content:center;'
+                                 +         'width:28px;height:28px;border-radius:6px;background:#ede9fe;">'
+                                 +     '<i class="fas fa-shield-alt" style="color:#7c3aed;font-size:13px;"></i>'
+                                 +   '</span>'
+                                 +   '<span style="font-weight:500;color:#111827;">' + label + '</span>'
+                                 + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {
                     data: "cantidadPantallas",
                     width: 120,
                     className: "text-center",
-                    render: function (data) {
-                        return '<span class="badge" style="background:#e0e7ff;color:#4338ca;padding:4px 12px;border-radius:12px;font-size:13px;">' + (data || 0) + ' pantallas</span>';
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            var n = data || 0;
+                            return '<span style="display:inline-block;padding:2px 10px;border-radius:9999px;'
+                                 + 'font-size:12px;font-weight:600;background:#ede9fe;color:#7c3aed;">'
+                                 + n + (n === 1 ? ' pantalla' : ' pantallas') + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {
                     data: "rol_Estado",
                     width: 100,
-                    render: function (data) {
-                        var activo = data === true || data === "True" || data === "true";
-                        var badge = activo ? 'status-disponible' : 'status-adoptado';
-                        var text = activo ? 'Activo' : 'Inactivo';
-                        return '<span class="status-badge ' + badge + '">' + text + '</span>';
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            var isActive = data === true || data === 1 || data === "Activo" || data === "True" || data === "true";
+                            return '<span class="status-badge ' + (isActive ? 'status-activo' : 'status-inactivo') + '">'
+                                 + (isActive ? 'Activo' : 'Inactivo') + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {

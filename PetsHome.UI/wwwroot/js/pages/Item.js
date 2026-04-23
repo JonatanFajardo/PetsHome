@@ -6,17 +6,66 @@ var Item = (function () {
     obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
-            //Nombre | Tama�o/AutoWidth | Visibilidad
             header = [
                 { FieldName: 'itm_Id', Size: 60, Visibility: false },
-                { FieldName: 'itm_Codigo', Size: 100, Visibility: true },
-                { FieldName: 'itm_Descripcion', Visibility: true },
-                { FieldName: 'cat_Descripcion', Size: 140, Visibility: true },
-                { FieldName: 'itm_Precio', Size: 100, Visibility: true }
+                {
+                    FieldName: 'itm_Codigo',
+                    Size: 100,
+                    Visibility: true,
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="font-family:monospace;font-weight:600;letter-spacing:0.5px;">' + data + '</span>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'itm_Descripcion',
+                    Visibility: true,
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<div style="display:flex;align-items:center;gap:8px;">'
+                                + '<span style="background:#ede9fe;border-radius:6px;padding:4px 7px;">'
+                                + '<i class="fas fa-box" style="color:#7c3aed;font-size:13px;"></i></span>'
+                                + '<span style="font-weight:500;color:#111827;">' + data + '</span>'
+                                + '</div>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'cat_Descripcion',
+                    Size: 140,
+                    Visibility: true,
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="color:#374151;">' + data + '</span>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'itm_Precio',
+                    Size: 100,
+                    Visibility: true,
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (data === null || data === undefined || data === '') return '<span style="color:#9ca3af;">—</span>';
+                            var val = parseFloat(data);
+                            if (isNaN(val)) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="font-weight:500;color:#111827;">$' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</span>';
+                        }
+                        return data;
+                    }
+                }
             ];
             datatable.init(Direction, header);
         })
     }
+
     obj.initValidation = function (validarUrl) {
         if (!$.validator.methods.noSpaceAtStart) {
             $.validator.addMethod("noSpaceAtStart", function (value) {

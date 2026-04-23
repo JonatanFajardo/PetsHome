@@ -49,25 +49,44 @@ var Usuarios = (function () {
                 },
                 {
                     data: "usu_Nombre",
-                    render: function (data) {
-                        return '<div class="pet-name"><i class="fas fa-user-circle mr-2" style="color:#6366f1;"></i>' + data + '</div>';
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            var label = data.toString().toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+                            return '<span style="display:inline-flex;align-items:center;gap:8px;">'
+                                 +   '<span style="display:inline-flex;align-items:center;justify-content:center;'
+                                 +         'width:28px;height:28px;border-radius:6px;background:#ede9fe;">'
+                                 +     '<i class="fas fa-user" style="color:#7c3aed;font-size:13px;"></i>'
+                                 +   '</span>'
+                                 +   '<span style="font-weight:500;color:#111827;">' + label + '</span>'
+                                 + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {
                     data: "rol_Descripcion",
                     width: 160,
-                    render: function (data) {
-                        return '<span class="badge" style="background:#e0e7ff;color:#4338ca;padding:4px 12px;border-radius:12px;font-size:13px;">' + (data || 'Sin rol') + '</span>';
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="display:inline-block;padding:2px 10px;border-radius:9999px;'
+                                 + 'font-size:12px;font-weight:600;background:#ede9fe;color:#7c3aed;">'
+                                 + data + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {
                     data: "usu_EsActivo",
                     width: 100,
-                    render: function (data) {
-                        var activo = data === true || data === "True" || data === "true";
-                        var badge = activo ? 'status-disponible' : 'status-adoptado';
-                        var text = activo ? 'Activo' : 'Inactivo';
-                        return '<span class="status-badge ' + badge + '">' + text + '</span>';
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            var isActive = data === true || data === 1 || data === "True" || data === "true";
+                            return '<span class="status-badge ' + (isActive ? 'status-activo' : 'status-inactivo') + '">'
+                                 + (isActive ? 'Activo' : 'Inactivo') + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {

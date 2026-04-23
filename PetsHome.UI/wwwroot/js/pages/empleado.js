@@ -5,63 +5,81 @@ var Empleado = (function () {
     obj.datatable = function (Direction) {
         $(function () {
             var header = new Array();
-
-            // Definir headers con configuración personalizada
             header = [
-                {
-                    FieldName: 'emp_Id',
-                    Size: 60,
-                    Visibility: false,
-                    Render: function(data, type, row) {
-                        return '<span style="color: #6B7280; font-weight: 600;">#' + String(data).padStart(3, '0') + '</span>';
-                    }
-                },
+                { FieldName: 'emp_Id', Size: 60, Visibility: false },
                 {
                     FieldName: 'emp_Codigo',
                     Size: 100,
                     Visibility: true,
-                    Render: function(data, type, row) {
-                        return '<span style="font-weight: 500;">' + data + '</span>';
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="font-family:monospace;font-weight:600;letter-spacing:0.5px;">' + data + '</span>';
+                        }
+                        return data;
                     }
                 },
                 {
                     FieldName: 'emp_Nombres',
                     Visibility: true,
-                    Render: function(data, type, row) {
-                        return '<div class="pet-name">' + data + '</div>';
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            var nombre = data.toLowerCase().replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+                            return '<div style="display:flex;align-items:center;gap:8px;">'
+                                + '<span style="background:#ede9fe;border-radius:6px;padding:4px 7px;">'
+                                + '<i class="fas fa-user" style="color:#7c3aed;font-size:13px;"></i></span>'
+                                + '<span style="font-weight:500;color:#111827;">' + nombre + '</span>'
+                                + '</div>';
+                        }
+                        return data;
                     }
                 },
                 {
                     FieldName: 'cag_Descripcion',
                     Size: 140,
-                    Visibility: true
+                    Visibility: true,
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="color:#374151;">' + data + '</span>';
+                        }
+                        return data;
+                    }
                 },
                 {
                     FieldName: 'refg_Nombre',
                     Size: 150,
-                    Visibility: true
+                    Visibility: true,
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            if (!data) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="color:#374151;">' + data + '</span>';
+                        }
+                        return data;
+                    }
                 },
                 {
                     FieldName: 'esActivo',
                     Size: 140,
                     Visibility: true,
-                    Render: function(data, type, row) {
-                        var estado = (data && data.toLowerCase() === 'activo') ? 'Activo' : 'Inactivo';
-                        var badgeClass = estado === 'Activo' ? 'status-disponible' : 'status-adoptado';
-                        return '<span class="status-badge ' + badgeClass + '">' + estado + '</span>';
+                    Render: function (data, type, row) {
+                        if (type === 'display') {
+                            var activo = data === true || data === 1 || (typeof data === 'string' && data.toLowerCase() === 'activo') || data === 'true';
+                            var label = activo ? 'Activo' : 'Inactivo';
+                            var cls = activo ? 'status-activo' : 'status-inactivo';
+                            return '<span class="status-badge ' + cls + '">' + label + '</span>';
+                        }
+                        return data;
                     }
                 }
             ];
-
-            // Inicializar datatable
             datatable.init(Direction, header);
         });
     }
 
     obj.initValidation = function (validarUrl) {
         $(function () {
-            // Agregar solo la validación remota de identidad duplicada
-            // El resto de validaciones las manejan las Data Annotations + jQuery Unobtrusive
             var $identidad = $("#per_per_Identidad");
             if ($identidad.length) {
                 $identidad.rules("add", {
@@ -85,7 +103,6 @@ var Empleado = (function () {
 
 }());
 
-// Función global para eliminar empleado
 function deleteEmpleado(id) {
     $('#delete-item-id').val(id);
     $('#delete-modal').modal('show');
