@@ -37,7 +37,7 @@
                 </div>
             </li>
 
-            @if (tiene("Listado de empleados") || tiene("Listado de voluntarios"))
+            @if (tiene("Perfil medico de mascota") || tiene("Listado de empleados") || tiene("Listado de voluntarios"))
             {
                 <li class="menu">
                     <a href="#Cuenta" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -153,7 +153,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
+            @if (tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
             {
                 <li class="menu">
                     <a href="#Medicamento" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -166,9 +166,18 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Medicamento" data-parent="#accordionExample">
+                                                                        @if (tiene("Perfil medico de mascota"))
+                        {
+                            <li>@Html.ActionLink("PerfilMedico", "Index", "PerfilMedico")</li>
+                        }
+                        @if (tiene("Listado de alertas medicas"))
+                        {
+                            <li>@Html.ActionLink("Alertas Medicas", "Index", "AlertaMedica")</li>
+                        }
                         @if (tiene("Listado de citas medicas"))
                         {
                             <li>@Html.ActionLink("Citas Medicas", "Index", "CitaMedica")</li>
+                            <li>@Html.ActionLink("Calendario", "Calendario", "CitaMedica")</li>
                         }
                         @if (tiene("Listado de recetas"))
                         {
