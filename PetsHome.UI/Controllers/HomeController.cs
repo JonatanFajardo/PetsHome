@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsHome.Business.Services;
+using SmartBreadcrumbs.Attributes;
 using System.Threading.Tasks;
 
 namespace PetsHome.UI.Controllers
@@ -16,6 +17,7 @@ namespace PetsHome.UI.Controllers
         }
 
         // GET: HomeController
+        [DefaultBreadcrumb("Inicio")]
         public async Task<ActionResult> Index()
         {
             var homeViewModel = await _homeService.ObtenerEstadisticasDashboardAsync();
