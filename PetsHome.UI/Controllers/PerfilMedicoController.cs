@@ -1,0 +1,26 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PetsHome.Business.Services;
+using PetsHome.UI.Filters;
+using System.Threading.Tasks;
+
+namespace PetsHome.UI.Controllers
+{
+    [Authorize]
+    [PantallaAuthorize("Perfil medico de mascota")]
+    public class PerfilMedicoController : BaseController
+    {
+        private readonly PerfilMedicoService _service;
+
+        public PerfilMedicoController(PerfilMedicoService service)
+        {
+            _service = service;
+        }
+
+        public async Task<IActionResult> Index(int mascId)
+        {
+            var model = await _service.GetDashboardAsync(mascId);
+            return View(model);
+        }
+    }
+}

@@ -1,0 +1,580 @@
+
+  :root {
+    --purple-1: #6C5CE7;
+    --purple-2: #5849C9;
+    --purple-3: #8B7CF6;
+    --purple-light: #EDE9FE;
+    --purple-mid: #A78BFA;
+    --blue-violet: #7C6FF7;
+    --accent-green: #00C896;
+    --accent-orange: #FF9F43;
+    --accent-red: #FF6B6B;
+    --accent-blue: #48CAE4;
+    --sidebar-w: 280px;
+    --header-h: 80px;
+    --tab-h: 52px;
+    --bg-page: #F4F2FF;
+    --text-dark: #1E1B3A;
+    --text-muted: #8E87B3;
+    --card-bg: #FFFFFF;
+    --border: #E8E4FF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-page);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── LAYOUT ─── */
+  .app-wrapper { display: flex; min-height: 100vh; }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 24px 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1.5px solid var(--border);
+    animation: slideInLeft .55s cubic-bezier(.22,1,.36,1) both;
+    z-index: 10;
+  }
+
+  @keyframes slideInLeft {
+    from { transform: translateX(-30px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+
+  /* Avatar */
+  .avatar-wrap {
+    position: relative;
+    margin-bottom: 18px;
+    animation: popIn .6s .15s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes popIn {
+    from { transform: scale(.7); opacity: 0; }
+    to   { transform: scale(1);  opacity: 1; }
+  }
+  .avatar-img {
+    width: 108px; height: 108px;
+    border-radius: 28px;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--purple-3), var(--purple-1));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px;
+    box-shadow: 0 12px 32px rgba(108,92,231,.28);
+    border: 3px solid #fff;
+    overflow: hidden;
+  }
+  .avatar-emoji { font-size: 56px; line-height: 1; }
+
+  .status-badge {
+    position: absolute;
+    bottom: -10px; left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+  .status-healthy { background: #ECFDF5; color: #059669; }
+  .status-treatment { background: #FFF7ED; color: #D97706; }
+  .status-critical { background: #FFF1F2; color: #E11D48; }
+
+  .pet-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--text-dark);
+    margin-top: 20px; text-align: center;
+  }
+  .pet-meta {
+    font-size: 12.5px; color: var(--text-muted);
+    text-align: center; line-height: 1.7;
+    margin-top: 4px;
+  }
+
+  .shelter-tag {
+    margin-top: 12px;
+    background: var(--purple-light);
+    color: var(--purple-1);
+    font-size: 11px; font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  .sidebar-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 22px 0;
+  }
+
+  /* Mini stats */
+  .mini-stats { width: 100%; display: flex; flex-direction: column; gap: 0; }
+  .mini-stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    animation: fadeUp .4s ease both;
+  }
+  .mini-stat:last-child { border-bottom: none; }
+  .mini-stat-icon {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .mini-stat-icon.purple { background: var(--purple-light); color: var(--purple-1); }
+  .mini-stat-icon.green  { background: #ECFDF5; color: #059669; }
+  .mini-stat-icon.blue   { background: #EFF6FF; color: #3B82F6; }
+  .mini-stat-val { font-size: 22px; font-weight: 700; color: var(--text-dark); line-height: 1; }
+  .mini-stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ─── MAIN CONTENT ─── */
+  .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+  /* Header */
+  .top-header {
+    height: var(--header-h);
+    background: linear-gradient(135deg, var(--purple-1) 0%, var(--purple-2) 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px;
+    position: sticky; top: 0; z-index: 9;
+    box-shadow: 0 4px 24px rgba(108,92,231,.35);
+    animation: slideDown .5s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  .header-left { display: flex; flex-direction: column; gap: 2px; }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; color: #fff; font-weight: 700; line-height: 1;
+  }
+  .breadcrumb-nav { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: rgba(255,255,255,.65); }
+  .breadcrumb-nav span { cursor: pointer; }
+  .breadcrumb-nav span:hover { color: rgba(255,255,255,.9); }
+  .breadcrumb-nav i { font-size: 9px; }
+
+  .btn-nueva {
+    background: #fff;
+    color: var(--purple-1);
+    border: none;
+    border-radius: 12px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 7px;
+    cursor: pointer;
+    transition: all .22s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,.14);
+    white-space: nowrap;
+  }
+  .btn-nueva:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0,0,0,.2);
+    background: #FAF8FF;
+  }
+
+  /* Tab Bar */
+  .tab-bar {
+    background: #fff;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    padding: 0 28px;
+    gap: 4px;
+    position: sticky;
+    top: var(--header-h);
+    z-index: 8;
+    animation: slideDown .5s .08s cubic-bezier(.22,1,.36,1) both;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 16px 16px 14px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-muted);
+    border: none; background: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    display: flex; align-items: center; gap: 7px;
+    transition: all .2s ease;
+    white-space: nowrap;
+    position: relative;
+  }
+  .tab-btn:hover { color: var(--purple-1); }
+  .tab-btn.active {
+    color: var(--purple-1);
+    border-bottom-color: var(--purple-1);
+    font-weight: 600;
+  }
+  .tab-btn .tab-count {
+    background: var(--purple-light);
+    color: var(--purple-1);
+    font-size: 10px; font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+
+  /* Content Area */
+  .content-area { flex: 1; padding: 28px 32px; overflow-y: auto; }
+
+  /* ─── TAB PANELS ─── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeUp .38s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes fadeUp {
+    from { transform: translateY(14px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* ── RESUMEN TAB ── */
+  .section-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* Appointment Cards Grid */
+  .citas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+
+  .cita-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px;
+    border: 1.5px solid var(--border);
+    transition: all .22s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .cita-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .cita-card.tipo-control::before { background: var(--purple-1); }
+  .cita-card.tipo-vacuna::before  { background: var(--accent-green); }
+  .cita-card.tipo-urgencia::before { background: var(--accent-red); }
+  .cita-card.tipo-revision::before { background: var(--accent-blue); }
+
+  .cita-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(108,92,231,.12);
+    border-color: var(--purple-mid);
+  }
+  .cita-fecha { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .tipo-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: .04em;
+    margin-bottom: 9px;
+  }
+  .badge-control  { background: #EDE9FE; color: #6C5CE7; }
+  .badge-vacuna   { background: #ECFDF5; color: #059669; }
+  .badge-urgencia { background: #FFF1F2; color: #E11D48; }
+  .badge-revision { background: #EFF6FF; color: #3B82F6; }
+  .cita-diag {
+    font-size: 13px; font-weight: 500;
+    color: var(--text-dark);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cita-vet { font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+
+  /* Resumen lower section */
+  .resumen-lower { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+
+  /* Medications table */
+  .meds-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+  }
+  .meds-header {
+    padding: 16px 20px;
+    border-bottom: 1.5px solid var(--border);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .meds-table { width: 100%; border-collapse: collapse; }
+  .meds-table th {
+    font-size: 10.5px; font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    text-align: left;
+    background: #FAFAFA;
+    border-bottom: 1px solid var(--border);
+  }
+  .meds-table td {
+    padding: 12px 20px;
+    font-size: 13px;
+    border-bottom: 1px solid #F5F3FF;
+    vertical-align: middle;
+  }
+  .meds-table tr:last-child td { border-bottom: none; }
+  .meds-table tr { transition: background .15s; }
+  .meds-table tr:hover td { background: #FAFAFF; }
+  .med-name { font-weight: 600; color: var(--text-dark); }
+  .med-dose { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .progress-wrap { position: relative; }
+  .prog-bar {
+    height: 6px;
+    background: var(--purple-light);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .prog-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--purple-3), var(--purple-1));
+    transition: width 1.2s cubic-bezier(.25, 1, .5, 1);
+    width: 0%;
+  }
+  .prog-pct { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+  .dias-cell { font-weight: 700; font-size: 15px; text-align: center; }
+  .dias-ok  { color: var(--accent-green); }
+  .dias-mid { color: var(--accent-orange); }
+  .dias-low { color: var(--accent-red); }
+
+  /* Timeline */
+  .timeline-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+  }
+  .timeline-header {
+    padding: 16px 20px;
+    border-bottom: 1.5px solid var(--border);
+    font-weight: 600; font-size: 14px;
+  }
+  .timeline-body { padding: 16px 20px; }
+  .tl-item {
+    display: flex; gap: 12px;
+    padding-bottom: 18px;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 16px; top: 34px;
+    width: 2px;
+    height: calc(100% - 16px);
+    background: var(--border);
+  }
+  .tl-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+  }
+  .tl-icon.purple { background: var(--purple-light); color: var(--purple-1); }
+  .tl-icon.green  { background: #ECFDF5; color: #059669; }
+  .tl-icon.orange { background: #FFF7ED; color: #D97706; }
+  .tl-icon.blue   { background: #EFF6FF; color: #3B82F6; }
+  .tl-icon.red    { background: #FFF1F2; color: #E11D48; }
+  .tl-text { flex: 1; }
+  .tl-event { font-size: 12.5px; font-weight: 600; color: var(--text-dark); line-height: 1.3; }
+  .tl-date  { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── TRATAMIENTOS TAB ── */
+  .trat-list { display: flex; flex-direction: column; gap: 14px; }
+  .trat-card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    padding: 22px 24px;
+    display: flex; align-items: center; gap: 20px;
+    transition: all .22s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .trat-card:hover {
+    border-color: var(--purple-mid);
+    box-shadow: 0 8px 28px rgba(108,92,231,.1);
+    transform: translateY(-2px);
+  }
+  .trat-icon-wrap {
+    width: 52px; height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--purple-light), #DDD6FE);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .trat-info { flex: 1; min-width: 0; }
+  .trat-name { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+  .trat-med  { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 5px; }
+  .trat-dates{ font-size: 11px; color: var(--text-muted); margin-top: 6px; display: flex; gap: 12px; }
+  .trat-dates span { display: flex; align-items: center; gap: 4px; }
+
+  .trat-progress { flex: 1.4; min-width: 0; }
+  .trat-prog-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .trat-prog-name  { font-size: 12px; color: var(--text-muted); }
+  .trat-prog-pct   { font-size: 13px; font-weight: 700; color: var(--purple-1); }
+  .trat-prog-bar {
+    height: 10px;
+    background: var(--purple-light);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .trat-prog-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--purple-3), var(--purple-1));
+    transition: width 1.3s cubic-bezier(.25,1,.5,1);
+    width: 0%;
+    position: relative;
+  }
+  .trat-prog-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 16px; height: 100%;
+    background: rgba(255,255,255,.35);
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0%   { opacity: 0; }
+    50%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .trat-status-col { display: flex; align-items: center; flex-shrink: 0; }
+
+  .trat-status {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .tstat-active   { background: #ECFDF5; color: #059669; }
+  .tstat-pending  { background: #FFF7ED; color: #D97706; }
+  .tstat-done     { background: #F3F4F6; color: #6B7280; }
+
+  /* ── CITAS TAB ── */
+  .citas-list { display: flex; flex-direction: column; gap: 12px; }
+  .cita-row {
+    background: #fff;
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 16px;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .cita-row:hover {
+    border-color: var(--purple-mid);
+    box-shadow: 0 6px 20px rgba(108,92,231,.1);
+  }
+  .cita-row-date {
+    min-width: 70px;
+    text-align: center;
+    background: var(--purple-light);
+    border-radius: 12px;
+    padding: 10px 8px;
+  }
+  .cita-row-day   { font-size: 22px; font-weight: 700; color: var(--purple-1); line-height: 1; }
+  .cita-row-month { font-size: 10px; color: var(--purple-mid); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+  .cita-row-body  { flex: 1; }
+  .cita-row-title { font-weight: 600; font-size: 14px; }
+  .cita-row-sub   { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; gap: 12px; }
+  .cita-row-sub span { display: flex; align-items: center; gap: 4px; }
+
+  /* ── VACUNAS TAB ── */
+  .vacunas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .vacuna-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
+    padding: 20px;
+    transition: all .22s ease;
+    cursor: pointer;
+  }
+  .vacuna-card:hover { border-color: var(--accent-green); box-shadow: 0 8px 24px rgba(0,200,150,.08); transform: translateY(-2px); }
+  .vacuna-icon { font-size: 28px; margin-bottom: 10px; }
+  .vacuna-name { font-weight: 700; font-size: 14px; color: var(--text-dark); }
+  .vacuna-date { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+  .vacuna-next { font-size: 11px; margin-top: 10px; font-weight: 600; }
+  .vacuna-ok      { color: var(--accent-green); }
+  .vacuna-proxima { color: var(--accent-orange); }
+  .vacuna-venc    { color: var(--accent-red); }
+  .vacuna-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .dot-ok { background: var(--accent-green); }
+  .dot-proxima { background: var(--accent-orange); }
+  .dot-venc { background: var(--accent-red); }
+
+  /* ── HISTORIAL / RECETAS tabs ── */
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .empty-state i { font-size: 48px; margin-bottom: 14px; color: var(--border); }
+  .empty-state p { font-size: 13px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--purple-mid); }
+
+  /* Modal de Nueva Consulta */
+  .modal-header { background: linear-gradient(135deg, var(--purple-1), var(--purple-2)); }
+  .modal-title { color: #fff; font-family: 'Playfair Display', serif; }
+  .modal-header .btn-close { filter: invert(1); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .citas-grid { grid-template-columns: 1fr; }
+    .resumen-lower { grid-template-columns: 1fr; }
+    .vacunas-grid { grid-template-columns: 1fr 1fr; }
+    .trat-card { flex-wrap: wrap; }
+  }
