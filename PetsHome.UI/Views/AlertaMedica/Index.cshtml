@@ -1,0 +1,293 @@
+@model PetsHome.Business.Models.AlertaMedicaViewModel
+@{
+    ViewData["Title"] = "Alertas Médicas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de alertas medicas";
+}
+
+@section Styles {
+  <link rel="stylesheet" href="~/css/alertas-medicas.css" />
+}
+
+<div class="page">
+
+  <!-- ── PAGE HEADER ── -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      </div>
+      <div class="header-text">
+        <h1>Alertas médicas</h1>
+        <p>ACTUALIZADO HOY · @DateTime.Now.ToString("dd MMM yyyy").ToUpper() &nbsp;·&nbsp; @Model.TotalAlertas ALERTAS ACTIVAS</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="filter-pill active" data-filter="all"><span class="pill-dot"></span>Todas</button>
+      <button class="filter-pill" data-filter="vacunas"><span class="pill-dot" style="background:var(--red)"></span>Vacunas</button>
+      <button class="filter-pill" data-filter="tratamientos"><span class="pill-dot" style="background:var(--orange)"></span>Tratamientos</button>
+      <button class="filter-pill" data-filter="recetas"><span class="pill-dot" style="background:var(--amber)"></span>Recetas</button>
+      <button class="filter-pill" data-filter="sinconsulta"><span class="pill-dot" style="background:var(--blue)"></span>Sin consulta</button>
+    </div>
+  </div>
+
+  <!-- ── STATS GRID ── -->
+  <div class="stats-grid">
+    <div class="stat-card sc-red" onclick="filterSection(null,'vacunas')">
+      <div class="stat-card-top">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <span class="stat-badge">Crítico</span>
+      </div>
+      <div class="stat-num">@Model.TotalVacunasVencidas.ToString("D2")</div>
+      <div class="stat-label">Vacunas vencidas</div>
+    </div>
+    <div class="stat-card sc-orange" onclick="filterSection(null,'tratamientos')">
+      <div class="stat-card-top">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <span class="stat-badge">Urgente</span>
+      </div>
+      <div class="stat-num">@Model.TotalTratamientosPorVencer.ToString("D2")</div>
+      <div class="stat-label">Tratamientos por vencer</div>
+    </div>
+    <div class="stat-card sc-amber" onclick="filterSection(null,'recetas')">
+      <div class="stat-card-top">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <span class="stat-badge">Pendiente</span>
+      </div>
+      <div class="stat-num">@Model.TotalRecetasSinRevision.ToString("D2")</div>
+      <div class="stat-label">Recetas sin revisión</div>
+    </div>
+    <div class="stat-card sc-blue" onclick="filterSection(null,'sinconsulta')">
+      <div class="stat-card-top">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="stat-badge">Revisión</span>
+      </div>
+      <div class="stat-num">@Model.TotalSinConsulta.ToString("D2")</div>
+      <div class="stat-label">Sin consulta reciente</div>
+    </div>
+  </div>
+
+  <!-- ── VACUNAS ── -->
+  <div class="acc-section" id="sec-vacunas" data-section="vacunas">
+    <div class="acc-head type-red" onclick="toggleSection('vacunas')">
+      <div class="acc-head-left">
+        <div class="acc-type-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="acc-title-group">
+          <div class="acc-title">Vacunas vencidas</div>
+          <div class="acc-sub">ÚLTIMA ACTUALIZACIÓN: HOY · @Model.TotalVacunasVencidas PACIENTES AFECTADOS</div>
+        </div>
+      </div>
+      <div class="acc-head-right">
+        <span class="acc-count">@Model.TotalVacunasVencidas registros</span>
+        <div class="acc-chevron open" id="tog-vacunas">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="table-col-header">
+      <span class="col-h"></span>
+      <span class="col-h">Paciente</span>
+      <span class="col-h">Vacuna</span>
+      <span class="col-h">Estado</span>
+      <span class="col-h" style="text-align:right">Acción</span>
+    </div>
+    <div class="table-body-wrap" id="body-vacunas">
+      @if (!Model.VacunasVencidas.Any())
+      {
+        <div class="table-row" style="justify-content:center; color:var(--text-3); font-size:.8rem;">
+          Sin alertas de vacunas
+        </div>
+      }
+      @foreach (var item in Model.VacunasVencidas)
+      {
+        <div class="table-row">
+          <div class="row-avatar">🐾</div>
+          <div class="row-info">
+            <div class="row-name">@item.MascotaNombre</div>
+            <div class="row-breed">@item.Raza · @item.Edad años</div>
+          </div>
+          <div class="row-alert">@item.VacunaNombre</div>
+          <div><span class="status-tag tag-red"><span class="status-dot-sm"></span>+@item.DiasVencida días</span></div>
+          <div class="row-action">
+            <a href="@Url.Action("Create", "CitaMedica")" class="act-btn act-btn-red">Agendar</a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── TRATAMIENTOS ── -->
+  <div class="acc-section" id="sec-tratamientos" data-section="tratamientos">
+    <div class="acc-head type-orange" onclick="toggleSection('tratamientos')">
+      <div class="acc-head-left">
+        <div class="acc-type-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="acc-title-group">
+          <div class="acc-title">Tratamientos por vencer</div>
+          <div class="acc-sub">VENCIMIENTO PRÓXIMO · @Model.TotalTratamientosPorVencer PACIENTES EN SEGUIMIENTO</div>
+        </div>
+      </div>
+      <div class="acc-head-right">
+        <span class="acc-count">@Model.TotalTratamientosPorVencer registros</span>
+        <div class="acc-chevron open" id="tog-tratamientos">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="table-col-header">
+      <span class="col-h"></span>
+      <span class="col-h">Paciente</span>
+      <span class="col-h">Tratamiento</span>
+      <span class="col-h">Tiempo restante</span>
+      <span class="col-h" style="text-align:right">Acción</span>
+    </div>
+    <div class="table-body-wrap" id="body-tratamientos">
+      @if (!Model.TratamientosPorVencer.Any())
+      {
+        <div class="table-row" style="justify-content:center; color:var(--text-3); font-size:.8rem;">
+          Sin tratamientos próximos a vencer
+        </div>
+      }
+      @foreach (var item in Model.TratamientosPorVencer)
+      {
+        <div class="table-row">
+          <div class="row-avatar">🐾</div>
+          <div class="row-info">
+            <div class="row-name">@item.MascotaNombre</div>
+            <div class="row-breed">@item.Raza · @item.Edad años</div>
+          </div>
+          <div class="row-alert">@item.TratamientoNombre</div>
+          <div>
+            <div class="mini-progress">
+              <div class="mini-track">
+                <div class="mini-fill fill-orange" style="width:0%" data-w="@item.PorcentajeRestante%"></div>
+              </div>
+              <span class="mini-days">@item.DiasRestantes días</span>
+            </div>
+          </div>
+          <div class="row-action">
+            <a href="@Url.Action("Index", "HistorialMedico", new { masc_Id = item.masc_Id })" class="act-btn">Ver mascota</a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── RECETAS ── -->
+  <div class="acc-section" id="sec-recetas" data-section="recetas">
+    <div class="acc-head type-amber" onclick="toggleSection('recetas')">
+      <div class="acc-head-left">
+        <div class="acc-type-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="acc-title-group">
+          <div class="acc-title">Recetas sin revisión</div>
+          <div class="acc-sub">REQUIEREN ATENCIÓN · @Model.TotalRecetasSinRevision RECETAS ACTIVAS</div>
+        </div>
+      </div>
+      <div class="acc-head-right">
+        <span class="acc-count">@Model.TotalRecetasSinRevision registros</span>
+        <div class="acc-chevron open" id="tog-recetas">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="table-col-header">
+      <span class="col-h"></span>
+      <span class="col-h">Paciente</span>
+      <span class="col-h">Receta</span>
+      <span class="col-h">Estado</span>
+      <span class="col-h" style="text-align:right">Acción</span>
+    </div>
+    <div class="table-body-wrap" id="body-recetas">
+      @if (!Model.RecetasSinRevision.Any())
+      {
+        <div class="table-row" style="justify-content:center; color:var(--text-3); font-size:.8rem;">
+          Sin recetas activas pendientes
+        </div>
+      }
+      @foreach (var item in Model.RecetasSinRevision)
+      {
+        <div class="table-row">
+          <div class="row-avatar">🐾</div>
+          <div class="row-info">
+            <div class="row-name">@item.MascotaNombre</div>
+            <div class="row-breed">@item.Raza · @item.Edad años</div>
+          </div>
+          <div class="row-alert">#@item.receta_Id — @item.receta_Medicamento · @item.DuracionDias días</div>
+          <div><span class="status-tag tag-green"><span class="status-dot-sm"></span>@item.receta_Estado</span></div>
+          <div class="row-action">
+            <a href="@Url.Action("Detail", "Receta", new { id = item.receta_Id })" class="act-btn">Revisar</a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── SIN CONSULTA ── -->
+  <div class="acc-section" id="sec-sinconsulta" data-section="sinconsulta">
+    <div class="acc-head type-blue" onclick="toggleSection('sinconsulta')">
+      <div class="acc-head-left">
+        <div class="acc-type-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="acc-title-group">
+          <div class="acc-title">Sin consulta reciente</div>
+          <div class="acc-sub">SEGUIMIENTO RECOMENDADO · @Model.TotalSinConsulta PACIENTES</div>
+        </div>
+      </div>
+      <div class="acc-head-right">
+        <span class="acc-count">@Model.TotalSinConsulta registros</span>
+        <div class="acc-chevron open" id="tog-sinconsulta">
+          <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="table-col-header">
+      <span class="col-h"></span>
+      <span class="col-h">Paciente</span>
+      <span class="col-h">Observación</span>
+      <span class="col-h">Última visita</span>
+      <span class="col-h" style="text-align:right">Acción</span>
+    </div>
+    <div class="table-body-wrap" id="body-sinconsulta">
+      @if (!Model.SinConsulta.Any())
+      {
+        <div class="table-row" style="justify-content:center; color:var(--text-3); font-size:.8rem;">
+          Todas las mascotas tienen consulta reciente
+        </div>
+      }
+      @foreach (var item in Model.SinConsulta)
+      {
+        <div class="table-row">
+          <div class="row-avatar">🐾</div>
+          <div class="row-info">
+            <div class="row-name">@item.MascotaNombre</div>
+            <div class="row-breed">@item.Raza · @item.Edad años</div>
+          </div>
+          <div class="row-alert">@(item.UltimaVisita == null ? "Sin registro de consulta" : "Control de rutina pendiente")</div>
+          <div><span class="status-tag tag-blue"><span class="status-dot-sm"></span>@item.TiempoSinConsulta</span></div>
+          <div class="row-action">
+            <a href="@Url.Action("Create", "CitaMedica")" class="act-btn">Agendar</a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+@section Scripts {
+  <script src="~/js/pages/alertas-medicas.js"></script>
+}
