@@ -52,10 +52,10 @@
                     "hideMethod": "fadeOut"
                 };
 
-                toastr['@alertType']('@Html.Raw(alert.Text)');
+                toastr['@alertType'](@Json.Serialize(alert.Text));
             } else {
                 // Fallback a alert del navegador si toastr no está disponible
-                alert('@Html.Raw(alert.Text)');
+                alert(@Json.Serialize(alert.Text));
             }
         });
     </script>

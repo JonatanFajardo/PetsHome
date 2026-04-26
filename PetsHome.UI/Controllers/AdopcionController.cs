@@ -110,6 +110,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [HttpPost]
         public async Task<IActionResult> Add(AdopcionViewModel model, int userId)
         {
             var operacion = model.isEdit ? "editar" : "insertar";
@@ -146,6 +147,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [HttpPost]
         [PantallaAuthorize("Listado de adopciones", "eliminar")]
         public async Task<IActionResult> Remove(int adop_Id)
         {

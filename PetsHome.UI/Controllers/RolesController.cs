@@ -38,6 +38,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RolViewModel model)
         {
             var operacion = model.rol_Id == 0 ? "insertar" : "editar";
@@ -59,6 +60,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de roles", "eliminar")]
         public async Task<IActionResult> Delete(int rol_Id)
         {
@@ -93,6 +95,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de roles", "editar")]
         public async Task<IActionResult> SavePantallas(int rolId, string permisosJson)
         {

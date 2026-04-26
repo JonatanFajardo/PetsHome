@@ -1,9 +1,11 @@
-﻿<!doctype html>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
     <title>@ViewBag.Title - PetsHome</title>
     <meta content="template" name="description" />
 
@@ -76,7 +78,7 @@
     {
         <script>
             window._currentPantalla = '@(ViewData["CurrentPantalla"] ?? "")';
-            window.PetsPermisos = @Html.Raw(User.FindFirst("PermisosCRUD")?.Value ?? "[]");
+            window.PetsPermisos = JSON.parse(@Json.Serialize(User.FindFirst("PermisosCRUD")?.Value ?? "[]"));
             window.PetsPermisosHelper = {
                 tiene: function(pantalla, operacion) {
                     var permisos = window.PetsPermisos || [];
@@ -108,6 +110,11 @@
             };
             // Aplicar permisos cuando el DOM este listo
             document.addEventListener('DOMContentLoaded', function() { window.PetsPermisosHelper.aplicar(); });
+        </script>
+        <script>
+            $(function () {
+                $.ajaxSetup({ headers: { 'RequestVerificationToken': $("meta[name='csrf-token']").attr('content') } });
+            });
         </script>
     }
 </head>

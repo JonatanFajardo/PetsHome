@@ -140,6 +140,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="model">Modelo de la recepción.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(RecepcionMercanciaFormViewModel model)
         {
             var operacion = model.isEdit ? "editar" : "insertar";
@@ -177,6 +178,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="model">Modelo del formulario que contiene el detalle.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDetalle(RecepcionMercanciaFormViewModel model)
         {
             var operacion = model.Detalle.isEdit ? "editar" : "insertar";
@@ -252,6 +254,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="id">ID de la recepción.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de recepciones", "eliminar")]
         public async Task<IActionResult> Remove(int id)
         {
@@ -274,6 +277,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="recep_Id">ID de la recepción padre.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de recepciones", "eliminar")]
         public async Task<IActionResult> RemoveDetalle(int recdet_Id, int recep_Id)
         {

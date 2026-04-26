@@ -39,6 +39,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UsuarioCrudViewModel model)
         {
             var operacion = model.usu_Id == 0 ? "insertar" : "editar";
@@ -58,6 +59,7 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de usuarios", "eliminar")]
         public async Task<IActionResult> Delete(int usu_Id)
         {
