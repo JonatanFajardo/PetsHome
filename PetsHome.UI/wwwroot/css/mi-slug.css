@@ -1,0 +1,258 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:    #6B7FD4;
+    --blue-mid:#7B6EC8;
+    --purple:  #9B72C8;
+    --purple-d:#7A52A8;
+    --indigo:  #4A5AB8;
+    --glass-bg: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.18);
+    --glass-hover: rgba(255,255,255,0.14);
+    --text-white: rgba(255,255,255,0.95);
+    --text-soft:  rgba(255,255,255,0.60);
+    --text-muted: rgba(255,255,255,0.38);
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    position: relative;
+    background: #5B6DC8;
+  }
+
+  /* Exact gradient from screenshot */
+  .bg {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg,
+      #6B7FD4 0%,
+      #7B72CC 30%,
+      #8B6EC4 55%,
+      #9B70C0 75%,
+      #8B60B8 100%
+    );
+    z-index: 0;
+  }
+
+  /* Subtle animated orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: drift ease-in-out infinite alternate;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .orb1 { width: 500px; height: 500px; top: -150px; left: -100px; background: rgba(90,110,210,0.35); animation-duration: 12s; }
+  .orb2 { width: 400px; height: 400px; bottom: -100px; right: -80px;  background: rgba(150,80,190,0.30); animation-duration: 16s; animation-delay: -5s; }
+  .orb3 { width: 300px; height: 300px; top: 40%; left: 55%;  background: rgba(100,90,200,0.20); animation-duration: 10s; animation-delay: -3s; }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(30px, 20px) scale(1.08); }
+  }
+
+  /* Floating paw silhouettes (very subtle) */
+  .paws-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .fp {
+    position: absolute;
+    opacity: 0;
+    animation: risePaw linear infinite;
+  }
+
+  @keyframes risePaw {
+    0%   { transform: translateY(110vh) rotate(var(--r)); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 0.4; }
+    100% { transform: translateY(-10vh)  rotate(calc(var(--r) + 25deg)); opacity: 0; }
+  }
+
+  /* Card */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 56px 60px;
+    max-width: 460px;
+    width: 90%;
+    text-align: center;
+    animation: fadeUp 0.8s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  /* Elegant paw lock icon */
+  .icon-wrap {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 28px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: iconPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes iconPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.10); }
+    50%       { box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+  }
+
+  /* Lock with paw */
+  .lock-svg { animation: lockShake 6s ease-in-out infinite; }
+
+  @keyframes lockShake {
+    0%, 85%, 100% { transform: rotate(0deg); }
+    88%           { transform: rotate(-6deg); }
+    91%           { transform: rotate(6deg); }
+    94%           { transform: rotate(-4deg); }
+    97%           { transform: rotate(2deg); }
+  }
+
+  /* Tag / chip */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.20);
+    color: rgba(255,255,255,0.75);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+
+  .chip-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #FF8A80;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 600;
+    color: var(--text-white);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    font-size: 14.5px;
+    font-weight: 300;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  .subtitle em {
+    font-style: normal;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+  }
+
+  /* Separator */
+  .sep {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.20), transparent);
+    margin-bottom: 28px;
+  }
+
+  /* Buttons */
+  .btn-group { display: flex; flex-direction: column; gap: 12px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .btn:hover  { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0px); }
+
+  .btn-primary {
+    background: rgba(255,255,255,0.95);
+    color: var(--indigo);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.20);
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.22);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.16);
+  }
+
+  .hint {
+    margin-top: 22px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .hint a {
+    color: rgba(255,255,255,0.60);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .hint a:hover { color: rgba(255,255,255,0.90); }
+
+  /* Subtle grid overlay */
+  .grid-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }

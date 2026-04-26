@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Día — Dr. Fajardo · PetsHome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="PetsHome.UI/wwwroot/css/home-style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="dashboard-wrapper">
+
+  <!-- ===== ZONA 1: Barra de identidad ===== -->
+  <div class="zona1 anim-up" style="margin-bottom:16px;">
+    <div class="d-flex justify-content-between align-items-start">
+      <div class="d-flex align-items-center gap-3">
+        <div class="stethoscope-icon" style="width:42px;height:42px;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:20px;">
+          <i class="bi bi-heart-pulse-fill"></i>
+        </div>
+        <div>
+          <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--text-1);">
+            Buenos días, Dr. Fajardo
+          </div>
+          <div style="font-size:12px;color:var(--text-3);margin-top:2px;">
+            <i class="bi bi-building me-1"></i>Veterinario — PetsHome
+            &nbsp;·&nbsp;
+            <span class="live-dot"></span>
+            <span style="margin-left:4px;">En línea</span>
+          </div>
+        </div>
+      </div>
+      <div class="zona1-datetime">
+        <div class="zona1-date">Viernes 24 de Abril, 2026</div>
+        <div class="zona1-time" id="liveclock">08:47 AM</div>
+      </div>
+    </div>
+
+    <div class="pills-row">
+      <span class="pill pill-blue"><i class="bi bi-calendar-check" style="font-size:13px;"></i> 5 citas hoy</span>
+      <span class="pill pill-amber"><i class="bi bi-hourglass-split" style="font-size:13px;"></i> Próxima en <span id="countdown" style="margin-left:4px;">13:00</span></span>
+      <span class="pill pill-red"><i class="bi bi-exclamation-triangle-fill" style="font-size:13px;"></i> 3 alertas</span>
+      <span class="pill pill-green"><i class="bi bi-check-circle-fill" style="font-size:13px;"></i> 1 completada</span>
+    </div>
+  </div>
+
+  <!-- ===== ZONAS 2-3-4 ===== -->
+  <div class="row g-3 mb-3">
+
+    <!-- ZONA 2: Agenda -->
+    <div class="col-xl-4 col-lg-5 anim-up delay-1">
+      <div class="card-panel" style="height:560px;">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-calendar3 me-2"></i>Agenda de hoy</span>
+          <span class="card-count-badge">5 citas</span>
+        </div>
+        <div class="timeline-scroll">
+
+          <!-- Cita 1: completada -->
+          <div class="timeline-item" style="animation-delay:0.1s;">
+            <div class="timeline-time">08:30</div>
+            <div class="timeline-dot dot-green"><i class="bi bi-check-lg"></i></div>
+            <div class="timeline-content">
+              <div class="timeline-name">Luna</div>
+              <div class="timeline-breed">Labrador, 3 años</div>
+              <div class="timeline-bottom">
+                <span class="badge-consult badge-general">Consulta General</span>
+                <span style="font-size:11px;color:var(--green);"><i class="bi bi-check2-circle"></i> Completada</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cita 2: próxima (amber) -->
+          <div class="timeline-item" style="animation-delay:0.18s;">
+            <div class="timeline-time" style="color:var(--amber);">09:00</div>
+            <div class="timeline-dot dot-amber"><i class="bi bi-clock-fill"></i></div>
+            <div class="timeline-content">
+              <div class="timeline-name">Rocky</div>
+              <div class="timeline-breed">Beagle, 1 año</div>
+              <div class="timeline-bottom">
+                <span class="badge-consult badge-vacuna">Vacunación</span>
+                <button class="btn-iniciar">
+                  Iniciar <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+              <div style="font-size:11px;color:var(--amber);margin-top:5px;font-weight:500;">
+                <i class="bi bi-hourglass-split me-1"></i>En <span id="countdown2">13</span> min
+              </div>
+            </div>
+          </div>
+
+          <!-- Cita 3: pendiente -->
+          <div class="timeline-item" style="animation-delay:0.26s;">
+            <div class="timeline-time">10:30</div>
+            <div class="timeline-dot dot-gray"><i class="bi bi-circle"></i></div>
+            <div class="timeline-content">
+              <div class="timeline-name">Max</div>
+              <div class="timeline-breed">Siamés, 5 años</div>
+              <div class="timeline-bottom">
+                <span class="badge-consult badge-control">Control post-cirugía</span>
+                <span style="font-size:11px;color:var(--text-3);">Pendiente</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cita 4: urgente -->
+          <div class="timeline-item" style="animation-delay:0.34s;">
+            <div class="timeline-time" style="color:var(--red);">12:00</div>
+            <div class="timeline-dot dot-red"><i class="bi bi-exclamation-lg"></i></div>
+            <div class="timeline-content">
+              <div class="timeline-name">Bella</div>
+              <div class="timeline-breed">Yorkshire, 2 años</div>
+              <div class="timeline-bottom">
+                <span class="urgente-strip"><i class="bi bi-lightning-fill me-1"></i>URGENTE</span>
+                <span class="badge-consult badge-urgente">Emergencia</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cita 5: pendiente -->
+          <div class="timeline-item" style="animation-delay:0.42s;">
+            <div class="timeline-time">15:00</div>
+            <div class="timeline-dot dot-gray"><i class="bi bi-circle"></i></div>
+            <div class="timeline-content">
+              <div class="timeline-name">Thor</div>
+              <div class="timeline-breed">Pastor Alemán, 4 años</div>
+              <div class="timeline-bottom">
+                <span class="badge-consult badge-desparas">Desparasitación</span>
+                <span style="font-size:11px;color:var(--text-3);">Pendiente</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ZONA 3: Pacientes activos -->
+    <div class="col-xl-4 col-lg-4 anim-up delay-2">
+      <div class="card-panel" style="height:560px;">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-activity me-2"></i>Bajo cuidado activo</span>
+          <span class="card-count-badge">4 mascotas</span>
+        </div>
+        <div class="patients-scroll">
+
+          <!-- Buddy -->
+          <div class="patient-card" style="animation-delay:0.1s;">
+            <div class="patient-top">
+              <div class="d-flex align-items-center">
+                <div class="patient-avatar" style="font-size:18px;">🐕</div>
+                <div>
+                  <div class="patient-name">Buddy</div>
+                  <div class="patient-breed">Golden Retriever, 2 años</div>
+                </div>
+              </div>
+              <span class="status-badge status-normal">Día 5/14</span>
+            </div>
+            <div class="patient-med"><i class="bi bi-capsule me-1" style="color:var(--accent);"></i>Antibiótico post-cirugía</div>
+            <div class="progress-track">
+              <div class="progress-bar-custom bar-teal" style="width:35%; animation-delay:0.5s;"></div>
+            </div>
+            <div class="progress-label">
+              <span>35% completado</span>
+              <span>Termina: 03 Mayo</span>
+            </div>
+          </div>
+
+          <!-- Mia - completada -->
+          <div class="patient-card" style="animation-delay:0.18s; border-color:rgba(56,189,248,0.25);">
+            <div class="patient-top">
+              <div class="d-flex align-items-center">
+                <div class="patient-avatar" style="font-size:18px;background:rgba(56,189,248,0.1);border-color:rgba(56,189,248,0.25);">🐈</div>
+                <div>
+                  <div class="patient-name">Mia</div>
+                  <div class="patient-breed">Persa, 4 años</div>
+                </div>
+              </div>
+              <span class="status-badge status-complete">Día 10/10 ✓</span>
+            </div>
+            <div class="patient-med"><i class="bi bi-shield-plus me-1" style="color:var(--green);"></i>Antiparasitario</div>
+            <div class="progress-track">
+              <div class="progress-bar-custom bar-green" style="width:100%; animation-delay:0.6s;"></div>
+            </div>
+            <div class="progress-label">
+              <span>100% — Tratamiento completo</span>
+            </div>
+            <button class="btn-action-sm btn-close-treatment">
+              <i class="bi bi-check2-all me-1"></i>Cerrar tratamiento
+            </button>
+          </div>
+
+          <!-- Simba - crítico -->
+          <div class="patient-card critical" style="animation-delay:0.26s;">
+            <div class="patient-top">
+              <div class="d-flex align-items-center">
+                <div class="patient-avatar" style="font-size:18px;background:var(--red-dim);border-color:rgba(248,113,113,0.3);">🐕</div>
+                <div>
+                  <div class="patient-name">Simba</div>
+                  <div class="patient-breed">Dálmata, 1 año</div>
+                </div>
+              </div>
+              <span class="status-badge status-critical"><i class="bi bi-exclamation-triangle-fill me-1"></i>Crítico</span>
+            </div>
+            <div class="patient-med" style="color:var(--red);"><i class="bi bi-capsule me-1"></i>Antibiótico — sin respuesta esperada</div>
+            <div class="progress-track">
+              <div class="progress-bar-custom bar-red" style="width:28%; animation-delay:0.7s;"></div>
+            </div>
+            <div class="progress-label">
+              <span>28% — Respuesta insuficiente</span>
+            </div>
+            <button class="btn-action-sm btn-ver-historial">
+              <i class="bi bi-journal-medical me-1"></i>Ver historial completo
+            </button>
+          </div>
+
+          <!-- Coco -->
+          <div class="patient-card" style="animation-delay:0.34s;">
+            <div class="patient-top">
+              <div class="d-flex align-items-center">
+                <div class="patient-avatar" style="font-size:18px;background:var(--green-dim);border-color:rgba(74,222,128,0.25);">🐇</div>
+                <div>
+                  <div class="patient-name">Coco</div>
+                  <div class="patient-breed">Conejo, 2 años</div>
+                </div>
+              </div>
+              <span class="status-badge status-normal">Día 3/7</span>
+            </div>
+            <div class="patient-med"><i class="bi bi-droplet-fill me-1" style="color:var(--green);"></i>Vitaminas post-operatorio</div>
+            <div class="progress-track">
+              <div class="progress-bar-custom bar-green" style="width:42%; animation-delay:0.8s;"></div>
+            </div>
+            <div class="progress-label">
+              <span>42% completado</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ZONA 4: Alertas + Acciones -->
+    <div class="col-xl-4 col-lg-3 anim-up delay-3">
+      <div class="card-panel" style="height:560px;overflow-y:auto;">
+
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-bell-fill me-2"></i>Alertas</span>
+          <span class="card-count-badge" style="background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,0.25);">3</span>
+        </div>
+
+        <div class="alerts-section">
+
+          <!-- Alerta roja -->
+          <div class="alert-item alert-red" style="animation-delay:0.12s;">
+            <div class="alert-icon icon-red"><i class="bi bi-shield-exclamation"></i></div>
+            <div style="flex:1;">
+              <div class="alert-title">Bella — sin vacuna antirrábica</div>
+              <div class="alert-sub">Vencida hace 2 meses</div>
+              <button class="btn-alert-link">Agendar ahora <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- Alerta naranja -->
+          <div class="alert-item alert-orange" style="animation-delay:0.2s;">
+            <div class="alert-icon icon-orange"><i class="bi bi-file-medical"></i></div>
+            <div style="flex:1;">
+              <div class="alert-title">3 recetas activas sin revisión</div>
+              <div class="alert-sub">Más de 30 días sin control</div>
+              <button class="btn-alert-link">Ver recetas <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- Alerta azul -->
+          <div class="alert-item alert-blue" style="animation-delay:0.28s;">
+            <div class="alert-icon icon-blue"><i class="bi bi-syringe"></i></div>
+            <div style="flex:1;">
+              <div class="alert-title">Thor — próximo refuerzo</div>
+              <div class="alert-sub">Vacuna en 5 días</div>
+              <button class="btn-alert-link">Programar <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="divider-zona4" style="margin:4px 14px 8px;">
+
+        <div style="padding:4px 14px 8px;">
+          <span class="card-title-custom" style="font-size:10px;"><i class="bi bi-lightning-charge me-1"></i>Acciones rápidas</span>
+        </div>
+
+        <div class="acciones-grid">
+          <button class="accion-btn" style="animation-delay:0.36s;">
+            <div class="accion-icon"><i class="bi bi-heart-pulse"></i></div>
+            <div class="accion-label">Nueva Consulta</div>
+          </button>
+          <button class="accion-btn" style="animation-delay:0.4s;">
+            <div class="accion-icon" style="background:var(--amber-dim);color:var(--amber);"><i class="bi bi-calendar3"></i></div>
+            <div class="accion-label">Ver Calendario</div>
+          </button>
+          <button class="accion-btn" style="animation-delay:0.44s;">
+            <div class="accion-icon" style="background:var(--green-dim);color:var(--green);"><i class="bi bi-syringe"></i></div>
+            <div class="accion-label">Control Vacunas</div>
+          </button>
+          <button class="accion-btn" style="animation-delay:0.48s;">
+            <div class="accion-icon" style="background:var(--red-dim);color:var(--red);"><i class="bi bi-exclamation-triangle"></i></div>
+            <div class="accion-label">Centro Alertas</div>
+          </button>
+          <button class="accion-btn" style="animation-delay:0.52s;">
+            <div class="accion-icon" style="background:var(--purple-dim);color:var(--purple);"><i class="bi bi-clipboard2-pulse"></i></div>
+            <div class="accion-label">Historial</div>
+          </button>
+          <button class="accion-btn" style="animation-delay:0.56s;">
+            <div class="accion-icon" style="background:rgba(99,102,241,0.12);color:#818cf8;"><i class="bi bi-people-fill"></i></div>
+            <div class="accion-label">Pacientes</div>
+          </button>
+        </div>
+
+        <!-- Mini stats -->
+        <div style="padding: 4px 14px 14px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:var(--bg-card3);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--accent);">24</div>
+              <div style="font-size:10px;color:var(--text-3);">Este mes</div>
+            </div>
+            <div style="background:var(--bg-card3);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--green);">18</div>
+              <div style="font-size:10px;color:var(--text-3);">Completadas</div>
+            </div>
+            <div style="background:var(--bg-card3);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--amber);">6</div>
+              <div style="font-size:10px;color:var(--text-3);">Pendientes</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ZONA 5: Actividad + Mini Calendario ===== -->
+  <div class="row g-3 anim-up delay-5">
+
+    <!-- Actividad reciente -->
+    <div class="col-lg-7">
+      <div class="zona5-panel">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-clock-history me-2"></i>Actividad reciente</span>
+        </div>
+        <div class="actividad-scroll" style="max-height:none; padding:10px 16px;">
+          <div class="activity-item" style="animation-delay:0.1s;">
+            <div class="activity-dot" style="background:rgba(56,189,248,0.1);color:var(--accent);"><i class="bi bi-heart-pulse" style="font-size:13px;"></i></div>
+            <div class="activity-time">Hoy 08:30</div>
+            <div class="activity-text"><strong>Luna</strong> — Consulta general · Diagnóstico: <span style="color:var(--amber);">dermatitis leve</span></div>
+          </div>
+          <div class="activity-item" style="animation-delay:0.16s;">
+            <div class="activity-dot" style="background:rgba(74,222,128,0.1);color:var(--green);"><i class="bi bi-capsule" style="font-size:13px;"></i></div>
+            <div class="activity-time">Ayer 15:00</div>
+            <div class="activity-text"><strong>Max</strong> — Receta creada · Amoxicilina 250mg por 7 días</div>
+          </div>
+          <div class="activity-item" style="animation-delay:0.22s;">
+            <div class="activity-dot" style="background:var(--teal-dim);color:var(--teal);"><i class="bi bi-search" style="font-size:13px;"></i></div>
+            <div class="activity-time">Ayer 10:00</div>
+            <div class="activity-text"><strong>Rocky</strong> — Tratamiento iniciado · Antiparasitario oral</div>
+          </div>
+          <div class="activity-item" style="animation-delay:0.28s;">
+            <div class="activity-dot" style="background:var(--amber-dim);color:var(--amber);"><i class="bi bi-syringe" style="font-size:13px;"></i></div>
+            <div class="activity-time">23 Abr</div>
+            <div class="activity-text"><strong>Bella</strong> — Vacuna trivalente aplicada</div>
+          </div>
+          <div class="activity-item" style="animation-delay:0.34s;">
+            <div class="activity-dot" style="background:rgba(56,189,248,0.1);color:var(--accent);"><i class="bi bi-heart-pulse" style="font-size:13px;"></i></div>
+            <div class="activity-time">22 Abr</div>
+            <div class="activity-text"><strong>Thor</strong> — Control post-operatorio · <span style="color:var(--green);">Sin complicaciones</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini calendario -->
+    <div class="col-lg-5">
+      <div class="zona5-panel">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-calendar-week me-2"></i>Esta semana</span>
+          <span style="font-size:11px;color:var(--text-3);">Abr 2026</span>
+        </div>
+        <div class="mini-cal">
+          <div class="cal-grid">
+            <div class="cal-day-head">Lun</div>
+            <div class="cal-day-head">Mar</div>
+            <div class="cal-day-head">Mié</div>
+            <div class="cal-day-head">Jue</div>
+            <div class="cal-day-head">Vie</div>
+            <div class="cal-day-head">Sáb</div>
+
+            <!-- Días -->
+            <div class="cal-day" onclick="goToDay(20)">20<div class="cal-dots"></div><div class="cal-count"></div></div>
+            <div class="cal-day" onclick="goToDay(21)">21
+              <div class="cal-dots"><div class="cal-dot" style="background:var(--accent);"></div><div class="cal-dot" style="background:var(--amber);"></div></div>
+              <div class="cal-count" style="color:var(--accent);">2</div>
+            </div>
+            <div class="cal-day" onclick="goToDay(22)">22
+              <div class="cal-dots"><div class="cal-dot" style="background:var(--green);"></div></div>
+              <div class="cal-count" style="color:var(--green);">1</div>
+            </div>
+            <div class="cal-day" onclick="goToDay(23)">23
+              <div class="cal-dots"><div class="cal-dot" style="background:var(--accent);"></div></div>
+              <div class="cal-count" style="color:var(--accent);">1</div>
+            </div>
+            <div class="cal-day today" onclick="goToDay(24)">24
+              <div class="cal-dots">
+                <div class="cal-dot" style="background:var(--accent);"></div>
+                <div class="cal-dot" style="background:var(--amber);"></div>
+                <div class="cal-dot" style="background:var(--red);"></div>
+              </div>
+              <div class="cal-count" style="color:var(--accent);">5</div>
+            </div>
+            <div class="cal-day" onclick="goToDay(25)">25<div class="cal-dots"></div><div class="cal-count"></div></div>
+          </div>
+
+          <!-- Leyenda -->
+          <div style="display:flex;gap:14px;margin-top:14px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-3);">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);"></div>Consulta
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-3);">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);"></div>Vacunación
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-3);">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--red);"></div>Urgente
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-3);">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div>Control
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  /* === Live Clock === */
+  function updateClock() {
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    document.getElementById('liveclock').textContent = `${String(h).padStart(2,'0')}:${m} ${ampm}`;
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+
+  /* === Countdown timer (demo: 13 min from now) === */
+  let totalSeconds = 13 * 60;
+  function updateCountdown() {
+    if (totalSeconds <= 0) {
+      document.getElementById('countdown').textContent = '00:00';
+      document.getElementById('countdown2').textContent = '0';
+      return;
+    }
+    totalSeconds--;
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    document.getElementById('countdown').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('countdown2').textContent = String(m);
+  }
+  setInterval(updateCountdown, 1000);
+
+  /* === Calendar nav === */
+  function goToDay(day) {
+    console.log('Navegando al día', day, 'de Abril 2026');
+  }
+
+  /* === Stagger animations for items === */
+  document.querySelectorAll('.timeline-item').forEach((el, i) => {
+    el.style.animationDelay = (0.08 * i + 0.1) + 's';
+  });
+  document.querySelectorAll('.patient-card').forEach((el, i) => {
+    el.style.animationDelay = (0.1 * i + 0.1) + 's';
+  });
+  document.querySelectorAll('.alert-item').forEach((el, i) => {
+    el.style.animationDelay = (0.08 * i + 0.08) + 's';
+  });
+  document.querySelectorAll('.activity-item').forEach((el, i) => {
+    el.style.animationDelay = (0.08 * i + 0.08) + 's';
+  });
+
+  /* === Progress bars animated on load === */
+  document.querySelectorAll('.progress-bar-custom').forEach(bar => {
+    const target = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(() => {
+      bar.style.transition = 'width 1.2s cubic-bezier(0.4,0,0.2,1)';
+      bar.style.width = target;
+    }, 500);
+  });
+</script>
+</body>
+</html>
