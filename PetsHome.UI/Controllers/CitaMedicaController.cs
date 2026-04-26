@@ -181,6 +181,25 @@ namespace PetsHome.UI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Calendario()
+        {
+            await _HistorialMedicoService.SeedCalendarioAsync();
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> CalendarioData(string inicio, string fin)
+        {
+            if (!DateTime.TryParse(inicio, out DateTime fechaInicio))
+                fechaInicio = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            if (!DateTime.TryParse(fin, out DateTime fechaFin))
+                fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
+
+            var data = await _HistorialMedicoService.CalendarioAsync(fechaInicio, fechaFin);
+            return Json(data);
+        }
+
+        [HttpGet]
         public JsonResult GetMascotasDropdown()
         {
             try

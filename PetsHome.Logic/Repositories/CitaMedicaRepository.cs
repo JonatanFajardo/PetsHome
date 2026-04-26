@@ -5,6 +5,7 @@ using PetsHome.Common.Entities;
 using PetsHome.DataAccess;
 using PetsHome.DataAccess.Extensions;
 using PetsHome.Logic.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -106,6 +107,22 @@ namespace PetsHome.Logic.Repositories
                 var result = db.Query<PR_Medico_CitaMedica_DropdownResult>(query, parameter, commandType: CommandType.StoredProcedure);
                 return result;
             }
+        }
+
+        public async Task<IEnumerable<PR_Medico_CitaMedica_CalendarioResult>> CalendarioAsync(DateTime fechaInicio, DateTime fechaFin)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Calendario]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@FechaInicio", fechaInicio.Date, DbType.Date, ParameterDirection.Input);
+            parameter.Add("@FechaFin", fechaFin.Date, DbType.Date, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Medico_CitaMedica_CalendarioResult>(sqlQuery, parameter);
+        }
+
+        public async Task SeedCalendarioAsync()
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_SeedCalendario]";
+            using var db = new SqlConnection(PetsHomeDbContext.ConnectionString);
+            await db.ExecuteAsync(sqlQuery, commandType: CommandType.StoredProcedure, commandTimeout: 60);
         }
 
         public IEnumerable<PR_Refugio_Comportamiento_ListResult> ComportamientoList()

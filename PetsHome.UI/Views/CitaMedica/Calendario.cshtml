@@ -1,0 +1,140 @@
+@{
+    ViewData["Title"] = "Calendario de Citas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de citas medicas";
+}
+
+@section Styles {
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/calendario-citas.css" />
+}
+
+<div class="col-12 p-0">
+
+  <!-- Header de página -->
+  <div class="cal-page-header">
+    <span class="brand"><i class="bi bi-heart-pulse-fill"></i>PetsHome</span>
+    <span class="page-title">Calendario de Citas</span>
+    <div class="ms-auto">
+      <a href="@Url.Action("Create", "CitaMedica")" class="btn-add btn-insertar ripple">
+        <i class="bi bi-plus-lg"></i> Nueva Cita
+      </a>
+    </div>
+  </div>
+
+  <!-- Layout principal: calendario + sidebar -->
+  <div class="app-layout">
+
+    <!-- ══ CALENDARIO ══ -->
+    <div class="cal-main" style="position:relative;">
+
+      <!-- Overlay de carga -->
+      <div class="cal-loading" id="cal-loading" style="display:none;">
+        <div class="cal-spinner"></div>
+      </div>
+
+      <!-- Header con navegación y vistas -->
+      <div class="cal-header">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="btn-prev" title="Anterior"><i class="bi bi-chevron-left"></i></button>
+          <button class="cal-today-btn ripple" onclick="goToday()">Hoy</button>
+          <button class="cal-nav-btn" id="btn-next" title="Siguiente"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <div class="cal-title" id="cal-title">Cargando...</div>
+        <div class="cal-view-btns">
+          <button class="view-btn active ripple" data-view="month">Mes</button>
+          <button class="view-btn ripple" data-view="week">Semana</button>
+          <button class="view-btn ripple" data-view="day">Día</button>
+        </div>
+      </div>
+
+      <!-- Vista Mes -->
+      <div id="view-month" style="flex:1;display:flex;flex-direction:column;">
+        <div class="month-dow-row" id="dow-row"></div>
+        <div class="month-grid" id="month-grid" style="flex:1;"></div>
+      </div>
+
+      <!-- Vista Semana -->
+      <div id="view-week" style="display:none;flex:1;flex-direction:column;" class="week-view">
+        <div class="week-header-row" id="week-header-row"></div>
+        <div class="week-body" id="week-body"></div>
+      </div>
+
+      <!-- Vista Día -->
+      <div id="view-day" style="display:none;flex:1;flex-direction:column;">
+        <div class="day-view-header">
+          <span class="day-view-title" id="day-view-title"></span>
+          <span class="badge-count" id="day-view-badge">0</span>
+        </div>
+        <div class="day-body" id="day-body"></div>
+      </div>
+    </div>
+
+    <!-- ══ SIDEBAR ══ -->
+    <div class="cal-sidebar">
+
+      <!-- Mini calendario -->
+      <div class="sidebar-card">
+        <div class="mini-cal-header">
+          <button class="mini-cal-nav" id="mini-prev"><i class="bi bi-chevron-left"></i></button>
+          <span class="mini-cal-title" id="mini-title"></span>
+          <button class="mini-cal-nav" id="mini-next"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <div class="mini-grid">
+          <div class="mini-dow-row" id="mini-dow"></div>
+          <div class="mini-days" id="mini-days"></div>
+        </div>
+      </div>
+
+      <!-- Citas del día -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">
+          <span class="sidebar-card-title">Citas del día</span>
+          <span class="badge-count" id="sidebar-badge">0</span>
+        </div>
+        <div class="sidebar-date-label" id="sidebar-date-label"></div>
+        <div class="appt-list" id="appt-list"></div>
+      </div>
+
+      <!-- Leyenda -->
+      <div class="sidebar-card legend-card">
+        <div class="sidebar-card-header">
+          <span class="sidebar-card-title"><i class="bi bi-palette2 me-1" style="color:var(--purple)"></i>Leyenda</span>
+        </div>
+        <div class="legend-list">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Emergencia</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Vacunación</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Control</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Cirugía</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--mauve)"></div>Consulta General</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tooltip de evento -->
+<div class="event-tooltip" id="event-tooltip">
+  <button class="tooltip-close" onclick="hideTooltip()"><i class="bi bi-x-lg"></i></button>
+  <div class="tooltip-type-bar" id="tt-bar"></div>
+  <div class="tooltip-pet" id="tt-pet"></div>
+  <div class="tooltip-row"><i class="bi bi-clock"></i><span id="tt-time"></span></div>
+  <div class="tooltip-row"><i class="bi bi-tag"></i><span id="tt-type"></span></div>
+  <div class="tooltip-row"><i class="bi bi-chat-left-text"></i><span id="tt-owner"></span></div>
+  <div class="tooltip-row"><i class="bi bi-hourglass-split"></i><span id="tt-dur"></span></div>
+  <div class="tooltip-actions">
+    <a id="tt-detail-link" href="#" class="tooltip-btn-detail">
+      <i class="bi bi-eye me-1"></i> Ver detalle
+    </a>
+  </div>
+</div>
+
+@section Scripts {
+
+<script>
+const URL_CALENDARIO = '@Url.Action("CalendarioData", "CitaMedica")';
+const URL_DETALLE    = '@Url.Action("Detail", "CitaMedica")';
+</script>
+<script src="~/js/pages/calendario-citas.js"></script>
+}

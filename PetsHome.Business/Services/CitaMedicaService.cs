@@ -157,6 +157,42 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public async Task SeedCalendarioAsync()
+        {
+            try
+            {
+                await _historialmedicoRepository.SeedCalendarioAsync();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                // No relanzar: el calendario carga vacío en lugar de romper la página
+            }
+        }
+
+        public async Task<List<CitaMedicaCalendarioViewModel>> CalendarioAsync(DateTime fechaInicio, DateTime fechaFin)
+        {
+            try
+            {
+                var results = await _historialmedicoRepository.CalendarioAsync(fechaInicio, fechaFin);
+                return results.Select(r => new CitaMedicaCalendarioViewModel
+                {
+                    id    = r.cita_Id,
+                    date  = r.cita_FechaConsulta.ToString("yyyy-MM-dd"),
+                    time  = r.cita_FechaConsulta.ToString("HH:mm"),
+                    dur   = r.Duracion,
+                    pet   = r.Mascota,
+                    owner = !string.IsNullOrWhiteSpace(r.cita_MotivoConsulta) ? r.cita_MotivoConsulta : r.Gravedad,
+                    type  = r.TipoConsulta
+                }).ToList();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new List<CitaMedicaCalendarioViewModel>();
+            }
+        }
+
         public IEnumerable<object> CitaMedicaDropdown(int? masc_Id = null)
         {
             try
