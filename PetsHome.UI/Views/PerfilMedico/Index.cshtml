@@ -1,518 +1,447 @@
+@model PetsHome.Business.Models.PerfilMedicoViewModel
 @{
-    ViewData["Title"] = "Perfil Médico — VetCare";
+    ViewData["Title"] = "Perfil Médico";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["CurrentPantalla"] = "";
+    ViewData["CurrentPantalla"] = "Perfil medico de mascota";
+
+    var ficha = Model.FichaMascota.FirstOrDefault();
+    var nombreMascota = ficha?.masc_Nombre ?? "Mascota";
+
+    string TipoCss(string tipo) {
+        var t = (tipo ?? "").ToLower();
+        if (t.Contains("vacun"))                                        return "tipo-vacuna";
+        if (t.Contains("urgencia") || t.Contains("emergencia"))         return "tipo-urgencia";
+        if (t.Contains("revisión") || t.Contains("revision")
+         || t.Contains("seguimiento") || t.Contains("control"))        return "tipo-control";
+        return "tipo-revision";
+    }
+    string BadgeCss(string tipo) {
+        var t = (tipo ?? "").ToLower();
+        if (t.Contains("vacun"))                                        return "badge-vacuna";
+        if (t.Contains("urgencia") || t.Contains("emergencia"))         return "badge-urgencia";
+        if (t.Contains("revisión") || t.Contains("revision")
+         || t.Contains("seguimiento") || t.Contains("control"))        return "badge-control";
+        return "badge-revision";
+    }
+    string TlColor(string tipo) {
+        var t = (tipo ?? "").ToLower();
+        if (t.Contains("vacun"))                                        return "green";
+        if (t.Contains("urgencia"))                                     return "red";
+        return "purple";
+    }
+    string TlIcon(string tipo) {
+        var t = (tipo ?? "").ToLower();
+        if (t.Contains("vacun"))                                        return "bi-shield-check";
+        if (t.Contains("urgencia"))                                     return "bi-exclamation-triangle";
+        return "bi-stethoscope";
+    }
+    string DiasCss(int? dias) {
+        if (!dias.HasValue || dias <= 3)  return "dias-low";
+        if (dias <= 7)                    return "dias-mid";
+        return "dias-ok";
+    }
+    string EstatusClass(string estado) => (estado ?? "") switch {
+        "Activo"     => "tstat-active",
+        "Finalizado" => "tstat-done",
+        _            => "tstat-pending"
+    };
+    string VacunaClass(string estado) => (estado ?? "") switch {
+        "Vencida"  => "vacuna-venc",
+        "Próxima"  => "vacuna-proxima",
+        _          => "vacuna-ok"
+    };
+    string DotClass(string estado) => (estado ?? "") switch {
+        "Vencida"  => "dot-venc",
+        "Próxima"  => "dot-proxima",
+        _          => "dot-ok"
+    };
+
+    string statusBadgeCss   = ficha?.EstadoSalud == "En Tratamiento" ? "status-treatment"
+                            : ficha?.EstadoSalud == "Crítico"        ? "status-critical"
+                                                                      : "status-healthy";
+    string statusBadgeLabel = ficha?.EstadoSalud ?? "Saludable";
 }
 
 @section Styles {
   <link rel="stylesheet" href="~/css/perfil-medico-mascota.css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Ajustes de integración con el layout de la app */
+    .app-wrapper { min-height: auto; }
+    .content-area { overflow-y: visible; }
+  </style>
 }
 
 <div class="app-wrapper">
-<!-- ════════════ SIDEBAR ════════════ -->
-<aside class="sidebar">
-<div class="avatar-wrap">
-<div class="avatar-img">
-<span class="avatar-emoji">🐕</span>
-</div>
-<span class="status-badge status-treatment">En Tratamiento</span>
-</div>
-<div class="pet-name">Luna</div>
-<div class="pet-meta">
-      Golden Retriever · 4 años<br/>
-      Hembra · Esterilizada
+
+  <!-- ════════════ SIDEBAR PET ════════════ -->
+  <aside class="sidebar">
+    <div class="avatar-wrap">
+      <div class="avatar-img">
+        <span class="avatar-emoji">🐾</span>
+      </div>
+      <span class="status-badge @statusBadgeCss">@statusBadgeLabel</span>
     </div>
-<div class="shelter-tag">
-<i class="bi bi-house-heart-fill"></i>
-      Refugio El Rincón
+
+    <div class="pet-name">@nombreMascota</div>
+    <div class="pet-meta">
+      @ficha?.Raza · @ficha?.Edad<br />
+      @ficha?.Sexo · @(ficha?.EsEsterilizada == true ? "Esterilizado/a" : "No esterilizado/a")
     </div>
-<div class="sidebar-divider"></div>
-<div class="mini-stats">
-<div class="mini-stat" style="animation-delay:.1s">
-<div class="mini-stat-icon purple"><i class="bi bi-calendar-check"></i></div>
-<div>
-<div class="mini-stat-val">24</div>
-<div class="mini-stat-lbl">Total Citas</div>
-</div>
-</div>
-<div class="mini-stat" style="animation-delay:.18s">
-<div class="mini-stat-icon orange" style="background:#FFF7ED;color:#D97706"><i class="bi bi-capsule"></i></div>
-<div>
-<div class="mini-stat-val">3</div>
-<div class="mini-stat-lbl">Tratamientos activos</div>
-</div>
-</div>
-<div class="mini-stat" style="animation-delay:.26s">
-<div class="mini-stat-icon green"><i class="bi bi-shield-check"></i></div>
-<div>
-<div class="mini-stat-val">7</div>
-<div class="mini-stat-lbl">Vacunas al día</div>
-</div>
-</div>
-</div>
-<div class="sidebar-divider"></div>
-<div style="width:100%">
-<div class="section-title">Ficha</div>
-<div style="font-size:12px;color:var(--text-muted);line-height:2">
-<div><b style="color:var(--text-dark);font-weight:600">Microchip</b> · 985141006893421</div>
-<div><b style="color:var(--text-dark);font-weight:600">Peso</b> · 28.5 kg</div>
-<div><b style="color:var(--text-dark);font-weight:600">Adoptante</b> · Familia García</div>
-<div><b style="color:var(--text-dark);font-weight:600">Último control</b> · 18 abr 2026</div>
-</div>
-</div>
-</aside>
-<!-- ════════════ MAIN ════════════ -->
-<div class="main-content">
-<!-- Header -->
-<header class="top-header">
-<div class="header-left">
-<div class="header-title">Luna — Perfil Médico</div>
-<nav class="breadcrumb-nav">
-<span>VetCare</span>
-<i class="bi bi-chevron-right"></i>
-<span>Mascotas</span>
-<i class="bi bi-chevron-right"></i>
-<span style="color:rgba(255,255,255,.9);font-weight:600">Luna</span>
-</nav>
-</div>
-<button class="btn-nueva" onclick="document.getElementById('modalConsulta').style.display='flex'">
-<i class="bi bi-plus-lg"></i> Nueva Consulta
+
+    @if (!string.IsNullOrEmpty(ficha?.Refugio))
+    {
+      <div class="shelter-tag">
+        <i class="bi bi-house-heart-fill"></i>
+        @ficha.Refugio
+      </div>
+    }
+
+    <div class="sidebar-divider"></div>
+
+    <div class="mini-stats">
+      <div class="mini-stat" style="animation-delay:.1s">
+        <div class="mini-stat-icon purple"><i class="bi bi-calendar-check"></i></div>
+        <div>
+          <div class="mini-stat-val">@(ficha?.TotalCitas ?? 0)</div>
+          <div class="mini-stat-lbl">Total Citas</div>
+        </div>
+      </div>
+      <div class="mini-stat" style="animation-delay:.18s">
+        <div class="mini-stat-icon" style="background:#FFF7ED;color:#D97706"><i class="bi bi-capsule"></i></div>
+        <div>
+          <div class="mini-stat-val">@(ficha?.TratamientosActivos ?? 0)</div>
+          <div class="mini-stat-lbl">Tratamientos activos</div>
+        </div>
+      </div>
+      <div class="mini-stat" style="animation-delay:.26s">
+        <div class="mini-stat-icon green"><i class="bi bi-shield-check"></i></div>
+        <div>
+          <div class="mini-stat-val">@(ficha?.VacunasAlDia ?? 0)</div>
+          <div class="mini-stat-lbl">Vacunas al día</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div style="width:100%">
+      <div class="section-title">Ficha</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:2">
+        <div><b style="color:var(--text-dark);font-weight:600">Microchip</b> · @(ficha?.Microchip ?? "N/A")</div>
+        <div><b style="color:var(--text-dark);font-weight:600">Peso</b> · @(ficha?.Peso?.ToString("0.##") ?? "—") kg</div>
+        <div><b style="color:var(--text-dark);font-weight:600">Adoptante</b> · @(ficha?.Adoptante ?? "Sin adoptante")</div>
+        <div><b style="color:var(--text-dark);font-weight:600">Último control</b> · @(ficha?.UltimaVisita?.ToString("dd MMM yyyy") ?? "—")</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════════ MAIN ════════════ -->
+  <div class="main-content">
+
+    <!-- Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <div class="header-title">@nombreMascota — Perfil Médico</div>
+        <nav class="breadcrumb-nav">
+          <span>PetsHome</span>
+          <i class="bi bi-chevron-right"></i>
+          <span>Mascotas</span>
+          <i class="bi bi-chevron-right"></i>
+          <span style="color:rgba(255,255,255,.9);font-weight:600">@nombreMascota</span>
+        </nav>
+      </div>
+      <button class="btn-nueva" onclick="document.getElementById('modalConsulta').style.display='flex'">
+        <i class="bi bi-plus-lg"></i> Nueva Consulta
       </button>
-</header>
-<!-- Tab Bar -->
-<nav class="tab-bar">
-<button class="tab-btn active" onclick="switchTab('resumen', this)">
-<i class="bi bi-grid-1x2"></i> Resumen
+    </header>
+
+    <!-- Tab Bar -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('resumen', this)">
+        <i class="bi bi-grid-1x2"></i> Resumen
       </button>
-<button class="tab-btn" onclick="switchTab('citas', this)">
-<i class="bi bi-calendar3"></i> Citas
-        <span class="tab-count">24</span>
-</button>
-<button class="tab-btn" onclick="switchTab('historial', this)">
-<i class="bi bi-clock-history"></i> Historial
+      <button class="tab-btn" onclick="switchTab('citas', this)">
+        <i class="bi bi-calendar3"></i> Citas
+        <span class="tab-count">@Model.TotalTodasCitas</span>
       </button>
-<button class="tab-btn" onclick="switchTab('recetas', this)">
-<i class="bi bi-file-earmark-medical"></i> Recetas
-        <span class="tab-count">5</span>
-</button>
-<button class="tab-btn" onclick="switchTab('tratamientos', this)">
-<i class="bi bi-activity"></i> Tratamientos
-        <span class="tab-count">3</span>
-</button>
-<button class="tab-btn" onclick="switchTab('vacunas', this)">
-<i class="bi bi-shield-check"></i> Vacunas
+      <button class="tab-btn" onclick="switchTab('historial', this)">
+        <i class="bi bi-clock-history"></i> Historial
       </button>
-</nav>
-<!-- Content -->
-<div class="content-area">
-<!-- ═══ RESUMEN ═══ -->
-<div class="tab-panel active" id="tab-resumen">
-<div class="section-title">Últimas Citas</div>
-<div class="citas-grid">
-<div class="cita-card tipo-control">
-<div class="cita-fecha"><i class="bi bi-calendar3"></i> 18 Abr 2026</div>
-<div class="tipo-badge badge-control">Control General</div>
-<div class="cita-diag">Revisión anual de salud. Parámetros dentro de la normalidad. Se recomienda ajuste en dieta.</div>
-<div class="cita-vet"><i class="bi bi-person-badge"></i> Dra. Martínez</div>
-</div>
-<div class="cita-card tipo-vacuna">
-<div class="cita-fecha"><i class="bi bi-calendar3"></i> 05 Abr 2026</div>
-<div class="tipo-badge badge-vacuna">Vacunación</div>
-<div class="cita-diag">Aplicación refuerzo antirrábico anual. Sin reacciones adversas. Siguiente dosis en 1 año.</div>
-<div class="cita-vet"><i class="bi bi-person-badge"></i> Dr. Herrera</div>
-</div>
-<div class="cita-card tipo-urgencia">
-<div class="cita-fecha"><i class="bi bi-calendar3"></i> 22 Mar 2026</div>
-<div class="tipo-badge badge-urgencia">Urgencia</div>
-<div class="cita-diag">Vómitos persistentes y decaimiento. Gastroenteritis aguda. Se inicia tratamiento con antibióticos.</div>
-<div class="cita-vet"><i class="bi bi-person-badge"></i> Dra. Ruiz</div>
-</div>
-<div class="cita-card tipo-revision">
-<div class="cita-fecha"><i class="bi bi-calendar3"></i> 10 Mar 2026</div>
-<div class="tipo-badge badge-revision">Revisión</div>
-<div class="cita-diag">Seguimiento de otitis externa. Mejora significativa. Continúa tratamiento tópico.</div>
-<div class="cita-vet"><i class="bi bi-person-badge"></i> Dra. Martínez</div>
-</div>
-</div>
-<!-- Lower section -->
-<div class="resumen-lower">
-<!-- Medications table -->
-<div class="meds-card">
-<div class="meds-header">
-<span><i class="bi bi-capsule me-2" style="color:var(--purple-1)"></i>Medicamentos Activos</span>
-<span style="font-size:12px;color:var(--text-muted);font-weight:400">3 en curso</span>
-</div>
-<table class="meds-table">
-<thead>
-<tr>
-<th>Medicamento</th>
-<th>Progreso</th>
-<th style="text-align:center">Días rest.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<div class="med-name">Amoxicilina</div>
-<div class="med-dose">250mg · 2×/día</div>
-</td>
-<td>
-<div class="prog-bar"><div class="prog-fill" data-pct="65"></div></div>
-<div class="prog-pct">65% completado</div>
-</td>
-<td class="dias-cell dias-mid">7</td>
-</tr>
-<tr>
-<td>
-<div class="med-name">Otomax Ótico</div>
-<div class="med-dose">5 gotas · 1×/día</div>
-</td>
-<td>
-<div class="prog-bar"><div class="prog-fill" data-pct="82"></div></div>
-<div class="prog-pct">82% completado</div>
-</td>
-<td class="dias-cell dias-low">3</td>
-</tr>
-<tr>
-<td>
-<div class="med-name">Omeprazol</div>
-<div class="med-dose">20mg · 1×/día</div>
-</td>
-<td>
-<div class="prog-bar"><div class="prog-fill" data-pct="40"></div></div>
-<div class="prog-pct">40% completado</div>
-</td>
-<td class="dias-cell dias-ok">18</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Timeline -->
-<div class="timeline-card">
-<div class="timeline-header"><i class="bi bi-clock-history me-2" style="color:var(--purple-1)"></i>Últimos Eventos</div>
-<div class="timeline-body">
-<div class="tl-item">
-<div class="tl-icon purple"><i class="bi bi-stethoscope"></i></div>
-<div class="tl-text">
-<div class="tl-event">Control general</div>
-<div class="tl-date">18 Abr 2026 · Dra. Martínez</div>
-</div>
-</div>
-<div class="tl-item">
-<div class="tl-icon green"><i class="bi bi-shield-check"></i></div>
-<div class="tl-text">
-<div class="tl-event">Vacuna antirrábica</div>
-<div class="tl-date">05 Abr 2026 · Dr. Herrera</div>
-</div>
-</div>
-<div class="tl-item">
-<div class="tl-icon red"><i class="bi bi-exclamation-triangle"></i></div>
-<div class="tl-text">
-<div class="tl-event">Urgencia — Gastroenteritis</div>
-<div class="tl-date">22 Mar 2026 · Dra. Ruiz</div>
-</div>
-</div>
-<div class="tl-item">
-<div class="tl-icon blue"><i class="bi bi-ear"></i></div>
-<div class="tl-text">
-<div class="tl-event">Revisión otitis externa</div>
-<div class="tl-date">10 Mar 2026 · Dra. Martínez</div>
-</div>
-</div>
-<div class="tl-item">
-<div class="tl-icon orange"><i class="bi bi-capsule"></i></div>
-<div class="tl-text">
-<div class="tl-event">Inicio tratamiento antibiótico</div>
-<div class="tl-date">22 Mar 2026 · Farmacia VetCare</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><!-- /tab-resumen -->
-<!-- ═══ CITAS ═══ -->
-<div class="tab-panel" id="tab-citas">
-<div class="section-title">Todas las Citas</div>
-<div class="citas-list">
-<div class="cita-row">
-<div class="cita-row-date"><div class="cita-row-day">18</div><div class="cita-row-month">Abr</div></div>
-<div class="cita-row-body">
-<div class="cita-row-title">Control General Anual</div>
-<div class="cita-row-sub">
-<span><i class="bi bi-person-badge"></i> Dra. Martínez</span>
-<span><i class="bi bi-clock"></i> 10:30 AM</span>
-<span><i class="bi bi-geo-alt"></i> Sala 2</span>
-</div>
-</div>
-<div><span class="tipo-badge badge-control">Control</span></div>
-</div>
-<div class="cita-row">
-<div class="cita-row-date"><div class="cita-row-day">05</div><div class="cita-row-month">Abr</div></div>
-<div class="cita-row-body">
-<div class="cita-row-title">Vacunación Antirrábica</div>
-<div class="cita-row-sub">
-<span><i class="bi bi-person-badge"></i> Dr. Herrera</span>
-<span><i class="bi bi-clock"></i> 09:00 AM</span>
-<span><i class="bi bi-geo-alt"></i> Sala 1</span>
-</div>
-</div>
-<div><span class="tipo-badge badge-vacuna">Vacuna</span></div>
-</div>
-<div class="cita-row">
-<div class="cita-row-date"><div class="cita-row-day">22</div><div class="cita-row-month">Mar</div></div>
-<div class="cita-row-body">
-<div class="cita-row-title">Urgencia — Gastroenteritis Aguda</div>
-<div class="cita-row-sub">
-<span><i class="bi bi-person-badge"></i> Dra. Ruiz</span>
-<span><i class="bi bi-clock"></i> 03:15 PM</span>
-<span><i class="bi bi-geo-alt"></i> Urgencias</span>
-</div>
-</div>
-<div><span class="tipo-badge badge-urgencia">Urgencia</span></div>
-</div>
-<div class="cita-row">
-<div class="cita-row-date"><div class="cita-row-day">10</div><div class="cita-row-month">Mar</div></div>
-<div class="cita-row-body">
-<div class="cita-row-title">Revisión Otitis Externa</div>
-<div class="cita-row-sub">
-<span><i class="bi bi-person-badge"></i> Dra. Martínez</span>
-<span><i class="bi bi-clock"></i> 11:00 AM</span>
-<span><i class="bi bi-geo-alt"></i> Sala 2</span>
-</div>
-</div>
-<div><span class="tipo-badge badge-revision">Revisión</span></div>
-</div>
-<div class="cita-row">
-<div class="cita-row-date"><div class="cita-row-day">15</div><div class="cita-row-month">Feb</div></div>
-<div class="cita-row-body">
-<div class="cita-row-title">Desparasitación Externa</div>
-<div class="cita-row-sub">
-<span><i class="bi bi-person-badge"></i> Dr. Herrera</span>
-<span><i class="bi bi-clock"></i> 12:30 PM</span>
-<span><i class="bi bi-geo-alt"></i> Sala 1</span>
-</div>
-</div>
-<div><span class="tipo-badge badge-control">Preventivo</span></div>
-</div>
-</div>
-</div>
-<!-- ═══ HISTORIAL ═══ -->
-<div class="tab-panel" id="tab-historial">
-<div class="empty-state">
-<i class="bi bi-archive"></i>
-<div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Historial Clínico Completo</div>
-<p>El historial detallado estará disponible próximamente.<br/>Por ahora puedes consultar el Resumen general.</p>
-</div>
-</div>
-<!-- ═══ RECETAS ═══ -->
-<div class="tab-panel" id="tab-recetas">
-<div class="empty-state">
-<i class="bi bi-file-earmark-medical"></i>
-<div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Recetas Digitales</div>
-<p>Aquí aparecerán las recetas emitidas por los veterinarios.</p>
-</div>
-</div>
-<!-- ═══ TRATAMIENTOS ═══ -->
-<div class="tab-panel" id="tab-tratamientos">
-<div class="section-title">Tratamientos en Curso</div>
-<div class="trat-list">
-<div class="trat-card">
-<div class="trat-icon-wrap">💊</div>
-<div class="trat-info">
-<div class="trat-name">Tratamiento Antibiótico</div>
-<div class="trat-med"><i class="bi bi-capsule"></i> Amoxicilina 250mg · 2 veces al día</div>
-<div class="trat-dates">
-<span><i class="bi bi-calendar-event"></i> Inicio: 22 Mar 2026</span>
-<span><i class="bi bi-calendar-x"></i> Fin: 02 Abr 2026</span>
-</div>
-</div>
-<div class="trat-progress">
-<div class="trat-prog-label">
-<span class="trat-prog-name">Progreso del tratamiento</span>
-<span class="trat-prog-pct">65%</span>
-</div>
-<div class="trat-prog-bar"><div class="trat-prog-fill" data-pct="65"></div></div>
-</div>
-<div class="trat-status-col">
-<span class="trat-status tstat-active">Activo</span>
-</div>
-</div>
-<div class="trat-card">
-<div class="trat-icon-wrap">👂</div>
-<div class="trat-info">
-<div class="trat-name">Tratamiento Otitis</div>
-<div class="trat-med"><i class="bi bi-capsule"></i> Otomax · 5 gotas · 1 vez al día</div>
-<div class="trat-dates">
-<span><i class="bi bi-calendar-event"></i> Inicio: 10 Mar 2026</span>
-<span><i class="bi bi-calendar-x"></i> Fin: 30 Mar 2026</span>
-</div>
-</div>
-<div class="trat-progress">
-<div class="trat-prog-label">
-<span class="trat-prog-name">Progreso del tratamiento</span>
-<span class="trat-prog-pct">82%</span>
-</div>
-<div class="trat-prog-bar"><div class="trat-prog-fill" data-pct="82"></div></div>
-</div>
-<div class="trat-status-col">
-<span class="trat-status tstat-active">Activo</span>
-</div>
-</div>
-<div class="trat-card">
-<div class="trat-icon-wrap">🛡️</div>
-<div class="trat-info">
-<div class="trat-name">Protección Gástrica</div>
-<div class="trat-med"><i class="bi bi-capsule"></i> Omeprazol 20mg · 1 vez al día</div>
-<div class="trat-dates">
-<span><i class="bi bi-calendar-event"></i> Inicio: 22 Mar 2026</span>
-<span><i class="bi bi-calendar-x"></i> Fin: 22 Abr 2026</span>
-</div>
-</div>
-<div class="trat-progress">
-<div class="trat-prog-label">
-<span class="trat-prog-name">Progreso del tratamiento</span>
-<span class="trat-prog-pct">40%</span>
-</div>
-<div class="trat-prog-bar"><div class="trat-prog-fill" data-pct="40"></div></div>
-</div>
-<div class="trat-status-col">
-<span class="trat-status tstat-active">Activo</span>
-</div>
-</div>
-<div class="trat-card" style="opacity:.75">
-<div class="trat-icon-wrap">🦠</div>
-<div class="trat-info">
-<div class="trat-name">Antiparasitario Interno</div>
-<div class="trat-med"><i class="bi bi-capsule"></i> Milbemax · 1 comprimido mensual</div>
-<div class="trat-dates">
-<span><i class="bi bi-calendar-event"></i> Inicio: 01 Ene 2026</span>
-<span><i class="bi bi-calendar-x"></i> Fin: 01 Mar 2026</span>
-</div>
-</div>
-<div class="trat-progress">
-<div class="trat-prog-label">
-<span class="trat-prog-name">Progreso del tratamiento</span>
-<span class="trat-prog-pct">100%</span>
-</div>
-<div class="trat-prog-bar"><div class="trat-prog-fill" data-pct="100" style="background:linear-gradient(90deg,#6EE7B7,#059669)"></div></div>
-</div>
-<div class="trat-status-col">
-<span class="trat-status tstat-done">Finalizado</span>
-</div>
-</div>
-</div>
-</div>
-<!-- ═══ VACUNAS ═══ -->
-<div class="tab-panel" id="tab-vacunas">
-<div class="section-title">Cartilla de Vacunación</div>
-<div class="vacunas-grid">
-<div class="vacuna-card">
-<div class="vacuna-icon">💉</div>
-<div class="vacuna-name">Antirrábica</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 05 Abr 2026</div>
-<div class="vacuna-next vacuna-ok"><span class="vacuna-dot dot-ok"></span>Al día · Próxima: Abr 2027</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">🛡️</div>
-<div class="vacuna-name">Moquillo + Parvovirus</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 12 Ene 2026</div>
-<div class="vacuna-next vacuna-ok"><span class="vacuna-dot dot-ok"></span>Al día · Próxima: Ene 2027</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">🔬</div>
-<div class="vacuna-name">Leptospirosis</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 12 Ene 2026</div>
-<div class="vacuna-next vacuna-ok"><span class="vacuna-dot dot-ok"></span>Al día · Próxima: Ene 2027</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">🫁</div>
-<div class="vacuna-name">Bordetella</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 15 Oct 2025</div>
-<div class="vacuna-next vacuna-proxima"><span class="vacuna-dot dot-proxima"></span>Próxima: May 2026 (¡pronto!)</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">🧬</div>
-<div class="vacuna-name">Adenovirus</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 12 Ene 2026</div>
-<div class="vacuna-next vacuna-ok"><span class="vacuna-dot dot-ok"></span>Al día · Próxima: Ene 2027</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">⚠️</div>
-<div class="vacuna-name">Parainfluenza</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 20 Mar 2025</div>
-<div class="vacuna-next vacuna-venc"><span class="vacuna-dot dot-venc"></span>¡Vencida! Requiere refuerzo</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">🦟</div>
-<div class="vacuna-name">Leishmaniasis</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 05 Feb 2026</div>
-<div class="vacuna-next vacuna-ok"><span class="vacuna-dot dot-ok"></span>Al día · Próxima: Feb 2027</div>
-</div>
-<div class="vacuna-card">
-<div class="vacuna-icon">🐾</div>
-<div class="vacuna-name">Hexavalente (DHPPiL)</div>
-<div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: 12 Ene 2026</div>
-<div class="vacuna-next vacuna-ok"><span class="vacuna-dot dot-ok"></span>Al día · Próxima: Ene 2027</div>
-</div>
-<div class="vacuna-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;min-height:130px">
-<i class="bi bi-plus-circle" style="font-size:28px;color:var(--purple-mid)"></i>
-<div style="margin-top:10px;font-size:13px;color:var(--text-muted);font-weight:500">Añadir vacuna</div>
-</div>
-</div>
-</div>
-</div><!-- /content-area -->
-</div><!-- /main-content -->
+      <button class="tab-btn" onclick="switchTab('recetas', this)">
+        <i class="bi bi-file-earmark-medical"></i> Recetas
+      </button>
+      <button class="tab-btn" onclick="switchTab('tratamientos', this)">
+        <i class="bi bi-activity"></i> Tratamientos
+        <span class="tab-count">@Model.TotalTratamientos</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('vacunas', this)">
+        <i class="bi bi-shield-check"></i> Vacunas
+        <span class="tab-count">@Model.TotalVacunas</span>
+      </button>
+    </nav>
+
+    <!-- Content -->
+    <div class="content-area">
+
+      <!-- ═══ RESUMEN ═══ -->
+      <div class="tab-panel active" id="tab-resumen">
+
+        <div class="section-title">Últimas Citas</div>
+        <div class="citas-grid">
+          @foreach (var c in Model.UltimasCitas)
+          {
+            <div class="cita-card @TipoCss(c.TipoConsulta)">
+              <div class="cita-fecha"><i class="bi bi-calendar3"></i> @c.cita_FechaConsulta.ToString("dd MMM yyyy")</div>
+              <div class="tipo-badge @BadgeCss(c.TipoConsulta)">@c.TipoConsulta</div>
+              <div class="cita-diag">@c.cita_Diagnostico</div>
+              <div class="cita-vet"><i class="bi bi-person-badge"></i> @c.Veterinario</div>
+            </div>
+          }
+          @if (!Model.UltimasCitas.Any())
+          {
+            <div class="empty-state" style="grid-column:1/-1">
+              <i class="bi bi-calendar-x"></i>
+              <p>Sin citas registradas</p>
+            </div>
+          }
+        </div>
+
+        <div class="resumen-lower">
+
+          <!-- Medicamentos activos -->
+          <div class="meds-card">
+            <div class="meds-header">
+              <span><i class="bi bi-capsule me-2" style="color:var(--purple-1)"></i>Medicamentos Activos</span>
+              <span style="font-size:12px;color:var(--text-muted);font-weight:400">@Model.TotalMedicamentosActivos en curso</span>
+            </div>
+            <table class="meds-table">
+              <thead>
+                <tr>
+                  <th>Medicamento</th>
+                  <th>Progreso</th>
+                  <th style="text-align:center">Días rest.</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var m in Model.MedicamentosActivos)
+                {
+                  <tr>
+                    <td>
+                      <div class="med-name">@m.Medicamento</div>
+                      <div class="med-dose">@m.Dosis</div>
+                    </td>
+                    <td>
+                      <div class="prog-bar"><div class="prog-fill" data-pct="@m.PorcentajeCompletado"></div></div>
+                      <div class="prog-pct">@m.PorcentajeCompletado% completado</div>
+                    </td>
+                    <td class="dias-cell @DiasCss(m.DiasRestantes)">@(m.DiasRestantes?.ToString() ?? "—")</td>
+                  </tr>
+                }
+                @if (!Model.MedicamentosActivos.Any())
+                {
+                  <tr>
+                    <td colspan="3" style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px">
+                      Sin medicamentos activos
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Timeline -->
+          <div class="timeline-card">
+            <div class="timeline-header"><i class="bi bi-clock-history me-2" style="color:var(--purple-1)"></i>Últimos Eventos</div>
+            <div class="timeline-body">
+              @foreach (var c in Model.UltimasCitas)
+              {
+                <div class="tl-item">
+                  <div class="tl-icon @TlColor(c.TipoConsulta)"><i class="bi @TlIcon(c.TipoConsulta)"></i></div>
+                  <div class="tl-text">
+                    <div class="tl-event">@c.TipoConsulta</div>
+                    <div class="tl-date">@c.cita_FechaConsulta.ToString("dd MMM yyyy") · @c.Veterinario</div>
+                  </div>
+                </div>
+              }
+              @if (!Model.UltimasCitas.Any())
+              {
+                <p style="font-size:13px;color:var(--text-muted);text-align:center;padding:20px 0">Sin eventos recientes</p>
+              }
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /tab-resumen -->
+
+      <!-- ═══ CITAS ═══ -->
+      <div class="tab-panel" id="tab-citas">
+        <div class="section-title">Todas las Citas</div>
+        <div class="citas-list">
+          @foreach (var c in Model.TodasCitas)
+          {
+            <div class="cita-row">
+              <div class="cita-row-date">
+                <div class="cita-row-day">@c.cita_FechaConsulta.Day</div>
+                <div class="cita-row-month">@c.cita_FechaConsulta.ToString("MMM")</div>
+              </div>
+              <div class="cita-row-body">
+                <div class="cita-row-title">@c.cita_Diagnostico</div>
+                <div class="cita-row-sub">
+                  <span><i class="bi bi-person-badge"></i> @c.Veterinario</span>
+                  @if (!string.IsNullOrEmpty(c.Hora) && c.Hora != "00:00:00")
+                  {
+                    <span><i class="bi bi-clock"></i> @c.Hora</span>
+                  }
+                </div>
+              </div>
+              <div><span class="tipo-badge @BadgeCss(c.TipoConsulta)">@c.TipoConsulta</span></div>
+            </div>
+          }
+          @if (!Model.TodasCitas.Any())
+          {
+            <div class="empty-state">
+              <i class="bi bi-calendar-x"></i>
+              <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin citas registradas</div>
+              <p>Aún no hay citas para esta mascota.</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ═══ HISTORIAL ═══ -->
+      <div class="tab-panel" id="tab-historial">
+        <div class="empty-state">
+          <i class="bi bi-archive"></i>
+          <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Historial Clínico Completo</div>
+          <p>El historial detallado estará disponible próximamente.<br />Por ahora puedes consultar el Resumen general.</p>
+        </div>
+      </div>
+
+      <!-- ═══ RECETAS ═══ -->
+      <div class="tab-panel" id="tab-recetas">
+        <div class="empty-state">
+          <i class="bi bi-file-earmark-medical"></i>
+          <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Recetas Digitales</div>
+          <p>Aquí aparecerán las recetas emitidas por los veterinarios.</p>
+        </div>
+      </div>
+
+      <!-- ═══ TRATAMIENTOS ═══ -->
+      <div class="tab-panel" id="tab-tratamientos">
+        <div class="section-title">Tratamientos en Curso</div>
+        <div class="trat-list">
+          @foreach (var t in Model.Tratamientos)
+          {
+            var esFinado = (t.EstadoTratamiento ?? "").ToLower() == "finalizado";
+            <div class="trat-card" style="@(esFinado ? "opacity:.75" : "")">
+              <div class="trat-icon-wrap">💊</div>
+              <div class="trat-info">
+                <div class="trat-name">@t.NombreTratamiento</div>
+                <div class="trat-med"><i class="bi bi-capsule"></i> @t.Medicamento</div>
+                <div class="trat-dates">
+                  <span><i class="bi bi-calendar-event"></i> Inicio: @t.trat_FechaInicio.ToString("dd MMM yyyy")</span>
+                  @if (t.trat_FechaFin.HasValue)
+                  {
+                    <span><i class="bi bi-calendar-x"></i> Fin: @t.trat_FechaFin.Value.ToString("dd MMM yyyy")</span>
+                  }
+                </div>
+              </div>
+              <div class="trat-progress">
+                <div class="trat-prog-label">
+                  <span class="trat-prog-name">Progreso del tratamiento</span>
+                  <span class="trat-prog-pct">@t.PorcentajeCompletado%</span>
+                </div>
+                <div class="trat-prog-bar">
+                  <div class="trat-prog-fill" data-pct="@t.PorcentajeCompletado"
+                       @(esFinado ? "style=\"background:linear-gradient(90deg,#6EE7B7,#059669)\"" : "")></div>
+                </div>
+              </div>
+              <div class="trat-status-col">
+                <span class="trat-status @EstatusClass(t.EstadoTratamiento)">@t.EstadoTratamiento</span>
+              </div>
+            </div>
+          }
+          @if (!Model.Tratamientos.Any())
+          {
+            <div class="empty-state">
+              <i class="bi bi-activity"></i>
+              <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin tratamientos</div>
+              <p>No hay tratamientos registrados para esta mascota.</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ═══ VACUNAS ═══ -->
+      <div class="tab-panel" id="tab-vacunas">
+        <div class="section-title">Cartilla de Vacunación</div>
+        <div class="vacunas-grid">
+          @foreach (var v in Model.Vacunas)
+          {
+            string estadoLabel;
+            if (v.EstadoVacuna == "Al día")
+                estadoLabel = "Al día · Próxima: " + (v.FechaProxima?.ToString("MMM yyyy") ?? "—");
+            else if (v.EstadoVacuna == "Próxima")
+                estadoLabel = "Próxima: " + (v.FechaProxima?.ToString("MMM yyyy") ?? "—") + " (¡pronto!)";
+            else
+                estadoLabel = "¡Vencida! Requiere refuerzo";
+
+            <div class="vacuna-card">
+              <div class="vacuna-icon">💉</div>
+              <div class="vacuna-name">@v.VacunaNombre</div>
+              <div class="vacuna-date"><i class="bi bi-calendar-check"></i> Aplicada: @(v.FechaAplicada?.ToString("dd MMM yyyy") ?? "—")</div>
+              <div class="vacuna-next @VacunaClass(v.EstadoVacuna)">
+                <span class="vacuna-dot @DotClass(v.EstadoVacuna)"></span>@estadoLabel
+              </div>
+            </div>
+          }
+          @if (!Model.Vacunas.Any())
+          {
+            <div class="empty-state" style="grid-column:1/-1">
+              <i class="bi bi-shield-x"></i>
+              <p>Sin vacunas registradas</p>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /main-content -->
 </div><!-- /app-wrapper -->
+
 <!-- ════════ MODAL NUEVA CONSULTA ════════ -->
-<div id="modalConsulta" style="display:none;position:fixed;inset:0;background:rgba(30,27,58,.5);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;animation:fadeUp .2s ease both">
-<div style="background:#fff;border-radius:20px;width:520px;max-width:95%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.25);animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both">
-<div class="modal-header" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between">
-<div>
-<div class="modal-title" style="font-size:18px">Nueva Consulta</div>
-<div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:2px">Luna · Golden Retriever</div>
-</div>
-<button onclick="document.getElementById('modalConsulta').style.display='none'" style="background:rgba(255,255,255,.2);border:none;border-radius:10px;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
-</div>
-<div style="padding:24px">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-<div>
-<label style="font-size:11.5px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:5px">TIPO</label>
-<select style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;color:var(--text-dark);outline:none">
-<option>Control General</option>
-<option>Urgencia</option>
-<option>Vacunación</option>
-<option>Revisión</option>
-<option>Cirugía</option>
-</select>
-</div>
-<div>
-<label style="font-size:11.5px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:5px">FECHA</label>
-<input style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;color:var(--text-dark);outline:none" type="date" value="2026-04-25"/>
-</div>
-</div>
-<div style="margin-bottom:14px">
-<label style="font-size:11.5px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:5px">VETERINARIO</label>
-<select style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;color:var(--text-dark);outline:none">
-<option>Dra. Ana Martínez</option>
-<option>Dr. Carlos Herrera</option>
-<option>Dra. Patricia Ruiz</option>
-</select>
-</div>
-<div style="margin-bottom:20px">
-<label style="font-size:11.5px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:5px">DIAGNÓSTICO / NOTAS</label>
-<textarea placeholder="Describe el motivo de consulta o diagnóstico..." rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;color:var(--text-dark);outline:none;resize:none"></textarea>
-</div>
-<div style="display:flex;gap:10px;justify-content:flex-end">
-<button onclick="document.getElementById('modalConsulta').style.display='none'" style="padding:10px 20px;border:1.5px solid var(--border);border-radius:10px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text-muted)">Cancelar</button>
-<button onclick="document.getElementById('modalConsulta').style.display='none'" style="padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--purple-1),var(--purple-2));color:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(108,92,231,.35)">Guardar Consulta</button>
-</div>
-</div>
-</div>
+<div id="modalConsulta" style="display:none;position:fixed;inset:0;background:rgba(30,27,58,.5);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;width:520px;max-width:95%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.25)">
+    <div class="modal-header" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="modal-title" style="font-size:18px">Nueva Consulta</div>
+        <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:2px">@nombreMascota · @ficha?.Raza</div>
+      </div>
+      <button onclick="document.getElementById('modalConsulta').style.display='none'"
+              style="background:rgba(255,255,255,.2);border:none;border-radius:10px;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">&times;</button>
+    </div>
+    <div style="padding:24px">
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button onclick="document.getElementById('modalConsulta').style.display='none'"
+                style="padding:10px 20px;border:1.5px solid var(--border);border-radius:10px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text-muted)">
+          Cancelar
+        </button>
+        <button onclick="window.location.href=window._urls.crearCitaMedica"
+                style="padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--purple-1),var(--purple-2));color:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(108,92,231,.35)">
+          Ir a Nueva Consulta
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 @section Scripts {
+  <script>
+    window._urls = {
+      crearCitaMedica: '@Url.Action("Create", "CitaMedica")?mascId=@(ficha?.masc_Id ?? 0)'
+    };
+  </script>
   <script src="~/js/pages/perfil-medico-mascota.js"></script>
 }
