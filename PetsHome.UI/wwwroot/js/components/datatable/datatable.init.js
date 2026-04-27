@@ -411,6 +411,11 @@ var datatable = (function () {
                     // Botón Eliminar
                     if (!p || !h || h.eliminar(p))
                         botones += '<button class="action-btn btn-delete delete-btn" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
+                    // Botón Perfil Médico (solo cuando la página lo define)
+                    if (window._urls && window._urls.perfilMedico) {
+                        var _mascId = row['masc_Id'] !== undefined ? row['masc_Id'] : row[head];
+                        botones += '<button class="action-btn btn-medical" onclick="window.location.href=window._urls.perfilMedico+\'?mascId=\'+' + _mascId + '" title="Perfil Médico"><i class="fas fa-stethoscope"></i></button>';
+                    }
                     botones += '</div>';
                 }
                 return botones;

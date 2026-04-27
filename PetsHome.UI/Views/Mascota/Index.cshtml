@@ -120,6 +120,9 @@
 <script src="~/js/pages/mascota.js"></script>
 <script>
     // Configuración del DataTable
+    window._urls = {
+        perfilMedico: '@Url.Action("Index", "PerfilMedico")'
+    };
     Mascota.datatable({
         urlList: "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
@@ -178,6 +181,9 @@
                                     <div>
                                         <button class="action-btn btn-view" onclick="viewPet(${row.masc_Id})" title="Ver">
                                             <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn btn-medical" onclick="window.location.href=window._urls.perfilMedico+'?mascId=${row.masc_Id}'" title="Perfil Médico">
+                                            <i class="fas fa-stethoscope"></i>
                                         </button>
                                         <button class="action-btn btn-edit" onclick="editPet(${row.masc_Id})" title="Editar">
                                             <i class="fas fa-edit"></i>
