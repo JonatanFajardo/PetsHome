@@ -1,0 +1,414 @@
+@model PetsHome.Business.Models.DashboardVeterinarioViewModel
+@using Newtonsoft.Json
+@using PetsHome.Common.Entities
+@{
+    ViewData["Title"] = "Dashboard Veterinario";
+    ViewData["CurrentPantalla"] = "Dashboard veterinario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var agenda      = Model?.AgendaHoy      ?? new List<PR_Medico_DashboardVeterinario_AgendaHoyResult>();
+    var tratamientos = Model?.TratamientosActivos ?? new List<PR_Medico_DashboardVeterinario_TratamientosActivosResult>();
+    var alertas     = Model?.AlertasVeterinario   ?? new List<PR_Medico_DashboardVeterinario_AlertasVeterinarioResult>();
+    var resumen     = Model?.ResumenMes?.FirstOrDefault();
+
+    int citasHoy       = agenda.Count;
+    int completadas    = agenda.Count(a => a.cita_Estado == "Completada");
+    int pendientes     = agenda.Count(a => a.cita_Estado != "Completada");
+    int alertasCount   = alertas.Count;
+
+    var proxima = agenda
+        .Where(a => a.cita_Estado == "Pendiente" || a.cita_Estado == "Urgente")
+        .OrderBy(a => a.cita_FechaHora)
+        .FirstOrDefault();
+
+    string ProximaLabel()
+    {
+        if (proxima == null) return "Sin citas pendientes";
+        var diff = proxima.cita_FechaHora - DateTime.Now;
+        if (diff.TotalMinutes < 0) return "Ahora";
+        if (diff.TotalMinutes < 60) return $"en {(int)diff.TotalMinutes} min";
+        return $"a las {proxima.cita_FechaHora:HH:mm}";
+    }
+
+    string EmojiEspecie(string esp)
+        => esp?.ToLower().Contains("gato") == true ? "🐱" : "🐶";
+
+    string BadgeTipo(string tipo)
+        => tipo switch {
+            "Urgente"   => "badge bg-danger",
+            "Completada"=> "badge bg-success",
+            _           => "badge bg-secondary"
+        };
+
+    string AlertIcon(string tipo)
+        => tipo switch {
+            "red"    => "bi-exclamation-triangle-fill",
+            "orange" => "bi-clock-history",
+            "blue"   => "bi-calendar-event",
+            _        => "bi-info-circle"
+        };
+
+    string AlertClass(string tipo)
+        => tipo switch {
+            "red"    => "alert-item--red",
+            "orange" => "alert-item--orange",
+            "blue"   => "alert-item--blue",
+            _        => ""
+        };
+
+    var agendaDates = agenda
+        .Select(a => a.cita_FechaHora.ToString("yyyy-MM-dd"))
+        .Distinct()
+        .ToList();
+}
+
+@section Styles {
+  <link rel="stylesheet" href="~/css/dashboard-veterinario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+}
+
+<div class="dashboard-wrapper">
+
+<!-- ===== ZONA 1: Barra de identidad ===== -->
+<div class="zona1 anim-up" style="margin-bottom:16px;">
+  <div class="d-flex justify-content-between align-items-start">
+    <div class="d-flex align-items-center gap-3">
+      <div class="stethoscope-icon" style="width:42px;height:42px;background:rgba(108,92,231,0.1);border:1px solid rgba(108,92,231,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:20px;">
+        <i class="bi bi-heart-pulse-fill"></i>
+      </div>
+      <div>
+        <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--text-1);">
+          Buenos días, Dr. Fajardo
+        </div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:2px;">
+          <i class="bi bi-building me-1"></i>Veterinario — PetsHome
+          &nbsp;·&nbsp;
+          <span class="live-dot"></span>
+          <span style="margin-left:4px;">En línea</span>
+        </div>
+      </div>
+    </div>
+    <div class="zona1-datetime">
+      <div class="zona1-date" id="livedate"></div>
+      <div class="zona1-time" id="liveclock">--:-- --</div>
+    </div>
+  </div>
+  <div class="pills-row">
+    <span class="pill pill-blue"><i class="bi bi-calendar-check" style="font-size:13px;"></i> @citasHoy citas hoy</span>
+    <span class="pill pill-amber"><i class="bi bi-hourglass-split" style="font-size:13px;"></i> Próxima <span id="countdown">@ProximaLabel()</span></span>
+    <span class="pill pill-red"><i class="bi bi-exclamation-triangle-fill" style="font-size:13px;"></i> @alertasCount alertas</span>
+    <span class="pill pill-green"><i class="bi bi-check-circle-fill" style="font-size:13px;"></i> @completadas completada@(completadas != 1 ? "s" : "")</span>
+  </div>
+</div>
+
+<!-- ===== ZONAS 2-3-4 ===== -->
+<div class="row g-3 mb-3">
+
+  <!-- ZONA 2: Agenda del día -->
+  <div class="col-xl-4 col-lg-5 anim-up delay-1">
+    <div class="card-panel" style="height:560px;overflow:hidden;display:flex;flex-direction:column;">
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-calendar2-week me-2" style="color:var(--teal);"></i>Agenda de hoy</div>
+        <a href="@Url.Action("Index","CitaMedica")" class="panel-link">Ver todo <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div style="overflow-y:auto;flex:1;padding-right:4px;">
+        @if (!agenda.Any())
+        {
+          <div style="text-align:center;padding:40px 0;color:var(--text-3);">
+            <i class="bi bi-calendar-x" style="font-size:32px;"></i>
+            <div style="margin-top:8px;">Sin citas para hoy</div>
+          </div>
+        }
+        else
+        {
+          <div class="timeline">
+            @foreach (var cita in agenda)
+            {
+              <div class="timeline-item @(cita.cita_EsUrgente ? "timeline-item--urgent" : "")">
+                <div class="timeline-time">@cita.cita_FechaHora.ToString("hh:mm tt")</div>
+                <div class="timeline-dot @(cita.cita_EsUrgente ? "dot-red" : (cita.cita_Estado == "Completada" ? "dot-green" : "dot-teal"))"></div>
+                <div class="timeline-body">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                    <div>
+                      <span style="font-weight:600;color:var(--text-1);">@EmojiEspecie(cita.masc_Especie) @cita.masc_Nombre</span>
+                      <span style="font-size:11px;color:var(--text-3);margin-left:6px;">@cita.raz_Descripcion</span>
+                    </div>
+                    <span class="@BadgeTipo(cita.cita_Estado)" style="font-size:10px;">@cita.cita_Estado</span>
+                  </div>
+                  <div style="font-size:12px;color:var(--text-3);margin-top:2px;">
+                    <i class="bi bi-clipboard2-pulse me-1"></i>@cita.cita_TipoConsulta
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA 3: Tratamientos activos -->
+  <div class="col-xl-4 col-lg-7 anim-up delay-2">
+    <div class="card-panel" style="height:560px;overflow:hidden;display:flex;flex-direction:column;">
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-capsule me-2" style="color:var(--purple);"></i>Tratamientos activos</div>
+        <a href="@Url.Action("Index","Tratamiento")" class="panel-link">Ver todo <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div style="overflow-y:auto;flex:1;padding-right:4px;">
+        @if (!tratamientos.Any())
+        {
+          <div style="text-align:center;padding:40px 0;color:var(--text-3);">
+            <i class="bi bi-capsule" style="font-size:32px;"></i>
+            <div style="margin-top:8px;">Sin tratamientos activos</div>
+          </div>
+        }
+        else
+        {
+          @foreach (var trat in tratamientos.Take(6))
+          {
+            int pct = trat.trat_DuracionTotal > 0
+                ? (int)Math.Min(100, (double)trat.trat_DiaActual / trat.trat_DuracionTotal * 100)
+                : 0;
+            string pctColor = pct >= 80 ? "var(--red)" : pct >= 50 ? "var(--amber)" : "var(--green)";
+            <div class="patient-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <div style="font-weight:600;color:var(--text-1);">@trat.masc_Nombre</div>
+                  <div style="font-size:11px;color:var(--text-3);">@trat.masc_Especie · @trat.raz_Descripcion</div>
+                </div>
+                <span class="badge" style="background:rgba(139,92,246,0.15);color:var(--purple);font-size:10px;">@trat.trat_Estado</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-2);margin-top:6px;">
+                <i class="bi bi-capsule me-1"></i>@trat.trat_Descripcion
+              </div>
+              <div style="margin-top:8px;">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-bottom:4px;">
+                  <span>Día @trat.trat_DiaActual de @trat.trat_DuracionTotal</span>
+                  <span>Fin: @trat.trat_FechaFin.ToString("dd/MM")</span>
+                </div>
+                <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
+                  <div style="height:100%;width:@(pct)%;background:@pctColor;border-radius:2px;transition:width .6s ease;"></div>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA 4: Alertas + Acciones rápidas -->
+  <div class="col-xl-4 col-lg-12 anim-up delay-3">
+    <div class="card-panel" style="height:560px;overflow:hidden;display:flex;flex-direction:column;">
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-bell-fill me-2" style="color:var(--amber);"></i>Alertas veterinarias</div>
+        <span style="font-size:11px;color:var(--text-3);">@alertasCount total</span>
+      </div>
+      <div style="overflow-y:auto;flex:1;">
+        @if (!alertas.Any())
+        {
+          <div style="text-align:center;padding:32px 0;color:var(--text-3);">
+            <i class="bi bi-check-circle" style="font-size:32px;color:var(--green);"></i>
+            <div style="margin-top:8px;">Sin alertas activas</div>
+          </div>
+        }
+        else
+        {
+          @foreach (var alerta in alertas.Take(5))
+          {
+            <div class="alert-item @AlertClass(alerta.alert_Tipo)">
+              <div style="display:flex;gap:10px;align-items:flex-start;">
+                <div class="alert-icon-wrap">
+                  <i class="bi @AlertIcon(alerta.alert_Tipo)"></i>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:12px;font-weight:600;color:var(--text-1);">@alerta.alert_MascotaNombre</div>
+                  <div style="font-size:11px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@alerta.alert_Detalle</div>
+                </div>
+              </div>
+            </div>
+          }
+          @if (alertas.Count > 5)
+          {
+            <div style="text-align:center;padding:8px 0;font-size:12px;color:var(--text-3);">
+              + @(alertas.Count - 5) alertas más
+            </div>
+          }
+        }
+      </div>
+      <!-- Acciones rápidas -->
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px;">
+        <div style="font-size:11px;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Acciones rápidas</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <a href="@Url.Action("Create","CitaMedica")" class="accion-btn">
+            <i class="bi bi-calendar-plus"></i><span>Nueva cita</span>
+          </a>
+          <a href="@Url.Action("Create","Tratamiento")" class="accion-btn">
+            <i class="bi bi-capsule"></i><span>Tratamiento</span>
+          </a>
+          <a href="@Url.Action("Create","AlertaMedica")" class="accion-btn">
+            <i class="bi bi-exclamation-triangle"></i><span>Alerta médica</span>
+          </a>
+          <a href="@Url.Action("Index","ControlVacunacion")" class="accion-btn">
+            <i class="bi bi-shield-plus"></i><span>Vacunación</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row zonas 2-3-4 -->
+
+<!-- ===== ZONA 5: Actividad + Resumen mes + Mini calendario ===== -->
+<div class="row g-3">
+
+  <!-- Resumen del mes -->
+  <div class="col-xl-3 col-md-6 anim-up delay-4">
+    <div class="card-panel">
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-bar-chart-fill me-2" style="color:var(--green);"></i>Resumen del mes</div>
+      </div>
+      <div style="padding:8px 0;">
+        @{
+          int totalMes   = resumen?.citas_TotalMes   ?? 0;
+          int completMes = resumen?.citas_Completadas ?? 0;
+          int pendMes    = resumen?.citas_Pendientes  ?? 0;
+          int pctMes     = totalMes > 0 ? (int)((double)completMes / totalMes * 100) : 0;
+        }
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-size:42px;font-weight:800;color:var(--teal);font-family:var(--font-head);">@totalMes</div>
+          <div style="font-size:12px;color:var(--text-3);">citas este mes</div>
+        </div>
+        <div style="display:flex;justify-content:space-around;margin-bottom:16px;">
+          <div style="text-align:center;">
+            <div style="font-size:24px;font-weight:700;color:var(--green);">@completMes</div>
+            <div style="font-size:11px;color:var(--text-3);">Completadas</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:24px;font-weight:700;color:var(--amber);">@pendMes</div>
+            <div style="font-size:11px;color:var(--text-3);">Pendientes</div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-bottom:4px;">
+            <span>Progreso</span><span>@pctMes%</span>
+          </div>
+          <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:@(pctMes)%;background:var(--green);border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini calendario -->
+  <div class="col-xl-3 col-md-6 anim-up delay-4">
+    <div class="card-panel">
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-calendar3 me-2" style="color:var(--teal);"></i>Calendario</div>
+      </div>
+      <div id="miniCal"></div>
+    </div>
+  </div>
+
+  <!-- Actividad reciente -->
+  <div class="col-xl-6 anim-up delay-5">
+    <div class="card-panel">
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-activity me-2" style="color:var(--teal);"></i>Actividad reciente</div>
+      </div>
+      <div class="activity-list">
+        @foreach (var cita in agenda.Take(5))
+        {
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(34,211,238,0.1);color:var(--teal);">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:13px;color:var(--text-1);">
+                Cita con <strong>@cita.masc_Nombre</strong> — @cita.cita_TipoConsulta
+              </div>
+              <div style="font-size:11px;color:var(--text-3);">@cita.cita_FechaHora.ToString("hh:mm tt")</div>
+            </div>
+            <span class="@BadgeTipo(cita.cita_Estado)" style="font-size:10px;">@cita.cita_Estado</span>
+          </div>
+        }
+        @foreach (var trat in tratamientos.Take(3))
+        {
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(139,92,246,0.1);color:var(--purple);">
+              <i class="bi bi-capsule"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:13px;color:var(--text-1);">
+                Tratamiento activo: <strong>@trat.masc_Nombre</strong>
+              </div>
+              <div style="font-size:11px;color:var(--text-3);">Día @trat.trat_DiaActual — @trat.trat_Descripcion</div>
+            </div>
+          </div>
+        }
+        @if (!agenda.Any() && !tratamientos.Any())
+        {
+          <div style="text-align:center;padding:32px 0;color:var(--text-3);">
+            <i class="bi bi-inbox" style="font-size:32px;"></i>
+            <div style="margin-top:8px;">Sin actividad reciente</div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row zona 5 -->
+</div><!-- /dashboard-wrapper -->
+
+@section Scripts {
+<script>
+  // Live clock
+  (function () {
+    var days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    function tick() {
+      var d = new Date();
+      var h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      document.getElementById('liveclock').textContent =
+        (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+      var dateEl = document.getElementById('livedate');
+      if (dateEl) dateEl.textContent = days[d.getDay()] + ' ' + d.getDate() + ' de ' + months[d.getMonth()] + ', ' + d.getFullYear();
+    }
+    tick(); setInterval(tick, 1000);
+  })();
+
+  // Mini calendar
+  (function () {
+    var agendaDates = @Html.Raw(JsonConvert.SerializeObject(agendaDates));
+    var today = new Date();
+    var y = today.getFullYear(), mo = today.getMonth();
+    var monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    var dayNames = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
+
+    var html = '<div style="font-size:12px;color:var(--text-3);text-align:center;margin-bottom:8px;">' + monthNames[mo] + ' ' + y + '</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;">';
+    dayNames.forEach(function(d){ html += '<div style="font-size:10px;color:var(--text-3);padding:2px;">' + d + '</div>'; });
+
+    var first = new Date(y, mo, 1).getDay();
+    var startOffset = (first === 0) ? 6 : first - 1;
+    for (var i = 0; i < startOffset; i++) html += '<div></div>';
+
+    var daysInMonth = new Date(y, mo + 1, 0).getDate();
+    for (var d = 1; d <= daysInMonth; d++) {
+      var dateStr = y + '-' + String(mo+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      var hasEvent = agendaDates.indexOf(dateStr) >= 0;
+      var isToday = d === today.getDate();
+      var style = 'font-size:11px;padding:3px 1px;border-radius:4px;cursor:default;';
+      if (isToday) style += 'background:var(--teal);color:#000;font-weight:700;';
+      else if (hasEvent) style += 'background:rgba(34,211,238,0.15);color:var(--teal);font-weight:600;';
+      else style += 'color:var(--text-2);';
+      html += '<div style="' + style + '">' + d + '</div>';
+    }
+    html += '</div>';
+    document.getElementById('miniCal').innerHTML = html;
+  })();
+</script>
+}

@@ -1,0 +1,489 @@
+@model PetsHome.Business.Models.DashboardSupervisorViewModel
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Dashboard Supervisor";
+    ViewData["CurrentPantalla"] = "Dashboard supervisor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var pills    = Model?.Pills          ?? new PetsHome.Common.Entities.PR_Supervisor_Dashboard_PillsResult();
+    var kpis     = Model?.KPIs           ?? new PetsHome.Common.Entities.PR_Supervisor_Dashboard_KPIsResult();
+    var solic    = Model?.Solicitudes    ?? new List<PetsHome.Common.Entities.PR_Supervisor_Dashboard_SolicitudesResult>();
+    var estado   = Model?.EstadoMascotas ?? new PetsHome.Common.Entities.PR_Supervisor_Dashboard_EstadoMascotasResult();
+    var eventos  = Model?.Eventos        ?? new List<PetsHome.Common.Entities.PR_Supervisor_Dashboard_EventosResult>();
+    var movs     = Model?.Movimientos    ?? new List<PetsHome.Common.Entities.PR_Supervisor_Dashboard_MovimientosInventarioResult>();
+
+    int total = estado.est_Total > 0 ? estado.est_Total : 1;
+    int pctDisp    = (int)((double)estado.est_Disponibles / total * 100);
+    int pctProceso = (int)((double)estado.est_EnProceso   / total * 100);
+    int pctAdopt   = (int)((double)estado.est_Adoptadas   / total * 100);
+
+    string BadgeSol(string estado) => estado switch {
+        "Aprobada"  => "approved",
+        "Rechazada" => "rejected",
+        _           => "pending"
+    };
+
+    string BadgeEvento(int vols) => vols > 0 ? "confirmed" : "planning";
+
+    string NombreUsuario = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "Supervisor";
+    string Iniciales = string.Join("", NombreUsuario.Split(' ').Take(2).Select(p => p[0].ToString().ToUpper()));
+}
+
+@section Styles {
+  <link rel="stylesheet" href="~/css/dashboard-supervisor.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+}
+
+<div class="dashboard">
+
+  <!-- ── ZONE 1: IDENTITY BAR ── -->
+  <div class="zone-1 identity-bar">
+    <div class="supervisor-avatar">@Iniciales</div>
+    <div class="supervisor-info">
+      <div class="supervisor-name">@NombreUsuario</div>
+      <div class="supervisor-role">
+        <span class="role-dot"></span>
+        Supervisor General del Refugio
+      </div>
+    </div>
+
+    <div class="identity-divider"></div>
+
+    <div class="pills-row">
+      <div class="pill">
+        <div class="pill-icon teal"><i data-lucide="paw-print"></i></div>
+        <div>
+          <div class="pill-value">@pills.pill_MascotasTotal</div>
+          <div class="pill-label">Mascotas en refugio</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon amber"><i data-lucide="clipboard-list"></i></div>
+        <div>
+          <div class="pill-value">@pills.pill_SolicitudesPendientes</div>
+          <div class="pill-label">Solicitudes pendientes</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon red"><i data-lucide="package-x"></i></div>
+        <div>
+          <div class="pill-value">@pills.pill_StockBajo</div>
+          <div class="pill-label">Items con stock bajo</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon green"><i data-lucide="calendar-check"></i></div>
+        <div>
+          <div class="pill-value">@pills.pill_EventosSemana</div>
+          <div class="pill-label">Eventos esta semana</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="identity-divider"></div>
+
+    <div class="datetime-block">
+      <div class="clock-display" id="clock">--:--:--</div>
+      <div class="date-display" id="date-display">—</div>
+    </div>
+  </div>
+
+  <!-- ── ZONE 2: KPI CARDS ── -->
+  <div class="zone-2 kpi-row">
+
+    <!-- KPI 1: Mascotas activas -->
+    <div class="kpi-card teal">
+      <div class="kpi-header">
+        <div class="kpi-icon teal"><i data-lucide="heart"></i></div>
+        <div class="kpi-trend @(kpis.kpi_MascotasTendencia >= 0 ? "up" : "down")">
+          <i data-lucide="@(kpis.kpi_MascotasTendencia >= 0 ? "trending-up" : "trending-down")"></i>
+          @(kpis.kpi_MascotasTendencia >= 0 ? "+" : "")@kpis.kpi_MascotasTendencia
+        </div>
+      </div>
+      <div class="kpi-number">@kpis.kpi_MascotasActivas</div>
+      <div class="kpi-label">Mascotas activas</div>
+      <div class="kpi-meta">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill teal" style="width:@(pctDisp)%"></div>
+        </div>
+        <div class="progress-meta">
+          <span>vs. mes anterior: @(kpis.kpi_MascotasActivas - kpis.kpi_MascotasTendencia)</span>
+          <span>@(pctDisp)% disponibles</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 2: Adopciones mes -->
+    <div class="kpi-card green">
+      <div class="kpi-header">
+        <div class="kpi-icon green"><i data-lucide="home"></i></div>
+        <div class="kpi-trend @(kpis.kpi_AdopcionesMes > 0 ? "up" : "neutral")">
+          <i data-lucide="@(kpis.kpi_AdopcionesMes > 0 ? "trending-up" : "minus")"></i>
+          @(kpis.kpi_AdopcionesMes > 0 ? "Activo" : "Sin datos")
+        </div>
+      </div>
+      <div class="kpi-number">@kpis.kpi_AdopcionesMes</div>
+      <div class="kpi-label">Adopciones este mes</div>
+      <div class="kpi-meta">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill green" style="width:@(Math.Min(kpis.kpi_AdopcionesMes * 2, 100))%"></div>
+        </div>
+        <div class="progress-meta">
+          <span>Aprobadas este mes</span>
+          <span>@estado.est_Adoptadas total adoptadas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 3: Vacunas vencidas -->
+    <div class="kpi-card red">
+      <div class="kpi-header">
+        <div class="kpi-icon red"><i data-lucide="syringe"></i></div>
+        <div class="kpi-trend @(kpis.kpi_VacunasVencidas > 0 ? "down" : "up")">
+          <i data-lucide="@(kpis.kpi_VacunasVencidas > 0 ? "alert-triangle" : "check")"></i>
+          @(kpis.kpi_VacunasVencidas > 0 ? "Crítico" : "Al día")
+        </div>
+      </div>
+      <div class="kpi-number">@kpis.kpi_VacunasVencidas</div>
+      <div class="kpi-label">Vacunas vencidas</div>
+      <div class="kpi-meta">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:@(Math.Min(kpis.kpi_VacunasVencidas * 4, 100))%;background:var(--red)"></div>
+        </div>
+        <div class="progress-meta">
+          <span>Requieren atención</span>
+          <span>de @kpis.kpi_MascotasActivas mascotas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 4: Eventos próximos -->
+    <div class="kpi-card amber">
+      <div class="kpi-header">
+        <div class="kpi-icon amber"><i data-lucide="calendar"></i></div>
+        <div class="kpi-trend neutral">
+          <i data-lucide="minus"></i> Estable
+        </div>
+      </div>
+      <div class="kpi-number">@kpis.kpi_EventosProximos</div>
+      <div class="kpi-label">Eventos próximos</div>
+      <div class="kpi-meta">
+        <div class="next-event-tag">
+          <i data-lucide="clock"></i>
+          @if (kpis.kpi_ProximoEventoNombre != null)
+          {
+            <span>Próximo: @kpis.kpi_ProximoEventoNombre — @kpis.kpi_ProximoEventoFecha?.ToString("ddd dd MMM")</span>
+          }
+          else
+          {
+            <span>Sin eventos programados</span>
+          }
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── ZONE 3: MAIN ROW ── -->
+  <div class="zone-3 main-row">
+
+    <!-- Col 1: Solicitudes recientes -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i data-lucide="file-text"></i> Solicitudes de adopción recientes</div>
+        <a href="@Url.Action("Index","Solicitud")" class="card-action">Ver todas <i data-lucide="arrow-right"></i></a>
+      </div>
+      <div class="card-body">
+        @if (!solic.Any())
+        {
+          <div style="padding:32px;text-align:center;color:var(--text-muted);">Sin solicitudes recientes</div>
+        }
+        else
+        {
+          @foreach (var s in solic)
+          {
+            <div class="adoption-row">
+              <div class="adopter-info">
+                <div class="adopter-avatar" style="background:#0891b2">@s.sol_Iniciales</div>
+                <div>
+                  <div class="adopter-name">@s.sol_NombreCompleto</div>
+                  <div class="adopter-sub">@s.sol_Correo</div>
+                </div>
+              </div>
+              <div class="pet-chip">
+                <i data-lucide="@(s.masc_Especie?.ToLower().Contains("gato") == true ? "cat" : "dog")"></i>
+                @s.masc_Nombre — @s.masc_Raza
+              </div>
+              <span class="status-badge @BadgeSol(s.sol_Estado)">@s.sol_Estado</span>
+              <div class="date-cell">@s.sol_Fecha.ToString("dd MMM")</div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Col 2: Estado de mascotas (donut) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i data-lucide="pie-chart"></i> Estado de mascotas</div>
+      </div>
+      <div class="card-body donut-wrap">
+        @{
+          double circumference = 2 * Math.PI * 54; // ~339
+          double dispArc   = circumference * pctDisp   / 100;
+          double procArc   = circumference * pctProceso / 100;
+          double adoptArc  = circumference * pctAdopt  / 100;
+          double dispOff   = 0;
+          double procOff   = -dispArc;
+          double adoptOff  = -(dispArc + procArc);
+        }
+        <svg class="donut-svg" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#f1f5f9" stroke-width="18"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#0891b2" stroke-width="18"
+            stroke-dasharray="@dispArc.ToString("F0") 339" stroke-dashoffset="@dispOff.ToString("F0")"
+            stroke-linecap="round" transform="rotate(-90 70 70)"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#d97706" stroke-width="18"
+            stroke-dasharray="@procArc.ToString("F0") 339" stroke-dashoffset="@procOff.ToString("F0")"
+            stroke-linecap="round" transform="rotate(-90 70 70)"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#16a34a" stroke-width="18"
+            stroke-dasharray="@adoptArc.ToString("F0") 339" stroke-dashoffset="@adoptOff.ToString("F0")"
+            stroke-linecap="round" transform="rotate(-90 70 70)"/>
+          <text x="70" y="66" text-anchor="middle" font-family="Syne,sans-serif" font-size="22" font-weight="800" fill="#0f172a">@estado.est_Total</text>
+          <text x="70" y="80" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#64748b">mascotas</text>
+        </svg>
+
+        <div class="pet-status-list">
+          <div class="pet-status-item">
+            <div class="status-dot" style="background:#0891b2"></div>
+            <div class="status-name">Disponibles</div>
+            <div class="status-mini-bar"><div class="status-mini-fill" style="width:@(pctDisp)%;background:#0891b2"></div></div>
+            <div class="status-count">@estado.est_Disponibles</div>
+            <div class="status-pct" style="min-width:32px;text-align:right">@(pctDisp)%</div>
+          </div>
+          <div class="pet-status-item">
+            <div class="status-dot" style="background:#d97706"></div>
+            <div class="status-name">En proceso</div>
+            <div class="status-mini-bar"><div class="status-mini-fill" style="width:@(pctProceso)%;background:#d97706"></div></div>
+            <div class="status-count">@estado.est_EnProceso</div>
+            <div class="status-pct" style="min-width:32px;text-align:right">@(pctProceso)%</div>
+          </div>
+          <div class="pet-status-item">
+            <div class="status-dot" style="background:#16a34a"></div>
+            <div class="status-name">Adoptadas</div>
+            <div class="status-mini-bar"><div class="status-mini-fill" style="width:@(pctAdopt)%;background:#16a34a"></div></div>
+            <div class="status-count">@estado.est_Adoptadas</div>
+            <div class="status-pct" style="min-width:32px;text-align:right">@(pctAdopt)%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 3: Alertas del refugio -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i data-lucide="bell-ring"></i> Alertas del refugio</div>
+        @if (kpis.kpi_VacunasVencidas > 0 || pills.pill_StockBajo > 0)
+        {
+          <span style="font-size:10px;font-weight:700;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:100px">
+            @(kpis.kpi_VacunasVencidas + pills.pill_StockBajo) críticas
+          </span>
+        }
+      </div>
+      <div class="card-body">
+        @if (kpis.kpi_VacunasVencidas > 0)
+        {
+          <div class="alert-item">
+            <div class="alert-icon-wrap red"><i data-lucide="syringe"></i></div>
+            <div class="alert-text">
+              <div class="alert-title">Vacunas vencidas</div>
+              <div class="alert-sub">Requieren atención veterinaria</div>
+            </div>
+            <div class="alert-count red">@kpis.kpi_VacunasVencidas</div>
+          </div>
+        }
+        @if (pills.pill_SolicitudesPendientes > 0)
+        {
+          <div class="alert-item">
+            <div class="alert-icon-wrap yellow"><i data-lucide="clock-alert"></i></div>
+            <div class="alert-text">
+              <div class="alert-title">Solicitudes pendientes</div>
+              <div class="alert-sub">Requieren decisión</div>
+            </div>
+            <div class="alert-count yellow">@pills.pill_SolicitudesPendientes</div>
+          </div>
+        }
+        @if (pills.pill_StockBajo > 0)
+        {
+          <div class="alert-item">
+            <div class="alert-icon-wrap amber"><i data-lucide="package-open"></i></div>
+            <div class="alert-text">
+              <div class="alert-title">Items con stock bajo</div>
+              <div class="alert-sub">Revisar inventario</div>
+            </div>
+            <div class="alert-count amber">@pills.pill_StockBajo</div>
+          </div>
+        }
+        @if (kpis.kpi_VacunasVencidas == 0 && pills.pill_SolicitudesPendientes == 0 && pills.pill_StockBajo == 0)
+        {
+          <div style="padding:40px;text-align:center;color:var(--text-muted);">
+            <i data-lucide="check-circle" style="width:32px;height:32px;color:var(--green);margin-bottom:8px;"></i>
+            <div>Sin alertas activas</div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── ZONE 4: BOTTOM ROW ── -->
+  <div class="zone-4 bottom-row">
+
+    <!-- Eventos próximos -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i data-lucide="calendar-days"></i> Eventos próximos</div>
+        <a href="@Url.Action("Index","Evento")" class="card-action">Gestionar <i data-lucide="arrow-right"></i></a>
+      </div>
+      @if (!eventos.Any())
+      {
+        <div style="padding:32px;text-align:center;color:var(--text-muted);">Sin eventos próximos</div>
+      }
+      else
+      {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Fecha</th>
+              <th>Voluntarios</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var e in eventos)
+            {
+              <tr>
+                <td>
+                  <div style="font-weight:500;color:var(--text)">@e.eve_Descripcion</div>
+                  <div style="font-size:11px;color:var(--text-muted)">@e.eve_Lugar</div>
+                </td>
+                <td>
+                  <div style="font-weight:500">@e.eve_Fecha.ToString("dd MMM")</div>
+                  @if (e.eve_HoraInicio.HasValue)
+                  {
+                    <div style="font-size:11px;color:var(--text-muted)">@(DateTime.Today.Add(e.eve_HoraInicio.Value).ToString("hh:mm tt"))</div>
+                  }
+                </td>
+                <td>
+                  <div class="vol-avatars">
+                    @if (e.eve_CantidadVoluntarios == 0)
+                    {
+                      <div class="vol-avatar extra">—</div>
+                    }
+                    else
+                    {
+                      <div class="vol-avatar" style="background:#0891b2">@e.eve_CantidadVoluntarios</div>
+                    }
+                  </div>
+                </td>
+                <td><span class="event-badge @BadgeEvento(e.eve_CantidadVoluntarios)">@(e.eve_CantidadVoluntarios > 0 ? "Confirmado" : "En planificación")</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+    <!-- Movimientos de inventario -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i data-lucide="package-check"></i> Movimientos de inventario</div>
+        <a href="@Url.Action("Index","RecepcionMercancia")" class="card-action">Ver historial <i data-lucide="arrow-right"></i></a>
+      </div>
+      @if (!movs.Any())
+      {
+        <div style="padding:32px;text-align:center;color:var(--text-muted);">Sin movimientos recientes</div>
+      }
+      else
+      {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Item recibido</th>
+              <th>Cantidad</th>
+              <th>Fecha</th>
+              <th>Refugio</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var m in movs)
+            {
+              <tr>
+                <td>
+                  <div class="item-chip">
+                    <div class="item-icon"><i data-lucide="package"></i></div>
+                    <div>
+                      <div class="item-name">@(m.mov_PrimerItem ?? m.recep_Descripcion)</div>
+                      <div class="item-sub">@m.recep_NumeroDocumento</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="qty-badge">×@(m.mov_TotalUnidades ?? 0)</span></td>
+                <td><div style="font-size:12px">@m.recep_Fecha.ToString("dd MMM")</div></td>
+                <td><div style="font-size:11px;color:var(--text-muted)">@m.mov_Refugio</div></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="dash-footer">
+    <div class="live-indicator">
+      <div class="live-dot"></div>
+      <span>Sistema en vivo</span>
+    </div>
+    <span>·</span>
+    <span>PetsHome</span>
+    <span>·</span>
+    <span id="last-update">Cargado: @DateTime.Now.ToString("hh:mm tt")</span>
+  </div>
+
+</div>
+
+@section Scripts {
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script>
+  lucide.createIcons();
+
+  (function () {
+    var dias  = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    function tick() {
+      var d = new Date();
+      var h = String(d.getHours()).padStart(2,'0');
+      var m = String(d.getMinutes()).padStart(2,'0');
+      var s = String(d.getSeconds()).padStart(2,'0');
+      document.getElementById('clock').textContent = h+':'+m+':'+s;
+      document.getElementById('date-display').textContent =
+        dias[d.getDay()]+', '+d.getDate()+' de '+meses[d.getMonth()]+' '+d.getFullYear();
+    }
+    tick(); setInterval(tick, 1000);
+  })();
+
+  document.querySelectorAll('.kpi-number').forEach(function(el) {
+    var target = parseInt(el.textContent);
+    if (isNaN(target)) return;
+    var start = 0, dur = 1200, step = 16;
+    var inc = target / (dur / step);
+    var timer = setInterval(function() {
+      start = Math.min(start + inc, target);
+      el.textContent = Math.round(start);
+      if (start >= target) clearInterval(timer);
+    }, step);
+  });
+</script>
+}
