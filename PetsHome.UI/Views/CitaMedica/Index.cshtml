@@ -118,6 +118,7 @@
 <script src="~/js/components/datatable/datatable.init.js"></script>
 <script src="~/js/pages/cita-medica.js"></script>
 <script>
+    window._urls = { perfilMedico: '@Url.Action("Index", "PerfilMedico")' };
     // Configuración del DataTable
     CitaMedica.datatable({
         urlList: "@Url.Action("List")",

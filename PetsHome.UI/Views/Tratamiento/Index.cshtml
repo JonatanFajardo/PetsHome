@@ -103,6 +103,7 @@
 <script src="~/js/components/datatable/datatable.init.js"></script>
 <script src="~/js/pages/tratamiento.js"></script>
 <script>
+    window._urls = { perfilMedico: '@Url.Action("Index", "PerfilMedico")' };
     // Configuración del DataTable
     Tratamiento.datatable({
         urlList: "@Url.Action("List")",

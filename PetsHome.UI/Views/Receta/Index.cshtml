@@ -119,6 +119,7 @@
 <script src="~/js/components/datatable/datatable.init.js"></script>
 <script src="~/js/pages/receta.js"></script>
 <script>
+    window._urls = { perfilMedico: '@Url.Action("Index", "PerfilMedico")' };
     // Configuración del DataTable
     Receta.datatable({
         urlList: "@Url.Action("List")",

@@ -58,6 +58,10 @@
                 </div>
 
                 <div class="detail-actions">
+                    <a href="@Url.Action("Index", "PerfilMedico", new { mascId = Model.masc_Id })" class="btn-detail btn-detail-white" style="background:#E8F5E9;color:#2E7D32;border-color:#2E7D32">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>Perfil Médico</span>
+                    </a>
                     <a href="@Url.Action("Find", new { id = Model.cita_Id })" class="btn-detail btn-detail-white">
                         <i class="fas fa-edit"></i>
                         <span>Editar</span>

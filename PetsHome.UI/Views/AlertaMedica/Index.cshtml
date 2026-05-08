@@ -119,7 +119,7 @@
           <div class="row-alert">@item.VacunaNombre</div>
           <div><span class="status-tag tag-red"><span class="status-dot-sm"></span>+@item.DiasVencida días</span></div>
           <div class="row-action">
-            <a href="@Url.Action("Create", "CitaMedica")" class="act-btn act-btn-red">Agendar</a>
+            <a href="@Url.Action("Create", "CitaMedica", new { mascId = item.masc_Id })" class="act-btn act-btn-red">Agendar</a>
           </div>
         </div>
       }
@@ -279,7 +279,7 @@
           <div class="row-alert">@(item.UltimaVisita == null ? "Sin registro de consulta" : "Control de rutina pendiente")</div>
           <div><span class="status-tag tag-blue"><span class="status-dot-sm"></span>@item.TiempoSinConsulta</span></div>
           <div class="row-action">
-            <a href="@Url.Action("Create", "CitaMedica")" class="act-btn">Agendar</a>
+            <a href="@Url.Action("Create", "CitaMedica", new { mascId = item.masc_Id })" class="act-btn">Agendar</a>
           </div>
         </div>
       }

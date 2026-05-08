@@ -12,6 +12,8 @@ namespace PetsHome.Business.Models
         [Display(Name = "Id tratamiento")]
         public int trat_Id { get; set; }
 
+        public int masc_Id { get; set; }
+
         [Display(Name = "Mascota")]
         public string Mascota { get; set; }
 

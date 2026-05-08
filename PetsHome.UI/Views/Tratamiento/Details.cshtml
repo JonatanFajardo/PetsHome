@@ -161,6 +161,9 @@
                     <a class="btn btn-outline" asp-action="Index">
                         <i class="fas fa-arrow-left mr-2"></i>Volver
                     </a>
+                    <a href="@Url.Action("Index", "PerfilMedico", new { mascId = Model.masc_Id })" class="btn btn-outline" style="background:#E8F5E9;color:#2E7D32;border-color:#2E7D32">
+                        <i class="fas fa-stethoscope mr-2"></i>Perfil Médico
+                    </a>
                     <a class="btn btn-primary" asp-action="Find" asp-route-id="@Model.trat_Id">
                         <i class="fas fa-edit mr-2"></i>Editar
                     </a>
