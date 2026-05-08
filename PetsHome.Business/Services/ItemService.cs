@@ -143,6 +143,20 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public async Task<List<ItemPorVencerViewModel>> ListPorVencerAsync()
+        {
+            try
+            {
+                var result = await _itemRepository.ListPorVencerAsync();
+                return _mapper.Map<List<ItemPorVencerViewModel>>(result.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
         public virtual async Task<bool> CodigoExistsAsync(string codigo, int id)
         {
             try

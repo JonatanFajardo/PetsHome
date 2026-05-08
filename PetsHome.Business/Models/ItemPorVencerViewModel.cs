@@ -1,0 +1,16 @@
+using System;
+
+namespace PetsHome.Business.Models
+{
+    public class ItemPorVencerViewModel
+    {
+        public int itm_Id { get; set; }
+        public string itm_Codigo { get; set; }
+        public string itm_Descripcion { get; set; }
+        public string cat_Descripcion { get; set; }
+        public string recdet_NumeroLote { get; set; }
+        public decimal recdet_Cantidad { get; set; }
+        public DateTime recdet_FechaVencimiento { get; set; }
+        public int DiasRestantes { get; set; }
+    }
+}

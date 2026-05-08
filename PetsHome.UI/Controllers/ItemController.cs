@@ -136,6 +136,14 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        public async Task<IActionResult> ListPorVencer()
+        {
+            var result = await _ItemService.ListPorVencerAsync();
+            return result != null
+                ? Json(new { data = result })
+                : Json(new { data = Array.Empty<object>() });
+        }
+
         [HttpGet]
         public async Task<IActionResult> ValidarCodigo(string itm_Codigo, int? itm_Id)
         {

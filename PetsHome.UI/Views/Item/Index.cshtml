@@ -1,78 +1,343 @@
-﻿@model ItemViewModel
+@model ItemViewModel
 @{
     ViewData["Title"] = "Items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
-    @* Listado *@
-    <div class="card">
-        <div class="card-header">
-            <h3>Listado de items</h3>
-        </div>
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped dt-responsive nowrap" id="datatable">
-                    <thead class="text-center bg-primary text-white">
-                        <tr>
-                            <th>Id</th>
-                            <th>Codigo</th>
-                            <th>Descripción</th>
-                            <th>categoria</th>
-                            <th>Precio</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+
+    {{!-- ───────────────────────────────────────────────
+         ESTILOS NUEVOS — Item/Index  (Ítem 5)
+         Tabs · Tabla Por Vencer · Semáforo Stock · Días
+    ─────────────────────────────────────────────────── --}}
+    <style>
+
+        /* ================================================
+           1. TABS  (Todos / Por Vencer)
+        ================================================ */
+        .tabs-wrapper {
+            padding: 0 16px;
+            border-bottom: 2px solid #e5e7eb;
+            background: #fff;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            margin-bottom: -2px;          /* solapa el border-bottom del wrapper */
+            transition: color .2s, border-color .2s;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab-btn:hover {
+            color: #7c3aed;
+            background: #f5f3ff;
+        }
+
+        .tab-btn-active {
+            color: #7c3aed;
+            border-bottom-color: #7c3aed;
+            background: #faf5ff;
+        }
+
+        .tab-btn i {
+            font-size: 12px;
+        }
+
+
+        /* ================================================
+           2. SEMÁFORO DE STOCK
+              Clases usadas desde Item.js en las celdas
+        ================================================ */
+
+        /* Contenedor badge genérico */
+        .stock-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* OK — verde */
+        .stock-ok {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Bajo — amarillo/ámbar */
+        .stock-bajo {
+            background: #fef9c3;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        /* Crítico — rojo */
+        .stock-critico {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        /* Punto de color (indicador circular) */
+        .stock-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .stock-ok     .stock-dot { background: #16a34a; }
+        .stock-bajo   .stock-dot { background: #d97706; }
+        .stock-critico .stock-dot { background: #dc2626; }
+
+
+        /* ================================================
+           3. TABLA  "Por Vencer"  (#datatable-vencer)
+        ================================================ */
+
+        /* Cabecera de columna "Días" */
+        #datatable-vencer th,
+        #datatable-vencer td {
+            vertical-align: middle;
+        }
+
+        /* Badge de días restantes */
+        .dias-badge {
+            display: inline-block;
+            min-width: 52px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: .3px;
+        }
+
+        /* > 30 días  → azul suave */
+        .dias-seguro {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* 15 – 30 días → ámbar */
+        .dias-proximo {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        /* < 15 días → rojo */
+        .dias-urgente {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+            animation: pulse-red 1.8s ease-in-out infinite;
+        }
+
+     
+
+        /* Celda "Vence" — fecha destacada */
+        .fecha-vence {
+            font-weight: 600;
+            color: #374151;
+            font-size: 12.5px;
+        }
+
+        /* Fila entera si ya venció */
+        #datatable-vencer tr.row-vencido td {
+            background: #fff1f2 !important;
+            color: #9f1239;
+        }
+
+        /* Número de lote */
+        .lote-code {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: #f3f4f6;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+        }
+
+
+        /* ================================================
+           4. ESTADO VACÍO (cuando no hay items por vencer)
+        ================================================ */
+        .empty-vencer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            color: #9ca3af;
+            gap: 10px;
+        }
+
+        .empty-vencer i {
+            font-size: 42px;
+            color: #d1d5db;
+        }
+
+        .empty-vencer p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+    </style>
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+    <div class="pets-header-full">
+        <div class="pets-header-content">
+            <div class="pets-title-section">
+                <h2 class="text-white"><i class="fas fa-boxes mr-2 text-white"></i>Gestión de Items</h2>
+                <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
+                    <i class="fas fa-plus mr-2"></i>Nuevo Item
+                </button>
+            </div>
+            <div class="pets-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Buscar por código, descripción o categoría...">
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-export-datatable" onclick="location.reload()">Recargar</button>
+                    <div id="export-buttons-container" class="export-buttons-container"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Delete-->
-    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Tabs -->
+    <div style="padding: 12px 16px 0; border-bottom: 1px solid #e5e7eb; background:#fff;">
+        <button id="tab-todos" class="tab-btn tab-btn-active" onclick="switchTab('todos')">
+            <i class="fas fa-list mr-1"></i>Todos los items
+        </button>
+        <button id="tab-vencer" class="tab-btn" onclick="switchTab('vencer')">
+            <i class="fas fa-exclamation-triangle mr-1"></i>Por vencer
+        </button>
+    </div>
+
+    <!-- Vista: Todos -->
+    <div id="view-todos" class="pets-table-container">
+        <table class="pets-table" id="datatable">
+            <thead>
+                <tr>
+                    <th width="80">ID</th>
+                    <th width="100">Código</th>
+                    <th>Descripción</th>
+                    <th width="140">Categoría</th>
+                    <th width="100">Precio</th>
+                    <th width="90" class="text-center">Stock</th>
+                    <th width="90" class="text-center">Mínimo</th>
+                    <th width="100" class="text-center">Estado</th>
+                    <th width="150" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Vista: Por vencer -->
+    <div id="view-vencer" style="display:none;" class="pets-table-container">
+        <table class="pets-table" id="datatable-vencer">
+            <thead>
+                <tr>
+                    <th width="100">Código</th>
+                    <th>Item</th>
+                    <th width="140">Categoría</th>
+                    <th width="110">Lote</th>
+                    <th width="70" class="text-center">Cant.</th>
+                    <th width="110">Vence</th>
+                    <th width="90" class="text-center">Días</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <form asp-action="Remove" method="post" autocomplete="off"
                       data-ajax-begin="Catalogs.begin"
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="itm_Id" id="delete-item-id">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <p>¿Está seguro de que desea eliminar este registro?</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="modal-body text-center py-4">
+                        <div class="mb-3"><i class="fas fa-trash-alt text-danger" style="font-size:48px;"></i></div>
+                        <h5>¿Está seguro de eliminar este item?</h5>
+                        <p class="text-muted">Esta acción no se puede deshacer.</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-danger" />
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                            <i class="fas fa-times mr-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash mr-2"></i>Eliminar
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Fin Modal -->
+
 </div>
+</div>
+
 @section Scripts {
 <script src="~/js/components/datatable/datatable.init.js"></script>
-<script src="~/js/pages/item.js"></script>
+<script src="~/js/pages/Item.js"></script>
 <script>
     Item.datatable({
-        urlList: "@Url.Action("List")",
+        urlList:   "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("Create")",
         urlUpdate: "@Url.Action("Find")"
     });
 
+    $('#globalSearch').on('keyup', function () {
+        $('#datatable').DataTable().search(this.value).draw();
+    });
+
+    function switchTab(tab) {
+        document.getElementById('view-todos').style.display  = tab === 'todos'  ? 'block' : 'none';
+        document.getElementById('view-vencer').style.display = tab === 'vencer' ? 'block' : 'none';
+        document.getElementById('tab-todos').className  = 'tab-btn' + (tab === 'todos'  ? ' tab-btn-active' : '');
+        document.getElementById('tab-vencer').className = 'tab-btn' + (tab === 'vencer' ? ' tab-btn-active' : '');
+        if (tab === 'vencer') {
+            Item.initPorVencer('@Url.Action("ListPorVencer")');
+        }
+    }
 </script>
+<style>
+    .tab-btn { background:none; border:none; padding:8px 16px; font-size:13px; font-weight:500; color:#5c6270; cursor:pointer; border-bottom:2px solid transparent; margin-right:4px; }
+    .tab-btn-active { color:#7c3aed; border-bottom-color:#7c3aed; }
+    .tab-btn:hover { color:#7c3aed; }
+</style>
 }

@@ -44,5 +44,9 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el número de documento.
         /// </summary>
         public string recep_NumeroDocumento { get; set; }
+
+        public int recep_TotalItems { get; set; }
+        public decimal recep_ValorTotal { get; set; }
+        public int recep_ItemsPorVencer { get; set; }
     }
 }

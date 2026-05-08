@@ -6,6 +6,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/summary-recepcion.css" />
 }
 
 <div class="col-12">
@@ -45,6 +46,66 @@
         </div>
     </div>
 
+    <!-- Barra de resumen -->
+    <div class="rm-summary-bar">
+        <div class="rm-stat rm-stat--total">
+            <div class="rm-stat-label"><i class="fas fa-boxes"></i>Recepciones</div>
+            <div class="rm-stat-value" id="rm-stat-total">0</div>
+            <div class="rm-stat-sub">en el período</div>
+        </div>
+        <div class="rm-stat rm-stat--items">
+            <div class="rm-stat-label"><i class="fas fa-cubes"></i>Total Items</div>
+            <div class="rm-stat-value" id="rm-stat-items">0</div>
+            <div class="rm-stat-sub">unidades recibidas</div>
+        </div>
+        <div class="rm-stat rm-stat--valor">
+            <div class="rm-stat-label"><i class="fas fa-dollar-sign"></i>Valor Total</div>
+            <div class="rm-stat-value" id="rm-stat-valor">L 0.00</div>
+            <div class="rm-stat-sub">valor invertido</div>
+        </div>
+        <div class="rm-stat rm-stat--vencer">
+            <div class="rm-stat-label"><i class="fas fa-exclamation-triangle"></i>Por Vencer</div>
+            <div class="rm-stat-value" id="rm-stat-vencer">—</div>
+            <div class="rm-stat-sub">items en 30 días</div>
+        </div>
+    </div>
+
+    <!-- Barra de filtros -->
+    <div class="rm-filters-bar">
+        <div class="rm-filter-group">
+            <span class="rm-filter-label">Período:</span>
+            <select id="rm-filter-periodo" class="rm-filter-select">
+                <option value="todo">Todo</option>
+                <option value="hoy">Hoy</option>
+                <option value="semana">Esta semana</option>
+                <option value="mes">Este mes</option>
+                <option value="anio">Este año</option>
+            </select>
+        </div>
+        <div class="rm-filter-sep"></div>
+        <div class="rm-filter-group">
+            <span class="rm-filter-label">Desde:</span>
+            <input type="date" id="rm-filter-desde" class="rm-filter-input">
+        </div>
+        <div class="rm-filter-group">
+            <span class="rm-filter-label">Hasta:</span>
+            <input type="date" id="rm-filter-hasta" class="rm-filter-input">
+        </div>
+        <div class="rm-filter-sep"></div>
+        <div class="rm-filter-group">
+            <span class="rm-filter-label">Tipo:</span>
+            <select id="rm-filter-tipo" class="rm-filter-select">
+                <option value="">Todos</option>
+                <option value="Donacion">Donación</option>
+                <option value="Compra">Compra</option>
+                <option value="Traslado">Traslado</option>
+            </select>
+        </div>
+        <button id="rm-btn-clear" class="rm-btn-clear">
+            <i class="fas fa-times"></i>Limpiar
+        </button>
+    </div>
+
     <!-- Vista de Tabla -->
     <div id="tableView" class="pets-table-container">
         <table class="pets-table" id="datatable">
@@ -56,6 +117,9 @@
                     <th>Refugio</th>
                     <th width="120">Tipo</th>
                     <th width="120">Documento</th>
+                    <th width="80" class="text-center">Items</th>
+                    <th width="130" class="text-right">Valor Total</th>
+                    <th width="110" class="text-center">Por Vencer</th>
                     <th width="150" class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -63,6 +127,11 @@
                 <!-- DataTable cargara los datos aqui -->
             </tbody>
         </table>
+    </div>
+
+    <!-- Vista Tarjetas -->
+    <div id="gridView" style="display:none;">
+        <div class="row p-3" id="recepcionesGrid"></div>
     </div>
 
     <!-- Modal Delete -->
@@ -82,6 +151,7 @@
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="recep_Id" id="delete-item-id">
                     <div class="modal-body text-center py-4">
                         <div class="mb-3">
@@ -106,49 +176,75 @@
 </div>
 
 @section Scripts {
+<script src="~/js/components/datatable/datatable.init.js"></script>
 <script src="~/js/pages/recepcionmercancia.js"></script>
+<script src="~/js/pages/summary-recepcion.js"></script>
 <script>
     RecepcionMercancia.datatable({
-        urlList: "@Url.Action("List")",
+        urlList:   "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("FormPartialRecepcion")",
         urlUpdate: "@Url.Action("FormPartialRecepcion")"
     });
+
+    RM_Summary.init();
 
     // Busqueda global
     $('#globalSearch').on('keyup', function() {
         $('#datatable').DataTable().search(this.value).draw();
     });
 
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
+    // Toggle vistas
+    function toggleView(view) {
+        document.getElementById('tableView').style.display = 'none';
+        document.getElementById('gridView').style.display  = 'none';
+        document.querySelectorAll('.view-toggle .btn-control').forEach(b => b.classList.remove('active'));
+
+        if (view === 'table') {
+            document.getElementById('tableView').style.display = 'block';
+            document.getElementById('tableViewBtn').classList.add('active');
+        } else if (view === 'grid') {
+            document.getElementById('gridView').style.display = 'block';
+            document.getElementById('gridViewBtn').classList.add('active');
+            loadCardsView();
+        }
     }
 
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
-    }
-
-    // Exportar a CSV (mejorado)
-    function exportCSV() {
-        var table = $('#datatable').DataTable();
-        var data = table.rows({ search: 'applied' }).data();
-
-        var csv = 'ID,Descripción,Fecha,Refugio,Tipo,Documento\n';
-        data.each(function(row) {
-            // Implementar según estructura de datos
-            console.log('Exportar CSV - Implementar según datos');
-        });
-
-        var blob = new Blob([csv], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'recepciones_' + new Date().toISOString().slice(0,10) + '.csv';
-        a.click();
+    function loadCardsView() {
+        var data = $('#datatable').DataTable().rows({ search: 'applied' }).data();
+        var fmt  = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL', minimumFractionDigits: 2 });
+        var html = '';
+        if (data.length === 0) {
+            html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron recepciones</p></div>';
+        } else {
+            data.each(function (row) {
+                var tipo  = row.recep_TipoRecepcion || '';
+                var lower = tipo.toLowerCase();
+                var bg = lower === 'donacion' || lower === 'donación' ? 'status-disponible'
+                       : lower === 'compra'                          ? 'status-reservado'
+                       :                                               'status-pendiente';
+                var fecha = row.recep_Fecha ? new Date(row.recep_Fecha).toLocaleDateString('es-HN') : '—';
+                html += `
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="pet-card">
+                        <div style="position:relative;">
+                            <div class="pet-card-img"><i class="fas fa-truck" style="color:#7c3aed;"></i></div>
+                            <span class="pet-badge">#${String(row.recep_Id).padStart(3,'0')}</span>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="mb-1">${row.recep_Descripcion || '—'}</h5>
+                            <p class="text-muted small mb-1"><i class="fas fa-building mr-1"></i>${row.refg_Nombre || '—'}</p>
+                            <p class="text-muted small mb-2"><i class="fas fa-calendar-alt mr-1"></i>${fecha}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="status-badge ${bg}">${tipo}</span>
+                                <small class="text-muted">${row.recep_TotalItems || 0} items · ${fmt.format(row.recep_ValorTotal || 0)}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        document.getElementById('recepcionesGrid').innerHTML = html;
     }
 </script>
 }

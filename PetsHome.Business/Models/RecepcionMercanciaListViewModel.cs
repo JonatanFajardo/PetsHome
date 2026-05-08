@@ -51,5 +51,14 @@ namespace PetsHome.Business.Models
         /// </summary>
         [Display(Name = "Documento")]
         public string recep_NumeroDocumento { get; set; }
+
+        [Display(Name = "Items")]
+        public int recep_TotalItems { get; set; }
+
+        [Display(Name = "Valor Total")]
+        public decimal recep_ValorTotal { get; set; }
+
+        [Display(Name = "Por Vencer")]
+        public int recep_ItemsPorVencer { get; set; }
     }
 }

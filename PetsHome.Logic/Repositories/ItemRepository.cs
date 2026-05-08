@@ -65,6 +65,12 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
+        public async Task<IEnumerable<PR_Inventario_Items_PorVencerResult>> ListPorVencerAsync()
+        {
+            const string sqlQuery = "[Inventario].[PR_Inventario_Items_PorVencer]";
+            return await DbApp.Select<PR_Inventario_Items_PorVencerResult>(sqlQuery);
+        }
+
         public virtual async Task<bool> CodigoExistsAsync(string codigo, int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Existe]";

@@ -79,6 +79,42 @@ var RecepcionMercancia = (function () {
                         }
                         return data;
                     }
+                },
+                {
+                    FieldName: 'recep_TotalItems',
+                    Size: 80,
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            if (data == null) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="font-weight:600;color:#374151;">' + data + '</span>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'recep_ValorTotal',
+                    Size: 120,
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            if (data == null) return '<span style="color:#9ca3af;">—</span>';
+                            var fmt = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL', minimumFractionDigits: 2 });
+                            return '<span style="font-weight:600;color:#15803d;">' + fmt.format(data) + '</span>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    FieldName: 'recep_ItemsPorVencer',
+                    Size: 100,
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            if (data == null || data === 0) return '<span style="color:#9ca3af;">—</span>';
+                            return '<span style="display:inline-block;padding:2px 10px;border-radius:9999px;'
+                                 + 'font-size:12px;font-weight:600;background:#fef3c7;color:#b45309;">'
+                                 + data + ' items</span>';
+                        }
+                        return data;
+                    }
                 }
             ];
             datatable.init(Direction, header);

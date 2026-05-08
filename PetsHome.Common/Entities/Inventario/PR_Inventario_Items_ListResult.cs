@@ -30,5 +30,7 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public decimal itm_Precio { get; set; }
+        public decimal itm_StockMinimo { get; set; }
+        public decimal itm_StockActual { get; set; }
     }
 }

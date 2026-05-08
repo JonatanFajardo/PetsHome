@@ -1,0 +1,150 @@
+/* ============================================================
+   SUMMARY BAR & FILTERS — RecepcionMercancia/Index
+   ============================================================ */
+
+/* ---- Summary bar ---------------------------------------- */
+.rm-summary-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 14px 16px 0;
+    background: #fff;
+}
+
+.rm-stat {
+    padding: 14px 18px;
+    border-right: 1px solid #e5e7eb;
+    position: relative;
+}
+.rm-stat:last-child { border-right: none; }
+
+.rm-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #8a909a;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.rm-stat-label i { font-size: 12px; }
+
+.rm-stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1;
+}
+
+.rm-stat-sub {
+    font-size: 11px;
+    color: #9aa0ab;
+    margin-top: 3px;
+}
+
+/* accent colors */
+.rm-stat--total  .rm-stat-label { color: #7c3aed; }
+.rm-stat--total  .rm-stat-value { color: #7c3aed; }
+.rm-stat--items  .rm-stat-value { color: #1d4ed8; }
+.rm-stat--valor  .rm-stat-value { color: #15803d; }
+.rm-stat--vencer .rm-stat-value { color: #b45309; }
+.rm-stat--vencer .rm-stat-label { color: #b45309; }
+
+/* skeleton loader */
+.rm-stat.is-loading .rm-stat-value,
+.rm-stat.is-loading .rm-stat-sub {
+    background: #f3f4f6;
+    color: transparent;
+    border-radius: 4px;
+    animation: rm-pulse 1.4s ease-in-out infinite;
+    user-select: none;
+    min-width: 60px;
+    display: inline-block;
+}
+@keyframes rm-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .4; }
+}
+
+/* ---- Filters bar ---------------------------------------- */
+.rm-filters-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #f8f9fb;
+    border-bottom: 1px solid #e8eaed;
+    flex-wrap: wrap;
+}
+
+.rm-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rm-filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5c6270;
+    white-space: nowrap;
+}
+
+.rm-filter-select,
+.rm-filter-input {
+    font-size: 12px;
+    padding: 5px 9px;
+    border: 1px solid #dce1e9;
+    border-radius: 7px;
+    background: #fff;
+    color: #374151;
+    outline: none;
+    transition: border-color .15s;
+    height: 30px;
+}
+.rm-filter-select:focus,
+.rm-filter-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,.1); }
+
+.rm-filter-input { width: 120px; }
+
+.rm-btn-clear {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border: 1px solid #dce1e9;
+    border-radius: 7px;
+    background: #fff;
+    color: #5c6270;
+    cursor: pointer;
+    height: 30px;
+    transition: background .12s, border-color .12s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.rm-btn-clear:hover { background: #f4f6f9; border-color: #b8bfc9; }
+
+.rm-filter-sep {
+    width: 1px;
+    height: 20px;
+    background: #e5e7eb;
+}
+
+/* ---- Responsive ---------------------------------------- */
+@media (max-width: 900px) {
+    .rm-summary-bar { grid-template-columns: repeat(2, 1fr); }
+    .rm-stat:nth-child(2) { border-right: none; }
+    .rm-stat:nth-child(1),
+    .rm-stat:nth-child(2) { border-bottom: 1px solid #e5e7eb; }
+}
+@media (max-width: 560px) {
+    .rm-summary-bar { grid-template-columns: 1fr; }
+    .rm-stat { border-right: none; border-bottom: 1px solid #e5e7eb; }
+    .rm-stat:last-child { border-bottom: none; }
+    .rm-filters-bar { flex-direction: column; align-items: flex-start; }
+}

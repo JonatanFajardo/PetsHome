@@ -19,6 +19,7 @@ namespace PetsHome.Common.Entities
         public string itm_Descripcion { get; set; }
         public int cat_Id { get; set; }
         public decimal itm_Precio { get; set; }
+        public decimal itm_StockMinimo { get; set; }
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>

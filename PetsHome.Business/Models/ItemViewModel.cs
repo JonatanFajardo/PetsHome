@@ -85,6 +85,12 @@ namespace PetsHome.Business.Models
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int? itm_Stock { get; set; }
 
+        [Display(Name = "Stock Actual")]
+        public decimal itm_StockActual { get; set; }
+
+        [Display(Name = "Stock Mínimo")]
+        public decimal itm_StockMinimo { get; set; }
+
         /// <summary>
         /// Obtiene o establece el ID del usuario que crea el item.
         /// </summary>
