@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── Canvas fijo 1400 × 900 ────────────────────────────── */
+body {
+  width: 1400px;
+  height: 900px;
+  overflow: hidden;
+  display: flex;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #f4f3fb;
+}
+
+/* ════════════════════════════════════════════════════════
+   PANEL IZQUIERDO
+════════════════════════════════════════════════════════ */
+.left {
+  width: 390px;
+  min-width: 390px;
+  height: 900px;
+  background: #ffffff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 48px;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.06);
+}
+
+.deco-circle {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: rgba(99, 91, 255, 0.10);
+  bottom: -160px;
+  left: -120px;
+  z-index: 0;
+}
+
+.deco-circle-2 {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(99, 91, 255, 0.06);
+  top: -80px;
+  right: -80px;
+  z-index: 0;
+}
+
+.tag {
+  display: inline-block;
+  background: #1e1b4b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 6px;
+  margin-bottom: 26px;
+  width: fit-content;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 54px;
+  font-weight: 900;
+  color: #0f0e17;
+  line-height: 1.0;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -1px;
+  word-break: break-word;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: #6b7280;
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+  max-width: 280px;
+}
+
+.meta {
+  position: absolute;
+  bottom: 28px;
+  left: 48px;
+  font-size: 11px;
+  color: #9ca3af;
+  z-index: 1;
+}
+.meta b { color: #635bff; }
+
+/* ════════════════════════════════════════════════════════
+   PANEL DERECHO
+════════════════════════════════════════════════════════ */
+.right {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(145deg, #f0effe 0%, #e8e6fb 100%);
+  overflow: hidden;
+}
+
+.right::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: rgba(99, 91, 255, 0.06);
+  top: -280px;
+  right: -220px;
+}
+
+.right::after {
+  content: '';
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: rgba(99, 91, 255, 0.05);
+  bottom: -100px;
+  left: 20px;
+}
+
+/* ── Ventana de browser ─────────────────────────────────── */
+.screen {
+  position: absolute;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 60px rgba(30, 27, 75, 0.22),
+    0  4px 16px rgba(30, 27, 75, 0.10);
+}
+
+.bar {
+  height: 32px;
+  background: linear-gradient(180deg, #f9fafb 0%, #f1f2f4 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.d1  { background: #ff5f57; }
+.d2  { background: #febc2e; }
+.d3  { background: #28c840; }
+
+.url-bar {
+  margin-left: 10px;
+  flex: 1;
+  height: 18px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  max-width: 260px;
+}
+
+.screen img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* ── Posición de las 3 ventanas ─────────────────────────── */
+.s1 { width: 640px; top:  22px; left:  60px; }
+.s1 img { height: 370px; }
+
+.s2 { width: 600px; top: 270px; left: 310px; z-index: 3; }
+.s2 img { height: 347px; }
+
+.s3 { width: 360px; top: 630px; left:  52px; z-index: 4; opacity: 0.88; }
+.s3 img { height: 208px; }
+
+</style>
+</head>
+<body>
+
+<!-- ─── IZQUIERDA ──────────────────────────────────────── -->
+<div class="left">
+  <div class="deco-circle"></div>
+  <div class="deco-circle-2"></div>
+
+  <div class="tag">{{ETIQUETA}}</div>
+  <div class="title">{{PROYECTO}}</div>
+  <div class="subtitle">{{SUBTITULO}}</div>
+
+  <div class="meta">
+    <b>{{TEMA_NOMBRE}}</b> &nbsp;·&nbsp; {{FECHA}}
+  </div>
+</div>
+
+<!-- ─── DERECHA ────────────────────────────────────────── -->
+<div class="right">
+
+  <div class="screen s1">
+    <div class="bar">
+      <div class="dot d1"></div>
+      <div class="dot d2"></div>
+      <div class="dot d3"></div>
+      <div class="url-bar"></div>
+    </div>
+    <img src="{{IMG_1}}" />
+  </div>
+
+  <div class="screen s2">
+    <div class="bar">
+      <div class="dot d1"></div>
+      <div class="dot d2"></div>
+      <div class="dot d3"></div>
+      <div class="url-bar"></div>
+    </div>
+    <img src="{{IMG_2}}" />
+  </div>
+
+  <div class="screen s3">
+    <div class="bar">
+      <div class="dot d1"></div>
+      <div class="dot d2"></div>
+      <div class="dot d3"></div>
+      <div class="url-bar"></div>
+    </div>
+    <img src="{{IMG_3}}" />
+  </div>
+
+</div>
+</body>
+</html>

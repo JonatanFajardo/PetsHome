@@ -1,0 +1,33 @@
+{
+  "proyecto": "PetsHome",
+  "tema": "tema_html_01",
+  "url_base": "https://localhost:5001",
+  "login": {
+    "url": "/Account/Login",
+    "campo_usuario": "Username",
+    "campo_password": "Password",
+    "boton_submit": "button[type=submit]",
+    "usuario": "admin",
+    "password": "admin123"
+  },
+  "rutas": [
+    "/Home/Index",
+    "/Adopcion/Index",
+    "/Usuarios/Index"
+  ],
+  "rutas_portfolio": [
+    "/Home/Index",
+    "/RecepcionMercancia/Index",
+    "/Adopcion/Index",
+    "/Roles/Index",
+    "/Item/Create"
+  ],
+  "color_fondo": "#c0736a",
+  "color_acento": "#d45a4e",
+  "subtitulo": "Guarde información de las mascotas de su albergue",
+  "etiqueta": "administrativo",
+  "num_mockups": 2,
+  "viewport": { "width": 1280, "height": 800 },
+  "espera_ms": 2000,
+  "exportar_pdf": true
+}

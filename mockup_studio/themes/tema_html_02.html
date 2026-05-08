@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1400"/>
+<title>{{PROYECTO}} — Mockup</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    width: 1400px;
+    height: 900px;
+    overflow: hidden;
+    background: #0a0a14;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    position: relative;
+  }
+
+  /* ── FONDO ── */
+  .bg-glow-1 {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,60,200,0.25) 0%, transparent 70%);
+    top: -150px; left: -100px;
+    pointer-events: none;
+  }
+  .bg-glow-2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(230,60,80,0.18) 0%, transparent 70%);
+    bottom: -100px; right: 50px;
+    pointer-events: none;
+  }
+  .bg-glow-3 {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(60,180,230,0.12) 0%, transparent 70%);
+    top: 300px; left: 600px;
+    pointer-events: none;
+  }
+  .bg-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  /* ── LAYOUT PRINCIPAL ── */
+  .canvas {
+    position: relative;
+    width: 1400px; height: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    gap: 40px;
+  }
+
+  /* ── COLUMNA IZQUIERDA (info) ── */
+  .info-col {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 10;
+  }
+
+  .badge-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(99,60,200,0.18);
+    border: 1px solid rgba(99,60,200,0.45);
+    color: #a78bfa;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    width: fit-content;
+  }
+  .badge-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #a78bfa;
+  }
+
+  .title {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+  }
+  .title span {
+    background: linear-gradient(90deg, #a78bfa, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+    max-width: 290px;
+  }
+
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, #a78bfa, #f472b6);
+    border-radius: 2px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+  }
+  .meta-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(167,139,250,0.6);
+    flex-shrink: 0;
+  }
+  .meta-item strong {
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+
+  .brand-footer {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── COLUMNA DERECHA (screenshots) ── */
+  .screens-col {
+    flex: 1;
+    position: relative;
+    height: 820px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Tarjeta base */
+  .screen-card {
+    position: absolute;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.04),
+      0 32px 80px rgba(0,0,0,0.7),
+      0 8px 24px rgba(0,0,0,0.5);
+  }
+  .screen-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Tarjeta CENTRAL — grande y frontal */
+  .screen-main {
+    width: 490px; height: 640px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    border-color: rgba(167,139,250,0.25);
+    box-shadow:
+      0 0 0 1px rgba(167,139,250,0.1),
+      0 0 60px rgba(99,60,200,0.25),
+      0 40px 100px rgba(0,0,0,0.8);
+  }
+
+  /* Tarjeta SUPERIOR DERECHA */
+  .screen-top {
+    width: 340px; height: 440px;
+    top: 50px;
+    right: 30px;
+    transform: rotate(3deg);
+    z-index: 4;
+  }
+
+  /* Tarjeta INFERIOR IZQUIERDA */
+  .screen-bot {
+    width: 310px; height: 400px;
+    bottom: 30px;
+    left: 30px;
+    transform: rotate(-2.5deg);
+    z-index: 3;
+  }
+
+  /* Brillos en esquinas de pantallas */
+  .screen-main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(167,139,250,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Barra de "browser" en pantalla principal */
+  .browser-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 32px;
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 6px;
+    z-index: 6;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dot-r { width: 9px; height: 9px; border-radius: 50%; background: #ff5f57; }
+  .dot-y { width: 9px; height: 9px; border-radius: 50%; background: #ffbd2e; }
+  .dot-g { width: 9px; height: 9px; border-radius: 50%; background: #28ca41; }
+  .browser-url {
+    margin-left: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    height: 18px;
+    width: 180px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Img en screen-main necesita padding top por la barra */
+  .screen-main img {
+    margin-top: 32px;
+    height: calc(100% - 32px);
+  }
+
+  /* Línea decorativa lateral */
+  .accent-line {
+    position: absolute;
+    left: 56px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(167,139,250,0.3) 30%, rgba(244,114,182,0.3) 70%, transparent);
+    z-index: 1;
+  }
+
+  /* Número del tema — esquina inferior derecha */
+  .theme-watermark {
+    position: absolute;
+    bottom: 22px;
+    right: 56px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: 0.1em;
+    z-index: 20;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow-1"></div>
+<div class="bg-glow-2"></div>
+<div class="bg-glow-3"></div>
+<div class="bg-dots"></div>
+<div class="accent-line"></div>
+
+<div class="canvas">
+
+  <!-- ── INFO ── -->
+  <div class="info-col">
+    <div class="badge-label">{{ETIQUETA}}</div>
+
+    <div class="title">
+      {{PROYECTO}}<br/>
+      <span>Web App</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="subtitle">{{SUBTITULO}}</p>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="meta-dot"></div>
+        <span><strong>Fecha:</strong> {{FECHA}}</span>
+      </div>
+      <div class="meta-item">
+        <div class="meta-dot"></div>
+        <span><strong>Tema:</strong> {{TEMA_NOMBRE}}</span>
+      </div>
+      <div class="meta-item">
+        <div class="meta-dot"></div>
+        <span><strong>Canvas:</strong> 1400 × 900 px</span>
+      </div>
+    </div>
+
+    <p class="brand-footer">MOCKUP · AUTO-GENERATED</p>
+  </div>
+
+  <!-- ── SCREENSHOTS ── -->
+  <div class="screens-col">
+
+    <!-- Bot izq -->
+    <div class="screen-card screen-bot">
+      <img src="{{IMG_3}}" alt="screenshot 3"/>
+    </div>
+
+    <!-- Top der -->
+    <div class="screen-card screen-top">
+      <img src="{{IMG_2}}" alt="screenshot 2"/>
+    </div>
+
+    <!-- Central -->
+    <div class="screen-card screen-main">
+      <div class="browser-bar">
+        <div class="dot-r"></div>
+        <div class="dot-y"></div>
+        <div class="dot-g"></div>
+        <div class="browser-url">localhost:3000</div>
+      </div>
+      <img src="{{IMG_1}}" alt="screenshot 1"/>
+    </div>
+
+  </div>
+</div>
+
+<div class="theme-watermark">{{TEMA_NOMBRE}} · {{FECHA}}</div>
+
+</body>
+</html>
