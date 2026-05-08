@@ -1,0 +1,291 @@
+@model PetsHome.Business.Models.ReporteAdopcionesViewModel
+@{
+    ViewData["Title"]           = "Reporte de Adopciones — PetsHome";
+    Layout                      = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Reporte de Adopciones";
+
+    var resumen = Model.Resumen.FirstOrDefault();
+
+    var maxRaza = Model.TopRazas.Any()
+        ? Model.TopRazas.Max(r => r.CantidadAdopciones)
+        : 1;
+
+    Func<string, string> badgeClass = estado => estado switch
+    {
+        "Aprobada"    => "aprobada",
+        "Pendiente"   => "pendiente",
+        "En Revisión" => "revision",
+        "Rechazada"   => "rechazada",
+        _             => "pendiente"
+    };
+
+    Func<string, string> avatarBgClass = estado => estado switch
+    {
+        "Aprobada"    => "avatar-aprobada",
+        "Pendiente"   => "avatar-pendiente",
+        "En Revisión" => "avatar-revision",
+        "Rechazada"   => "avatar-rechazada",
+        _             => "avatar-pendiente"
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/reporte-adopciones.css" />
+}
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<div class="report-header">
+    <div class="header-title">
+        <div class="header-icon">🐾</div>
+        <div>
+            <h1>Reporte de Adopciones</h1>
+            <span class="header-sub">PetsHome · Actualizado @DateTime.Now.ToString("dd MMM yyyy, HH:mm")</span>
+        </div>
+    </div><!-- /header-title -->
+
+    <div class="header-filters">
+        <select class="filter-select" id="periodoSelect">
+            <option value="hoy">Hoy</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes" selected>Este mes</option>
+            <option value="anio">Este año</option>
+            <option value="custom">Rango personalizado</option>
+        </select>
+
+        <select class="filter-select" id="refugioSelect">
+            <option value="todos">Todos los refugios</option>
+            <option value="las-lomas">Refugio Las Lomas</option>
+            <option value="la-esperanza">Refugio La Esperanza</option>
+            <option value="vida-animal">Refugio Vida Animal</option>
+        </select>
+
+        <button class="btn-export" id="btnExport">
+            <i class="fas fa-file-pdf"></i> Exportar PDF
+        </button>
+    </div><!-- /header-filters -->
+</div><!-- /report-header -->
+
+<!-- ═══════════════════ PAGE CONTENT ═══════════════════ -->
+<div class="page-wrap">
+
+    <!-- KPI ROW -->
+    <div class="kpi-grid" id="kpiGrid">
+
+        <div class="kpi-card green" data-delay="0">
+            <div class="kpi-header">
+                <div class="kpi-label">Total adopciones</div>
+                <div class="kpi-icon"><i class="fas fa-paw"></i></div>
+            </div>
+            <div class="kpi-value"
+                 id="kpi-total"
+                 data-target="@(resumen?.TotalAdopciones ?? 0)">
+                0
+            </div>
+            <div class="kpi-sub">
+                Del período seleccionado
+                <span class="kpi-trend trend-up">
+                    <i class="fas fa-arrow-trend-up"></i> +12%
+                </span>
+            </div>
+        </div><!-- /kpi total -->
+
+        <div class="kpi-card amber" data-delay="80">
+            <div class="kpi-header">
+                <div class="kpi-label">Solicitudes pendientes</div>
+                <div class="kpi-icon"><i class="fas fa-hourglass-half"></i></div>
+            </div>
+            <div class="kpi-value"
+                 id="kpi-pending"
+                 data-target="@(resumen?.SolicitudesPendientes ?? 0)">
+                0
+            </div>
+            <div class="kpi-sub">
+                En espera de revisión
+                <span class="kpi-trend trend-neu">
+                    <i class="fas fa-minus"></i> Sin cambio
+                </span>
+            </div>
+        </div><!-- /kpi pendientes -->
+
+        <div class="kpi-card blue" data-delay="160">
+            <div class="kpi-header">
+                <div class="kpi-label">Tasa de aprobación</div>
+                <div class="kpi-icon"><i class="fas fa-chart-pie"></i></div>
+            </div>
+            <div class="kpi-value"
+                 id="kpi-rate"
+                 data-target="@(resumen?.TasaAprobacion ?? 0)"
+                 data-suffix="%">
+                0
+            </div>
+            <div class="kpi-sub">
+                Solicitudes aprobadas
+                <span class="kpi-trend trend-up">
+                    <i class="fas fa-arrow-trend-up"></i> +5%
+                </span>
+            </div>
+        </div><!-- /kpi tasa -->
+
+        <div class="kpi-card purple" data-delay="240">
+            <div class="kpi-header">
+                <div class="kpi-label">Tiempo promedio</div>
+                <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+            </div>
+            <div class="kpi-value"
+                 id="kpi-time"
+                 data-target="@(resumen?.TiempoPromedio ?? 0)"
+                 data-suffix=" d">
+                0
+            </div>
+            <div class="kpi-sub">
+                Promedio del proceso
+                <span class="kpi-trend trend-down">
+                    <i class="fas fa-arrow-trend-down"></i> -2d
+                </span>
+            </div>
+        </div><!-- /kpi tiempo -->
+
+    </div><!-- /kpi-grid -->
+
+    <!-- CHARTS ROW -->
+    <div class="charts-row">
+
+        <!-- Bar chart — data inyectada vía window._chartData en Scripts -->
+        <div class="chart-card" id="barCard">
+            <div class="card-title">Adopciones por mes</div>
+            <div class="card-subtitle">Últimos @Model.TotalAdopcionesPorMes meses · comparativa</div>
+            <div class="chart-wrap">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div><!-- /barCard -->
+
+        <!-- Donut chart -->
+        <div class="chart-card" id="donutCard">
+            <div class="card-title">Estado de solicitudes</div>
+            <div class="card-subtitle">Distribución actual del período</div>
+            <div class="donut-canvas-row">
+                <canvas id="donutChart"></canvas>
+                <div class="dona-legend" id="donaLegend"></div>
+            </div>
+        </div><!-- /donutCard -->
+
+    </div><!-- /charts-row -->
+
+    <!-- BOTTOM ROW -->
+    <div class="bottom-row">
+
+        <!-- Top razas -->
+        <div class="list-card" id="breedsCard">
+            <div class="card-title">🏆 Top razas más adoptadas</div>
+            <div class="card-subtitle">Período seleccionado · cantidad de adopciones</div>
+
+            @if (!Model.TopRazas.Any())
+            {
+                <div class="empty-state">
+                    <i class="fas fa-paw"></i>
+                    <p>Sin datos de razas para el período seleccionado.</p>
+                </div>
+            }
+            else
+            {
+                <div id="breedsList">
+                    @foreach (var (raza, idx) in Model.TopRazas.Select((r, i) => (r, i)))
+                    {
+                        var pct = maxRaza > 0
+                            ? (int)Math.Round((double)raza.CantidadAdopciones / maxRaza * 100)
+                            : 0;
+                        <div class="breed-item">
+                            <span class="breed-rank">#@(idx + 1)</span>
+                            <span class="breed-emoji">🐾</span>
+                            <div class="breed-info">
+                                <div class="breed-name">@raza.Raza</div>
+                                <div class="breed-bar-wrap">
+                                    <div class="breed-bar" style="width:@(pct)%"></div>
+                                </div>
+                            </div>
+                            <span class="breed-count">@raza.CantidadAdopciones</span>
+                        </div>
+                    }
+                </div><!-- /breedsList -->
+            }
+        </div><!-- /breedsCard -->
+
+        <!-- Adopciones recientes -->
+        <div class="list-card" id="recentCard">
+            <div class="card-title">🕐 Adopciones recientes</div>
+            <div class="card-subtitle">Últimas @Model.TotalAdopcionesRecientes solicitudes registradas</div>
+
+            @if (!Model.AdopcionesRecientes.Any())
+            {
+                <div class="empty-state">
+                    <i class="fas fa-clock"></i>
+                    <p>Sin adopciones recientes para el período.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="adopt-table">
+                        <thead>
+                            <tr>
+                                <th>Mascota</th>
+                                <th>Adoptante</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th class="text-center">Días</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var adopcion in Model.AdopcionesRecientes)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="pet-cell">
+                                            <div class="pet-avatar @avatarBgClass(adopcion.Estado)">🐾</div>
+                                            <div>
+                                                <div class="pet-name">@adopcion.MascotaNombre</div>
+                                                <div class="pet-breed">@adopcion.Raza</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="adopter-name">@adopcion.Adoptante</td>
+                                    <td class="date-col">@adopcion.FechaAdopcion.ToString("dd MMM yyyy")</td>
+                                    <td>
+                                        <span class="badge-status @badgeClass(adopcion.Estado)">
+                                            @adopcion.Estado
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="days-pill">@adopcion.DiasTranscurridos d</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div><!-- /table-responsive -->
+            }
+        </div><!-- /recentCard -->
+
+    </div><!-- /bottom-row -->
+
+</div><!-- /page-wrap -->
+
+@section Scripts {
+    <script>
+        window._urls = {
+            exportPdf: '@Url.Action("ExportPdf", "ReporteAdopciones")'
+        };
+
+        window._chartData = {
+            barLabels:    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                              Model.AdopcionesPorMes.Select(m => m.Mes).ToList())),
+            barValues:    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                              Model.AdopcionesPorMes.Select(m => m.Cantidad).ToList())),
+            donutLabels:  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                              Model.EstadoSolicitudes.Select(e => e.Estado).ToList())),
+            donutValues:  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                              Model.EstadoSolicitudes.Select(e => e.Cantidad).ToList()))
+        };
+    </script>
+    <script src="~/js/pages/reporte-adopciones.js"></script>
+}
