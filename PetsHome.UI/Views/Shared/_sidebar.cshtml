@@ -37,7 +37,7 @@
                 </div>
             </li>
 
-            @if (tiene("Perfil medico de mascota") || tiene("Listado de empleados") || tiene("Listado de voluntarios"))
+            @if (tiene("Dashboard veterinario") || tiene("Control de vacunacion") || tiene("Reporte de adopciones") || tiene("Perfil medico de mascota") || tiene("Listado de empleados") || tiene("Listado de voluntarios"))
             {
                 <li class="menu">
                     <a href="#Cuenta" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -137,6 +137,10 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Adopcion" data-parent="#accordionExample">
+                                                @if (tiene("Reporte de adopciones"))
+                        {
+                            <li>@Html.ActionLink("ReporteAdopciones", "Index", "ReporteAdopciones")</li>
+                        }
                         @if (tiene("Listado de mascotas"))
                         {
                             <li>@Html.ActionLink("Mascota", "Index", "Mascota")</li>
@@ -166,7 +170,15 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Medicamento" data-parent="#accordionExample">
-                                                                        @if (tiene("Perfil medico de mascota"))
+                                                                                                                        @if (tiene("Dashboard veterinario"))
+                        {
+                            <li>@Html.ActionLink("DashboardVeterinario", "Index", "DashboardVeterinario")</li>
+                        }
+                        @if (tiene("Control de vacunacion"))
+                        {
+                            <li>@Html.ActionLink("ControlVacunacion", "Index", "ControlVacunacion")</li>
+                        }
+                        @if (tiene("Perfil medico de mascota"))
                         {
                             <li>@Html.ActionLink("Perfil Médico", "Index", "Mascota")</li>
                         }
