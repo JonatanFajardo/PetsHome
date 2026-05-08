@@ -137,6 +137,39 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        public async Task<IActionResult> VoluntariosList(int eveId)
+        {
+            var result = await _EventoService.ListVoluntariosAsync(eveId);
+            return Json(new { data = result ?? new System.Collections.Generic.List<Business.Models.EventoVoluntarioViewModel>() });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [PantallaAuthorize("Listado de eventos", "editar")]
+        public async Task<IActionResult> CambiarEstadoVoluntario(int evevol_Id, string estado)
+        {
+            var estadosValidos = new[] { "Confirmado", "Pendiente", "Ausente" };
+            if (!Array.Exists(estadosValidos, e => e.Equals(estado, StringComparison.OrdinalIgnoreCase)))
+                return Json(new { success = false });
+            bool ok = await _EventoService.CambiarEstadoVoluntarioAsync(evevol_Id, estado);
+            return Json(new { success = ok });
+        }
+
+        public async Task<IActionResult> VoluntariosDisponibles(int eveId)
+        {
+            var result = await _EventoService.VoluntariosDisponiblesAsync(eveId);
+            return Json(result ?? new System.Collections.Generic.List<Business.Models.VoluntarioDisponibleViewModel>());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [PantallaAuthorize("Listado de eventos", "editar")]
+        public async Task<IActionResult> AsignarVoluntario(int eve_Id, int vol_Id)
+        {
+            bool ok = await _EventoService.AsignarVoluntarioAsync(eve_Id, vol_Id);
+            return Json(new { success = ok });
+        }
+
         public EventoViewModel Dropdown(EventoViewModel model)
         {
             model.LoadDropDownList(_RefugioService.RefugioDropdown());

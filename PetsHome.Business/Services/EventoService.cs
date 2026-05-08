@@ -142,5 +142,45 @@ namespace PetsHome.Business.Services
                 return false;
             }
         }
+
+        public async Task<List<EventoVoluntarioViewModel>> ListVoluntariosAsync(int eveId)
+        {
+            try
+            {
+                var result = await _eventoRepository.ListVoluntariosAsync(eveId);
+                return _mapper.Map<List<EventoVoluntarioViewModel>>(result.ToList());
+            }
+            catch (Exception error) { _logger.LogError(error, error.Message); return null; }
+        }
+
+        public async Task<bool> CambiarEstadoVoluntarioAsync(int evevolId, string estado)
+        {
+            try
+            {
+                var result = await _eventoRepository.CambiarEstadoVoluntarioAsync(evevolId, estado);
+                return result.Success;
+            }
+            catch (Exception error) { _logger.LogError(error, error.Message); return false; }
+        }
+
+        public async Task<List<VoluntarioDisponibleViewModel>> VoluntariosDisponiblesAsync(int eveId)
+        {
+            try
+            {
+                var result = await _eventoRepository.VoluntariosDisponiblesAsync(eveId);
+                return _mapper.Map<List<VoluntarioDisponibleViewModel>>(result.ToList());
+            }
+            catch (Exception error) { _logger.LogError(error, error.Message); return null; }
+        }
+
+        public async Task<bool> AsignarVoluntarioAsync(int eveId, int volId)
+        {
+            try
+            {
+                var result = await _eventoRepository.AsignarVoluntarioAsync(eveId, volId);
+                return result.Success;
+            }
+            catch (Exception error) { _logger.LogError(error, error.Message); return false; }
+        }
     }
 }

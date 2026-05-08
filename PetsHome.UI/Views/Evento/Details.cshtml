@@ -191,6 +191,41 @@
                 </div>
 
             </div>
+
+            <!-- Sección Voluntarios -->
+            <div class="detail-card detail-card-full">
+                <div class="detail-card-header">
+                    <i class="fas fa-hands-helping"></i>
+                    <h3>Voluntarios asignados</h3>
+                    <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+                        <span id="vol-badge-confirmados" class="badge" style="background:#dcfce7;color:#15803d;padding:3px 10px;border-radius:20px;font-size:12px;">0 Confirmados</span>
+                        <span id="vol-badge-pendientes"  class="badge" style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:20px;font-size:12px;">0 Pendientes</span>
+                        <span id="vol-badge-ausentes"    class="badge" style="background:#fee2e2;color:#b91c1c;padding:3px 10px;border-radius:20px;font-size:12px;">0 Ausentes</span>
+                    </div>
+                </div>
+                <div class="detail-card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm mb-3" id="tabla-voluntarios">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th width="130">Teléfono</th>
+                                    <th width="120" class="text-center">Estado</th>
+                                    <th width="150">Confirmación</th>
+                                    <th width="160" class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vol-tbody">
+                                <tr><td colspan="5" class="text-center text-muted py-3">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="abrirModalAsignar()">
+                        <i class="fas fa-user-plus mr-1"></i>Asignar voluntario
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -229,11 +264,114 @@
     </div>
 </div>
 
+<!-- Modal asignar voluntario -->
+<div class="modal fade" id="modal-asignar-vol" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-user-plus mr-2"></i>Asignar voluntario</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="vol-search" class="form-control form-control-sm mb-3" placeholder="Buscar por nombre o teléfono...">
+                <div id="vol-disponibles-list" style="max-height:300px;overflow-y:auto;">
+                    <p class="text-muted text-center">Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
+    @Html.AntiForgeryToken()
     <script>
+        var _eveId = @Model.eve_Id;
+        var _token = $('input[name="__RequestVerificationToken"]').val();
+
         function confirmDelete(id) {
             $('#delete-eve-id').val(id);
             $('#delete-confirm-modal').modal('show');
         }
+
+        // ---- Cargar voluntarios ----
+        function cargarVoluntarios() {
+            $.get('@Url.Action("VoluntariosList")', { eveId: _eveId }, function (res) {
+                var rows = res.data || [];
+                var confirmados = 0, pendientes = 0, ausentes = 0;
+                var html = '';
+                if (rows.length === 0) {
+                    html = '<tr><td colspan="5" class="text-center text-muted py-3">Sin voluntarios asignados</td></tr>';
+                } else {
+                    rows.forEach(function (v) {
+                        var badgeBg = v.evevol_Estado === 'Confirmado' ? '#dcfce7' : v.evevol_Estado === 'Ausente' ? '#fee2e2' : '#fef3c7';
+                        var badgeCo = v.evevol_Estado === 'Confirmado' ? '#15803d' : v.evevol_Estado === 'Ausente' ? '#b91c1c' : '#b45309';
+                        if (v.evevol_Estado === 'Confirmado') confirmados++;
+                        else if (v.evevol_Estado === 'Ausente') ausentes++;
+                        else pendientes++;
+                        var fecha = v.evevol_FechaConfirmacion ? new Date(v.evevol_FechaConfirmacion).toLocaleDateString('es-HN') : '—';
+                        var btns = '';
+                        if (v.evevol_Estado === 'Pendiente')
+                            btns = '<button class="btn btn-xs btn-success mr-1" onclick="cambiarEstado(' + v.evevol_Id + ',\'Confirmado\')"><i class="fas fa-check"></i></button>';
+                        if (v.evevol_Estado !== 'Ausente')
+                            btns += '<button class="btn btn-xs btn-danger" onclick="cambiarEstado(' + v.evevol_Id + ',\'Ausente\')"><i class="fas fa-times"></i></button>';
+                        html += '<tr><td>' + v.vol_NombreCompleto + '</td><td>' + (v.per_Telefono || '—') + '</td>'
+                              + '<td class="text-center"><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;background:' + badgeBg + ';color:' + badgeCo + ';">' + v.evevol_Estado + '</span></td>'
+                              + '<td>' + fecha + '</td><td class="text-center">' + btns + '</td></tr>';
+                    });
+                }
+                $('#vol-tbody').html(html);
+                $('#vol-badge-confirmados').text(confirmados + ' Confirmados');
+                $('#vol-badge-pendientes').text(pendientes + ' Pendientes');
+                $('#vol-badge-ausentes').text(ausentes + ' Ausentes');
+            });
+        }
+
+        function cambiarEstado(evevolId, estado) {
+            $.post('@Url.Action("CambiarEstadoVoluntario")', { evevol_Id: evevolId, estado: estado, __RequestVerificationToken: _token },
+                function (res) { if (res.success) cargarVoluntarios(); else alert('Error al cambiar estado.'); });
+        }
+
+        // ---- Modal asignar ----
+        function abrirModalAsignar() {
+            $('#vol-disponibles-list').html('<p class="text-muted text-center">Cargando...</p>');
+            $.get('@Url.Action("VoluntariosDisponibles")', { eveId: _eveId }, function (lista) {
+                window._volDisponibles = lista;
+                renderDisponibles(lista);
+                $('#modal-asignar-vol').modal('show');
+            });
+        }
+
+        function renderDisponibles(lista) {
+            if (!lista || lista.length === 0) {
+                $('#vol-disponibles-list').html('<p class="text-muted text-center">Sin voluntarios disponibles</p>');
+                return;
+            }
+            var html = '<table class="table table-sm table-hover"><thead><tr><th>Nombre</th><th>Teléfono</th><th></th></tr></thead><tbody>';
+            lista.forEach(function (v) {
+                html += '<tr><td>' + v.vol_NombreCompleto + '</td><td>' + (v.per_Telefono || '—') + '</td>'
+                      + '<td><button class="btn btn-xs btn-primary" onclick="asignar(' + v.vol_Id + ')">Asignar</button></td></tr>';
+            });
+            html += '</tbody></table>';
+            $('#vol-disponibles-list').html(html);
+        }
+
+        function asignar(volId) {
+            $.post('@Url.Action("AsignarVoluntario")', { eve_Id: _eveId, vol_Id: volId, __RequestVerificationToken: _token },
+                function (res) {
+                    if (res.success) { $('#modal-asignar-vol').modal('hide'); cargarVoluntarios(); }
+                    else alert('No se pudo asignar el voluntario.');
+                });
+        }
+
+        $('#vol-search').on('keyup', function () {
+            var q = $(this).val().toLowerCase();
+            var filtrado = (window._volDisponibles || []).filter(function (v) {
+                return v.vol_NombreCompleto.toLowerCase().includes(q) || (v.per_Telefono || '').includes(q);
+            });
+            renderDisponibles(filtrado);
+        });
+
+        // Iniciar
+        $(function () { cargarVoluntarios(); });
     </script>
 }

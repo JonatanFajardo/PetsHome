@@ -33,6 +33,9 @@
                         <button class="btn-control" id="gridViewBtn" onclick="toggleView('grid')">
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
+                        <button class="btn-control" id="calViewBtn" onclick="toggleView('calendar')">
+                            <i class="fas fa-calendar-alt"></i><span>Calendario</span>
+                        </button>
                     </div>
                     <button class="btn-export-datatable" onclick="location.reload()">
                         Recargar
@@ -69,6 +72,49 @@
     <div id="gridView" style="display: none;">
         <div class="row" id="eventosGrid">
             <!-- Las tarjetas se generaran dinamicamente -->
+        </div>
+    </div>
+
+    <!-- Vista Calendario -->
+    <div id="calView" style="display:none; padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <button onclick="Evento.prevMes()" style="background:none;border:1px solid #dce1e9;border-radius:7px;padding:5px 12px;cursor:pointer;"><i class="fas fa-chevron-left"></i></button>
+            <span id="cal-mes-anio" style="font-size:15px;font-weight:600;color:#1a1d21;"></span>
+            <button onclick="Evento.nextMes()" style="background:none;border:1px solid #dce1e9;border-radius:7px;padding:5px 12px;cursor:pointer;"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Lu</div>
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Ma</div>
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Mi</div>
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Ju</div>
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Vi</div>
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Sa</div>
+            <div style="background:#f8f9fb;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">Do</div>
+        </div>
+        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;"></div>
+    </div>
+
+    <!-- Modal evento del calendario -->
+    <div class="modal fade" id="calEventoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-calendar-alt mr-2"></i><span id="cal-modal-nombre"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p><i class="fas fa-home mr-2 text-muted"></i><span id="cal-modal-refugio"></span></p>
+                    <p><i class="fas fa-calendar-day mr-2 text-muted"></i><span id="cal-modal-fecha"></span></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <a id="cal-modal-detalle" href="#" class="btn btn-primary btn-sm px-3">
+                        <i class="fas fa-eye mr-1"></i>Ver detalle completo
+                    </a>
+                    <a id="cal-modal-editar" href="#" class="btn btn-outline-secondary btn-sm px-3">
+                        <i class="fas fa-edit mr-1"></i>Editar
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -136,21 +182,29 @@
     });
 
 
-    // Alternar entre vista tabla y cards
+    // URLs para calendario
+    window._urlEventoDetail = '@Url.Action("Detail")';
+    window._urlEventoFind   = '@Url.Action("Find")';
+
+    // Alternar entre vista tabla, cards y calendario
     function toggleView(view) {
+        $('#tableView').hide(); $('#gridView').hide(); $('#calView').hide();
+        $('#tableViewBtn, #gridViewBtn, #calViewBtn').removeClass('active');
         if (view === 'table') {
-            $('#tableView').show();
-            $('#gridView').hide();
-            $('#tableViewBtn').addClass('active');
-            $('#gridViewBtn').removeClass('active');
-        } else {
-            $('#tableView').hide();
-            $('#gridView').show();
-            $('#tableViewBtn').removeClass('active');
-            $('#gridViewBtn').addClass('active');
+            $('#tableView').show(); $('#tableViewBtn').addClass('active');
+        } else if (view === 'grid') {
+            $('#gridView').show(); $('#gridViewBtn').addClass('active');
             loadCardsView();
+        } else if (view === 'calendar') {
+            $('#calView').show(); $('#calViewBtn').addClass('active');
+            Evento.renderCalendar();
         }
     }
+
+    // Re-render si el calendario está visible y la tabla recarga
+    $('#datatable').on('draw.dt', function () {
+        if ($('#calView').is(':visible')) Evento.renderCalendar();
+    });
 
     // Cargar vista de tarjetas
     function loadCardsView() {
@@ -214,7 +268,6 @@
         $('#delete-modal').modal('show');
     }
 
-    // Obtener badge segun estado
     function getEstadoBadge(estado) {
         var badges = {
             'Disponible': '<span class="status-badge status-disponible">Disponible</span>',
@@ -260,4 +313,15 @@
         a.click();
     }
 </script>
+<style>
+    .cal-cell { min-height:80px; border-right:1px solid #e5e7eb; border-bottom:1px solid #e5e7eb; padding:4px 6px; background:#fff; vertical-align:top; }
+    .cal-cell:nth-child(7n) { border-right:none; }
+    .cal-cell-off { background:#f9fafb; }
+    .cal-cell-hoy { background:#6C5CE7 !important; }
+    .cal-cell-hoy .cal-dia-num { color:#fff !important; }
+    .cal-dia-num { font-size:12px; font-weight:600; color:#374151; margin-bottom:3px; }
+    .cal-pill { font-size:11px; padding:2px 6px; border-radius:4px; background:#ede9fe; color:#5b21b6; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+    .cal-pill:hover { background:#ddd6fe; }
+    .cal-pill-more { background:#f3f4f6; color:#6b7280; cursor:default; }
+</style>
 }

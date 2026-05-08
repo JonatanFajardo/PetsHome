@@ -66,5 +66,39 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@eve_Id", id, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
+
+        public async Task<IEnumerable<PR_Refugio_EventoVoluntarios_ListResult>> ListVoluntariosAsync(int eveId)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_EventoVoluntarios_List]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@eve_Id", eveId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Refugio_EventoVoluntarios_ListResult>(sqlQuery, parameter);
+        }
+
+        public async Task<RequestResult> CambiarEstadoVoluntarioAsync(int evevolId, string estado)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_EventoVoluntarios_CambiarEstado]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@evevol_Id",    evevolId, DbType.Int32,  ParameterDirection.Input);
+            parameter.Add("@evevol_Estado", estado,  DbType.String, ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
+
+        public async Task<IEnumerable<PR_Refugio_Voluntarios_DisponiblesResult>> VoluntariosDisponiblesAsync(int eveId)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Voluntarios_Disponibles]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@eve_Id", eveId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Refugio_Voluntarios_DisponiblesResult>(sqlQuery, parameter);
+        }
+
+        public async Task<RequestResult> AsignarVoluntarioAsync(int eveId, int volId)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_EventoVoluntarios_Asignar]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@eve_Id", eveId, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@vol_Id", volId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
     }
 }
