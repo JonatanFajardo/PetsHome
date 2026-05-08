@@ -6,17 +6,18 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/kanban-solicitud.css" />
 }
 
 <div class="col-12">
     <div class="pets-container">
-    <!-- Header púrpura con todos los controles -->
+
     <div class="pets-header-full">
         <div class="pets-header-content">
             <div class="pets-title-section">
-                <h2 class="text-white"><i class="fa-file-alt mr-2 text-white"></i>Gestión de Solicitudes</h2>
+                <h2 class="text-white"><i class="fas fa-file-alt mr-2 text-white"></i>Gestión de Solicitudes</h2>
                 <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Create")'">
-                    <i class="fas fa-plus mr-2"></i>Nuevo Solicitud
+                    <i class="fas fa-plus mr-2"></i>Nueva Solicitud
                 </button>
             </div>
 
@@ -33,35 +34,83 @@
                         <button class="btn-control" id="gridViewBtn" onclick="toggleView('grid')">
                             <i class="fas fa-th"></i><span>Tarjetas</span>
                         </button>
+                        <button class="btn-control" id="kanbanViewBtn" onclick="toggleView('kanban')">
+                            <i class="fas fa-columns"></i><span>Kanban</span>
+                        </button>
                     </div>
-                    <button class="btn-export-datatable" onclick="location.reload()">
-                        Recargar
-                    </button>
-                    <div id="export-buttons-container" class="export-buttons-container">
-                        <!-- Los botones de DataTable se moveran aqui -->
-                    </div>
+                    <button class="btn-export-datatable" onclick="location.reload()">Recargar</button>
+                    <div id="export-buttons-container" class="export-buttons-container"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Vista de Tabla -->
+    <!-- Vista Tabla -->
     <div id="tableView" class="pets-table-container">
         <table class="pets-table" id="datatable">
             <thead>
                 <tr>
                     <th width="80">ID</th>
+                    <th>Identidad</th>
                     <th>Solicitante</th>
                     <th>Mascota</th>
-                    <th width="140">Fecha</th>
-                    <th width="140">Estado</th>
-                    <th width="150" class="text-center">Acciones</th>
+                    <th>Correo</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- DataTable cargará los datos aquí -->
-            </tbody>
+            <tbody></tbody>
         </table>
+    </div>
+
+    <!-- Vista Tarjetas -->
+    <div id="gridView" style="display:none;">
+        <div class="row p-3" id="solicitudesGrid"></div>
+    </div>
+
+    <!-- Vista Kanban -->
+    <div id="kanbanView">
+        <div class="kb-board">
+
+            <div class="kb-column kb-col--pendiente">
+                <div class="kb-col-header">
+                    <span class="kb-col-title">Pendiente</span>
+                    <span class="kb-col-count" id="kb-count-pendiente">0</span>
+                </div>
+                <div class="kb-cards-list" id="kb-list-pendiente">
+                    <div class="kb-empty"><i class="fas fa-inbox"></i>Sin solicitudes</div>
+                </div>
+            </div>
+
+            <div class="kb-column kb-col--revision">
+                <div class="kb-col-header">
+                    <span class="kb-col-title">En Revisión</span>
+                    <span class="kb-col-count" id="kb-count-revision">0</span>
+                </div>
+                <div class="kb-cards-list" id="kb-list-revision">
+                    <div class="kb-empty"><i class="fas fa-inbox"></i>Sin solicitudes</div>
+                </div>
+            </div>
+
+            <div class="kb-column kb-col--aprobada">
+                <div class="kb-col-header">
+                    <span class="kb-col-title">Aprobada</span>
+                    <span class="kb-col-count" id="kb-count-aprobada">0</span>
+                </div>
+                <div class="kb-cards-list" id="kb-list-aprobada">
+                    <div class="kb-empty"><i class="fas fa-inbox"></i>Sin solicitudes</div>
+                </div>
+            </div>
+
+            <div class="kb-column kb-col--rechazada">
+                <div class="kb-col-header">
+                    <span class="kb-col-title">Rechazada</span>
+                    <span class="kb-col-count" id="kb-count-rechazada">0</span>
+                </div>
+                <div class="kb-cards-list" id="kb-list-rechazada">
+                    <div class="kb-empty"><i class="fas fa-inbox"></i>Sin solicitudes</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Modal Delete -->
@@ -69,23 +118,18 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
-                    </h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <form asp-action="Remove" method="post" autocomplete="off"
                       data-ajax-begin="Catalogs.begin"
                       data-ajax-success="Catalogs.success"
                       data-ajax-failure="Catalogs.failure"
                       data-ajax-complete="Catalogs.complete">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="sol_Id" id="delete-item-id">
                     <div class="modal-body text-center py-4">
-                        <div class="mb-3">
-                            <i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i>
-                        </div>
+                        <div class="mb-3"><i class="fas fa-trash-alt text-danger" style="font-size:48px;"></i></div>
                         <h5>¿Está seguro de eliminar esta solicitud?</h5>
                         <p class="text-muted">Esta acción no se puede deshacer.</p>
                     </div>
@@ -101,62 +145,101 @@
             </div>
         </div>
     </div>
+
 </div>
 </div>
 
 @section Scripts {
 <script src="~/js/components/datatable/datatable.init.js"></script>
 <script>
-    // Inicializar tooltips
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    $(function () { $('[data-toggle="tooltip"]').tooltip(); });
 </script>
 <script src="~/js/pages/solicitud.js"></script>
+<script src="~/js/pages/kanban-solicitud.js"></script>
 <script>
-    // Configuración del DataTable
+    // URLs para el Kanban
+    window._urlSolicitudDetail = '@Url.Action("Detail")';
+    window._urlCambiarEstado   = '@Url.Action("CambiarEstado")';
+
+    // Inicializar DataTable
     Solicitud.datatable({
-        urlList: "@Url.Action("List")",
+        urlList:   "@Url.Action("List")",
         urlDetail: "@Url.Action("Detail")",
         urlInsert: "@Url.Action("Create")",
         urlUpdate: "@Url.Action("Find")"
     });
 
     // Búsqueda global
-    $('#globalSearch').on('keyup', function() {
+    $('#globalSearch').on('keyup', function () {
         $('#datatable').DataTable().search(this.value).draw();
     });
 
+    // Toggle de vistas
+    function toggleView(view) {
+        document.getElementById('tableView').style.display  = 'none';
+        document.getElementById('gridView').style.display   = 'none';
+        document.getElementById('kanbanView').style.display = 'none';
 
-    // Exportar a PDF
-    function exportPDF() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-pdf').trigger();
+        document.querySelectorAll('.view-toggle .btn-control')
+            .forEach(btn => btn.classList.remove('active'));
+
+        if (view === 'table') {
+            document.getElementById('tableView').style.display  = 'block';
+            document.getElementById('tableViewBtn').classList.add('active');
+        } else if (view === 'grid') {
+            document.getElementById('gridView').style.display   = 'block';
+            document.getElementById('gridViewBtn').classList.add('active');
+            loadCardsView();
+        } else if (view === 'kanban') {
+            document.getElementById('kanbanView').style.display = 'block';
+            document.getElementById('kanbanViewBtn').classList.add('active');
+            KB.render();
+        }
     }
 
-    // Exportar a Excel
-    function exportExcel() {
-        var table = $('#datatable').DataTable();
-        table.button('.buttons-excel').trigger();
+    // Vista tarjetas básica
+    function loadCardsView() {
+        var data = $('#datatable').DataTable().rows({ search: 'applied' }).data();
+        var html = '';
+        if (data.length === 0) {
+            html = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron solicitudes</p></div>';
+        } else {
+            data.each(function (row) {
+                var estado = row.sol_Estado || 'Pendiente';
+                var badgeClass = estado === 'Aprobada'    ? 'status-disponible'
+                               : estado === 'Rechazada'   ? 'status-inactivo'
+                               : estado === 'En Revision' ? 'status-reservado'
+                               :                            'status-pendiente';
+                html += `
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="pet-card">
+                        <div style="position:relative;">
+                            <div class="pet-card-img"><i class="fas fa-file-alt"></i></div>
+                            <span class="pet-badge">#${String(row.sol_Id).padStart(3,'0')}</span>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="mb-1">${row.sol_Nombres || '—'}</h5>
+                            <p class="text-muted small mb-2"><i class="fas fa-paw mr-1"></i>${row.masc_Nombre || '—'}</p>
+                            <p class="text-muted small mb-3"><i class="fas fa-calendar-alt mr-1"></i>${row.sol_Fecha || '—'}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="status-badge ${badgeClass}">${estado}</span>
+                                <button class="action-btn btn-view" onclick="window.location.href=window._urlSolicitudDetail+'?id=${row.sol_Id}'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        document.getElementById('solicitudesGrid').innerHTML = html;
     }
 
-    // Exportar a CSV (mejorado)
-    function exportCSV() {
-        var table = $('#datatable').DataTable();
-        var data = table.rows({ search: 'applied' }).data();
-
-        var csv = 'ID,Solicitante,Mascota,Fecha,Estado\n';
-        data.each(function(row) {
-            // Implementar según estructura de datos
-            console.log('Exportar CSV - Implementar según datos');
-        });
-
-        var blob = new Blob([csv], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'solicitud_' + new Date().toISOString().slice(0,10) + '.csv';
-        a.click();
-    }
+    // Re-renderizar kanban cuando el DataTable recarga
+    $('#datatable').on('draw.dt', function () {
+        if (document.getElementById('kanbanView').style.display !== 'none') {
+            KB.render();
+        }
+    });
 </script>
 }

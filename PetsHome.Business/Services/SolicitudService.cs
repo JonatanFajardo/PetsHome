@@ -142,5 +142,19 @@ namespace PetsHome.Business.Services
                 return false;
             }
         }
+
+        public async Task<bool> CambiarEstadoAsync(int id, string estado, int userId)
+        {
+            try
+            {
+                var result = await _solicitudRepository.CambiarEstadoAsync(id, estado, userId);
+                return result.Success;
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return false;
+            }
+        }
     }
 }

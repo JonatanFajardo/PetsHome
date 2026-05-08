@@ -47,6 +47,7 @@ namespace PetsHome.Common.Entities
         /// <summary>
         /// Indica si el registro está desactivado permanentemente.
         /// </summary>
+        public string sol_Estado { get; set; }
         public bool sol_EsEliminado { get; set; }
         public int sol_UsuarioCrea { get; set; }
         /// <summary>

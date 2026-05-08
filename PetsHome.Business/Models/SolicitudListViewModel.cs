@@ -14,5 +14,9 @@ namespace PetsHome.Business.Models
         public string masc_Nombre { get; set; }
 
         public string sol_Correo { get; set; }
+        public string sol_Estado { get; set; }
+        public string sol_Fecha { get; set; }
+        public string raza_Descripcion { get; set; }
+        public string raza_TipoAnimal { get; set; }
     }
 }

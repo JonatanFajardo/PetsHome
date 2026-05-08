@@ -141,6 +141,22 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [PantallaAuthorize("Listado de solicitudes", "editar")]
+        public async Task<IActionResult> CambiarEstado(int id, string estado)
+        {
+            if (!CurrentUserId.HasValue)
+                return Json(new { success = false, message = "Sesión expirada." });
+
+            var estadosValidos = new[] { "Pendiente", "En Revision", "Aprobada", "Rechazada" };
+            if (!Array.Exists(estadosValidos, e => e.Equals(estado, StringComparison.OrdinalIgnoreCase)))
+                return Json(new { success = false, message = "Estado no válido." });
+
+            bool ok = await _SolicitudService.CambiarEstadoAsync(id, estado, CurrentUserId.Value);
+            return Json(new { success = ok });
+        }
+
         [PantallaAuthorize("Listado de solicitudes", "eliminar")]
         public async Task<IActionResult> Remove(int sol_Id)
         {

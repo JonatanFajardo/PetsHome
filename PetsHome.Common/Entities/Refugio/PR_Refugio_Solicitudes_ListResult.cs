@@ -35,5 +35,9 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public string sol_Correo { get; set; }
+        public string sol_Estado { get; set; }
+        public string sol_Fecha { get; set; }
+        public string raza_Descripcion { get; set; }
+        public string raza_TipoAnimal { get; set; }
     }
 }

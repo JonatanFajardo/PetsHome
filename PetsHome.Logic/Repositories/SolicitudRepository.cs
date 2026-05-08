@@ -72,6 +72,14 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
-      
+        public async Task<RequestResult> CambiarEstadoAsync(int id, string estado, int userId)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Solicitudes_CambiarEstado]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@sol_Id",              id,      DbType.Int32,  ParameterDirection.Input);
+            parameter.Add("@sol_Estado",           estado,  DbType.String, ParameterDirection.Input);
+            parameter.Add("@sol_UsuarioModifica",  userId,  DbType.Int32,  ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
     }
 }
