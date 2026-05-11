@@ -365,3 +365,29 @@ FodyWeavers.xsd
 /CLAUDE.md
 /AGENTS.md
 .claude/
+
+# --- Archivos generados por herramientas del proyecto ---
+PROJECT_CONTEXT.md
+bind_task_*.md
+reporte_seguridad_*.json
+
+# Outputs de análisis (generados por scripts)
+db_analysis_output.txt
+stored_procedures_output.txt
+verificar_login_output.txt
+catalogos_medicos.txt
+
+# Capturas de trabajo
+docs/CitaMedica_Create.png
+docs/Mascota_Create.png
+docs/Mascota_Index.png
+
+# Git rebase helpers temporales
+.rebase_helpers/
+
+# Backup de archivos fuente
+*.bak
+
+# Mockup outputs generados
+mockup_studio/output/
+mockup_studio/mockup.lock
