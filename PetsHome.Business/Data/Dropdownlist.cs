@@ -15,8 +15,8 @@ namespace PetsHome.Business.Data
         public static IEnumerable<Dropdown> LoadSexo()
         {
             List<Dropdown> lista = new List<Dropdown>() {
-                new Dropdown(){Value = 'H', Text = "Hombre"},
-                new Dropdown(){Value = 'M', Text= "Mujer"}
+                new Dropdown(){Value = 'M', Text = "Macho"},
+                new Dropdown(){Value = 'H', Text = "Hembra"}
             };
             return lista;
         }
