@@ -97,6 +97,19 @@ namespace PetsHome.UI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Redirige /Controller/Index → /Controller para URLs más limpias
+            app.Use(async (context, next) =>
+            {
+                var path = context.Request.Path.Value;
+                if (path != null && path.EndsWith("/Index", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    var cleanPath = path.Substring(0, path.Length - 6);
+                    context.Response.Redirect(cleanPath.Length > 0 ? cleanPath : "/", permanent: true);
+                    return;
+                }
+                await next();
+            });
+
             app.UseRouting();
 
             // Habilitar CORS antes de Authorization
@@ -108,6 +121,11 @@ namespace PetsHome.UI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "controller-only",
+                    pattern: "{controller}",
+                    defaults: new { action = "Index" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}/{id?}");
