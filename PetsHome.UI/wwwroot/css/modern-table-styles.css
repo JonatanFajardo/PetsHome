@@ -12,10 +12,20 @@
 /* Header púrpura completo con gradiente */
 .modern-header-full,
 .pets-header-full {
-    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8b7cf6 60%, #a78bfa 100%);
     padding: 2rem 2.5rem;
     color: white;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.pets-header-full::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='0' cy='0' r='10'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
 }
 
 .pets-body-full {
@@ -492,7 +502,7 @@ table.dataTable tbody tr.even {
 .pet-card-img {
     width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8b7cf6 60%, #a78bfa 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -731,7 +741,7 @@ table.dataTable tbody tr.even {
 .card-item-img {
     width: 100%;
     height: 180px;
-    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
+    background: linear-gradient(135deg, #6C5CE7 0%, #8b7cf6 60%, #a78bfa 100%);
     display: flex;
     align-items: center;
     justify-content: center;

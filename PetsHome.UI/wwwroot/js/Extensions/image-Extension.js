@@ -11,7 +11,7 @@ function initializeImageUpload() {
     const uploadZone = document.getElementById('uploadZone');
     const fileInput = document.getElementById('file');
     const preview = document.getElementById('img');
-    const placeholder = document.getElementById('previewPlaceholder');
+    const previewContainer = document.getElementById('previewContainer');
     const btnRemoveImage = document.getElementById('btnRemoveImage');
 
     // Verificar si los elementos existen
@@ -38,19 +38,10 @@ function initializeImageUpload() {
 
     // Verificar si ya hay una imagen precargada
     if (preview && preview.src && preview.src !== '' && preview.src !== window.location.href && !preview.src.includes('undefined')) {
-        console.log('Imagen precargada detectada:', preview.src);
-        // La imagen ya tiene la clase 'show' desde el servidor
-        // Solo necesitamos mostrar el botón eliminar
-        if (btnRemoveImage) {
-            btnRemoveImage.style.display = 'flex';
-        }
-    }
-
-    // Si no hay imagen, asegurar que el placeholder sea visible
-    if (!preview || !preview.src || preview.src === '' || preview.src === window.location.href) {
-        if (placeholder) {
-            placeholder.classList.remove('hide');
-        }
+        // Imagen precargada desde el servidor: ocultar upload, mostrar preview
+        uploadZone.classList.add('hide');
+        if (previewContainer) previewContainer.classList.remove('hide');
+        if (btnRemoveImage) btnRemoveImage.style.display = 'flex';
     }
 }
 
@@ -118,10 +109,22 @@ function previewFile() {
 
     reader.onloadend = function () {
         uploadZone.classList.remove('uploading');
+
         if (preview) {
+            const previewContainer = document.getElementById('previewContainer');
+            const btnRemoveImage = document.getElementById('btnRemoveImage');
+
+            uploadZone.classList.add('hide');
+            if (previewContainer) previewContainer.classList.remove('hide');
+
             preview.src = reader.result;
-            showPreview(reader.result);
+
+            setTimeout(() => {
+                preview.classList.add('show');
+                if (btnRemoveImage) btnRemoveImage.style.display = 'flex';
+            }, 50);
         }
+
         uploadZone.classList.add('success');
         setTimeout(() => uploadZone.classList.remove('success'), 1500);
     };
@@ -144,48 +147,27 @@ function previewFile() {
 // Mostrar vista previa
 function showPreview(imageSrc) {
     const preview = document.getElementById('img');
-    const placeholder = document.getElementById('previewPlaceholder');
-    const btnRemoveImage = document.getElementById('btnRemoveImage');
-
-    console.log('showPreview called', { preview, placeholder, imageSrc });
-
-    if (preview && placeholder) {
-        // Establecer la imagen
+    if (preview) {
         preview.src = imageSrc;
-
-        // Pequeño delay para asegurar que la imagen se cargue
-        setTimeout(() => {
-            preview.classList.add('show');
-            placeholder.classList.add('hide');
-
-            if (btnRemoveImage) {
-                btnRemoveImage.style.display = 'flex';
-            }
-        }, 50);
     }
 }
 
 // Ocultar vista previa
 function hidePreview() {
     const preview = document.getElementById('img');
-    const placeholder = document.getElementById('previewPlaceholder');
+    const uploadZone = document.getElementById('uploadZone');
+    const previewContainer = document.getElementById('previewContainer');
     const btnRemoveImage = document.getElementById('btnRemoveImage');
 
-    if (preview && placeholder) {
-        // Remover clase show de la imagen inmediatamente
+    if (preview) {
         preview.classList.remove('show');
+        previewContainer.classList.add('hide');
+        uploadZone.classList.remove('hide');
 
-        // Mostrar placeholder inmediatamente
-        placeholder.classList.remove('hide');
-
-        // Limpiar el src después de la transición
         setTimeout(() => {
             preview.src = '';
             preview.removeAttribute('src');
-
-            if (btnRemoveImage) {
-                btnRemoveImage.style.display = 'none';
-            }
+            if (btnRemoveImage) btnRemoveImage.style.display = 'none';
         }, 300);
     }
 }
@@ -227,11 +209,9 @@ function validarImagen(file, maxSize) {
  * @param { string } type - 'success', 'error', 'info', 'warning'
  */
 function showNotification(message, type) {
-    // Si toastr está disponible, usarlo
     if (typeof toastr !== 'undefined') {
         toastr[type](message);
     } else {
-        // Fallback a alert
         alert(message);
     }
 }
