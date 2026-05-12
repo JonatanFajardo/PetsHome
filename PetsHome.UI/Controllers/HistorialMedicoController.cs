@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -19,17 +20,20 @@ namespace PetsHome.UI.Controllers
             _HistorialMedicoService = HistorialMedicoService;
         }
 
+        [Breadcrumb("HistorialMedico", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(HistorialMedicoController))]
         [PantallaAuthorize("Listado de mascotas", "insertar")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(HistorialMedicoController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _HistorialMedicoService.ListAsync();
@@ -44,6 +48,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(HistorialMedicoController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _HistorialMedicoService.FindAsync(id);
@@ -58,6 +63,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(HistorialMedicoController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -77,6 +83,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(HistorialMedicoController))]
         public async Task<IActionResult> Add(HistorialMedicoViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -114,6 +121,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(HistorialMedicoController))]
         [PantallaAuthorize("Listado de mascotas", "eliminar")]
         public async Task<IActionResult> Remove(int cita_Id)
         {

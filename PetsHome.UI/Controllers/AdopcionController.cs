@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -19,11 +20,13 @@ namespace PetsHome.UI.Controllers
         private readonly SolicitudService _SolicitudService;
         private readonly MascotaService _MascotaService;
 
+        [Breadcrumb("Adopcion", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(AdopcionController))]
         [PantallaAuthorize("Listado de adopciones", "insertar")]
         public IActionResult Create()
         {
@@ -40,6 +43,7 @@ namespace PetsHome.UI.Controllers
             _MascotaService = MascotaService;
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(AdopcionController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _AdopcionService.ListAsync();
@@ -54,6 +58,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(AdopcionController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _AdopcionService.FindAsync(id);
@@ -68,6 +73,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(AdopcionController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -88,6 +94,7 @@ namespace PetsHome.UI.Controllers
         }
 
         // Detalle de adopción por mascota con tabs de solicitantes
+        [Breadcrumb("Detail By Mascota", FromAction = "Index", FromController = typeof(AdopcionController))]
         [HttpGet]
         public async Task<IActionResult> DetailByMascota(int masc_Id)
         {
@@ -110,6 +117,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(AdopcionController))]
         [HttpPost]
         public async Task<IActionResult> Add(AdopcionViewModel model, int userId)
         {
@@ -147,6 +155,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(AdopcionController))]
         [HttpPost]
         [PantallaAuthorize("Listado de adopciones", "eliminar")]
         public async Task<IActionResult> Remove(int adop_Id)
@@ -164,6 +173,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Elegir Adoptante", FromAction = "Index", FromController = typeof(AdopcionController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de adopciones", "insertar")]

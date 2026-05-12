@@ -18,7 +18,7 @@ namespace PetsHome.UI.Controllers
     {
         private readonly CategoriaService _CategoriaService;
 
-        [Breadcrumb("Categoria")]
+        [Breadcrumb("Categoria", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View("~/Views/Catalogo/Categoria/Index.cshtml");

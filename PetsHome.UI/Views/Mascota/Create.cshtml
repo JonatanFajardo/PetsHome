@@ -8,12 +8,41 @@
     <link rel="stylesheet" href="~/css/modern-form-styles.css" />
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
     <link rel="stylesheet" href="~/css/image-upload-styles.css" />
+    <style>
+        .form-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .form-layout-left {
+            position: sticky;
+            top: 1rem;
+        }
+
+        .form-layout-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @@media (max-width: 768px) {
+            .form-layout {
+                grid-template-columns: 1fr;
+            }
+            .form-layout-left {
+                position: static;
+            }
+        }
+    </style>
 }
 
 <div class="col-12">
     <div class="pets-container">
-        <!-- Header con gradiente -->
+
+        <!-- Header -->
         <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
             <div class="pets-header-content">
                 <div class="pets-title-section">
                     <h2 class="text-white">
@@ -27,7 +56,7 @@
             </div>
         </div>
 
-        <!-- Contenedor del formulario -->
+        <!-- Formulario -->
         <div class="pets-body-full">
             <div class="container-fluid">
 
@@ -35,24 +64,27 @@
                     <input class="form-control" asp-for="masc_Id" type="hidden" />
                     <input type="hidden" asp-for="masc_Imagen" />
 
-                    <!-- Imagen de Perfil -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">
-                                <i class="fas fa-camera mr-2"></i>Imagen de perfil
-                            </h2>
-                            <p class="card-description">Fotografía de la mascota</p>
-                        </div>
-                        <div class="card-content">
-                            <div class="image-upload-container">
-                                <div class="row">
-                                    <!-- Zona de carga de imagen -->
-                                    <div class="col-md-8">
-                                        <div class="upload-zone" id="uploadZone">
+                    <div class="form-layout">
+
+                        <!-- ── Columna izquierda: Imagen ── -->
+                        <div class="form-layout-left">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">
+                                        <i class="fas fa-camera mr-2"></i>Imagen de perfil
+                                    </h2>
+                                    <p class="card-description">Fotografía de la mascota</p>
+                                </div>
+                                <div class="card-content">
+                                    <div class="image-upload-container">
+
+                                        <div class="upload-zone @(!string.IsNullOrEmpty(ViewBag.ImageFile as string) ? "hide" : "")" id="uploadZone">
                                             <input asp-for="ImageFile" type="file" class="file-input" onchange="previewFile()" id="file" accept="image/png, image/jpeg, image/jpg, image/gif" />
                                             <div class="upload-content">
                                                 <div class="upload-icon">
-                                                    <i class="fas fa-cloud-upload-alt"></i>
+                                                    <div class="upload-icon-circle">
+                                                        <i class="fas fa-arrow-up"></i>
+                                                    </div>
                                                 </div>
                                                 <h4 class="upload-title">Arrastra tu imagen aquí</h4>
                                                 <p class="upload-subtitle">o haz clic para seleccionar</p>
@@ -62,19 +94,13 @@
                                                     <span class="format-badge"><i class="fas fa-check-circle"></i> GIF</span>
                                                 </div>
                                                 <p class="upload-info">
-                                                    <i class="fas fa-info-circle"></i> Tamaño máximo: 2 MB
+                                                    <i class="fas fa-circle"></i> Máximo 2 MB
                                                 </p>
                                             </div>
                                         </div>
                                         <span asp-validation-for="ImageFile" class="text-danger d-block mt-2"></span>
-                                    </div>
 
-                                    <!-- Vista previa -->
-                                    <div class="col-md-4">
-                                        <div class="preview-container">
-                                            <label class="preview-label">
-                                                <i class="fas fa-eye mr-1"></i>Vista previa
-                                            </label>
+                                        <div class="preview-container @(string.IsNullOrEmpty(ViewBag.ImageFile as string) ? "hide" : "")" id="previewContainer">
                                             <div class="preview-frame">
                                                 @if (!string.IsNullOrEmpty(ViewBag.ImageFile as string))
                                                 {
@@ -84,134 +110,138 @@
                                                 {
                                                     <img class="preview-image" alt="" id="img">
                                                 }
-                                                <div class="preview-placeholder @(!string.IsNullOrEmpty(ViewBag.ImageFile as string) ? "hide" : "")" id="previewPlaceholder">
-                                                    <i class="fas fa-paw"></i>
-                                                    <p>Sin imagen</p>
-                                                </div>
                                             </div>
-                                            <button type="button" class="btn-remove-image" id="btnRemoveImage" style="display: none;">
+                                            <button type="button" class="btn-remove-image" id="btnRemoveImage">
                                                 <i class="fas fa-trash-alt mr-1"></i>Eliminar imagen
                                             </button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Datos Básicos -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Datos básicos</h2>
-                            <p class="card-description">Información general de la mascota</p>
-                        </div>
-                        <div class="card-content">
-                            <div class="form-grid">
-                                <!-- Campo Nombre -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Nombre">Nombre <span class="required">*</span></label>
-                                    <input class="form-control" asp-for="masc_Nombre" type="text" placeholder="Ingrese el nombre de la mascota" />
-                                    <span class="text-danger" asp-validation-for="masc_Nombre"></span>
+                        <!-- ── Columna derecha: Datos + Ubicación + Botones ── -->
+                        <div class="form-layout-right">
+
+                            <!-- Datos Básicos -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Datos básicos</h2>
+                                    <p class="card-description">Información general de la mascota</p>
                                 </div>
+                                <div class="card-content">
+                                    <div class="form-grid">
 
-                                <!-- Campo Raza -->
-                                <div class="form-group">
-                                    <label asp-for="raza_Id">Raza <span class="required">*</span></label>
-                                    <div class="select-wrapper">
-                                        <select class="form-control" asp-for="raza_Id" asp-items="Model.razaList">
-                                            <option value="">-- Seleccionar --</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label asp-for="masc_Nombre">Nombre <span class="required">*</span></label>
+                                            <input class="form-control" asp-for="masc_Nombre" type="text" placeholder="Ingrese el nombre de la mascota" />
+                                            <span class="text-danger" asp-validation-for="masc_Nombre"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="raza_Id">Raza <span class="required">*</span></label>
+                                            <div class="select-wrapper">
+                                                <select class="form-control" asp-for="raza_Id" asp-items="Model.razaList">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" asp-validation-for="raza_Id"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="masc_Edad">Edad <span class="required">*</span></label>
+                                            <input class="form-control" asp-for="masc_Edad" type="number" placeholder="Ingrese la edad en años" />
+                                            <span class="text-danger" asp-validation-for="masc_Edad"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="masc_Sexo">Sexo <span class="required">*</span></label>
+                                            <div class="select-wrapper">
+                                                <select class="form-control" asp-for="masc_Sexo" asp-items="Model.sexoList">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" asp-validation-for="masc_Sexo"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="masc_Peso">Peso <span class="required">*</span></label>
+                                            <input class="form-control" asp-for="masc_Peso" type="number" placeholder="Ingrese el peso en kg" />
+                                            <span class="text-danger" asp-validation-for="masc_Peso"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="tall_Id">Talla <span class="required">*</span></label>
+                                            <div class="select-wrapper">
+                                                <select class="form-control" asp-for="tall_Id" asp-items="Model.tallaList">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" asp-validation-for="tall_Id"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="masc_Color">Color <span class="required">*</span></label>
+                                            <input class="form-control" asp-for="masc_Color" type="text" placeholder="Ingrese el color" />
+                                            <span class="text-danger" asp-validation-for="masc_Color"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="masc_Historia">Historia <span class="required">*</span></label>
+                                            <input class="form-control" asp-for="masc_Historia" type="text" placeholder="Ingrese la historia de la mascota" />
+                                            <span class="text-danger" asp-validation-for="masc_Historia"></span>
+                                        </div>
+
                                     </div>
-                                    <span class="text-danger" asp-validation-for="raza_Id"></span>
-                                </div>
-
-                                <!-- Campo Edad -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Edad">Edad <span class="required">*</span></label>
-                                    <input class="form-control" asp-for="masc_Edad" type="number" placeholder="Ingrese la edad en años" />
-                                    <span class="text-danger" asp-validation-for="masc_Edad"></span>
-                                </div>
-
-                                <!-- Campo Sexo -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Sexo">Sexo <span class="required">*</span></label>
-                                    <div class="select-wrapper">
-                                        <select class="form-control" asp-for="masc_Sexo" asp-items="Model.sexoList">
-                                            <option value="">-- Seleccionar --</option>
-                                        </select>
-                                    </div>
-                                    <span class="text-danger" asp-validation-for="masc_Sexo"></span>
-                                </div>
-
-                                <!-- Campo Peso -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Peso">Peso <span class="required">*</span></label>
-                                    <input class="form-control" asp-for="masc_Peso" type="number" placeholder="Ingrese el peso en kg" />
-                                    <span class="text-danger" asp-validation-for="masc_Peso"></span>
-                                </div>
-
-                                <!-- Campo Talla -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Talla">Talla <span class="required">*</span></label>
-                                    <input class="form-control" asp-for="masc_Talla" type="number" placeholder="Ingrese la talla en cm" />
-                                    <span class="text-danger" asp-validation-for="masc_Talla"></span>
-                                </div>
-
-                                <!-- Campo Color -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Color">Color <span class="required">*</span></label>
-                                    <input class="form-control" asp-for="masc_Color" type="text" placeholder="Ingrese el color" />
-                                    <span class="text-danger" asp-validation-for="masc_Color"></span>
-                                </div>
-
-                                <!-- Campo Historia -->
-                                <div class="form-group">
-                                    <label asp-for="masc_Historia">Historia <span class="required">*</span></label>
-                                    <input class="form-control" asp-for="masc_Historia" type="text" placeholder="Ingrese la historia de la mascota" />
-                                    <span class="text-danger" asp-validation-for="masc_Historia"></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Datos de Ubicación -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Datos de ubicación</h2>
-                            <p class="card-description">Refugio y procedencia de la mascota</p>
-                        </div>
-                        <div class="card-content">
-                            <div class="form-grid">
-                                <!-- Campo Refugio -->
-                                <div class="form-group">
-                                    <label asp-for="refg_Id">Refugio <span class="required">*</span></label>
-                                    <div class="select-wrapper">
-                                        <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
-                                            <option value="">-- Seleccionar --</option>
-                                        </select>
-                                    </div>
-                                    <span class="text-danger" asp-validation-for="refg_Id"></span>
+                            <!-- Datos de Ubicación -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Datos de ubicación</h2>
+                                    <p class="card-description">Refugio y procedencia de la mascota</p>
                                 </div>
+                                <div class="card-content">
+                                    <div class="form-grid">
 
-                                <!-- Campo Procedencia -->
-                                <div class="form-group">
-                                    <label asp-for="proc_Id">Procedencia <span class="required">*</span></label>
-                                    <div class="select-wrapper">
-                                        <select class="form-control" asp-for="proc_Id" asp-items="Model.procedenciaList">
-                                            <option value="">-- Seleccionar --</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label asp-for="refg_Id">Refugio <span class="required">*</span></label>
+                                            <div class="select-wrapper">
+                                                <select class="form-control" asp-for="refg_Id" asp-items="Model.refugioList">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" asp-validation-for="refg_Id"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="proc_Id">Procedencia <span class="required">*</span></label>
+                                            <div class="select-wrapper">
+                                                <select class="form-control" asp-for="proc_Id" asp-items="Model.procedenciaList">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" asp-validation-for="proc_Id"></span>
+                                        </div>
+
                                     </div>
-                                    <span class="text-danger" asp-validation-for="proc_Id"></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Botones de Acción -->
-                    <div class="form-actions">
-                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
-                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                            <!-- Botones de Acción -->
+                            <div class="form-actions">
+                                <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                            </div>
+
+                        </div>
+                        <!-- fin columna derecha -->
+
                     </div>
+                    <!-- fin form-layout -->
+
                 </form>
             </div>
         </div>

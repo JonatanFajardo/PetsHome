@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -21,11 +22,13 @@ namespace PetsHome.UI.Controllers
             _tipoParasitoService = tipoParasitoService;
         }
 
+        [Breadcrumb("TipoParasito", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View("~/Views/Catalogo/TipoParasito/Index.cshtml");
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(TipoParasitoController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _tipoParasitoService.ListAsync();
@@ -40,6 +43,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(TipoParasitoController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _tipoParasitoService.FindAsync(id);
@@ -54,6 +58,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(TipoParasitoController))]
         [ActionName("Details")]
         public async Task<IActionResult> Detail(int id)
         {
@@ -74,6 +79,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(TipoParasitoController))]
         public async Task<IActionResult> Add(TipoParasitoViewModel model)
         {
             var operacion = model.isEdit ? "editar" : "insertar";
@@ -110,6 +116,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(TipoParasitoController))]
         [PantallaAuthorize("Listado de tipos de parasito", "eliminar")]
         public async Task<IActionResult> Remove(int tipoPar_Id)
         {

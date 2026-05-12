@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using System;
 using System.Security.Claims;
@@ -46,12 +47,10 @@ namespace PetsHome.UI.Controllers
             TempData.Put("ShowAlert", message);
             return View("Create", model);
         }
-
         public JsonResult AjaxResult(dynamic model, Boolean success)
         {
             return Json(new { item = model, success = success });
         }
-
         public JsonResult AjaxResult(Boolean success)
         {
             var message = success ? "Operación realizada con éxito." : "Ocurrió un error al procesar la solicitud.";

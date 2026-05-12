@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using Microsoft.Extensions.Options;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
@@ -26,11 +27,13 @@ namespace PetsHome.UI.Controllers
             _pathFile = options;
         }
 
+        [Breadcrumb("Mascota", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(MascotaController))]
         [PantallaAuthorize("Listado de mascotas", "insertar")]
         public IActionResult Create()
         {
@@ -39,12 +42,14 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(MascotaController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _mascotaService.ListAsync();
             return Json(new { data = itemListing });
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(MascotaController))]
         [PantallaAuthorize("Listado de mascotas", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -63,6 +68,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(MascotaController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -82,6 +88,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(MascotaController))]
         public async Task<IActionResult> Add(MascotaFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -113,13 +120,14 @@ namespace PetsHome.UI.Controllers
                     goto ErrorResult;
 
                 ShowAlert("Actualizado", AlertMessageType.Success);
-                return View("Index");
+                return RedirectToAction("Index");
             }
 
         ErrorResult:
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(MascotaController))]
         [PantallaAuthorize("Listado de mascotas", "eliminar")]
         public async Task<IActionResult> Remove(int masc_Id)
         {
@@ -143,7 +151,7 @@ namespace PetsHome.UI.Controllers
         /// <returns></returns>
         public MascotaFormViewModel Dropdown(MascotaFormViewModel model)
         {
-            model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown());
+            model.LoadDropDownList(_mascotaService.RazaDropdown(), Dropdownlist.LoadSexo(), _refugioService.RefugioDropdown(), _mascotaService.ProcedenciaDropdown(), _mascotaService.TallaDropdown());
             return model;
         }
     }

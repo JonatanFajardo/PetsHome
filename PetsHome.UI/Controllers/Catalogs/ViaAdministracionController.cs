@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -21,11 +22,13 @@ namespace PetsHome.UI.Controllers
             _viaAdministracionService = viaAdministracionService;
         }
 
+        [Breadcrumb("ViaAdministracion", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View("~/Views/Catalogo/ViaAdministracion/Index.cshtml");
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(ViaAdministracionController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _viaAdministracionService.ListAsync();
@@ -40,6 +43,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(ViaAdministracionController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _viaAdministracionService.FindAsync(id);
@@ -54,6 +58,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(ViaAdministracionController))]
         [ActionName("Details")]
         public async Task<IActionResult> Detail(int id)
         {
@@ -74,6 +79,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(ViaAdministracionController))]
         public async Task<IActionResult> Add(ViaAdministracionViewModel model)
         {
             var operacion = model.isEdit ? "editar" : "insertar";
@@ -110,6 +116,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(ViaAdministracionController))]
         [PantallaAuthorize("Listado de vias de administracion", "eliminar")]
         public async Task<IActionResult> Remove(int viaAdmin_Id)
         {

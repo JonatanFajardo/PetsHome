@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -19,11 +20,13 @@ namespace PetsHome.UI.Controllers
             _ItemService = ItemService;
         }
 
+        [Breadcrumb("Item", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(ItemController))]
         [PantallaAuthorize("Listado de items", "insertar")]
         public IActionResult Create()
         {
@@ -32,6 +35,7 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(ItemController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _ItemService.ListAsync();
@@ -46,6 +50,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(ItemController))]
         [PantallaAuthorize("Listado de items", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -62,6 +67,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(ItemController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -82,6 +88,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(ItemController))]
         public async Task<IActionResult> Add(ItemViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -120,6 +127,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(ItemController))]
         [PantallaAuthorize("Listado de items", "eliminar")]
         public async Task<IActionResult> Remove(int itm_Id)
         {
@@ -136,6 +144,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("List Por Vencer", FromAction = "Index", FromController = typeof(ItemController))]
         public async Task<IActionResult> ListPorVencer()
         {
             var result = await _ItemService.ListPorVencerAsync();
@@ -144,6 +153,7 @@ namespace PetsHome.UI.Controllers
                 : Json(new { data = Array.Empty<object>() });
         }
 
+        [Breadcrumb("Validar Codigo", FromAction = "Index", FromController = typeof(ItemController))]
         [HttpGet]
         public async Task<IActionResult> ValidarCodigo(string itm_Codigo, int? itm_Id)
         {

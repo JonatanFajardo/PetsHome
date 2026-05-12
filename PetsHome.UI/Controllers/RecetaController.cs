@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -30,11 +31,13 @@ namespace PetsHome.UI.Controllers
             _viaAdministracionService = viaAdministracionService;
         }
 
+        [Breadcrumb("Receta", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(RecetaController))]
         [PantallaAuthorize("Listado de recetas", "insertar")]
         public async Task<IActionResult> Create()
         {
@@ -43,6 +46,7 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(RecetaController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _recetaService.ListAsync();
@@ -57,6 +61,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(RecetaController))]
         [PantallaAuthorize("Listado de recetas", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -73,6 +78,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(RecetaController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -92,6 +98,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(RecetaController))]
         public async Task<IActionResult> Add(RecetaFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -127,6 +134,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Actualizar", FromAction = "Index", FromController = typeof(RecetaController))]
         [PantallaAuthorize("Listado de recetas", "editar")]
         public async Task<IActionResult> Update(RecetaFormViewModel model)
         {
@@ -144,6 +152,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(RecetaController))]
         [PantallaAuthorize("Listado de recetas", "eliminar")]
         public async Task<IActionResult> Remove(int receta_Id)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -22,11 +23,13 @@ namespace PetsHome.UI.Controllers
             _mascotaService = mascotaService;
         }
 
+        [Breadcrumb("Solicitud", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View(new SolicitudFormViewModel());
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(SolicitudController))]
         [PantallaAuthorize("Listado de solicitudes", "insertar")]
         public async Task<IActionResult> Create(int? masc_Id)
         {
@@ -56,6 +59,7 @@ namespace PetsHome.UI.Controllers
             });
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(SolicitudController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _SolicitudService.ListAsync();
@@ -70,6 +74,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(SolicitudController))]
         [PantallaAuthorize("Listado de solicitudes", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -85,6 +90,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(SolicitudController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -104,6 +110,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(SolicitudController))]
         public async Task<IActionResult> Add(SolicitudFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -141,6 +148,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Cambiar Estado", FromAction = "Index", FromController = typeof(SolicitudController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de solicitudes", "editar")]
@@ -157,6 +165,7 @@ namespace PetsHome.UI.Controllers
             return Json(new { success = ok });
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(SolicitudController))]
         [PantallaAuthorize("Listado de solicitudes", "eliminar")]
         public async Task<IActionResult> Remove(int sol_Id)
         {

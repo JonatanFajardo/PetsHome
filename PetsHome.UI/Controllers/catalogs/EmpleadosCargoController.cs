@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,6 +18,7 @@ namespace PetsHome.UI.Controllers
     {
         private readonly EmpleadosCargoService _empleadosCargoService;
 
+        [Breadcrumb("EmpleadosCargo", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View("~/Views/Catalogo/EmpleadosCargo/Index.cshtml");
@@ -27,6 +29,7 @@ namespace PetsHome.UI.Controllers
             _empleadosCargoService = empleadosCargoService;
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(EmpleadosCargoController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _empleadosCargoService.ListAsync();
@@ -41,6 +44,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(EmpleadosCargoController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _empleadosCargoService.FindAsync(id);
@@ -55,6 +59,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(EmpleadosCargoController))]
         [ActionName("Details")]
         public async Task<IActionResult> Detail(int id)
         {
@@ -77,6 +82,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(EmpleadosCargoController))]
         public async Task<IActionResult> Add(EmpleadoCargoViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -121,6 +127,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(EmpleadosCargoController))]
         [PantallaAuthorize("Listado de cargos", "eliminar")]
         public async Task<IActionResult> Remove(int emp_id)
         {
@@ -137,6 +144,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Validar Descripcion", FromAction = "Index", FromController = typeof(EmpleadosCargoController))]
         [HttpGet]
         public async Task<IActionResult> ValidarDescripcion(string cag_Descripcion, int? cag_Id)
         {

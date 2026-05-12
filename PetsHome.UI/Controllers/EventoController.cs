@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -21,11 +22,13 @@ namespace PetsHome.UI.Controllers
             _RefugioService = refugioService;
         }
 
+        [Breadcrumb("Evento", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(EventoController))]
         [PantallaAuthorize("Listado de eventos", "insertar")]
         public IActionResult Create()
         {
@@ -34,6 +37,7 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(EventoController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _EventoService.ListAsync();
@@ -48,6 +52,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(EventoController))]
         [PantallaAuthorize("Listado de eventos", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -64,6 +69,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(EventoController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -84,6 +90,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(EventoController))]
         public async Task<IActionResult> Add(EventoViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -121,6 +128,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(EventoController))]
         [PantallaAuthorize("Listado de eventos", "eliminar")]
         public async Task<IActionResult> Remove(int eve_Id)
         {
@@ -137,12 +145,14 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Voluntarios List", FromAction = "Index", FromController = typeof(EventoController))]
         public async Task<IActionResult> VoluntariosList(int eveId)
         {
             var result = await _EventoService.ListVoluntariosAsync(eveId);
             return Json(new { data = result ?? new System.Collections.Generic.List<Business.Models.EventoVoluntarioViewModel>() });
         }
 
+        [Breadcrumb("Cambiar Estado Voluntario", FromAction = "Index", FromController = typeof(EventoController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de eventos", "editar")]
@@ -155,12 +165,14 @@ namespace PetsHome.UI.Controllers
             return Json(new { success = ok });
         }
 
+        [Breadcrumb("Voluntarios Disponibles", FromAction = "Index", FromController = typeof(EventoController))]
         public async Task<IActionResult> VoluntariosDisponibles(int eveId)
         {
             var result = await _EventoService.VoluntariosDisponiblesAsync(eveId);
             return Json(result ?? new System.Collections.Generic.List<Business.Models.VoluntarioDisponibleViewModel>());
         }
 
+        [Breadcrumb("Asignar Voluntario", FromAction = "Index", FromController = typeof(EventoController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de eventos", "editar")]

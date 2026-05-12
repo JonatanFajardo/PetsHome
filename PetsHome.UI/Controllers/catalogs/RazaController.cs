@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,6 +18,7 @@ namespace PetsHome.UI.Controllers
     {
         private readonly RazaService _razaService;
 
+        [Breadcrumb("Raza", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View("~/Views/Catalogo/Raza/Index.cshtml");
@@ -27,6 +29,7 @@ namespace PetsHome.UI.Controllers
             _razaService = razaService;
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(RazaController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _razaService.ListAsync();
@@ -41,6 +44,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(RazaController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _razaService.FindAsync(id);
@@ -55,6 +59,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(RazaController))]
         [ActionName("Details")]
         public async Task<IActionResult> Detail(int id)
         {
@@ -76,6 +81,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(RazaController))]
         public async Task<IActionResult> Add(RazaFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -102,6 +108,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(RazaController))]
         [PantallaAuthorize("Listado de razas", "eliminar")]
         public async Task<IActionResult> Remove(int raza_Id)
         {
@@ -109,6 +116,7 @@ namespace PetsHome.UI.Controllers
             return AjaxResult(deletedItem);
         }
 
+        [Breadcrumb("Validar Descripcion", FromAction = "Index", FromController = typeof(RazaController))]
         [HttpGet]
         public async Task<IActionResult> ValidarDescripcion(string raza_Descripcion, int? raza_Id)
         {

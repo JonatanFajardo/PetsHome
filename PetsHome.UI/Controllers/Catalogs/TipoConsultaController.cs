@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -17,6 +18,7 @@ namespace PetsHome.UI.Controllers
     {
         private readonly TipoConsultaService _tipoConsultaService;
 
+        [Breadcrumb("TipoConsulta", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View("~/Views/Catalogo/TipoConsulta/Index.cshtml");
@@ -27,6 +29,7 @@ namespace PetsHome.UI.Controllers
             _tipoConsultaService = tipoConsultaService;
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(TipoConsultaController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _tipoConsultaService.ListAsync();
@@ -41,6 +44,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(TipoConsultaController))]
         public async Task<IActionResult> Find(int id)
         {
             var itemSearched = await _tipoConsultaService.FindAsync(id);
@@ -55,6 +59,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(TipoConsultaController))]
         [ActionName("Details")]
         public async Task<IActionResult> Detail(int id)
         {
@@ -77,6 +82,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(TipoConsultaController))]
         public async Task<IActionResult> Add(TipoConsultaViewModel model)
         {
             var operacion = model.isEdit ? "editar" : "insertar";
@@ -113,6 +119,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(TipoConsultaController))]
         [PantallaAuthorize("Listado de tipos de consulta", "eliminar")]
         public async Task<IActionResult> Remove(int tipoCon_Id)
         {

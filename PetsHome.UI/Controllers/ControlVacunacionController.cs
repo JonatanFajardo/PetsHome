@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Services;
 using PetsHome.UI.Filters;
 using System.Linq;
@@ -18,8 +19,10 @@ namespace PetsHome.UI.Controllers
             _service = service;
         }
 
+        [Breadcrumb("ControlVacunacion", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index() => View();
 
+        [Breadcrumb("Matriz Data", FromAction = "Index", FromController = typeof(ControlVacunacionController))]
         public async Task<IActionResult> MatrizData()
         {
             var filas = await _service.MatrizVacunacionAsync();

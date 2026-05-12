@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -27,12 +28,14 @@ namespace PetsHome.UI.Controllers
             _mapper = mapper;
         }
 
+        [Breadcrumb("Localidad", FromAction = "Index", FromController = typeof(HomeController))]
         public async Task<IActionResult> Index()
         {
             var departamentos = await _departamentoService.ListAsync();
             return View(departamentos);
         }
 
+        [Breadcrumb("List Municipios", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> ListMunicipios(int id)
         {
             var listMunicipios = await _municipioService.ListIdAsync(id);
@@ -42,6 +45,7 @@ namespace PetsHome.UI.Controllers
             });
         }
 
+        [Breadcrumb("Form Partial Departamento", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> FormPartialDepartamento(int id)
         {
             if (id == 0)
@@ -58,6 +62,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _departamentoService.ListAsync();
@@ -71,6 +76,7 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = itemListing });
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> Add(DepartamentoFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -107,6 +113,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Add Municipio", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> AddMunicipio(DepartamentoFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -143,6 +150,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Find Municipio", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> FindMunicipio(int id)
         {
             var itemSearched = await _municipioService.FindAsync(id);
@@ -157,6 +165,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detail Departamento", FromAction = "Index", FromController = typeof(LocalidadController))]
         public async Task<IActionResult> DetailDepartamento(int id)
         {
             var result = await _departamentoService.DetailAsync(id);

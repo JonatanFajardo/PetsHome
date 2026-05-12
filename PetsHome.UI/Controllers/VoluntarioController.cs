@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -20,17 +21,20 @@ namespace PetsHome.UI.Controllers
             _VoluntarioService = VoluntarioService;
         }
 
+        [Breadcrumb("Voluntario", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View(new VoluntarioListViewModel());
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(VoluntarioController))]
         [PantallaAuthorize("Listado de voluntarios", "insertar")]
         public IActionResult Create()
         {
             return View(new VoluntarioFormViewModel());
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(VoluntarioController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _VoluntarioService.ListAsync();
@@ -45,6 +49,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(VoluntarioController))]
         [PantallaAuthorize("Listado de voluntarios", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -60,6 +65,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(VoluntarioController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -80,6 +86,7 @@ namespace PetsHome.UI.Controllers
         }
 
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(VoluntarioController))]
         public async Task<IActionResult> Add(VoluntarioFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -117,6 +124,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(VoluntarioController))]
         [PantallaAuthorize("Listado de voluntarios", "eliminar")]
         public async Task<IActionResult> Remove(int vol_Id)
         {
@@ -133,6 +141,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Validar Identidad", FromAction = "Index", FromController = typeof(VoluntarioController))]
         [HttpGet]
         public async Task<IActionResult> ValidarIdentidad(string per_Identidad, int? vol_Id)
         {

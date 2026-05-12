@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -27,11 +28,13 @@ namespace PetsHome.UI.Controllers
             _municipioService = MunicipioService;
         }
 
+        [Breadcrumb("Refugio", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View(new RefugioFormViewModel());
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(RefugioController))]
         [PantallaAuthorize("Listado de refugios", "insertar")]
         public IActionResult Create()
         {
@@ -40,6 +43,7 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(RefugioController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _RefugioService.ListAsync();
@@ -54,6 +58,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(RefugioController))]
         [PantallaAuthorize("Listado de refugios", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -70,6 +75,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(RefugioController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -89,6 +95,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(RefugioController))]
         public async Task<IActionResult> Add(RefugioFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -126,6 +133,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(RefugioController))]
         [PantallaAuthorize("Listado de refugios", "eliminar")]
         public async Task<IActionResult> Remove(int refg_Id)
         {
@@ -142,6 +150,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Validar Nombre", FromAction = "Index", FromController = typeof(RefugioController))]
         [HttpGet]
         public async Task<IActionResult> ValidarNombre(string refg_Nombre, int? refg_Id)
         {

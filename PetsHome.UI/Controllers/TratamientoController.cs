@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Data;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Helpers;
@@ -34,11 +35,13 @@ namespace PetsHome.UI.Controllers
             _viaAdministracionService = viaAdministracionService;
         }
 
+        [Breadcrumb("Tratamiento", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(TratamientoController))]
         [PantallaAuthorize("Listado de tratamientos", "insertar")]
         public IActionResult Create()
         {
@@ -47,12 +50,14 @@ namespace PetsHome.UI.Controllers
             return View(drop);
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(TratamientoController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _tratamientoService.ListAsync();
             return Json(new { data = itemListing });
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(TratamientoController))]
         [PantallaAuthorize("Listado de tratamientos", "editar")]
         public async Task<IActionResult> Find(int id)
         {
@@ -69,6 +74,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(TratamientoController))]
         public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
@@ -88,6 +94,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(TratamientoController))]
         public async Task<IActionResult> Add(TratamientoFormViewModel model)
         {
             if (!CurrentUserId.HasValue)
@@ -124,6 +131,7 @@ namespace PetsHome.UI.Controllers
             return ShowAlert(AlertMessaje.Error, AlertMessageType.Error, model);
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(TratamientoController))]
         [PantallaAuthorize("Listado de tratamientos", "eliminar")]
         public async Task<IActionResult> Remove(int trat_Id)
         {

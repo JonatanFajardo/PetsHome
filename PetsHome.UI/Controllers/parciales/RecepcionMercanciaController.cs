@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -43,12 +44,14 @@ namespace PetsHome.UI.Controllers
         /// Vista principal del índice de recepciones.
         /// </summary>
         /// <returns>Vista Index.</returns>
+        [Breadcrumb("RecepcionMercancia", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index() => View();
 
         /// <summary>
         /// Lista todas las recepciones de mercancía.
         /// </summary>
         /// <returns>JSON con la lista de recepciones.</returns>
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> List()
         {
             var itemListing = await _recepcionService.ListAsync();
@@ -60,6 +63,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la recepción.</param>
         /// <returns>Vista DetailRecepcion con el detalle completo.</returns>
+        [Breadcrumb("Detalle", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> Detail(int id)
         {
             var itemDetail = await _recepcionService.DetailAsync(id);
@@ -80,6 +84,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la recepción.</param>
         /// <returns>JSON con el detalle de la recepción.</returns>
+        [Breadcrumb("Detail Json", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> DetailJson(int id)
         {
             var itemDetail = await _recepcionService.DetailAsync(id);
@@ -98,6 +103,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la recepción.</param>
         /// <returns>JSON con la lista de detalles.</returns>
+        [Breadcrumb("List Detalles", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> ListDetalles(int id)
         {
             var listDetalles = await _detalleService.ListByRecepcionAsync(id);
@@ -109,6 +115,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la recepción. 0 para crear nueva.</param>
         /// <returns>Vista FormPartialRecepcion.</returns>
+        [Breadcrumb("Form Partial Recepcion", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> FormPartialRecepcion(int id)
         {
             if (id == 0)
@@ -139,6 +146,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model">Modelo de la recepción.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
+        [Breadcrumb("Agregar", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(RecepcionMercanciaFormViewModel model)
@@ -177,6 +185,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="model">Modelo del formulario que contiene el detalle.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
+        [Breadcrumb("Add Detalle", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDetalle(RecepcionMercanciaFormViewModel model)
@@ -215,6 +224,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID del detalle.</param>
         /// <returns>JSON con el detalle encontrado.</returns>
+        [Breadcrumb("Find Detalle", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> FindDetalle(int id)
         {
             var itemSearched = await _detalleService.FindAsync(id);
@@ -234,6 +244,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID del detalle.</param>
         /// <returns>JSON con el detalle encontrado incluyendo descripción del item.</returns>
+        [Breadcrumb("Find Detalle Detail", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         public async Task<IActionResult> FindDetalleDetail(int id)
         {
             var itemSearched = await _detalleService.FindForDetailAsync(id);
@@ -253,6 +264,7 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la recepción.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de recepciones", "eliminar")]
@@ -276,6 +288,7 @@ namespace PetsHome.UI.Controllers
         /// <param name="recdet_Id">ID del detalle.</param>
         /// <param name="recep_Id">ID de la recepción padre.</param>
         /// <returns>Redireccionamiento según resultado.</returns>
+        [Breadcrumb("Remove Detalle", FromAction = "Index", FromController = typeof(RecepcionMercanciaController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de recepciones", "eliminar")]

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs.Attributes;
 using PetsHome.Business.Extensions;
 using PetsHome.Business.Models;
 using PetsHome.Business.Services;
@@ -20,23 +21,27 @@ namespace PetsHome.UI.Controllers
             _rolService = rolService;
         }
 
+        [Breadcrumb("Roles", FromAction = "Index", FromController = typeof(HomeController))]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Breadcrumb("Lista", FromAction = "Index", FromController = typeof(RolesController))]
         public async Task<IActionResult> List()
         {
             var result = await _rolService.ListAsync();
             return Json(new { data = result });
         }
 
+        [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(RolesController))]
         public async Task<IActionResult> Find(int id)
         {
             var result = await _rolService.FindAsync(id);
             return AjaxResult(result, result != null);
         }
 
+        [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(RolesController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RolViewModel model)
@@ -59,6 +64,7 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        [Breadcrumb("Eliminar", FromAction = "Index", FromController = typeof(RolesController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de roles", "eliminar")]
@@ -68,6 +74,7 @@ namespace PetsHome.UI.Controllers
             return AjaxResult(result);
         }
 
+        [Breadcrumb("Exist", FromAction = "Index", FromController = typeof(RolesController))]
         [HttpPost]
         public async Task<IActionResult> Exist(int? rol_Id, string rol_Descripcion)
         {
@@ -82,18 +89,21 @@ namespace PetsHome.UI.Controllers
             return Json(true);
         }
 
+        [Breadcrumb("Pantallas List", FromAction = "Index", FromController = typeof(RolesController))]
         public async Task<IActionResult> PantallasList()
         {
             var result = await _rolService.PantallasListAsync();
             return Json(new { data = result });
         }
 
+        [Breadcrumb("Pantallas By Rol", FromAction = "Index", FromController = typeof(RolesController))]
         public async Task<IActionResult> PantallasByRol(int id)
         {
             var result = await _rolService.PantallasByRolAsync(id);
             return Json(new { data = result });
         }
 
+        [Breadcrumb("Save Pantallas", FromAction = "Index", FromController = typeof(RolesController))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PantallaAuthorize("Listado de roles", "editar")]
