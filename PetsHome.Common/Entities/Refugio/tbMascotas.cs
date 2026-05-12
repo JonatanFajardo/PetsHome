@@ -23,6 +23,7 @@ namespace PetsHome.Common.Entities
         public int? masc_Edad { get; set; }
         public string masc_Sexo { get; set; }
         public decimal masc_Peso { get; set; }
+        public int? tall_Id { get; set; }
         public string masc_Color { get; set; }
         public string masc_Historia { get; set; }
         public int refg_Id { get; set; }

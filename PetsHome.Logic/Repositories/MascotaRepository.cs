@@ -47,6 +47,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@masc_Edad", entity.masc_Edad, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Sexo", entity.masc_Sexo, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Peso", entity.masc_Peso, DbType.Double, ParameterDirection.Input);
+            parameter.Add("@tall_Id", entity.tall_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Color", entity.masc_Color, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Historia", entity.masc_Historia, DbType.String, ParameterDirection.Input);
             parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
@@ -66,6 +67,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@masc_Edad", entity.masc_Edad, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Sexo", entity.masc_Sexo, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Peso", entity.masc_Peso, DbType.Double, ParameterDirection.Input);
+            parameter.Add("@tall_Id", entity.tall_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@masc_Color", entity.masc_Color, DbType.String, ParameterDirection.Input);
             parameter.Add("@masc_Historia", entity.masc_Historia, DbType.String, ParameterDirection.Input);
             parameter.Add("@refg_Id", entity.refg_Id, DbType.Int32, ParameterDirection.Input);
@@ -114,6 +116,16 @@ namespace PetsHome.Logic.Repositories
             using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
             {
                 var result = db.Query<PR_Refugio_Procedencia_DropdownResult>(query, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        public IEnumerable<PR_Refugio_Talla_DropdownResult> TallaDropdown()
+        {
+            const string query = "[Refugio].[PR_Refugio_Talla_Dropdown]";
+            using (var db = new SqlConnection(PetsHomeDbContext.ConnectionString))
+            {
+                var result = db.Query<PR_Refugio_Talla_DropdownResult>(query, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }

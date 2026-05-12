@@ -30,7 +30,6 @@ namespace PetsHome.Business.Models
         public int? raza_Id { get; set; }
 
         [Display(Name = "Raza")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string? raza_Descripcion { get; set; }
 
@@ -51,9 +50,10 @@ namespace PetsHome.Business.Models
 
         [Display(Name = "Talla")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [Column(TypeName = "decimal(18, 0)")]
-        [Range(1, 300, ErrorMessage = "La {0} debe estar entre {1} y {2}")]
-        public decimal? masc_Talla { get; set; }
+        public int? tall_Id { get; set; }
+
+        [Display(Name = "Talla descripción")]
+        public string? tall_Descripcion { get; set; }
 
         [Display(Name = "Color")]
         [Required(ErrorMessage = "El campo {0} es requerido")]
@@ -71,7 +71,6 @@ namespace PetsHome.Business.Models
         public int? refg_Id { get; set; }
 
         [Display(Name = "Refugio")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string? refg_Nombre { get; set; }
 
@@ -80,7 +79,6 @@ namespace PetsHome.Business.Models
         public int? proc_Id { get; set; }
 
         [Display(Name = "Procedencia")]
-        [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(50)]
         public string? proc_Descripcion { get; set; }
 
@@ -105,7 +103,7 @@ namespace PetsHome.Business.Models
 
         public long? masc_Fila { get; set; }
 
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         public string pathMascotaImage { get; set; }
 
@@ -121,15 +119,19 @@ namespace PetsHome.Business.Models
 
         public SelectList procedenciaList { get; set; }
 
+        public SelectList tallaList { get; set; }
+
         public void LoadDropDownList(IEnumerable<RazaDropdownViewModel> razaDropdownResults,
                                      IEnumerable<Dropdown> dropdownlists,
                                      IEnumerable<RefugioDropdownViewModel> refugioDropdownResults,
-                                     IEnumerable<ProcedenciaViewModel> procedenciaDropdownResults)
+                                     IEnumerable<ProcedenciaViewModel> procedenciaDropdownResults,
+                                     IEnumerable<TallaDropdownViewModel> tallaDropdownResults)
         {
             razaList = new SelectList(razaDropdownResults, "raza_Id", "raza_Descripcion");
             sexoList = new SelectList(dropdownlists, "Value", "Text");
             refugioList = new SelectList(refugioDropdownResults, "refg_Id", "refg_Nombre");
             procedenciaList = new SelectList(procedenciaDropdownResults, "proc_Id", "proc_Descripcion");
+            tallaList = new SelectList(tallaDropdownResults, "tall_Id", "tall_Descripcion");
         }
 
         #endregion Dropdown

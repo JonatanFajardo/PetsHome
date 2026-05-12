@@ -50,7 +50,11 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public decimal masc_Peso { get; set; }
-        
+
+        public int? tall_Id { get; set; }
+
+        public string tall_Descripcion { get; set; }
+
         /// <summary>
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>

@@ -215,6 +215,20 @@ namespace PetsHome.Business.Services
             }
         }
 
+        public IEnumerable<TallaDropdownViewModel> TallaDropdown()
+        {
+            try
+            {
+                IEnumerable<PR_Refugio_Talla_DropdownResult> mappedResult = _mascotaRepository.TallaDropdown();
+                return _mapper.Map<List<TallaDropdownViewModel>>(mappedResult.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
         #endregion Dropdown
     }
 }
