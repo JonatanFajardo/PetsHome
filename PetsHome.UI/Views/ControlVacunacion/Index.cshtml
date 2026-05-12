@@ -14,6 +14,10 @@
 <!-- Filtros y acciones -->
 <div class="vac-filters-bar">
     <div class="filters-row">
+        <div class="search-wrap">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" class="search-input" id="searchMascota" placeholder="Buscar mascota..." oninput="applyFilters()" />
+        </div>
         <div class="filter-wrap">
             <i class="bi bi-funnel filter-icon"></i>
             <select class="filter-pill" id="filterEspecie" onchange="applyFilters()">
@@ -40,7 +44,7 @@
         <button class="btn-action" onclick="exportPDF()">
             <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
         </button>
-        <button class="btn-action" onclick="showToast('Notificaciones enviadas correctamente', 'green')">
+        <button class="btn-action btn-ghost" onclick="showToast('Notificaciones enviadas correctamente', 'green')">
             <i class="bi bi-bell"></i>
         </button>
     </div>

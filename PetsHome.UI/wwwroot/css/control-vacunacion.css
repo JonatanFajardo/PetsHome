@@ -80,6 +80,145 @@ body::before {
 }
 
 /* ═══════════════════════════════════════
+   FILTERS BAR
+═══════════════════════════════════════ */
+.vac-filters-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+.vac-filters-bar .filters-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.vac-filters-bar .filter-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.vac-filters-bar .filter-icon {
+  position: absolute;
+  left: 11px;
+  color: var(--purple);
+  font-size: 0.82rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.vac-filters-bar .filter-pill {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 500;
+  padding: 7px 28px 7px 30px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'%3E%3Cpath fill='%236c5ce7' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-color: var(--bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-width: 130px;
+}
+.vac-filters-bar .filter-pill:hover {
+  border-color: var(--purple-light);
+  background-color: var(--purple-soft);
+}
+.vac-filters-bar .filter-pill:focus {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(108,92,231,0.12);
+}
+
+/* Search input */
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-wrap .search-icon {
+  position: absolute;
+  left: 11px;
+  color: var(--purple);
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.search-input {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 500;
+  padding: 7px 12px 7px 30px;
+  min-width: 190px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input::placeholder { color: var(--muted); }
+.search-input:focus {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(108,92,231,0.12);
+}
+
+.vac-filters-bar .header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.vac-filters-bar .btn-action {
+  background: var(--purple);
+  border: none;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+  transition: all 0.2s;
+}
+.vac-filters-bar .btn-action:hover {
+  background: var(--purple-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(108,92,231,0.32);
+}
+.vac-filters-bar .btn-action:active { transform: translateY(0); }
+.vac-filters-bar .btn-action i { font-size: 0.9rem; }
+.vac-filters-bar .btn-action.btn-ghost {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+}
+.vac-filters-bar .btn-action.btn-ghost:hover {
+  background: var(--purple-soft);
+  border-color: var(--purple-light);
+  color: var(--purple);
+  box-shadow: none;
+}
+
+/* ═══════════════════════════════════════
    HEADER
 ═══════════════════════════════════════ */
 .vac-header {
@@ -453,33 +592,35 @@ table.vac-matrix thead th:first-child { z-index: 20; }
 
 /* Vaccine column header — rotated */
 .th-vaccine {
-  width: 54px;
-  min-width: 54px;
-  height: 130px;
+  width: 40px;
+  min-width: 40px;
+  height: 160px;
   vertical-align: bottom;
-  padding: 0 0 12px 0 !important;
+  padding: 0 !important;
   text-align: center;
   border-left: 1px solid rgba(255,255,255,0.06);
   transition: background 0.2s;
+  overflow: visible;
 }
 .th-vaccine.highlighted { background: rgba(255,255,255,0.12) !important; }
 .th-vaccine-inner {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  transform: rotate(-45deg);
-  transform-origin: center bottom;
+  display: block;
+  width: 160px;
+  padding-bottom: 8px;
+  transform: rotate(-55deg);
+  transform-origin: left bottom;
+  position: relative;
+  left: 34px;
+  bottom: 0;
   white-space: nowrap;
 }
 .th-vaccine-label {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.70rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.88);
-  max-width: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: rgba(255,255,255,0.92);
+  letter-spacing: 0.2px;
+  display: block;
 }
 .th-vaccine-species {
   width: 16px; height: 16px;

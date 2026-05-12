@@ -87,10 +87,12 @@ function buildRefugioFilter() {
 
 // ── APPLY FILTERS ────────────────────────────────────────────────────────────
 window.applyFilters = function () {
-    const esp = document.getElementById('filterEspecie').value;
-    const ref = document.getElementById('filterRefugio').value;
-    const vac = document.getElementById('filterVacuna').value;
+    const esp  = document.getElementById('filterEspecie').value;
+    const ref  = document.getElementById('filterRefugio').value;
+    const vac  = document.getElementById('filterVacuna').value;
+    const term = (document.getElementById('searchMascota').value || '').toLowerCase().trim();
     filteredPets = allPets.filter(p => {
+        if (term && !(p.masc_Nombre || '').toLowerCase().includes(term)) return false;
         if (esp && p.masc_Especie !== esp) return false;
         if (ref && p.refg_Nombre !== ref)  return false;
         if (vac) {
