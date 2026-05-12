@@ -33,40 +33,40 @@
     <link rel="stylesheet" href="~/css/reporte-adopciones.css" />
 }
 
-<!-- ═══════════════════ HEADER ═══════════════════ -->
-<div class="report-header">
-    <div class="header-title">
-        <div class="header-icon">🐾</div>
-        <div>
-            <h1>Reporte de Adopciones</h1>
-            <span class="header-sub">PetsHome · Actualizado @DateTime.Now.ToString("dd MMM yyyy, HH:mm")</span>
-        </div>
-    </div><!-- /header-title -->
-
-    <div class="header-filters">
-        <select class="filter-select" id="periodoSelect">
-            <option value="hoy">Hoy</option>
-            <option value="semana">Esta semana</option>
-            <option value="mes" selected>Este mes</option>
-            <option value="anio">Este año</option>
-            <option value="custom">Rango personalizado</option>
-        </select>
-
-        <select class="filter-select" id="refugioSelect">
-            <option value="todos">Todos los refugios</option>
-            <option value="las-lomas">Refugio Las Lomas</option>
-            <option value="la-esperanza">Refugio La Esperanza</option>
-            <option value="vida-animal">Refugio Vida Animal</option>
-        </select>
-
-        <button class="btn-export" id="btnExport">
-            <i class="fas fa-file-pdf"></i> Exportar PDF
-        </button>
-    </div><!-- /header-filters -->
-</div><!-- /report-header -->
-
 <!-- ═══════════════════ PAGE CONTENT ═══════════════════ -->
 <div class="page-wrap">
+
+    <!-- ═══════════════════ HEADER ═══════════════════ -->
+    <div class="report-header">
+        <div class="header-title">
+            <div class="header-icon">🐾</div>
+            <div>
+                <h1>Reporte de Adopciones</h1>
+                <span class="header-sub">PetsHome · Actualizado @DateTime.Now.ToString("dd MMM yyyy, HH:mm")</span>
+            </div>
+        </div><!-- /header-title -->
+
+        <div class="header-filters">
+            <select class="filter-select" id="periodoSelect">
+                <option value="hoy">Hoy</option>
+                <option value="semana">Esta semana</option>
+                <option value="mes" selected>Este mes</option>
+                <option value="anio">Este año</option>
+                <option value="custom">Rango personalizado</option>
+            </select>
+
+            <select class="filter-select" id="refugioSelect">
+                <option value="todos">Todos los refugios</option>
+                <option value="las-lomas">Refugio Las Lomas</option>
+                <option value="la-esperanza">Refugio La Esperanza</option>
+                <option value="vida-animal">Refugio Vida Animal</option>
+            </select>
+
+            <button class="btn-export" id="btnExport">
+                <i class="fas fa-file-pdf"></i> Exportar PDF
+            </button>
+        </div><!-- /header-filters -->
+    </div><!-- /report-header -->
 
     <!-- KPI ROW -->
     <div class="kpi-grid" id="kpiGrid">
