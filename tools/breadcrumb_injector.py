@@ -58,6 +58,12 @@ SKIP_METHODS = {
     "Dispose",
 }
 
+# ── Controladores que se omiten completamente ────────────────────────────────
+SKIP_CONTROLLERS = {
+    "AccountController",
+    "BaseController",
+}
+
 # ── Nombres de acción → etiqueta legible ────────────────────────────────────
 ACTION_LABELS = {
     "Index":    "Listado",
@@ -127,6 +133,10 @@ def inject_breadcrumbs(source: str, dry_run: bool = False, force: bool = False) 
         return source, log
 
     controller_class = cls_match.group(1)
+
+    if controller_class in SKIP_CONTROLLERS:
+        log.append(f"  ⏭  {controller_class} excluido.")
+        return source, log
     controller_name  = extract_controller_name(controller_class)
     log.append(f"  Controlador: {controller_class}")
 
@@ -197,9 +207,21 @@ def inject_breadcrumbs(source: str, dry_run: bool = False, force: bool = False) 
     return "".join(result_lines), log
 
 
+SMARTBC_USING = "using SmartBreadcrumbs.Attributes;\n"
+MVC_USING     = "using Microsoft.AspNetCore.Mvc;\n"
+
+def ensure_using(source: str) -> str:
+    if SMARTBC_USING in source:
+        return source
+    if MVC_USING in source:
+        return source.replace(MVC_USING, MVC_USING + SMARTBC_USING, 1)
+    return SMARTBC_USING + source
+
+
 def process_file(path: Path, dry_run: bool, backup: bool, force: bool = False) -> None:
     print(f"\n📄 {path}")
     source = path.read_text(encoding="utf-8")
+    source = ensure_using(source)
     modified, log = inject_breadcrumbs(source, dry_run=dry_run, force=force)
 
     for msg in log:
