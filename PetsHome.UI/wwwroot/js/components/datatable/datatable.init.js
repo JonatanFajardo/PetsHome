@@ -386,8 +386,9 @@ var datatable = (function () {
                 head[i]['width'] = _header[i].Size
             }
             // Entra si se desea personalizar el render de la columna
-            if (_header[i].render != undefined) {
-                head[i]['render'] = _header[i].render
+            var renderFn = _header[i].Render || _header[i].render;
+            if (renderFn != undefined) {
+                head[i]['render'] = renderFn;
             }
         }
 
