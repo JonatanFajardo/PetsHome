@@ -15,25 +15,17 @@ namespace PetsHome.Common.Entities
         /// Obtiene o establece el valor de la propiedad.
         /// </summary>
         public int masc_Id { get; set; }
-        
-        /// <summary>
-        /// Obtiene o establece el valor de la propiedad.
-        /// </summary>
         public long? masc_Fila { get; set; }
-        
-        /// <summary>
-        /// Obtiene o establece el valor de la propiedad.
-        /// </summary>
+        public byte[] masc_Imagen { get; set; }
         public string masc_Nombre { get; set; }
-        
-        /// <summary>
-        /// Obtiene o establece el valor de la propiedad.
-        /// </summary>
         public string raza_Descripcion { get; set; }
-        
-        /// <summary>
-        /// Obtiene o establece el valor de la propiedad.
-        /// </summary>
         public string refg_Nombre { get; set; }
+        public int? masc_Edad { get; set; }
+        public string masc_Sexo { get; set; }
+        public string tall_Descripcion { get; set; }
+        public string masc_Color { get; set; }
+        public string masc_Historia { get; set; }
+        public bool masc_EsAdoptado { get; set; }
+        public bool masc_EsReservado { get; set; }
     }
 }

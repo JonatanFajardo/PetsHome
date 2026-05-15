@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,23 @@ namespace PetsHome.UI.Controllers
         {
             var itemListing = await _mascotaService.ListAsync();
             return Json(new { data = itemListing });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Search(string term)
+        {
+            var todas = await _mascotaService.ListAsync() ?? new System.Collections.Generic.List<MascotaListViewModel>();
+            if (!string.IsNullOrWhiteSpace(term))
+            {
+                var t = term.Trim().ToLower();
+                todas = todas.Where(m => m.masc_Nombre != null && m.masc_Nombre.ToLower().Contains(t)).ToList();
+            }
+            return Json(todas.Take(20).Select(m => new {
+                id     = m.masc_Id,
+                nombre = m.masc_Nombre,
+                raza   = m.raza_Descripcion,
+                refugio = m.refg_Nombre
+            }));
         }
 
         [Breadcrumb("Buscar", FromAction = "Index", FromController = typeof(MascotaController))]
