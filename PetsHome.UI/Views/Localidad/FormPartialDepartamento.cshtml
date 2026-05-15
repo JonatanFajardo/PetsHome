@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = Model.depto_Id == 0 ? "Nuevo Departamento" : "Editar Departamento";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["UseDatatablePartials"] = true;
+    ViewData["UsePdfExport"] = true;
+    ViewData["UseFormValidation"] = true;
 }
 
 @section Styles {

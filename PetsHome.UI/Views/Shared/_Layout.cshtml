@@ -36,9 +36,13 @@
         }
     </style>
 
-    @* DataTables Styles *@
-    <link href="~/plugins/datatables.net/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <link href="~/plugins/datatables.net/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+    @if (ViewData["UseDatatableInit"] as bool? == true ||
+         ViewData["UseDatatableCatalogs"] as bool? == true ||
+         ViewData["UseDatatablePartials"] as bool? == true)
+    {
+        <link href="~/plugins/datatables.net/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatables.net/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+    }
 
     @* Perfect Scrollbar Style *@
     <link href="~/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" />
@@ -52,10 +56,11 @@
     <link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/plugins.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link href="~/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
-    <link href="~/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    @if (ViewData["UseApexCharts"] as bool? == true)
+    {
+        <link href="~/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
+        <link href="~/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+    }
 
     @*CDN FONTAWESOME*@
     @*https://cdnjs.com/libraries/font-awesome*@
@@ -65,8 +70,10 @@
     <!-- Custom Sidebar Styles -->
     <link href="~/css/sidebar-custom.css" rel="stylesheet" type="text/css" />
 
-    <!-- Intro.js - Guided Tour -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @if (ViewData["UseIntroJs"] as bool? == true)
+    {
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    }
 
     <!-- App Css-->
     @RenderSection("styles", required: false)
@@ -181,10 +188,11 @@
     </script>
     <script src="~/assets/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    <script src="~/plugins/apex/apexcharts.min.js"></script>
-    <script src="~/assets/js/dashboard/dash_1.js"></script>
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    @if (ViewData["UseApexCharts"] as bool? == true)
+    {
+        <script src="~/plugins/apex/apexcharts.min.js"></script>
+        <script src="~/assets/js/dashboard/dash_1.js"></script>
+    }
     @*<script src="~/js/bootstrap.bundle.min.js"></script>*@
     @*<script src="~/js/jquery.min.js"></script>
         <script src="~/js/jquery-ui.min.js"></script>
@@ -201,45 +209,60 @@
     @* alerta *@
     <script src="~/plugins/toastr/toastr.min.js"></script>
 
-    @* Validaciones *@
-    <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
-    <script src="~/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/plugins/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    @if (ViewData["UseFormValidation"] as bool? == true)
+    {
+        <script src="~/plugins/jquery-validation/jquery.validate.js"></script>
+        <script src="~/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/plugins/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    }
 
-
-    @* Datatable *@
-    <script src="~/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
-
-    <script src="~/plugins/datatables.net/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/plugins/datatables.net/js/dataTables.buttons.min.js"></script>
-    <script src="~/plugins/datatables.net/js/buttons.bootstrap4.min.js"></script>
-    @*<script src="~/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>*@
-
-    <script src="~/plugins/datatables/jszip.min.js"></script>
-    <script src="~/plugins/datatables/pdfmake.min.js"></script>
-    <script src="~/plugins/datatables/vfs_fonts.js"></script>
-    <script src="~/plugins/datatables.net/js/buttons.html5.min.js"></script>
-    <script src="~/plugins/datatables.net/js/buttons.print.min.js"></script>
-    <script src="~/plugins/datatables.net/js/buttons.colVis.min.js"></script>
+    @if (ViewData["UseDatatableInit"] as bool? == true ||
+         ViewData["UseDatatableCatalogs"] as bool? == true ||
+         ViewData["UseDatatablePartials"] as bool? == true)
+    {
+        <script src="~/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="~/plugins/datatables.net/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables.net/js/dataTables.buttons.min.js"></script>
+        <script src="~/plugins/datatables.net/js/buttons.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables.net/js/buttons.print.min.js"></script>
+        <script src="~/plugins/datatables.net/js/buttons.colVis.min.js"></script>
+        @if (ViewData["UsePdfExport"] as bool? == true)
+        {
+            <script src="~/plugins/datatables/jszip.min.js"></script>
+            <script src="~/plugins/datatables/pdfmake.min.js"></script>
+            <script src="~/plugins/datatables/vfs_fonts.js"></script>
+            <script src="~/plugins/datatables.net/js/buttons.html5.min.js"></script>
+        }
+    }
 
     <script src="~/js/main.js"></script>
-    <script src="~/js/pages/authentication.init.js?@DateTime.Now.Ticks"></script>
+    <script src="~/js/pages/authentication.init.js"></script>
 
     @*lada*@
     <script src="~/plugins/ladda/spin.min.js"></script>
     <script src="~/plugins/ladda/ladda.min.js"></script>
 
-    <script src="~/js/components/datatable/datatable.init.js"></script>
-    <script src="~/js/components/datatable/datatable.catalogs.init.js"></script>
-    <script src="~/js/components/datatable/datatable.partials.init.js"></script>
-    <script src="~/js/components/catalogs.js"></script>
+    @if (ViewData["UseDatatableInit"] as bool? == true)
+    {
+        <script src="~/js/components/datatable/datatable.init.js"></script>
+    }
+    @if (ViewData["UseDatatableCatalogs"] as bool? == true)
+    {
+        <script src="~/js/components/datatable/datatable.catalogs.init.js"></script>
+        <script src="~/js/components/catalogs.js"></script>
+    }
+    @if (ViewData["UseDatatablePartials"] as bool? == true)
+    {
+        <script src="~/js/components/datatable/datatable.partials.init.js"></script>
+    }
 
     <!-- Sidebar Active State -->
     <script src="~/js/sidebar-active.js"></script>
 
-    <!-- Intro.js - Guided Tour -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/intro.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @if (ViewData["UseIntroJs"] as bool? == true)
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/intro.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    }
 
     @Html.ShowAlert();
     @RenderSection("scripts", required: false)

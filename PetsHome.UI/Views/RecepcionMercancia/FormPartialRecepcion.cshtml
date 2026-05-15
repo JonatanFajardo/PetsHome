@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = Model.recep_Id == 0 ? "Nueva Recepción de Mercancía" : "Editar Recepción de Mercancía";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["UseDatatablePartials"] = true;
+    ViewData["UsePdfExport"] = true;
+    ViewData["UseFormValidation"] = true;
 }
 
 @section Styles {
