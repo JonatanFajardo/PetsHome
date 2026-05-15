@@ -95,7 +95,7 @@ BEGIN
         m.masc_Nombre                                   AS MascotaNombre,
         ISNULL(r.raza_Descripcion, 'Sin raza')          AS Raza,
         s.sol_Nombres                                   AS Adoptante,
-        s.sol_FechaModifica                             AS FechaAdopcion,
+        ISNULL(s.sol_FechaModifica, s.sol_FechaCrea)    AS FechaAdopcion,
         s.sol_Estado                                    AS Estado,
         DATEDIFF(DAY, s.sol_FechaCrea, GETDATE())       AS DiasTranscurridos
     FROM  [Refugio].[tbSolicitudes]  s
