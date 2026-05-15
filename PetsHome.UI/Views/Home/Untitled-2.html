@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petshome – Gestión de Cargos</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; display: flex; min-height: 100vh; color: #334155; }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: 240px; min-height: 100vh; display: flex; flex-direction: column;
+      background: linear-gradient(180deg, #1e1b4b 0%, #312e81 40%, #1e1b4b 100%);
+      flex-shrink: 0;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 12px;
+      padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .logo-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .logo-icon svg { color: #fff; }
+    .sidebar-logo span { color: #fff; font-size: 15px; font-weight: 600; letter-spacing: 0.03em; }
+    nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+    .nav-item { margin-bottom: 2px; }
+    .nav-btn {
+      width: 100%; display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 8px; border: none; cursor: pointer;
+      font-size: 13.5px; text-align: left; transition: background 0.15s, color 0.15s;
+      background: transparent; color: #a5b4fc;
+    }
+    .nav-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .nav-btn.active { background: rgba(255,255,255,0.15); color: #fff; }
+    .nav-btn .icon { opacity: 0.8; display: flex; }
+    .nav-btn .chevron { margin-left: auto; opacity: 0.6; display: flex; transition: transform 0.2s; }
+    .nav-btn.open .chevron { transform: rotate(90deg); }
+    .nav-children { margin-left: 12px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,0.1); margin-top: 2px; display: none; }
+    .nav-children.show { display: block; }
+    .nav-child-btn {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer;
+      font-size: 12px; text-align: left; background: transparent; color: #a5b4fc;
+      transition: background 0.15s, color 0.15s; margin-bottom: 2px;
+    }
+    .nav-child-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .nav-child-btn.active { background: rgba(99,102,241,0.4); color: #fff; }
+    .nav-child-btn .dot { width: 6px; height: 6px; border-radius: 50%; background: #a5b4fc; margin-left: auto; }
+    .sidebar-footer {
+      padding: 12px; border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .user-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 8px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .user-row:hover { background: rgba(255,255,255,0.1); }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; font-weight: 600;
+    }
+    .user-info { flex: 1; min-width: 0; }
+    .user-name { color: #fff; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-role { color: #a5b4fc; font-size: 11px; }
+    .logout-icon { color: #a5b4fc; display: flex; }
+
+    /* ── MAIN ── */
+    main { flex: 1; display: flex; flex-direction: column; min-height: 100vh; background: #f8fafc; }
+
+    /* Header */
+    .page-header {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+    .breadcrumb .active { color: #6366f1; }
+    .page-title { font-size: 20px; font-weight: 600; color: #1e293b; }
+    .btn-primary {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 12px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff; font-size: 13px; font-weight: 500;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* Content */
+    .content { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .stat-card {
+      background: #fff; border-radius: 16px; padding: 20px;
+      border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s;
+    }
+    .stat-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .stat-card.total {
+      background: linear-gradient(135deg, #6366f1, #4f46e5); border-color: transparent;
+    }
+    .stat-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .stat-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .stat-card.total .stat-label { color: #c7d2fe; }
+    .stat-value { font-size: 30px; font-weight: 700; color: #1e293b; }
+    .stat-card.total .stat-value { color: #fff; }
+    .stat-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .stat-sub { font-size: 11px; color: #94a3b8; }
+    .stat-card.total .stat-sub { color: #c7d2fe; }
+    .stat-action {
+      margin-top: 12px; font-size: 11px; font-weight: 500; background: none;
+      border: none; cursor: pointer; padding: 0; transition: color 0.15s;
+    }
+
+    /* Toolbar */
+    .toolbar {
+      background: #fff; border-radius: 16px; border: 1px solid #f1f5f9;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .search-wrap { flex: 1; position: relative; }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+    .search-input {
+      width: 100%; padding: 10px 16px 10px 36px;
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+      font-size: 13px; color: #475569; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-input::placeholder { color: #94a3b8; }
+    .search-input:focus { border-color: #a5b4fc; box-shadow: 0 0 0 3px rgba(165,180,252,0.25); }
+    .filter-badge {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 12px; background: #eef2ff; border: 1px solid #c7d2fe;
+      border-radius: 10px; font-size: 11px; color: #6366f1;
+    }
+    .filter-badge button { background: none; border: none; cursor: pointer; color: #6366f1; font-size: 13px; line-height: 1; margin-left: 4px; }
+    .filter-badge button:hover { color: #3730a3; }
+    .view-toggle { display: flex; background: #f1f5f9; border-radius: 10px; padding: 4px; gap: 2px; }
+    .view-btn {
+      display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 500;
+      background: transparent; color: #64748b; transition: all 0.15s;
+    }
+    .view-btn.active { background: #fff; color: #6366f1; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .btn-reload {
+      display: flex; align-items: center; gap: 6px; padding: 10px 12px;
+      border-radius: 10px; border: 1px solid #e2e8f0; background: #fff;
+      font-size: 12px; color: #64748b; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-reload:hover { border-color: #a5b4fc; color: #6366f1; }
+
+    /* Table */
+    .table-wrap { background: #fff; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: linear-gradient(90deg, #f8f9ff, #f0f0ff); }
+    th { padding: 14px 24px; text-align: left; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+    th.center { text-align: center; }
+    th.right { text-align: right; }
+    tbody tr { border-top: 1px solid #f8fafc; transition: background 0.12s; }
+    tbody tr:hover { background: rgba(99,102,241,0.04); }
+    tbody tr.alt { background: rgba(248,250,252,0.5); }
+    tbody tr.alt:hover { background: rgba(99,102,241,0.04); }
+    td { padding: 16px 24px; font-size: 13px; color: #475569; }
+    td.center { text-align: center; }
+    td.right { text-align: right; font-weight: 600; color: #1e293b; }
+    .cell-desc { display: flex; align-items: center; gap: 12px; }
+    .cell-icon {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cell-icon svg { color: #6366f1; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 500;
+    }
+    .badge.active { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .badge.inactive { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .badge.active .dot { background: #10b981; }
+    .badge.inactive .dot { background: #ef4444; }
+    .actions { display: flex; align-items: center; justify-content: center; gap: 4px; }
+    .action-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; transition: background 0.15s, color 0.15s;
+    }
+    .action-btn.view { color: #818cf8; }
+    .action-btn.view:hover { background: #eef2ff; color: #6366f1; }
+    .action-btn.edit { color: #fbbf24; }
+    .action-btn.edit:hover { background: #fffbeb; color: #d97706; }
+    .action-btn.del { color: #f87171; }
+    .action-btn.del:hover { background: #fef2f2; color: #dc2626; }
+    .empty-msg { text-align: center; padding: 48px; color: #94a3b8; font-size: 14px; }
+
+    /* Pagination */
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; border-top: 1px solid #f1f5f9; background: rgba(248,250,252,0.5);
+    }
+    .pagination-info { font-size: 12px; color: #94a3b8; }
+    .pagination-info b { color: #475569; }
+    .pg-btns { display: flex; align-items: center; gap: 4px; }
+    .pg-btn {
+      width: 30px; height: 30px; border-radius: 8px; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; color: #94a3b8; transition: all 0.15s; font-size: 12px; font-weight: 600;
+    }
+    .pg-btn:hover:not(:disabled) { background: #f1f5f9; color: #475569; }
+    .pg-btn:disabled { opacity: 0.4; cursor: default; }
+    .pg-btn.current {
+      background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff;
+    }
+
+    /* Cards view */
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .cargo-card {
+      background: #fff; border-radius: 16px; border: 1px solid #f1f5f9;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .cargo-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .card-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-icon svg { color: #6366f1; }
+    .card-title { font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 2px; }
+    .card-sub { font-size: 11px; color: #94a3b8; margin-bottom: 16px; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+    .card-salary-label { font-size: 11px; color: #94a3b8; }
+    .card-salary-value { font-size: 13px; font-weight: 700; color: #1e293b; }
+
+    /* Hidden */
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      aside { width: 200px; }
+      .stats-grid, .cards-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      aside { display: none; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside>
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+      </svg>
+    </div>
+    <span>Petshome</span>
+  </div>
+
+  <nav>
+    <!-- Home -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="void(0)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        Home
+      </button>
+    </div>
+    <!-- Cuenta -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="void(0)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        Cuenta
+      </button>
+    </div>
+    <!-- Inventario -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="void(0)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+        Inventario
+      </button>
+    </div>
+    <!-- Administración (expandable) -->
+    <div class="nav-item">
+      <button class="nav-btn active open" id="btn-admin" onclick="toggleSection('admin')">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        Administración
+        <span class="chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </button>
+      <div class="nav-children show" id="children-admin">
+        <button class="nav-child-btn active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          EmpleadoCargo <span class="dot"></span>
+        </button>
+        <button class="nav-child-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Refugio
+        </button>
+        <button class="nav-child-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Localidad
+        </button>
+        <button class="nav-child-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          Categoría
+        </button>
+        <button class="nav-child-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Evento
+        </button>
+      </div>
+    </div>
+    <!-- Others -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="void(0)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+        Adopción
+      </button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="void(0)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v3"/><circle cx="18" cy="18" r="3"/><path d="M18 15v3l2 1"/></svg></span>
+        Medicamento
+      </button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="void(0)">
+        <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></span>
+        Seguridad
+      </button>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="avatar">CE</div>
+      <div class="user-info">
+        <div class="user-name">Carlos Eduardo</div>
+        <div class="user-role">Administrador</div>
+      </div>
+      <span class="logout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main>
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb">
+        <span>Administración</span>
+        <span>/</span>
+        <span class="active">Gestión de Cargos</span>
+      </div>
+      <div class="page-title">Gestión de Cargos</div>
+    </div>
+    <button class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nuevo Cargo
+    </button>
+  </div>
+
+  <div class="content">
+    <!-- STATS -->
+    <div class="stats-grid">
+      <!-- Activos -->
+      <div class="stat-card">
+        <div class="stat-top">
+          <div>
+            <div class="stat-label">Activos</div>
+            <div class="stat-value" id="count-active">6</div>
+          </div>
+          <div class="stat-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+        </div>
+        <div class="stat-sub">En servicio</div>
+        <button class="stat-action" id="btn-filter-active" style="color:#6366f1" onclick="toggleFilter('activos')">→ Filtrar activos</button>
+      </div>
+      <!-- Inactivos -->
+      <div class="stat-card">
+        <div class="stat-top">
+          <div>
+            <div class="stat-label">Inactivos</div>
+            <div class="stat-value" id="count-inactive">0</div>
+          </div>
+          <div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+        </div>
+        <div class="stat-sub">Sin servicio</div>
+        <button class="stat-action" id="btn-filter-inactive" style="color:#6366f1" onclick="toggleFilter('inactivos')">→ Filtrar inactivos</button>
+      </div>
+      <!-- Total -->
+      <div class="stat-card total">
+        <div class="stat-top">
+          <div>
+            <div class="stat-label">Total Cargos</div>
+            <div class="stat-value" id="count-total">6</div>
+          </div>
+          <div class="stat-icon" style="background:rgba(255,255,255,0.2)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+        </div>
+        <div class="stat-sub">Registros totales</div>
+        <button class="stat-action" style="color:rgba(255,255,255,0.8)" onclick="toggleFilter('todos')">→ Ver todos</button>
+      </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" id="search-input" placeholder="Buscar por nombre o descripción..." oninput="render()" />
+      </div>
+      <div class="filter-badge hidden" id="filter-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <span id="filter-label"></span>
+        <button onclick="toggleFilter('todos')">✕</button>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-view-tabla" onclick="setView('tabla')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Tabla
+        </button>
+        <button class="view-btn" id="btn-view-tarjetas" onclick="setView('tarjetas')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Tarjetas
+        </button>
+      </div>
+      <button class="btn-reload" onclick="render()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Recargar
+      </button>
+    </div>
+
+    <!-- TABLE VIEW -->
+    <div id="view-tabla">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th class="right">Salario</th>
+              <th class="center">Estado</th>
+              <th class="center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <div class="pagination">
+          <div class="pagination-info">
+            Mostrando <b id="showing"></b> de <b id="total-label"></b> cargos
+          </div>
+          <div class="pg-btns">
+            <button class="pg-btn" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="pg-btn current">1</button>
+            <button class="pg-btn" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS VIEW -->
+    <div id="view-tarjetas" class="hidden">
+      <div class="cards-grid" id="cards-body"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const cargos = [
+    { id: 1, descripcion: "Administrador General",  salario: 15000, estado: "Activo" },
+    { id: 2, descripcion: "Veterinario",             salario: 12000, estado: "Activo" },
+    { id: 3, descripcion: "Recepcionista",           salario: 7500,  estado: "Activo" },
+    { id: 4, descripcion: "Cuidador de Animales",    salario: 7000,  estado: "Activo" },
+    { id: 5, descripcion: "Encargado de Inventario", salario: 8000,  estado: "Activo" },
+    { id: 6, descripcion: "Conserje",                salario: 4500,  estado: "Activo" },
+  ];
+
+  let viewMode = 'tabla';
+  let filterEstado = 'todos';
+
+  function briefcaseIcon(size) {
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`;
+  }
+
+  function eyeIcon() {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  }
+  function pencilIcon() {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+  }
+  function trashIcon() {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`;
+  }
+
+  function getFiltered() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    return cargos.filter(c => {
+      const matchQ = c.descripcion.toLowerCase().includes(q);
+      const matchF = filterEstado === 'todos'
+        || (filterEstado === 'activos' && c.estado === 'Activo')
+        || (filterEstado === 'inactivos' && c.estado !== 'Activo');
+      return matchQ && matchF;
+    });
+  }
+
+  function badge(estado) {
+    const isActive = estado === 'Activo';
+    return `<span class="badge ${isActive ? 'active' : 'inactive'}">
+      <span class="dot"></span>${estado}
+    </span>`;
+  }
+
+  function actionBtns() {
+    return `<div class="actions">
+      <button class="action-btn view" title="Ver">${eyeIcon()}</button>
+      <button class="action-btn edit" title="Editar">${pencilIcon()}</button>
+      <button class="action-btn del" title="Eliminar">${trashIcon()}</button>
+    </div>`;
+  }
+
+  function render() {
+    const data = getFiltered();
+
+    // Stats
+    const activos = cargos.filter(c => c.estado === 'Activo').length;
+    const inactivos = cargos.filter(c => c.estado !== 'Activo').length;
+    document.getElementById('count-active').textContent = activos;
+    document.getElementById('count-inactive').textContent = inactivos;
+    document.getElementById('count-total').textContent = cargos.length;
+
+    // Filter badge
+    const badge_el = document.getElementById('filter-badge');
+    if (filterEstado !== 'todos') {
+      badge_el.classList.remove('hidden');
+      document.getElementById('filter-label').textContent = filterEstado;
+    } else {
+      badge_el.classList.add('hidden');
+    }
+
+    // Stat action buttons
+    const btnA = document.getElementById('btn-filter-active');
+    const btnI = document.getElementById('btn-filter-inactive');
+    if (filterEstado === 'activos') {
+      btnA.textContent = '✓ Filtrando activos'; btnA.style.color = '#059669';
+    } else {
+      btnA.textContent = '→ Filtrar activos'; btnA.style.color = '#6366f1';
+    }
+    if (filterEstado === 'inactivos') {
+      btnI.textContent = '✓ Filtrando inactivos'; btnI.style.color = '#dc2626';
+    } else {
+      btnI.textContent = '→ Filtrar inactivos'; btnI.style.color = '#6366f1';
+    }
+
+    // Pagination info
+    document.getElementById('showing').textContent = data.length;
+    document.getElementById('total-label').textContent = cargos.length;
+
+    // Table
+    const tbody = document.getElementById('table-body');
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4"><div class="empty-msg">No se encontraron cargos</div></td></tr>`;
+    } else {
+      tbody.innerHTML = data.map((c, i) => `
+        <tr class="${i % 2 !== 0 ? 'alt' : ''}">
+          <td>
+            <div class="cell-desc">
+              <div class="cell-icon">${briefcaseIcon(14)}</div>
+              <span style="font-weight:500;color:#334155">${c.descripcion}</span>
+            </div>
+          </td>
+          <td class="right">$${c.salario.toLocaleString()}</td>
+          <td class="center">${badge(c.estado)}</td>
+          <td>${actionBtns()}</td>
+        </tr>`).join('');
+    }
+
+    // Cards
+    const cardsEl = document.getElementById('cards-body');
+    if (data.length === 0) {
+      cardsEl.innerHTML = `<div class="empty-msg" style="grid-column:1/-1;background:#fff;border-radius:16px;border:1px solid #f1f5f9">No se encontraron cargos</div>`;
+    } else {
+      cardsEl.innerHTML = data.map(c => `
+        <div class="cargo-card">
+          <div class="card-top">
+            <div class="card-icon">${briefcaseIcon(18)}</div>
+            ${badge(c.estado)}
+          </div>
+          <div class="card-title">${c.descripcion}</div>
+          <div class="card-sub">Cargo registrado</div>
+          <div class="card-footer">
+            <div>
+              <div class="card-salary-label">Salario</div>
+              <div class="card-salary-value">$${c.salario.toLocaleString()}</div>
+            </div>
+            <div class="actions">
+              <button class="action-btn view">${eyeIcon()}</button>
+              <button class="action-btn edit">${pencilIcon()}</button>
+              <button class="action-btn del">${trashIcon()}</button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  function setView(mode) {
+    viewMode = mode;
+    document.getElementById('view-tabla').classList.toggle('hidden', mode !== 'tabla');
+    document.getElementById('view-tarjetas').classList.toggle('hidden', mode !== 'tarjetas');
+    document.getElementById('btn-view-tabla').classList.toggle('active', mode === 'tabla');
+    document.getElementById('btn-view-tarjetas').classList.toggle('active', mode === 'tarjetas');
+  }
+
+  function toggleFilter(f) {
+    filterEstado = filterEstado === f ? 'todos' : f;
+    render();
+  }
+
+  function toggleSection(id) {
+    const children = document.getElementById('children-' + id);
+    const btn = document.getElementById('btn-' + id);
+    children.classList.toggle('show');
+    btn.classList.toggle('open');
+  }
+
+  render();
+</script>
+</body>
+</html>

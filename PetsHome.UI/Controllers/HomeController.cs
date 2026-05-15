@@ -12,14 +12,17 @@ namespace PetsHome.UI.Controllers
         private readonly HomeService _homeService;
         private readonly DashboardVeterinarioService _dashboardVetService;
         private readonly DashboardSupervisorService _dashboardSupService;
+        private readonly DashboardCuidadorService _dashboardCuidService;
 
         public HomeController(HomeService homeService,
             DashboardVeterinarioService dashboardVetService,
-            DashboardSupervisorService dashboardSupService)
+            DashboardSupervisorService dashboardSupService,
+            DashboardCuidadorService dashboardCuidService)
         {
-            _homeService       = homeService;
+            _homeService         = homeService;
             _dashboardVetService = dashboardVetService;
             _dashboardSupService = dashboardSupService;
+            _dashboardCuidService = dashboardCuidService;
         }
 
         [DefaultBreadcrumb("Inicio")]
@@ -36,11 +39,30 @@ namespace PetsHome.UI.Controllers
                     case 4: // Veterinario
                         var modelVet = await _dashboardVetService.GetDashboardAsync();
                         return View("~/Views/DashboardVeterinario/Index.cshtml", modelVet);
+                    case 5: // Cuidador
+                        var modelCuid = await _dashboardCuidService.GetDashboardAsync();
+                        return View("~/Views/DashboardCuidador/Index.cshtml", modelCuid);
                 }
             }
 
             var homeViewModel = await _homeService.ObtenerEstadisticasDashboardAsync();
             return View(homeViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RefrescarFechasDemo()
+        {
+            var roleIdClaim = User.FindFirst("RoleId")?.Value;
+            if (!int.TryParse(roleIdClaim, out int rolId) || rolId != 1)
+                return Json(new { ok = false, msg = "Solo el administrador puede ejecutar esta acción." });
+
+            var ok = await _homeService.RefrescarFechasDemoAsync();
+            return Json(new
+            {
+                ok,
+                msg = ok ? "Fechas del demo actualizadas correctamente." : "Ocurrió un error al refrescar las fechas."
+            });
         }
     }
 }

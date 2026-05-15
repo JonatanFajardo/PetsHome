@@ -1,0 +1,259 @@
+@model PetsHome.Business.Models.DashboardCuidadorViewModel
+@{
+    ViewData["Title"] = "Dashboard Cuidador";
+    ViewData["CurrentPantalla"] = "Dashboard cuidador";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mascotas    = Model?.MascotasActivas      ?? new List<PetsHome.Common.Entities.PR_Refugio_DashboardCuidador_MascotasActivasResult>();
+    var citas       = Model?.CitasHoy             ?? new List<PetsHome.Common.Entities.PR_Medico_DashboardCuidador_CitasHoyResult>();
+    var alertas     = Model?.AlertasActivas        ?? new List<PetsHome.Common.Entities.PR_Medico_DashboardCuidador_AlertasActivasResult>();
+    var solicitudes = Model?.SolicitudesPendientes ?? new List<PetsHome.Common.Entities.PR_Refugio_DashboardCuidador_SolicitudesPendientesResult>();
+
+    string NombreUsuario = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "Cuidador";
+    string Iniciales = string.Join("", NombreUsuario.Split(' ').Take(2).Select(p => p[0].ToString().ToUpper()));
+
+    string BadgeSol(string estado) => estado switch {
+        "Aprobada"  => "badge-success",
+        "Rechazada" => "badge-danger",
+        _           => "badge-warning"
+    };
+
+    string BadgeCita(string estado) => estado switch {
+        "Completada" => "badge-success",
+        "Urgente"    => "badge-danger",
+        _            => "badge-secondary"
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard-cuidador.css" />
+}
+
+<div class="dc-wrap">
+
+    <!-- IDENTITY BAR -->
+    <div class="dc-identity">
+        <div class="dc-avatar">@Iniciales</div>
+        <div class="dc-info">
+            <div class="dc-name">@NombreUsuario</div>
+            <div class="dc-role"><span class="dc-dot"></span>Cuidador del Refugio</div>
+        </div>
+        <div class="dc-sep"></div>
+        <div class="dc-pills">
+            <div class="dc-pill purple">
+                <i data-lucide="paw-print"></i>
+                <div>
+                    <div class="dc-pill-val">@Model.TotalMascotas</div>
+                    <div class="dc-pill-lbl">Mascotas activas</div>
+                </div>
+            </div>
+            <div class="dc-pill amber">
+                <i data-lucide="calendar-clock"></i>
+                <div>
+                    <div class="dc-pill-val">@Model.TotalCitasHoy</div>
+                    <div class="dc-pill-lbl">Citas hoy</div>
+                </div>
+            </div>
+            <div class="dc-pill red">
+                <i data-lucide="bell-ring"></i>
+                <div>
+                    <div class="dc-pill-val">@Model.TotalAlertas</div>
+                    <div class="dc-pill-lbl">Alertas activas</div>
+                </div>
+            </div>
+            <div class="dc-pill blue">
+                <i data-lucide="clipboard-list"></i>
+                <div>
+                    <div class="dc-pill-val">@Model.TotalSolicitudes</div>
+                    <div class="dc-pill-lbl">Solicitudes pendientes</div>
+                </div>
+            </div>
+        </div>
+        <div class="dc-sep"></div>
+        <div class="dc-clock-block">
+            <div class="dc-clock" id="dc-clock">--:--:--</div>
+            <div class="dc-date" id="dc-date">—</div>
+        </div>
+    </div>
+
+    <!-- ROW 1: Alertas + Citas -->
+    <div class="dc-row">
+
+        <!-- Alertas activas -->
+        <div class="dc-card">
+            <div class="dc-card-header">
+                <div class="dc-card-title"><i data-lucide="bell-ring"></i> Alertas activas</div>
+                @if (alertas.Any())
+                {
+                    <span class="dc-badge red">@alertas.Count críticas</span>
+                }
+            </div>
+            <div class="dc-card-body">
+                @if (!alertas.Any())
+                {
+                    <div class="dc-empty"><i data-lucide="check-circle"></i><span>Sin alertas activas</span></div>
+                }
+                else
+                {
+                    @foreach (var a in alertas)
+                    {
+                        <div class="dc-alert-row @(a.alert_Tipo)">
+                            <div class="dc-alert-icon">
+                                <i data-lucide="@(a.alert_Tipo == "red" ? "syringe" : "clock-alert")"></i>
+                            </div>
+                            <div class="dc-alert-text">
+                                <div class="dc-alert-title">@a.alert_MascotaNombre — @a.alert_Descripcion</div>
+                                <div class="dc-alert-sub">@a.alert_Detalle</div>
+                            </div>
+                            @if (a.alert_FechaRef.HasValue)
+                            {
+                                <div class="dc-alert-date">@a.alert_FechaRef.Value.ToString("dd MMM")</div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Citas hoy -->
+        <div class="dc-card">
+            <div class="dc-card-header">
+                <div class="dc-card-title"><i data-lucide="calendar-days"></i> Citas de hoy</div>
+                <a href="@Url.Action("Index","CitaMedica")" class="dc-link">Ver todas <i data-lucide="arrow-right"></i></a>
+            </div>
+            <div class="dc-card-body">
+                @if (!citas.Any())
+                {
+                    <div class="dc-empty"><i data-lucide="calendar-check"></i><span>Sin citas para hoy</span></div>
+                }
+                else
+                {
+                    @foreach (var c in citas)
+                    {
+                        <div class="dc-cita-row">
+                            <div class="dc-cita-icon @(c.cita_Estado == "Urgente" ? "red" : "purple")">
+                                <i data-lucide="@(c.masc_Especie?.ToLower().Contains("gato") == true ? "cat" : "dog")"></i>
+                            </div>
+                            <div class="dc-cita-info">
+                                <div class="dc-cita-nombre">@c.masc_Nombre</div>
+                                <div class="dc-cita-tipo">@c.cita_TipoConsulta</div>
+                            </div>
+                            <div class="dc-cita-hora">@c.cita_FechaHora.ToString("hh:mm tt")</div>
+                            <span class="badge @BadgeCita(c.cita_Estado)">@c.cita_Estado</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ROW 2: Mascotas + Solicitudes -->
+    <div class="dc-row">
+
+        <!-- Mascotas activas -->
+        <div class="dc-card dc-card-wide">
+            <div class="dc-card-header">
+                <div class="dc-card-title"><i data-lucide="paw-print"></i> Mascotas en refugio</div>
+                <a href="@Url.Action("Index","Mascota")" class="dc-link">Ver todas <i data-lucide="arrow-right"></i></a>
+            </div>
+            <div class="dc-card-body">
+                @if (!mascotas.Any())
+                {
+                    <div class="dc-empty"><i data-lucide="search-x"></i><span>Sin mascotas registradas</span></div>
+                }
+                else
+                {
+                    <table class="dc-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Especie / Raza</th>
+                                <th>Edad</th>
+                                <th>Sexo</th>
+                                <th>Color</th>
+                                <th>Procedencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in mascotas.Take(10))
+                            {
+                                <tr>
+                                    <td><strong>@m.masc_Nombre</strong></td>
+                                    <td>@m.masc_Especie / @m.masc_Raza</td>
+                                    <td>@m.masc_Edad años</td>
+                                    <td>@(m.masc_Sexo == "M" ? "Macho" : "Hembra")</td>
+                                    <td>@m.masc_Color</td>
+                                    <td><span class="dc-proc-chip">@(m.masc_Procedencia ?? "—")</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @if (mascotas.Count > 10)
+                    {
+                        <div class="dc-more">y @(mascotas.Count - 10) más… <a href="@Url.Action("Index","Mascota")">ver todas</a></div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Solicitudes recientes -->
+        <div class="dc-card">
+            <div class="dc-card-header">
+                <div class="dc-card-title"><i data-lucide="file-text"></i> Solicitudes recientes</div>
+                <a href="@Url.Action("Index","Solicitud")" class="dc-link">Ver todas <i data-lucide="arrow-right"></i></a>
+            </div>
+            <div class="dc-card-body">
+                @if (!solicitudes.Any())
+                {
+                    <div class="dc-empty"><i data-lucide="inbox"></i><span>Sin solicitudes</span></div>
+                }
+                else
+                {
+                    @foreach (var s in solicitudes)
+                    {
+                        <div class="dc-sol-row">
+                            <div class="dc-sol-avatar">
+                                @string.Join("", s.sol_NombreCompleto.Split(' ').Take(2).Select(p => p[0].ToString().ToUpper()))
+                            </div>
+                            <div class="dc-sol-info">
+                                <div class="dc-sol-nombre">@s.sol_NombreCompleto</div>
+                                <div class="dc-sol-mascota">
+                                    <i data-lucide="@(s.masc_Especie?.ToLower().Contains("gato") == true ? "cat" : "dog")"></i>
+                                    @s.masc_Nombre
+                                </div>
+                            </div>
+                            <div class="dc-sol-right">
+                                <span class="badge @BadgeSol(s.sol_Estado)">@s.sol_Estado</span>
+                                <div class="dc-sol-fecha">@s.sol_Fecha.ToString("dd MMM")</div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script>
+    lucide.createIcons();
+    (function () {
+        var dias  = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        function tick() {
+            var d = new Date();
+            document.getElementById('dc-clock').textContent =
+                String(d.getHours()).padStart(2,'0') + ':' +
+                String(d.getMinutes()).padStart(2,'0') + ':' +
+                String(d.getSeconds()).padStart(2,'0');
+            document.getElementById('dc-date').textContent =
+                dias[d.getDay()] + ', ' + d.getDate() + ' de ' + meses[d.getMonth()] + ' ' + d.getFullYear();
+        }
+        tick(); setInterval(tick, 1000);
+    })();
+</script>
+}

@@ -12,13 +12,15 @@ namespace PetsHome.Business.Services
 {
     public class HomeService
     {
-        private readonly AdopcionService _adopcionService;
-        private readonly MascotaService _mascotaService;
+        private readonly AdopcionService       _adopcionService;
+        private readonly MascotaService        _mascotaService;
+        private readonly DashboardAdminService _dashboardAdminService;
 
-        public HomeService(AdopcionService adopcionService, MascotaService mascotaService)
+        public HomeService(AdopcionService adopcionService, MascotaService mascotaService, DashboardAdminService dashboardAdminService)
         {
-            _adopcionService = adopcionService;
-            _mascotaService = mascotaService;
+            _adopcionService       = adopcionService;
+            _mascotaService        = mascotaService;
+            _dashboardAdminService = dashboardAdminService;
         }
 
         /// <summary>
@@ -126,11 +128,35 @@ namespace PetsHome.Business.Services
                 // Obtener últimas adopciones para mostrar en el dashboard
                 viewModel.UltimasAdopciones = await ObtenerUltimasAdopcionesAsync();
 
+                // Sección de analytics (gráficas) para el admin
+                viewModel.DashboardAdmin = await _dashboardAdminService.GetDashboardAsync();
+
                 return viewModel;
             }
             catch (Exception)
             {
                 return new HomeViewModel();
+            }
+        }
+
+        /// <summary>
+        /// Refresca todas las fechas del demo a ventanas relativas a HOY.
+        /// </summary>
+        public async Task<bool> RefrescarFechasDemoAsync()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(PetsHomeDbContext.ConnectionString))
+                {
+                    await connection.ExecuteAsync(
+                        "[General].[PR_General_RefrescarFechasDemo]",
+                        commandType: System.Data.CommandType.StoredProcedure);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

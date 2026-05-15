@@ -32,9 +32,12 @@ namespace PetsHome.Business.Models
         /// </summary>
         public List<AdopcionViewModel> UltimasAdopciones { get; set; }
 
+        public DashboardAdminViewModel DashboardAdmin { get; set; }
+
         public HomeViewModel()
         {
             UltimasAdopciones = new List<AdopcionViewModel>();
+            DashboardAdmin    = new DashboardAdminViewModel();
         }
     }
 }
