@@ -5,6 +5,7 @@ namespace PetsHome.Common.Entities
     public class PR_Medico_DashboardVeterinario_AgendaHoyResult
     {
         public int cita_Id { get; set; }
+public int masc_Id { get; set; }
 public string masc_Nombre { get; set; }
 public string masc_Especie { get; set; }
 public string raz_Descripcion { get; set; }

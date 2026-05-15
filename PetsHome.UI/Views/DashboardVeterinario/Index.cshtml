@@ -135,8 +135,15 @@
                     </div>
                     <span class="@BadgeTipo(cita.cita_Estado)" style="font-size:10px;">@cita.cita_Estado</span>
                   </div>
-                  <div style="font-size:12px;color:var(--text-3);margin-top:2px;">
-                    <i class="bi bi-clipboard2-pulse me-1"></i>@cita.cita_TipoConsulta
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">
+                    <div style="font-size:12px;color:var(--text-3);">
+                      <i class="bi bi-clipboard2-pulse me-1"></i>@cita.cita_TipoConsulta
+                    </div>
+                    <a href="@Url.Action("Index","PerfilMedico", new { mascId = cita.masc_Id })"
+                       title="Ver Perfil Médico"
+                       style="font-size:11px;color:var(--purple,#6C5CE7);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                      <i class="bi bi-stethoscope"></i> Perfil
+                    </a>
                   </div>
                 </div>
               </div>

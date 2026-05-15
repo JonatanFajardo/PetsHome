@@ -1,6 +1,7 @@
         using PetsHome.Common.Entities;
         using PetsHome.DataAccess.Extensions;
         using System.Collections.Generic;
+        using System.Linq;
         using System.Threading.Tasks;
 using Dapper;
 using System.Data;
@@ -55,6 +56,13 @@ p.Add("@masc_Id", mascId, DbType.Int32, ParameterDirection.Input);
         var p = new DynamicParameters();
         p.Add("@masc_Id", mascId, DbType.Int32, ParameterDirection.Input);
         return await DbApp.SelectById<PR_Medico_PerfilMedico_VacunasResult>(sql, p);
+    }
+
+    public async Task<int> RandomMascIdAsync()
+    {
+        const string sql = "SELECT TOP 1 masc_Id FROM [Refugio].[tbMascotas] WHERE masc_EsEliminado = 0 ORDER BY NEWID()";
+        var result = await DbApp.Select<int>(sql);
+        return result?.FirstOrDefault() ?? 1;
     }
             }
         }

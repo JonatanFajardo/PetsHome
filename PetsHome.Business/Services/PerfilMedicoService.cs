@@ -20,6 +20,12 @@ namespace PetsHome.Business.Services
             _logger     = logger;
         }
 
+        public async Task<int> GetRandomMascIdAsync()
+        {
+            try   { return await _repository.RandomMascIdAsync(); }
+            catch { return 1; }
+        }
+
         public async Task<PerfilMedicoViewModel> GetDashboardAsync(int mascId)
         {
             try

@@ -21,6 +21,9 @@ namespace PetsHome.UI.Controllers
         [Breadcrumb("PerfilMedico", FromAction = "Index", FromController = typeof(HomeController))]
         public async Task<IActionResult> Index(int mascId)
         {
+            if (mascId <= 0)
+                mascId = await _service.GetRandomMascIdAsync();
+
             var model = await _service.GetDashboardAsync(mascId);
             return View(model);
         }

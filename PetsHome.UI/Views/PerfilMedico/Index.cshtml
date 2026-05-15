@@ -63,16 +63,41 @@
 }
 
 @section Styles {
+  <link rel="stylesheet" href="~/css/modern-table-styles.css" />
   <link rel="stylesheet" href="~/css/perfil-medico-mascota.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     /* Ajustes de integración con el layout de la app */
     .app-wrapper { min-height: auto; }
-    .content-area { overflow-y: visible; }
+    .pets-container { margin-bottom: 0; }
   </style>
 }
 
+<div class="col-12">
+  <div class="pets-container">
+    <div class="pets-header-full">
+      <breadcrumb></breadcrumb>
+      <div class="pets-header-content">
+        <div class="pets-title-section">
+          <h2 class="text-white"><i class="fas fa-stethoscope mr-2 text-white"></i>Perfil Médico — @nombreMascota</h2>
+        </div>
+        <div class="pets-controls">
+          <div class="search-container" style="position:relative;">
+            <i class="fas fa-search"></i>
+            <input type="text" id="headerMascSearch" placeholder="Cambiar mascota..." autocomplete="off" style="min-width:220px;" />
+            <div id="headerMascResults" style="display:none;position:fixed;background:#fff;border:1px solid #e5e7eb;border-radius:10px;z-index:9999;max-height:280px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.18);min-width:320px;"></div>
+          </div>
+          <button class="btn-nueva" onclick="document.getElementById('modalConsulta').style.display='flex'">
+            <i class="bi bi-plus-lg"></i> Nueva Consulta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" style="padding:0">
 <div class="app-wrapper">
 
   <!-- ════════════ SIDEBAR PET ════════════ -->
@@ -139,23 +164,6 @@
 
   <!-- ════════════ MAIN ════════════ -->
   <div class="main-content">
-
-    <!-- Header -->
-    <header class="top-header">
-      <div class="header-left">
-        <div class="header-title">@nombreMascota — Perfil Médico</div>
-        <nav class="breadcrumb-nav">
-          <span>PetsHome</span>
-          <i class="bi bi-chevron-right"></i>
-          <span>Mascotas</span>
-          <i class="bi bi-chevron-right"></i>
-          <span style="color:rgba(255,255,255,.9);font-weight:600">@nombreMascota</span>
-        </nav>
-      </div>
-      <button class="btn-nueva" onclick="document.getElementById('modalConsulta').style.display='flex'">
-        <i class="bi bi-plus-lg"></i> Nueva Consulta
-      </button>
-    </header>
 
     <!-- Tab Bar -->
     <nav class="tab-bar">
@@ -410,6 +418,7 @@
     </div><!-- /content-area -->
   </div><!-- /main-content -->
 </div><!-- /app-wrapper -->
+</div><!-- /col-12 -->
 
 <!-- ════════ MODAL NUEVA CONSULTA ════════ -->
 <div id="modalConsulta" style="display:none;position:fixed;inset:0;background:rgba(30,27,58,.5);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center">
@@ -444,4 +453,67 @@
     };
   </script>
   <script src="~/js/pages/perfil-medico-mascota.js"></script>
+  <script>
+    (function () {
+      const input   = document.getElementById('headerMascSearch');
+      const results = document.getElementById('headerMascResults');
+      const searchUrl = '@Url.Action("Search", "Mascota")';
+      const perfilUrl = '@Url.Action("Index", "PerfilMedico")';
+      let timer = null;
+
+      function render(items) {
+        if (!items || items.length === 0) {
+          results.innerHTML = '<div style="padding:14px 16px;color:#9ca3af;font-size:13px;">Sin coincidencias</div>';
+        } else {
+          results.innerHTML = items.map(m =>
+            `<div class="pm-search-item" data-id="${m.id}" style="padding:10px 16px;cursor:pointer;border-bottom:1px solid #f3f4f6;transition:background .15s;">
+               <div style="font-weight:600;color:#111827;font-size:13px;">${m.nombre}</div>
+               <div style="font-size:11px;color:#6b7280;margin-top:2px;">
+                 ${m.raza || ''}${m.refugio ? ' · ' + m.refugio : ''}
+               </div>
+             </div>`
+          ).join('');
+        }
+        results.style.display = 'block';
+      }
+
+      function positionResults() {
+        const rect = input.getBoundingClientRect();
+        results.style.top   = (rect.bottom + 6) + 'px';
+        results.style.left  = rect.left + 'px';
+        results.style.width = Math.max(rect.width, 320) + 'px';
+      }
+
+      input.addEventListener('input', function () {
+        const term = this.value.trim();
+        clearTimeout(timer);
+        if (term.length < 1) { results.style.display = 'none'; return; }
+        positionResults();
+        timer = setTimeout(() => {
+          fetch(searchUrl + '?term=' + encodeURIComponent(term))
+            .then(r => r.json()).then(render);
+        }, 200);
+      });
+
+      results.addEventListener('click', function (e) {
+        const item = e.target.closest('.pm-search-item');
+        if (!item) return;
+        window.location.href = perfilUrl + '?mascId=' + item.dataset.id;
+      });
+
+      results.addEventListener('mouseover', function(e) {
+        const item = e.target.closest('.pm-search-item');
+        if (item) item.style.background = '#faf8ff';
+      });
+      results.addEventListener('mouseout', function(e) {
+        const item = e.target.closest('.pm-search-item');
+        if (item) item.style.background = '';
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!input.contains(e.target) && !results.contains(e.target))
+          results.style.display = 'none';
+      });
+    })();
+  </script>
 }

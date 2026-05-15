@@ -1,0 +1,146 @@
+@{
+    ViewData["Title"] = "Buscar Mascota - Perfil Médico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Perfil medico de mascota";
+}
+
+@section Styles {
+  <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+  <style>
+    .pets-container { margin-bottom: 0; }
+    .buscar-wrap {
+      max-width: 640px;
+      margin: 48px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: 0 6px 24px rgba(31, 27, 90, .08);
+    }
+    .buscar-wrap h3 {
+      font-weight: 700;
+      color: #1F1B5A;
+      margin: 0 0 6px 0;
+      font-size: 22px;
+    }
+    .buscar-wrap p { color: #6b7280; font-size: 14px; margin: 0 0 22px; }
+    .buscar-input-wrap { position: relative; }
+    .buscar-input-wrap i.fa-search {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+    }
+    #mascSearch {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    #mascSearch:focus { border-color: #6C5CE7; }
+    .buscar-results {
+      margin-top: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      display: none;
+    }
+    .buscar-results.show { display: block; }
+    .buscar-result-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      transition: background .15s;
+    }
+    .buscar-result-item:last-child { border-bottom: none; }
+    .buscar-result-item:hover { background: #faf8ff; }
+    .buscar-result-item i { color: #6C5CE7; }
+    .buscar-empty {
+      padding: 20px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 13px;
+    }
+  </style>
+}
+
+<div class="col-12">
+  <div class="pets-container">
+    <div class="pets-header-full">
+      <breadcrumb></breadcrumb>
+      <div class="pets-header-content">
+        <div class="pets-title-section">
+          <h2 class="text-white"><i class="fas fa-stethoscope mr-2 text-white"></i>Perfil Médico</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="buscar-wrap">
+  <h3>Buscar mascota</h3>
+  <p>Escribe el nombre de la mascota para abrir su perfil médico.</p>
+  <div class="buscar-input-wrap">
+    <i class="fas fa-search"></i>
+    <input type="text" id="mascSearch" placeholder="Ej. Thor, Luna, Max..." autocomplete="off" autofocus />
+  </div>
+  <div class="buscar-results" id="mascResults"></div>
+</div>
+
+@section Scripts {
+  <script>
+    (function () {
+      const input = document.getElementById('mascSearch');
+      const results = document.getElementById('mascResults');
+      const searchUrl = '@Url.Action("Search", "Mascota")';
+      const perfilUrl = '@Url.Action("Index", "PerfilMedico")';
+      let timer = null;
+
+      function render(items) {
+        if (!items || items.length === 0) {
+          results.innerHTML = '<div class="buscar-empty">Sin coincidencias</div>';
+          results.classList.add('show');
+          return;
+        }
+        results.innerHTML = items.map(m =>
+          `<div class="buscar-result-item" data-id="${m.id}">
+             <i class="fas fa-paw"></i><span>${m.nombre}</span>
+           </div>`
+        ).join('');
+        results.classList.add('show');
+      }
+
+      input.addEventListener('input', function () {
+        const term = this.value.trim();
+        clearTimeout(timer);
+        if (term.length < 1) {
+          results.classList.remove('show');
+          results.innerHTML = '';
+          return;
+        }
+        timer = setTimeout(() => {
+          fetch(searchUrl + '?term=' + encodeURIComponent(term))
+            .then(r => r.json())
+            .then(render)
+            .catch(() => {
+              results.innerHTML = '<div class="buscar-empty">Error al buscar</div>';
+              results.classList.add('show');
+            });
+        }, 200);
+      });
+
+      results.addEventListener('click', function (e) {
+        const item = e.target.closest('.buscar-result-item');
+        if (!item) return;
+        const id = item.dataset.id;
+        window.location.href = perfilUrl + '?mascId=' + id;
+      });
+    })();
+  </script>
+}

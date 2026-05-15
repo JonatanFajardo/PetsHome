@@ -313,7 +313,7 @@
   .cita-vet { font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; align-items: center; gap: 4px; }
 
   /* Resumen lower section */
-  .resumen-lower { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+  .resumen-lower { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
 
   /* Medications table */
   .meds-card {
