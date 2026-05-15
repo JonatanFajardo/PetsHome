@@ -1,0 +1,496 @@
+﻿@model PetsHome.Business.Models.LandingViewModel
+@using System
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetsHome — Encuentra a tu nuevo mejor amigo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="~/css/landing-page.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-md fixed-top py-2" id="main-nav">
+<div class="container">
+<!-- Logo -->
+<a class="navbar-brand d-flex align-items-center" href="#" style="gap:.625rem;">
+<div class="nav-logo-icon">
+<i class="fa-solid fa-paw"></i>
+</div>
+<span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:var(--ph-dark);">PetsHome</span>
+</a>
+<!-- Toggler -->
+<button aria-controls="navContent" aria-expanded="false" class="navbar-toggler border-0" data-target="#navContent" data-toggle="collapse" type="button">
+<i class="fa-solid fa-bars" style="color:var(--ph-dark);font-size:1.125rem;"></i>
+</button>
+<!-- Links -->
+<div class="collapse navbar-collapse" id="navContent">
+<ul class="navbar-nav mx-auto">
+<li class="nav-item"><a class="nav-link" href="#animales">Animales</a></li>
+<li class="nav-item"><a class="nav-link" href="#proceso">Proceso</a></li>
+<li class="nav-item"><a class="nav-link" href="#eventos">Eventos</a></li>
+<li class="nav-item"><a class="nav-link" href="#refugio">Refugio</a></li>
+</ul>
+<a class="btn-nav-cta ml-md-3 mt-2 mt-md-0 d-inline-block text-decoration-none" href="#animales">
+<i class="fa-solid fa-heart mr-1"></i> Quiero adoptar
+      </a>
+</div>
+</div>
+</nav>
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero-section">
+<!-- Floating paws -->
+<div class="paw-bg">
+<i class="fa-solid fa-paw paw-item" style="left:5%;font-size:1.4rem;animation-duration:14s;animation-delay:0s;"></i>
+<i class="fa-solid fa-paw paw-item" style="left:16%;font-size:2.2rem;animation-duration:19s;animation-delay:3s;"></i>
+<i class="fa-solid fa-paw paw-item" style="left:31%;font-size:1rem;animation-duration:12s;animation-delay:1.5s;"></i>
+<i class="fa-solid fa-paw paw-item" style="left:51%;font-size:1.8rem;animation-duration:21s;animation-delay:5s;"></i>
+<i class="fa-solid fa-paw paw-item" style="left:67%;font-size:1.3rem;animation-duration:16s;animation-delay:2.5s;"></i>
+<i class="fa-solid fa-paw paw-item" style="left:79%;font-size:.9rem;animation-duration:17s;animation-delay:7s;"></i>
+<i class="fa-solid fa-paw paw-item" style="left:89%;font-size:1.8rem;animation-duration:13s;animation-delay:4s;"></i>
+</div>
+<div class="container py-5 py-lg-0">
+<div class="row align-items-center">
+<!-- Text col -->
+<div class="col-lg-6 mb-5 mb-lg-0">
+<div class="hero-eyebrow">
+<span class="dot"></span>
+          Más de 120 animales te esperan
+        </div>
+<h1 class="hero-headline mb-4">
+          Encuentra a tu<br/><span>nuevo mejor</span><br/>amigo
+        </h1>
+<p class="hero-sub mb-4">
+          Cientos de animales esperan un hogar. Adoptar es un acto de amor que cambia dos vidas para siempre.
+        </p>
+<div class="d-flex flex-wrap" style="gap:.75rem;">
+<a class="btn-hero-primary" href="#animales">
+<i class="fa-solid fa-magnifying-glass"></i> Ver animales
+          </a>
+<a class="btn-hero-ghost" href="#proceso">
+            Conoce el proceso <i class="fa-solid fa-arrow-right"></i>
+</a>
+</div>
+<!-- Trust row -->
+<div class="d-flex align-items-center mt-4" style="gap:1rem;">
+<div class="avatar-stack">
+<img alt="a" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=40&amp;h=40&amp;fit=crop&amp;crop=face"/>
+<img alt="a" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&amp;h=40&amp;fit=crop&amp;crop=face"/>
+<img alt="a" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&amp;h=40&amp;fit=crop&amp;crop=face"/>
+<div class="av-more">+40</div>
+</div>
+<p class="mb-0" style="font-size:.875rem;color:var(--ph-gray);">
+            Familias que ya adoptaron <strong style="color:var(--ph-accent);">este año</strong>
+</p>
+</div>
+</div>
+<!-- Image col -->
+<div class="col-lg-6 d-flex justify-content-center justify-content-lg-end">
+<div class="hero-img-wrap" style="max-width:480px;width:100%;">
+<img alt="Happy dog" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=720&amp;h=720&amp;fit=crop&amp;crop=center"/>
+<!-- Bottom pill -->
+<div class="hero-pill hero-pill-bottom">
+<div class="hero-pill-icon" style="background:var(--ph-primary-lt);">
+<i class="fa-solid fa-house" style="color:var(--ph-primary);"></i>
+</div>
+<div>
+<p class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.875rem;color:var(--ph-dark);">¡Adoptado hoy!</p>
+<p class="mb-0" style="font-size:.75rem;color:var(--ph-gray);">Max encontró hogar</p>
+</div>
+</div>
+<!-- Top pill -->
+<div class="hero-pill hero-pill-top">
+<i class="fa-solid fa-shield-heart mr-2"></i>
+<span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.8125rem;">Salvando vidas</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     STATS
+══════════════════════════════════════════ -->
+<section class="stats-section">
+<div class="container">
+<div class="row align-items-center justify-content-center">
+<!-- Stat 1 -->
+<div class="col-12 col-sm-3 text-center reveal mb-4 mb-sm-0" data-stat="">
+<div class="stat-num" data-target="@Model.TotalMascotas">0</div>
+<div class="stat-label">
+<i class="fa-solid fa-circle-check mr-1" style="color:var(--ph-accent);font-size:.75rem;"></i>
+          Animales rescatados
+        </div>
+</div>
+<div class="col-auto d-none d-sm-block stat-divider align-self-stretch" style="min-height:60px;"></div>
+<!-- Stat 2 -->
+<div class="col-12 col-sm-3 text-center reveal reveal-d1 mb-4 mb-sm-0" data-stat="">
+<div class="stat-num" data-target="@Model.TotalAdoptados">0</div>
+<div class="stat-label">
+<i class="fa-solid fa-circle-check mr-1" style="color:var(--ph-accent);font-size:.75rem;"></i>
+          Adoptados este año
+        </div>
+</div>
+<div class="col-auto d-none d-sm-block stat-divider align-self-stretch" style="min-height:60px;"></div>
+<!-- Stat 3 -->
+<div class="col-12 col-sm-3 text-center reveal reveal-d2" data-stat="">
+<div class="stat-num" data-target="@Model.TotalDisponibles">0</div>
+<div class="stat-label">
+<i class="fa-solid fa-circle-check mr-1" style="color:var(--ph-accent);font-size:.75rem;"></i>
+          Disponibles para adoptar
+        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     ANIMALES DISPONIBLES
+══════════════════════════════════════════ -->
+<section class="py-5" id="animales" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+<div class="container">
+<!-- Header -->
+<div class="text-center mb-4 reveal">
+<span class="section-eyebrow">Adopción</span>
+<h2 class="section-title mb-3">Encuentra tu compañero ideal</h2>
+<p class="section-sub mx-auto" style="max-width:500px;">Cada uno tiene su historia. Quizás la tuya empieza hoy.</p>
+</div>
+<!-- Filter bar -->
+<div class="filter-bar reveal reveal-d1">
+<a class="filter-chip active" href="@Url.Action("Animales","Landing")">
+<i class="fa-solid fa-border-all"></i> Todos
+</a>
+<a class="filter-chip" href="@Url.Action("Animales","Landing")?filtro=perros">
+<i class="fa-solid fa-dog"></i> Perros
+</a>
+<a class="filter-chip" href="@Url.Action("Animales","Landing")?filtro=gatos">
+<i class="fa-solid fa-cat"></i> Gatos
+</a>
+<a class="filter-chip" href="@Url.Action("Animales","Landing")?filtro=jovenes">
+<i class="fa-solid fa-seedling"></i> Jóvenes
+</a>
+<a class="filter-chip" href="@Url.Action("Animales","Landing")?filtro=adultos">
+<i class="fa-solid fa-star"></i> Adultos
+</a>
+<a class="filter-chip" href="@Url.Action("Animales","Landing")?filtro=pequenos">
+<i class="fa-solid fa-compress"></i> Pequeños
+</a>
+<a class="filter-chip" href="@Url.Action("Animales","Landing")?filtro=grandes">
+<i class="fa-solid fa-expand"></i> Grandes
+</a>
+</div>
+<!-- Cards -->
+<div class="row" id="animal-grid">
+@foreach (var mascota in Model.Mascotas)
+{
+    var imgSrc = mascota.masc_Imagen != null && mascota.masc_Imagen.Length > 0
+        ? $"data:image/jpeg;base64,{Convert.ToBase64String(mascota.masc_Imagen)}"
+        : "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=420&fit=crop";
+    var enProceso = mascota.masc_EsReservado == true;
+    <div class="col-sm-6 col-lg-4 mb-4 reveal animal-col">
+    <div class="animal-card">
+    <div class="card-img-wrap">
+    <img alt="@mascota.masc_Nombre" src="@imgSrc" style="width:100%;height:260px;object-fit:cover;"/>
+    @if (enProceso)
+    {
+        <div class="card-badge badge-inprogress"><i class="fa-solid fa-clock"></i> En proceso</div>
+    }
+    else
+    {
+        <div class="card-badge badge-available"><span class="badge-dot"></span> Disponible</div>
+    }
+    </div>
+    <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-1">
+    <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">@mascota.masc_Nombre</h5>
+    <span class="animal-species-tag">@mascota.raza_Descripcion</span>
+    </div>
+    <div class="animal-meta">
+    <span><i class="fa-solid fa-house"></i> @mascota.refg_Nombre</span>
+    </div>
+    </div>
+    <div class="card-cta-wrap">
+    <a class="btn-card-cta" href="@Url.Action("Animal","Landing", new { id = mascota.masc_Id })">Conocer a @mascota.masc_Nombre <i class="fa-solid fa-arrow-right ml-1"></i></a>
+    </div>
+    </div>
+    </div>
+}
+@if (!Model.Mascotas.Any())
+{
+    <div class="col-12 text-center py-5">
+        <p style="color:var(--ph-gray);">No hay animales disponibles en este momento.</p>
+    </div>
+}
+</div><!-- /row -->
+<div class="text-center mt-2 reveal">
+<a href="@Url.Action("Animales","Landing")" class="btn btn-outline-primary font-weight-bold px-4 py-2" style="border-radius:var(--radius-btn);font-family:'Plus Jakarta Sans',sans-serif;border-width:2px;">
+<i class="fa-solid fa-paw mr-2"></i> Ver todos los animales
+</a>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     PROCESO
+══════════════════════════════════════════ -->
+<section class="proceso-section py-5" id="proceso" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+<div class="container">
+<div class="text-center mb-5 reveal">
+<span class="section-eyebrow">Proceso</span>
+<h2 class="section-title mb-3">Adoptar es más fácil<br/>de lo que piensas</h2>
+<p class="section-sub mx-auto" style="max-width:480px;">Cuatro pasos simples para cambiar tu vida y la de un animal.</p>
+</div>
+<div class="step-wrap">
+<!-- Connector line (desktop) -->
+<div class="step-connector" id="step-connector">
+<div class="step-connector-fill" id="step-fill"></div>
+</div>
+<div class="row justify-content-center">
+<div class="col-6 col-lg-3 mb-4 mb-lg-0 reveal">
+<div class="step-card">
+<div class="step-icon-wrap" style="background:#EDE9FE;">
+<i class="fa-solid fa-magnifying-glass" style="color:var(--ph-primary);"></i>
+<div class="step-number">1</div>
+</div>
+<div class="step-title">Explora</div>
+<p class="step-desc">Navega los perfiles y encuentra el animal que conecte contigo.</p>
+</div>
+</div>
+<div class="col-6 col-lg-3 mb-4 mb-lg-0 reveal reveal-d1">
+<div class="step-card">
+<div class="step-icon-wrap" style="background:#DBEAFE;">
+<i class="fa-solid fa-file-lines" style="color:#3B82F6;"></i>
+<div class="step-number">2</div>
+</div>
+<div class="step-title">Solicita</div>
+<p class="step-desc">Llena el formulario de solicitud de adopción. Rápido y gratuito.</p>
+</div>
+</div>
+<div class="col-6 col-lg-3 reveal reveal-d2">
+<div class="step-card">
+<div class="step-icon-wrap" style="background:#F3E8FF;">
+<i class="fa-solid fa-handshake" style="color:#A855F7;"></i>
+<div class="step-number">3</div>
+</div>
+<div class="step-title">Entrevista</div>
+<p class="step-desc">Conversamos contigo para asegurar la mejor compatibilidad.</p>
+</div>
+</div>
+<div class="col-6 col-lg-3 reveal reveal-d3">
+<div class="step-card">
+<div class="step-icon-wrap" style="background:#D1FAE5;">
+<i class="fa-solid fa-house-heart" style="color:var(--ph-accent);"></i>
+<div class="step-number last">4</div>
+</div>
+<div class="step-title">¡Bienvenido a casa!</div>
+<p class="step-desc">Tu nuevo compañero llega a su hogar definitivo. ¡Celebra!</p>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center mt-4 reveal">
+<a class="btn-hero-primary" href="#animales" style="display:inline-flex;">
+<i class="fa-solid fa-arrow-right"></i> Comenzar el proceso
+      </a>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     EVENTOS
+══════════════════════════════════════════ -->
+<section class="py-5" id="eventos" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+<div class="container">
+<div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-between mb-4 reveal" style="gap:1rem;">
+<div>
+<span class="section-eyebrow">Próximamente</span>
+<h2 class="section-title mb-0">Eventos del refugio</h2>
+</div>
+<a class="text-primary font-weight-bold" href="#" style="font-size:.875rem;white-space:nowrap;">
+        Ver todos <i class="fa-solid fa-arrow-right ml-1"></i>
+</a>
+</div>
+<div class="row flex-nowrap flex-md-wrap events-row">
+@foreach (var evento in Model.Eventos)
+{
+    <div class="col-10 col-md-4 event-col mb-4 reveal">
+    <div class="event-card">
+    <div class="position-relative">
+    <img alt="Evento" src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600&h=280&fit=crop" style="width:100%;height:180px;object-fit:cover;"/>
+    <div class="event-date-badge">
+        <div class="day">@evento.eve_Fecha.Day</div>
+        <div class="mon">@evento.eve_Fecha.ToString("MMM", new System.Globalization.CultureInfo("es-HN"))</div>
+    </div>
+    </div>
+    <div class="event-body">
+    <h5 class="event-title">@evento.eve_Descripcion</h5>
+    <div class="event-location"><i class="fa-solid fa-location-dot"></i> @evento.refg_Nombre</div>
+    <p class="event-desc">@evento.eve_HoraInicio.ToString(@"hh\:mm") – @evento.eve_HoraFinal.ToString(@"hh\:mm")</p>
+    <a class="event-link" href="#">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size:.7rem;"></i></a>
+    </div>
+    </div>
+    </div>
+}
+@if (!Model.Eventos.Any())
+{
+    <div class="col-12 text-center py-4">
+        <p style="color:var(--ph-gray);">No hay eventos próximos.</p>
+    </div>
+}
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     REFUGIO
+══════════════════════════════════════════ -->
+<section class="refugio-section py-5" id="refugio" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+<div class="container">
+<div class="row align-items-center" style="gap-y:3rem;">
+<!-- Collage -->
+<div class="col-lg-6 mb-5 mb-lg-0 reveal">
+<div class="position-relative" style="padding-right:1rem;">
+<div class="collage-grid">
+<img alt="Refugio" src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=400&amp;h=220&amp;fit=crop"/>
+<img alt="Voluntarios" src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&amp;h=220&amp;fit=crop"/>
+<img alt="Animales" class="c-tall" src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=400&amp;h=460&amp;fit=crop" style="grid-column:2;grid-row:1/3;"/>
+</div>
+<div class="years-badge">
+<div class="ynum">8+</div>
+<div class="ytxt">años ayudando</div>
+</div>
+</div>
+</div>
+<!-- Text -->
+<div class="col-lg-6 reveal reveal-d1">
+<span class="section-eyebrow">Nuestra historia</span>
+<h2 class="section-title mb-3">Un refugio construido<br/>con amor</h2>
+<p class="section-sub mb-4">Nacimos en 2016 con una misión simple: ningún animal debería sufrir la falta de amor. Hoy somos un equipo de voluntarios apasionados que rescata, rehabilita y encuentra hogares permanentes.</p>
+<div class="mb-4">
+<div class="value-item">
+<div class="value-icon" style="background:var(--ph-primary);">
+<i class="fa-solid fa-heart-pulse"></i>
+</div>
+<div>
+<div class="value-title">Bienestar animal primero</div>
+<p class="value-desc">Cada decisión gira en torno al bienestar físico y emocional de los animales.</p>
+</div>
+</div>
+<div class="value-item">
+<div class="value-icon" style="background:var(--ph-accent);">
+<i class="fa-solid fa-people-group"></i>
+</div>
+<div>
+<div class="value-title">Comunidad y voluntariado</div>
+<p class="value-desc">Más de 80 voluntarios activos construyen esta familia cada semana.</p>
+</div>
+</div>
+<div class="value-item">
+<div class="value-icon" style="background:#3B82F6;">
+<i class="fa-solid fa-syringe"></i>
+</div>
+<div>
+<div class="value-title">Atención veterinaria completa</div>
+<p class="value-desc">Vacunas, desparasitación y atención médica para todos los animales.</p>
+</div>
+</div>
+</div>
+<a class="btn-hero-ghost" href="#" style="display:inline-flex;">
+<i class="fa-solid fa-binoculars"></i> Conoce nuestro refugio
+        </a>
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════ -->
+<section class="cta-banner">
+<div class="container text-center position-relative" style="z-index:1;">
+<h2 class="text-white mb-3" style="font-size:clamp(1.75rem,3vw,2.5rem);font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;">¿Listo para cambiar una vida?</h2>
+<p class="mb-4" style="color:rgba(255,255,255,.8);font-size:1.0625rem;">Ellos ya te están esperando. Da el primer paso hoy.</p>
+<div class="d-flex flex-wrap justify-content-center" style="gap:.75rem;">
+<a class="btn-cta-white" href="#animales">
+<i class="fa-solid fa-paw"></i> Ver animales
+      </a>
+<a class="btn-cta-outline" href="#">
+<i class="fa-solid fa-hands-holding-heart"></i> Ser voluntario
+      </a>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="site-footer">
+<div class="container">
+<div class="row">
+<!-- Brand -->
+<div class="col-sm-6 col-lg-4 mb-4 mb-lg-0">
+<div class="d-flex align-items-center mb-2" style="gap:.625rem;">
+<div class="nav-logo-icon"><i class="fa-solid fa-paw"></i></div>
+<span class="footer-brand-name">PetsHome</span>
+</div>
+<p class="footer-tagline">Conectando corazones con patitas desde 2016.</p>
+<div class="footer-social mt-3">
+<a aria-label="Facebook" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+<a aria-label="Instagram" href="#"><i class="fa-brands fa-instagram"></i></a>
+<a aria-label="TikTok" href="#"><i class="fa-brands fa-tiktok"></i></a>
+<a aria-label="WhatsApp" href="#"><i class="fa-brands fa-whatsapp"></i></a>
+</div>
+</div>
+<!-- Links: Adopción -->
+<div class="col-6 col-sm-3 col-lg-2 mb-4 mb-lg-0 offset-lg-1">
+<div class="footer-heading">Adopción</div>
+<ul class="footer-links">
+<li><a href="#animales"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Animales</a></li>
+<li><a href="#proceso"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Proceso</a></li>
+<li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Requisitos</a></li>
+<li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> FAQ</a></li>
+</ul>
+</div>
+<!-- Links: Participa -->
+<div class="col-6 col-sm-3 col-lg-2 mb-4 mb-lg-0">
+<div class="footer-heading">Participa</div>
+<ul class="footer-links">
+<li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Voluntarios</a></li>
+<li><a href="#eventos"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Eventos</a></li>
+<li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Donaciones</a></li>
+<li><a href="#refugio"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Nosotros</a></li>
+</ul>
+</div>
+<!-- Contact -->
+<div class="col-sm-6 col-lg-3 mb-4 mb-lg-0">
+<div class="footer-heading">Contacto</div>
+<ul class="footer-links">
+<li><a href="mailto:hola@petshome.hn"><i class="fa-regular fa-envelope"></i> hola@petshome.hn</a></li>
+<li><a href="tel:+50499990000"><i class="fa-solid fa-phone"></i> +504 9999-0000</a></li>
+<li><a href="#"><i class="fa-solid fa-location-dot"></i> San Pedro Sula, HN</a></li>
+<li><a href="#"><i class="fa-regular fa-clock"></i> Lun–Sab · 8am–5pm</a></li>
+</ul>
+</div>
+</div>
+<hr class="footer-divider"/>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center footer-bottom" style="gap:.5rem;">
+<span>© 2024 PetsHome. Todos los derechos reservados.</span>
+<div class="d-flex" style="gap:1.25rem;">
+<a class="hover-primary" href="#" style="color:#4B5563;font-size:.8125rem;text-decoration:none;">Privacidad</a>
+<a href="#" style="color:#4B5563;font-size:.8125rem;text-decoration:none;">Términos</a>
+<a href="#" style="color:#4B5563;font-size:.8125rem;text-decoration:none;">Cookies</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/pages/landing-page.js"></script>
+</body>
+</html>

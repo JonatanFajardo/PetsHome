@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PetsHome — Encuentra a tu nuevo mejor amigo</title>
+
+  <!-- Bootstrap 4.6.0 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ── Root tokens ── */
+    :root {
+      --ph-primary:     #7C3AED;
+      --ph-primary-dk:  #6D28D9;
+      --ph-primary-lt:  #EDE9FE;
+      --ph-accent:      #10B981;
+      --ph-accent-lt:   #D1FAE5;
+      --ph-dark:        #1F2937;
+      --ph-gray:        #6B7280;
+      --ph-light:       #F9FAFB;
+      --ph-white:       #FFFFFF;
+      --ph-border:      #E5E7EB;
+      --radius-card:    1rem;
+      --radius-btn:     0.625rem;
+      --shadow-sm:      0 2px 12px rgba(0,0,0,.07);
+      --shadow-md:      0 8px 32px rgba(0,0,0,.10);
+      --shadow-lg:      0 20px 48px rgba(0,0,0,.13);
+    }
+
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ph-light);
+      color: var(--ph-dark);
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Override Bootstrap primary */
+    .btn-primary { background-color: var(--ph-primary); border-color: var(--ph-primary); }
+    .btn-primary:hover, .btn-primary:focus { background-color: var(--ph-primary-dk); border-color: var(--ph-primary-dk); box-shadow: 0 6px 20px rgba(124,58,237,.35); }
+    .btn-outline-primary { color: var(--ph-primary); border-color: var(--ph-primary); }
+    .btn-outline-primary:hover { background-color: var(--ph-primary); border-color: var(--ph-primary); }
+    .text-primary { color: var(--ph-primary) !important; }
+    .bg-primary { background-color: var(--ph-primary) !important; }
+    .border-primary { border-color: var(--ph-primary) !important; }
+    .badge-primary { background-color: var(--ph-primary); }
+
+    /* ── Navbar ── */
+    #main-nav {
+      transition: background .3s ease, box-shadow .3s ease;
+      background: transparent;
+    }
+    #main-nav.scrolled {
+      background: rgba(249,250,251,.92) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 24px rgba(0,0,0,.08);
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--ph-primary);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .navbar-nav .nav-link {
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--ph-dark) !important;
+      padding: .5rem .9rem !important;
+      transition: color .2s;
+    }
+    .navbar-nav .nav-link:hover { color: var(--ph-primary) !important; }
+    .btn-nav-cta {
+      background: var(--ph-primary);
+      color: #fff !important;
+      font-size: .875rem;
+      font-weight: 700;
+      padding: .5rem 1.25rem;
+      border-radius: var(--radius-btn);
+      transition: background .2s, transform .2s, box-shadow .2s;
+      border: none;
+    }
+    .btn-nav-cta:hover {
+      background: var(--ph-primary-dk);
+      color: #fff !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(124,58,237,.3);
+      text-decoration: none;
+    }
+
+    /* ── Hero ── */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 76px;
+      background:
+        radial-gradient(ellipse at 15% 55%, rgba(124,58,237,.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 82% 18%, rgba(16,185,129,.07) 0%, transparent 55%),
+        var(--ph-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--ph-primary-lt);
+      color: var(--ph-primary);
+      font-size: .8125rem;
+      font-weight: 600;
+      padding: .375rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(124,58,237,.2);
+      margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow .dot {
+      width: 7px; height: 7px;
+      background: var(--ph-primary);
+      border-radius: 50%;
+      animation: pulse-dot 1.6s infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(1.5)} }
+    .hero-headline {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.07;
+      color: var(--ph-dark);
+    }
+    .hero-headline span { color: var(--ph-primary); }
+    .hero-sub {
+      font-size: 1.125rem;
+      color: var(--ph-gray);
+      line-height: 1.7;
+      max-width: 440px;
+    }
+    .btn-hero-primary {
+      background: var(--ph-primary);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .9375rem;
+      padding: .8125rem 1.875rem;
+      border-radius: var(--radius-btn);
+      border: none;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-hero-primary:hover { background: var(--ph-primary-dk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,.35); color: #fff; text-decoration: none; }
+    .btn-hero-ghost {
+      background: transparent;
+      color: var(--ph-dark);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .9375rem;
+      padding: .8125rem 1.875rem;
+      border-radius: var(--radius-btn);
+      border: 2px solid var(--ph-dark);
+      transition: background .2s, color .2s, transform .2s;
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-hero-ghost:hover { background: var(--ph-dark); color: #fff; text-decoration: none; transform: translateY(-2px); }
+    /* Floating avatars trust row */
+    .avatar-stack { display: flex; }
+    .avatar-stack img, .avatar-stack .av-more {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      object-fit: cover;
+      margin-right: -10px;
+    }
+    .av-more {
+      background: var(--ph-primary);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700;
+    }
+    /* Hero image */
+    .hero-img-wrap {
+      position: relative;
+      animation: heroFloat 5s ease-in-out infinite;
+    }
+    @keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .hero-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      background: rgba(124,58,237,.1);
+      border-radius: 1.5rem;
+      transform: rotate(-3deg);
+    }
+    .hero-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      background: rgba(16,185,129,.08);
+      border-radius: 1.5rem;
+      transform: rotate(3deg);
+    }
+    .hero-img-wrap img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      object-fit: cover;
+      aspect-ratio: 1/1;
+    }
+    .hero-pill {
+      position: absolute;
+      z-index: 2;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: var(--shadow-md);
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 1rem;
+    }
+    .hero-pill-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+    .hero-pill-bottom { bottom: -18px; left: -18px; }
+    .hero-pill-top    { top: -14px; right: -14px; background: var(--ph-accent); color: #fff; border-radius: 12px; padding: .625rem 1rem; }
+
+    /* Floating paw bg */
+    .paw-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .paw-item {
+      position: absolute;
+      color: var(--ph-primary);
+      opacity: .05;
+      font-size: 1.5rem;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      8%   { opacity: .07; }
+      92%  { opacity: .07; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Stats ── */
+    .stats-section { background: var(--ph-dark); padding: 3.5rem 0; }
+    .stat-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 900;
+      color: var(--ph-primary);
+      line-height: 1;
+    }
+    .stat-label { color: #9CA3AF; font-size: .875rem; margin-top: .25rem; }
+    .stat-divider { width: 1px; background: #374151; }
+
+    /* ── Section shared ── */
+    .section-eyebrow {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ph-primary);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+      font-weight: 900;
+      color: var(--ph-dark);
+      line-height: 1.15;
+    }
+    .section-sub { color: var(--ph-gray); font-size: 1.0625rem; line-height: 1.7; }
+
+    /* ── Filter chips ── */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-bottom: 2.5rem; }
+    .filter-chip {
+      border: 1.5px solid var(--ph-border);
+      background: #fff;
+      color: var(--ph-gray);
+      cursor: pointer;
+      font-size: .8125rem;
+      font-weight: 500;
+      padding: .375rem 1rem;
+      border-radius: 999px;
+      transition: all .2s;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex; align-items: center; gap: .375rem;
+    }
+    .filter-chip:hover { border-color: var(--ph-primary); color: var(--ph-primary); background: var(--ph-primary-lt); }
+    .filter-chip.active { background: var(--ph-primary); color: #fff; border-color: var(--ph-primary); }
+
+    /* ── Animal cards ── */
+    .animal-card {
+      background: #fff;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      border: 1px solid var(--ph-border);
+      transition: transform .3s ease, box-shadow .3s ease;
+      position: relative;
+    }
+    .animal-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .animal-card .card-img-wrap { position: relative; overflow: hidden; }
+    .animal-card .card-img-wrap img { width: 100%; height: 210px; object-fit: cover; display: block; transition: transform .4s ease; }
+    .animal-card:hover .card-img-wrap img { transform: scale(1.04); }
+    .card-badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .3rem .75rem;
+      border-radius: 999px;
+      display: flex; align-items: center; gap: .3rem;
+      letter-spacing: .02em;
+    }
+    .badge-available { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+    .badge-inprogress { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+    .badge-available .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; animation: pulseg 1.5s infinite; }
+    @keyframes pulseg { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+    .animal-card .card-body { padding: 1.25rem; }
+    .animal-species-tag {
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .25rem .625rem;
+      border-radius: 999px;
+    }
+    .tag-dog { background: #FEF3C7; color: #B45309; }
+    .tag-cat { background: #EDE9FE; color: #7C3AED; }
+    .animal-meta { display: flex; flex-wrap: wrap; gap: .25rem .875rem; font-size: .8125rem; color: var(--ph-gray); margin: .5rem 0 .625rem; }
+    .animal-meta span { display: flex; align-items: center; gap: .3rem; }
+    .animal-meta .meta-check { color: var(--ph-accent); font-weight: 600; }
+    .animal-desc { font-size: .8375rem; color: #9CA3AF; line-height: 1.5; margin: 0; }
+    .card-cta-wrap {
+      padding: 0 1.25rem 1.25rem;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .animal-card:hover .card-cta-wrap { opacity: 1; transform: translateY(0); }
+    .btn-card-cta {
+      display: block; width: 100%;
+      background: var(--ph-primary);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .8375rem;
+      text-align: center;
+      padding: .6rem 1rem;
+      border-radius: .625rem;
+      border: none;
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .btn-card-cta:hover { background: var(--ph-primary-dk); color: #fff; text-decoration: none; }
+
+    /* ── Proceso ── */
+    .proceso-section { background: #fff; }
+    .step-wrap { position: relative; }
+    .step-connector {
+      display: none;
+    }
+    @media(min-width: 992px) {
+      .step-connector {
+        display: block;
+        position: absolute;
+        top: 27px;
+        left: calc(25% + 28px);
+        right: calc(25% + 28px);
+        height: 2px;
+        background: var(--ph-border);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .step-connector-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--ph-primary), var(--ph-accent));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 1.1s ease .3s;
+        border-radius: 2px;
+      }
+      .step-connector-fill.animate { transform: scaleX(1); }
+    }
+    .step-card {
+      text-align: center;
+      padding: 1.5rem 1.25rem;
+    }
+    .step-icon-wrap {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.25rem;
+      position: relative;
+    }
+    .step-number {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--ph-primary);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .step-number.last { background: var(--ph-accent); }
+    .step-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1rem; color: var(--ph-dark); margin-bottom: .4rem; }
+    .step-desc { font-size: .85rem; color: var(--ph-gray); line-height: 1.55; }
+
+    /* ── Eventos ── */
+    .event-card {
+      background: #fff;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--ph-border);
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      height: 100%;
+    }
+    .event-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .event-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .event-date-badge {
+      position: absolute; top: 12px; left: 12px;
+      width: 52px;
+      background: var(--ph-primary);
+      color: #fff;
+      border-radius: 10px;
+      text-align: center;
+      padding: .4rem .5rem;
+      box-shadow: 0 4px 12px rgba(124,58,237,.35);
+    }
+    .event-date-badge .day { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 900; line-height: 1; }
+    .event-date-badge .mon { font-size: .65rem; font-weight: 600; text-transform: uppercase; opacity: .9; }
+    .event-body { padding: 1.25rem; }
+    .event-location { font-size: .8125rem; color: var(--ph-gray); display: flex; align-items: center; gap: .375rem; margin-bottom: .625rem; }
+    .event-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1rem; color: var(--ph-dark); margin-bottom: .5rem; }
+    .event-desc { font-size: .8375rem; color: #9CA3AF; line-height: 1.5; margin-bottom: .875rem; }
+    .event-link { font-size: .8375rem; font-weight: 600; color: var(--ph-primary); text-decoration: none; display: inline-flex; align-items: center; gap: .3rem; }
+    .event-link:hover { color: var(--ph-primary-dk); text-decoration: underline; }
+
+    /* ── Refugio ── */
+    .refugio-section { background: var(--ph-light); }
+    .collage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1rem;
+      height: 460px;
+    }
+    .collage-grid .c-tall { grid-row: 1 / 3; }
+    .collage-grid img { width: 100%; height: 100%; object-fit: cover; border-radius: 1rem; display: block; }
+    .years-badge {
+      position: absolute;
+      bottom: -14px; right: -14px;
+      background: var(--ph-primary);
+      color: #fff;
+      border-radius: 14px;
+      padding: .875rem 1rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(124,58,237,.3);
+      z-index: 2;
+    }
+    .years-badge .ynum { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 900; line-height: 1; }
+    .years-badge .ytxt { font-size: .7rem; font-weight: 600; opacity: .9; }
+    .value-item { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem; }
+    .value-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .value-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: .9375rem; color: var(--ph-dark); margin-bottom: .2rem; }
+    .value-desc { font-size: .85rem; color: var(--ph-gray); line-height: 1.5; margin: 0; }
+
+    /* ── CTA Banner ── */
+    .cta-banner { background: var(--ph-primary); position: relative; overflow: hidden; padding: 4rem 0; }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    .cta-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.05);
+    }
+    .btn-cta-white {
+      background: #fff;
+      color: var(--ph-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .9375rem;
+      padding: .8125rem 1.875rem;
+      border-radius: var(--radius-btn);
+      border: none;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      display: inline-flex; align-items: center; gap: .5rem;
+      text-decoration: none;
+    }
+    .btn-cta-white:hover { background: #F5F3FF; color: var(--ph-primary); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+    .btn-cta-outline {
+      background: transparent;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .9375rem;
+      padding: .8125rem 1.875rem;
+      border-radius: var(--radius-btn);
+      border: 2px solid rgba(255,255,255,.6);
+      transition: background .2s, border-color .2s, transform .2s;
+      display: inline-flex; align-items: center; gap: .5rem;
+      text-decoration: none;
+    }
+    .btn-cta-outline:hover { background: rgba(255,255,255,.12); border-color: #fff; color: #fff; transform: translateY(-2px); }
+
+    /* ── Footer ── */
+    .site-footer { background: var(--ph-dark); color: #9CA3AF; padding: 3.5rem 0 2rem; }
+    .footer-brand-name { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 900; font-size: 1.25rem; color: #fff; }
+    .footer-tagline { font-size: .875rem; color: #6B7280; line-height: 1.6; margin-top: .5rem; max-width: 220px; }
+    .footer-social a {
+      width: 36px; height: 36px;
+      background: #374151;
+      border-radius: 8px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #9CA3AF;
+      font-size: .875rem;
+      margin-right: .5rem;
+      transition: background .2s, color .2s;
+      text-decoration: none;
+    }
+    .footer-social a:hover { background: var(--ph-primary); color: #fff; }
+    .footer-heading { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: #fff; margin-bottom: 1rem; }
+    .footer-links { list-style: none; padding: 0; margin: 0; }
+    .footer-links li { margin-bottom: .625rem; }
+    .footer-links a { color: #6B7280; font-size: .875rem; text-decoration: none; transition: color .2s; display: flex; align-items: center; gap: .4rem; }
+    .footer-links a:hover { color: var(--ph-primary); }
+    .footer-divider { border-color: #374151; margin: 2rem 0 1.5rem; }
+    .footer-bottom { font-size: .8125rem; color: #4B5563; }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
+
+    /* ── Responsive adjustments ── */
+    @media(max-width: 991px) {
+      .hero-section { padding-top: 88px; padding-bottom: 3rem; min-height: auto; }
+      .collage-grid { height: 300px; }
+    }
+    @media(max-width: 767px) {
+      .stat-divider { display: none !important; }
+      .events-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 1rem; -webkit-overflow-scrolling: touch; }
+      .events-row::-webkit-scrollbar { display: none; }
+      .event-col { min-width: 280px; flex: 0 0 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════ -->
+<nav id="main-nav" class="navbar navbar-expand-md fixed-top py-2">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" style="gap:.625rem;" href="#">
+      <div class="nav-logo-icon">
+        <i class="fa-solid fa-paw"></i>
+      </div>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:var(--ph-dark);">PetsHome</span>
+    </a>
+    <!-- Toggler -->
+    <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navContent" aria-controls="navContent" aria-expanded="false">
+      <i class="fa-solid fa-bars" style="color:var(--ph-dark);font-size:1.125rem;"></i>
+    </button>
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="#animales">Animales</a></li>
+        <li class="nav-item"><a class="nav-link" href="#proceso">Proceso</a></li>
+        <li class="nav-item"><a class="nav-link" href="#eventos">Eventos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#refugio">Refugio</a></li>
+      </ul>
+      <a href="#animales" class="btn-nav-cta ml-md-3 mt-2 mt-md-0 d-inline-block text-decoration-none">
+        <i class="fa-solid fa-heart mr-1"></i> Quiero adoptar
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero-section">
+  <!-- Floating paws -->
+  <div class="paw-bg">
+    <i class="fa-solid fa-paw paw-item" style="left:5%;font-size:1.4rem;animation-duration:14s;animation-delay:0s;"></i>
+    <i class="fa-solid fa-paw paw-item" style="left:16%;font-size:2.2rem;animation-duration:19s;animation-delay:3s;"></i>
+    <i class="fa-solid fa-paw paw-item" style="left:31%;font-size:1rem;animation-duration:12s;animation-delay:1.5s;"></i>
+    <i class="fa-solid fa-paw paw-item" style="left:51%;font-size:1.8rem;animation-duration:21s;animation-delay:5s;"></i>
+    <i class="fa-solid fa-paw paw-item" style="left:67%;font-size:1.3rem;animation-duration:16s;animation-delay:2.5s;"></i>
+    <i class="fa-solid fa-paw paw-item" style="left:79%;font-size:.9rem;animation-duration:17s;animation-delay:7s;"></i>
+    <i class="fa-solid fa-paw paw-item" style="left:89%;font-size:1.8rem;animation-duration:13s;animation-delay:4s;"></i>
+  </div>
+
+  <div class="container py-5 py-lg-0">
+    <div class="row align-items-center">
+      <!-- Text col -->
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          Más de 120 animales te esperan
+        </div>
+        <h1 class="hero-headline mb-4">
+          Encuentra a tu<br/><span>nuevo mejor</span><br/>amigo
+        </h1>
+        <p class="hero-sub mb-4">
+          Cientos de animales esperan un hogar. Adoptar es un acto de amor que cambia dos vidas para siempre.
+        </p>
+        <div class="d-flex flex-wrap" style="gap:.75rem;">
+          <a href="#animales" class="btn-hero-primary">
+            <i class="fa-solid fa-magnifying-glass"></i> Ver animales
+          </a>
+          <a href="#proceso" class="btn-hero-ghost">
+            Conoce el proceso <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <!-- Trust row -->
+        <div class="d-flex align-items-center mt-4" style="gap:1rem;">
+          <div class="avatar-stack">
+            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=40&h=40&fit=crop&crop=face" alt="a"/>
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" alt="a"/>
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face" alt="a"/>
+            <div class="av-more">+40</div>
+          </div>
+          <p class="mb-0" style="font-size:.875rem;color:var(--ph-gray);">
+            Familias que ya adoptaron <strong style="color:var(--ph-accent);">este año</strong>
+          </p>
+        </div>
+      </div>
+      <!-- Image col -->
+      <div class="col-lg-6 d-flex justify-content-center justify-content-lg-end">
+        <div class="hero-img-wrap" style="max-width:480px;width:100%;">
+          <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=720&h=720&fit=crop&crop=center" alt="Happy dog"/>
+          <!-- Bottom pill -->
+          <div class="hero-pill hero-pill-bottom">
+            <div class="hero-pill-icon" style="background:var(--ph-primary-lt);">
+              <i class="fa-solid fa-house" style="color:var(--ph-primary);"></i>
+            </div>
+            <div>
+              <p class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.875rem;color:var(--ph-dark);">¡Adoptado hoy!</p>
+              <p class="mb-0" style="font-size:.75rem;color:var(--ph-gray);">Max encontró hogar</p>
+            </div>
+          </div>
+          <!-- Top pill -->
+          <div class="hero-pill hero-pill-top">
+            <i class="fa-solid fa-shield-heart mr-2"></i>
+            <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.8125rem;">Salvando vidas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     STATS
+══════════════════════════════════════════ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <!-- Stat 1 -->
+      <div class="col-12 col-sm-3 text-center reveal mb-4 mb-sm-0" data-stat>
+        <div class="stat-num" data-target="120">0</div>
+        <div class="stat-label">
+          <i class="fa-solid fa-circle-check mr-1" style="color:var(--ph-accent);font-size:.75rem;"></i>
+          Animales rescatados
+        </div>
+      </div>
+      <div class="col-auto d-none d-sm-block stat-divider align-self-stretch" style="min-height:60px;"></div>
+      <!-- Stat 2 -->
+      <div class="col-12 col-sm-3 text-center reveal reveal-d1 mb-4 mb-sm-0" data-stat>
+        <div class="stat-num" data-target="85">0</div>
+        <div class="stat-label">
+          <i class="fa-solid fa-circle-check mr-1" style="color:var(--ph-accent);font-size:.75rem;"></i>
+          Adoptados este año
+        </div>
+      </div>
+      <div class="col-auto d-none d-sm-block stat-divider align-self-stretch" style="min-height:60px;"></div>
+      <!-- Stat 3 -->
+      <div class="col-12 col-sm-3 text-center reveal reveal-d2" data-stat>
+        <div class="stat-num" data-target="40">0</div>
+        <div class="stat-label">
+          <i class="fa-solid fa-circle-check mr-1" style="color:var(--ph-accent);font-size:.75rem;"></i>
+          Familias felices
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ANIMALES DISPONIBLES
+══════════════════════════════════════════ -->
+<section id="animales" class="py-5" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+  <div class="container">
+    <!-- Header -->
+    <div class="text-center mb-4 reveal">
+      <span class="section-eyebrow">Adopción</span>
+      <h2 class="section-title mb-3">Encuentra tu compañero ideal</h2>
+      <p class="section-sub mx-auto" style="max-width:500px;">Cada uno tiene su historia. Quizás la tuya empieza hoy.</p>
+    </div>
+    <!-- Filter bar -->
+    <div class="filter-bar reveal reveal-d1">
+      <button class="filter-chip active" data-filter="all">
+        <i class="fa-solid fa-border-all"></i> Todos
+      </button>
+      <button class="filter-chip" data-filter="dog">
+        <i class="fa-solid fa-dog"></i> Perros
+      </button>
+      <button class="filter-chip" data-filter="cat">
+        <i class="fa-solid fa-cat"></i> Gatos
+      </button>
+      <button class="filter-chip" data-filter="young">
+        <i class="fa-solid fa-seedling"></i> Jóvenes
+      </button>
+      <button class="filter-chip" data-filter="adult">
+        <i class="fa-solid fa-star"></i> Adultos
+      </button>
+      <button class="filter-chip" data-filter="small">
+        <i class="fa-solid fa-compress"></i> Pequeños
+      </button>
+      <button class="filter-chip" data-filter="large">
+        <i class="fa-solid fa-expand"></i> Grandes
+      </button>
+    </div>
+    <!-- Cards -->
+    <div class="row" id="animal-grid">
+
+      <!-- Bono -->
+      <div class="col-sm-6 col-lg-4 mb-4 reveal animal-col" data-type="dog large adult">
+        <div class="animal-card">
+          <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1558788353-f76d92427f16?w=600&h=420&fit=crop" alt="Bono"/>
+            <div class="card-badge badge-available"><span class="badge-dot"></span> Disponible</div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Bono</h5>
+              <span class="animal-species-tag tag-dog">Perro</span>
+            </div>
+            <div class="animal-meta">
+              <span><i class="fa-regular fa-calendar"></i> 3 años</span>
+              <span><i class="fa-solid fa-ruler-vertical"></i> Grande</span>
+              <span class="meta-check"><i class="fa-solid fa-circle-check"></i> Esterilizado</span>
+            </div>
+            <p class="animal-desc">Juguetón, cariñoso y ama los paseos largos al aire libre.</p>
+          </div>
+          <div class="card-cta-wrap">
+            <button class="btn-card-cta">Conocer a Bono <i class="fa-solid fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Luna -->
+      <div class="col-sm-6 col-lg-4 mb-4 reveal reveal-d1 animal-col" data-type="cat small young">
+        <div class="animal-card">
+          <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=420&fit=crop" alt="Luna"/>
+            <div class="card-badge badge-inprogress"><i class="fa-solid fa-clock"></i> En proceso</div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Luna</h5>
+              <span class="animal-species-tag tag-cat">Gata</span>
+            </div>
+            <div class="animal-meta">
+              <span><i class="fa-regular fa-calendar"></i> 1 año</span>
+              <span><i class="fa-solid fa-ruler-vertical"></i> Pequeña</span>
+              <span class="meta-check"><i class="fa-solid fa-circle-check"></i> Esterilizada</span>
+            </div>
+            <p class="animal-desc">Independiente y tranquila, perfecta para apartamentos.</p>
+          </div>
+          <div class="card-cta-wrap">
+            <button class="btn-card-cta">Conocer a Luna <i class="fa-solid fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coco -->
+      <div class="col-sm-6 col-lg-4 mb-4 reveal reveal-d2 animal-col" data-type="dog small young">
+        <div class="animal-card">
+          <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=420&fit=crop&crop=top" alt="Coco"/>
+            <div class="card-badge badge-available"><span class="badge-dot"></span> Disponible</div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Coco</h5>
+              <span class="animal-species-tag tag-dog">Perro</span>
+            </div>
+            <div class="animal-meta">
+              <span><i class="fa-regular fa-calendar"></i> 8 meses</span>
+              <span><i class="fa-solid fa-ruler-vertical"></i> Pequeño</span>
+              <span style="color:#9CA3AF;"><i class="fa-regular fa-circle"></i> Pendiente</span>
+            </div>
+            <p class="animal-desc">Cachorro lleno de energía, ideal para familias activas.</p>
+          </div>
+          <div class="card-cta-wrap">
+            <button class="btn-card-cta">Conocer a Coco <i class="fa-solid fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simba -->
+      <div class="col-sm-6 col-lg-4 mb-4 reveal animal-col" data-type="cat large adult">
+        <div class="animal-card">
+          <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&h=420&fit=crop" alt="Simba"/>
+            <div class="card-badge badge-available"><span class="badge-dot"></span> Disponible</div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Simba</h5>
+              <span class="animal-species-tag tag-cat">Gato</span>
+            </div>
+            <div class="animal-meta">
+              <span><i class="fa-regular fa-calendar"></i> 4 años</span>
+              <span><i class="fa-solid fa-ruler-vertical"></i> Grande</span>
+              <span class="meta-check"><i class="fa-solid fa-circle-check"></i> Esterilizado</span>
+            </div>
+            <p class="animal-desc">Rey del sofá. Busca a alguien que aprecie la calma.</p>
+          </div>
+          <div class="card-cta-wrap">
+            <button class="btn-card-cta">Conocer a Simba <i class="fa-solid fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rocky -->
+      <div class="col-sm-6 col-lg-4 mb-4 reveal reveal-d1 animal-col" data-type="dog large young">
+        <div class="animal-card">
+          <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&h=420&fit=crop" alt="Rocky"/>
+            <div class="card-badge badge-inprogress"><i class="fa-solid fa-clock"></i> En proceso</div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Rocky</h5>
+              <span class="animal-species-tag tag-dog">Perro</span>
+            </div>
+            <div class="animal-meta">
+              <span><i class="fa-regular fa-calendar"></i> 2 años</span>
+              <span><i class="fa-solid fa-ruler-vertical"></i> Grande</span>
+              <span class="meta-check"><i class="fa-solid fa-circle-check"></i> Esterilizado</span>
+            </div>
+            <p class="animal-desc">Leal y protector. Le encanta correr al aire libre.</p>
+          </div>
+          <div class="card-cta-wrap">
+            <button class="btn-card-cta">Conocer a Rocky <i class="fa-solid fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mia -->
+      <div class="col-sm-6 col-lg-4 mb-4 reveal reveal-d2 animal-col" data-type="cat small young">
+        <div class="animal-card">
+          <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=600&h=420&fit=crop" alt="Mia"/>
+            <div class="card-badge badge-available"><span class="badge-dot"></span> Disponible</div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Mia</h5>
+              <span class="animal-species-tag tag-cat">Gata</span>
+            </div>
+            <div class="animal-meta">
+              <span><i class="fa-regular fa-calendar"></i> 6 meses</span>
+              <span><i class="fa-solid fa-ruler-vertical"></i> Pequeña</span>
+              <span style="color:#9CA3AF;"><i class="fa-regular fa-circle"></i> Pendiente</span>
+            </div>
+            <p class="animal-desc">Curiosa y traviesa. Llenará tu hogar de risas.</p>
+          </div>
+          <div class="card-cta-wrap">
+            <button class="btn-card-cta">Conocer a Mia <i class="fa-solid fa-arrow-right ml-1"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /row -->
+
+    <div class="text-center mt-2 reveal">
+      <button class="btn btn-outline-primary font-weight-bold px-4 py-2" style="border-radius:var(--radius-btn);font-family:'Plus Jakarta Sans',sans-serif;border-width:2px;">
+        <i class="fa-solid fa-paw mr-2"></i> Ver todos los animales
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PROCESO
+══════════════════════════════════════════ -->
+<section id="proceso" class="proceso-section py-5" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-eyebrow">Proceso</span>
+      <h2 class="section-title mb-3">Adoptar es más fácil<br/>de lo que piensas</h2>
+      <p class="section-sub mx-auto" style="max-width:480px;">Cuatro pasos simples para cambiar tu vida y la de un animal.</p>
+    </div>
+
+    <div class="step-wrap">
+      <!-- Connector line (desktop) -->
+      <div class="step-connector" id="step-connector">
+        <div class="step-connector-fill" id="step-fill"></div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-6 col-lg-3 mb-4 mb-lg-0 reveal">
+          <div class="step-card">
+            <div class="step-icon-wrap" style="background:#EDE9FE;">
+              <i class="fa-solid fa-magnifying-glass" style="color:var(--ph-primary);"></i>
+              <div class="step-number">1</div>
+            </div>
+            <div class="step-title">Explora</div>
+            <p class="step-desc">Navega los perfiles y encuentra el animal que conecte contigo.</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 mb-4 mb-lg-0 reveal reveal-d1">
+          <div class="step-card">
+            <div class="step-icon-wrap" style="background:#DBEAFE;">
+              <i class="fa-solid fa-file-lines" style="color:#3B82F6;"></i>
+              <div class="step-number">2</div>
+            </div>
+            <div class="step-title">Solicita</div>
+            <p class="step-desc">Llena el formulario de solicitud de adopción. Rápido y gratuito.</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 reveal reveal-d2">
+          <div class="step-card">
+            <div class="step-icon-wrap" style="background:#F3E8FF;">
+              <i class="fa-solid fa-handshake" style="color:#A855F7;"></i>
+              <div class="step-number">3</div>
+            </div>
+            <div class="step-title">Entrevista</div>
+            <p class="step-desc">Conversamos contigo para asegurar la mejor compatibilidad.</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 reveal reveal-d3">
+          <div class="step-card">
+            <div class="step-icon-wrap" style="background:#D1FAE5;">
+              <i class="fa-solid fa-house-heart" style="color:var(--ph-accent);"></i>
+              <div class="step-number last">4</div>
+            </div>
+            <div class="step-title">¡Bienvenido a casa!</div>
+            <p class="step-desc">Tu nuevo compañero llega a su hogar definitivo. ¡Celebra!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 reveal">
+      <a href="#animales" class="btn-hero-primary" style="display:inline-flex;">
+        <i class="fa-solid fa-arrow-right"></i> Comenzar el proceso
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     EVENTOS
+══════════════════════════════════════════ -->
+<section id="eventos" class="py-5" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+  <div class="container">
+    <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-between mb-4 reveal" style="gap:1rem;">
+      <div>
+        <span class="section-eyebrow">Próximamente</span>
+        <h2 class="section-title mb-0">Eventos del refugio</h2>
+      </div>
+      <a href="#" class="text-primary font-weight-bold" style="font-size:.875rem;white-space:nowrap;">
+        Ver todos <i class="fa-solid fa-arrow-right ml-1"></i>
+      </a>
+    </div>
+
+    <div class="row flex-nowrap flex-md-wrap events-row">
+      <!-- Event 1 -->
+      <div class="col-10 col-md-4 event-col mb-4 reveal">
+        <div class="event-card">
+          <div class="position-relative">
+            <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600&h=280&fit=crop" alt="Evento"/>
+            <div class="event-date-badge"><div class="day">15</div><div class="mon">Jun</div></div>
+          </div>
+          <div class="event-body">
+            <h5 class="event-title">Feria de Adopción Masiva</h5>
+            <div class="event-location"><i class="fa-solid fa-location-dot"></i> Parque Central, San Pedro Sula</div>
+            <p class="event-desc">Más de 30 animales en busca de hogar. Vacunación gratuita incluida.</p>
+            <a href="#" class="event-link">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size:.7rem;"></i></a>
+          </div>
+        </div>
+      </div>
+      <!-- Event 2 -->
+      <div class="col-10 col-md-4 event-col mb-4 reveal reveal-d1">
+        <div class="event-card">
+          <div class="position-relative">
+            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&h=280&fit=crop&crop=top" alt="Evento"/>
+            <div class="event-date-badge" style="background:var(--ph-accent);box-shadow:0 4px 12px rgba(16,185,129,.3);"><div class="day">22</div><div class="mon">Jun</div></div>
+          </div>
+          <div class="event-body">
+            <h5 class="event-title">Taller de Tenencia Responsable</h5>
+            <div class="event-location"><i class="fa-solid fa-location-dot"></i> Refugio PetsHome · Colonia Palmira</div>
+            <p class="event-desc">Aprende sobre cuidado animal, nutrición y bienestar. Cupos limitados.</p>
+            <a href="#" class="event-link">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size:.7rem;"></i></a>
+          </div>
+        </div>
+      </div>
+      <!-- Event 3 -->
+      <div class="col-10 col-md-4 event-col mb-4 reveal reveal-d2">
+        <div class="event-card">
+          <div class="position-relative">
+            <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=600&h=280&fit=crop&crop=center" alt="Evento"/>
+            <div class="event-date-badge" style="background:var(--ph-dark);box-shadow:0 4px 12px rgba(0,0,0,.2);"><div class="day">05</div><div class="mon">Jul</div></div>
+          </div>
+          <div class="event-body">
+            <h5 class="event-title">Caminata Solidaria por los Animales</h5>
+            <div class="event-location"><i class="fa-solid fa-location-dot"></i> Paseo del Bosque</div>
+            <p class="event-desc">Súmate con tu mascota. Fondos recaudados van al fondo de rescate.</p>
+            <a href="#" class="event-link">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size:.7rem;"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     REFUGIO
+══════════════════════════════════════════ -->
+<section id="refugio" class="refugio-section py-5" style="padding-top:5rem!important;padding-bottom:5rem!important;">
+  <div class="container">
+    <div class="row align-items-center" style="gap-y:3rem;">
+      <!-- Collage -->
+      <div class="col-lg-6 mb-5 mb-lg-0 reveal">
+        <div class="position-relative" style="padding-right:1rem;">
+          <div class="collage-grid">
+            <img src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=400&h=220&fit=crop" alt="Refugio"/>
+            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=220&fit=crop" alt="Voluntarios"/>
+            <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=400&h=460&fit=crop" class="c-tall" alt="Animales" style="grid-column:2;grid-row:1/3;"/>
+          </div>
+          <div class="years-badge">
+            <div class="ynum">8+</div>
+            <div class="ytxt">años ayudando</div>
+          </div>
+        </div>
+      </div>
+      <!-- Text -->
+      <div class="col-lg-6 reveal reveal-d1">
+        <span class="section-eyebrow">Nuestra historia</span>
+        <h2 class="section-title mb-3">Un refugio construido<br/>con amor</h2>
+        <p class="section-sub mb-4">Nacimos en 2016 con una misión simple: ningún animal debería sufrir la falta de amor. Hoy somos un equipo de voluntarios apasionados que rescata, rehabilita y encuentra hogares permanentes.</p>
+
+        <div class="mb-4">
+          <div class="value-item">
+            <div class="value-icon" style="background:var(--ph-primary);">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <div>
+              <div class="value-title">Bienestar animal primero</div>
+              <p class="value-desc">Cada decisión gira en torno al bienestar físico y emocional de los animales.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:var(--ph-accent);">
+              <i class="fa-solid fa-people-group"></i>
+            </div>
+            <div>
+              <div class="value-title">Comunidad y voluntariado</div>
+              <p class="value-desc">Más de 80 voluntarios activos construyen esta familia cada semana.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#3B82F6;">
+              <i class="fa-solid fa-syringe"></i>
+            </div>
+            <div>
+              <div class="value-title">Atención veterinaria completa</div>
+              <p class="value-desc">Vacunas, desparasitación y atención médica para todos los animales.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="btn-hero-ghost" style="display:inline-flex;">
+          <i class="fa-solid fa-binoculars"></i> Conoce nuestro refugio
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════ -->
+<section class="cta-banner">
+  <div class="container text-center position-relative" style="z-index:1;">
+    <h2 class="text-white mb-3" style="font-size:clamp(1.75rem,3vw,2.5rem);font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;">¿Listo para cambiar una vida?</h2>
+    <p class="mb-4" style="color:rgba(255,255,255,.8);font-size:1.0625rem;">Ellos ya te están esperando. Da el primer paso hoy.</p>
+    <div class="d-flex flex-wrap justify-content-center" style="gap:.75rem;">
+      <a href="#animales" class="btn-cta-white">
+        <i class="fa-solid fa-paw"></i> Ver animales
+      </a>
+      <a href="#" class="btn-cta-outline">
+        <i class="fa-solid fa-hands-holding-heart"></i> Ser voluntario
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row">
+      <!-- Brand -->
+      <div class="col-sm-6 col-lg-4 mb-4 mb-lg-0">
+        <div class="d-flex align-items-center mb-2" style="gap:.625rem;">
+          <div class="nav-logo-icon"><i class="fa-solid fa-paw"></i></div>
+          <span class="footer-brand-name">PetsHome</span>
+        </div>
+        <p class="footer-tagline">Conectando corazones con patitas desde 2016.</p>
+        <div class="footer-social mt-3">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <!-- Links: Adopción -->
+      <div class="col-6 col-sm-3 col-lg-2 mb-4 mb-lg-0 offset-lg-1">
+        <div class="footer-heading">Adopción</div>
+        <ul class="footer-links">
+          <li><a href="#animales"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Animales</a></li>
+          <li><a href="#proceso"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Proceso</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Requisitos</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> FAQ</a></li>
+        </ul>
+      </div>
+      <!-- Links: Participa -->
+      <div class="col-6 col-sm-3 col-lg-2 mb-4 mb-lg-0">
+        <div class="footer-heading">Participa</div>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Voluntarios</a></li>
+          <li><a href="#eventos"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Eventos</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Donaciones</a></li>
+          <li><a href="#refugio"><i class="fa-solid fa-chevron-right" style="font-size:.65rem;color:var(--ph-primary);"></i> Nosotros</a></li>
+        </ul>
+      </div>
+      <!-- Contact -->
+      <div class="col-sm-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="footer-heading">Contacto</div>
+        <ul class="footer-links">
+          <li><a href="mailto:hola@petshome.hn"><i class="fa-regular fa-envelope"></i> hola@petshome.hn</a></li>
+          <li><a href="tel:+50499990000"><i class="fa-solid fa-phone"></i> +504 9999-0000</a></li>
+          <li><a href="#"><i class="fa-solid fa-location-dot"></i> San Pedro Sula, HN</a></li>
+          <li><a href="#"><i class="fa-regular fa-clock"></i> Lun–Sab · 8am–5pm</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider"/>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center footer-bottom" style="gap:.5rem;">
+      <span>© 2024 PetsHome. Todos los derechos reservados.</span>
+      <div class="d-flex" style="gap:1.25rem;">
+        <a href="#" style="color:#4B5563;font-size:.8125rem;text-decoration:none;" class="hover-primary">Privacidad</a>
+        <a href="#" style="color:#4B5563;font-size:.8125rem;text-decoration:none;">Términos</a>
+        <a href="#" style="color:#4B5563;font-size:.8125rem;text-decoration:none;">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ── Sticky navbar ──
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 24), { passive: true });
+
+  // ── Scroll reveal + stats + timeline ──
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+
+      // Counters
+      if (e.target.hasAttribute('data-stat') && !e.target.dataset.counted) {
+        e.target.dataset.counted = '1';
+        e.target.querySelectorAll('.stat-num').forEach(el => {
+          const target = +el.dataset.target;
+          let cur = 0;
+          const step = Math.ceil(target / 55);
+          const t = setInterval(() => {
+            cur = Math.min(cur + step, target);
+            el.textContent = cur + '+';
+            if (cur >= target) clearInterval(t);
+          }, 24);
+        });
+      }
+
+      // Timeline
+      if (e.target.id === 'step-connector') {
+        document.getElementById('step-fill').classList.add('animate');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+  const sc = document.getElementById('step-connector');
+  if (sc) revObs.observe(sc);
+
+  // ── Filter chips ──
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const f = chip.dataset.filter;
+      document.querySelectorAll('.animal-col').forEach(col => {
+        col.style.display = (f === 'all' || (col.dataset.type || '').includes(f)) ? '' : 'none';
+      });
+    });
+  });
+</script>
+</body>
+</html>

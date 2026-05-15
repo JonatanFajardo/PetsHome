@@ -1,0 +1,220 @@
+@model PetsHome.Business.Models.LandingAnimalesViewModel
+@using System
+@{
+    Layout = null;
+    var filtro = Model.FiltroActivo.ToLower();
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animales disponibles — PetsHome</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="~/css/landing-page.css" />
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, var(--ph-primary) 0%, var(--ph-primary-dk) 100%);
+      padding: 5rem 0 3rem;
+      color: #fff;
+    }
+    .page-header h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+    .page-header p { opacity: .85; }
+    .animals-section { padding: 3rem 0 5rem; }
+    .back-link { color: rgba(255,255,255,.8); font-size: .875rem; text-decoration: none; }
+    .back-link:hover { color: #fff; }
+    .results-count { color: var(--ph-gray); font-size: .9rem; margin-bottom: 1.5rem; }
+    .results-count strong { color: var(--ph-dark); }
+  </style>
+</head>
+<body>
+
+<!-- Navbar simple -->
+<nav class="navbar navbar-expand-md py-2" style="background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index","Landing")" style="gap:.625rem;">
+      <div class="nav-logo-icon"><i class="fa-solid fa-paw"></i></div>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:var(--ph-dark);">PetsHome</span>
+    </a>
+    <a href="@Url.Action("Index","Landing")" class="btn btn-outline-primary btn-sm" style="border-radius:var(--radius-btn);">
+      <i class="fa-solid fa-arrow-left mr-1"></i> Volver al inicio
+    </a>
+  </div>
+</nav>
+
+<!-- Header -->
+<div class="page-header">
+  <div class="container">
+    <a href="@Url.Action("Index","Landing")" class="back-link mb-3 d-inline-block">
+      <i class="fa-solid fa-arrow-left mr-1"></i> Inicio
+    </a>
+    <h1 class="mb-2">Animales disponibles</h1>
+    <p class="mb-0">Cada uno espera un hogar. Quizás el tuyo es el indicado.</p>
+  </div>
+</div>
+
+<!-- Animales -->
+<section class="animals-section">
+  <div class="container">
+
+    <!-- Filtros -->
+    <div class="filter-bar mb-4">
+      <a class="filter-chip @(filtro == "todos" ? "active" : "")" href="@Url.Action("Animales","Landing")">
+        <i class="fa-solid fa-border-all"></i> Todos
+      </a>
+      <a class="filter-chip @(filtro == "perros" ? "active" : "")" href="@Url.Action("Animales","Landing")?filtro=perros">
+        <i class="fa-solid fa-dog"></i> Perros
+      </a>
+      <a class="filter-chip @(filtro == "gatos" ? "active" : "")" href="@Url.Action("Animales","Landing")?filtro=gatos">
+        <i class="fa-solid fa-cat"></i> Gatos
+      </a>
+      <a class="filter-chip @(filtro == "jovenes" ? "active" : "")" href="@Url.Action("Animales","Landing")?filtro=jovenes">
+        <i class="fa-solid fa-seedling"></i> Jóvenes
+      </a>
+      <a class="filter-chip @(filtro == "adultos" ? "active" : "")" href="@Url.Action("Animales","Landing")?filtro=adultos">
+        <i class="fa-solid fa-star"></i> Adultos
+      </a>
+      <a class="filter-chip @(filtro == "pequenos" ? "active" : "")" href="@Url.Action("Animales","Landing")?filtro=pequenos">
+        <i class="fa-solid fa-compress"></i> Pequeños
+      </a>
+      <a class="filter-chip @(filtro == "grandes" ? "active" : "")" href="@Url.Action("Animales","Landing")?filtro=grandes">
+        <i class="fa-solid fa-expand"></i> Grandes
+      </a>
+    </div>
+
+    <!-- Contador -->
+    <p class="results-count">
+      Mostrando <strong id="visible-count">@Model.Mascotas.Count</strong> animales disponibles
+    </p>
+
+    <!-- Grid -->
+    <div class="row" id="animal-grid">
+      @foreach (var mascota in Model.Mascotas)
+      {
+        var imgSrc = mascota.masc_Imagen != null && mascota.masc_Imagen.Length > 0
+            ? $"data:image/jpeg;base64,{Convert.ToBase64String(mascota.masc_Imagen)}"
+            : "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=420&fit=crop";
+        var enProceso = mascota.masc_EsReservado == true;
+        var raza      = (mascota.raza_Descripcion ?? "").ToLower();
+        var talla     = (mascota.tall_Descripcion ?? "").ToLower();
+        var edadLabel = mascota.masc_Edad.HasValue
+            ? (mascota.masc_Edad < 12 ? $"{mascota.masc_Edad} meses" : $"{mascota.masc_Edad / 12} año(s)")
+            : "N/D";
+        var esJoven   = mascota.masc_Edad.HasValue && mascota.masc_Edad < 24;
+        var esPequeno = talla.Contains("pequeño") || talla.Contains("mini") || talla.Contains("toy");
+        var esGrande  = talla.Contains("grande") || talla.Contains("extra");
+        <div class="col-sm-6 col-lg-4 mb-4 animal-col"
+             data-raza="@raza"
+             data-talla="@talla"
+             data-edad="@(mascota.masc_Edad ?? 0)"
+             data-joven="@(esJoven ? "1" : "0")"
+             data-pequeno="@(esPequeno ? "1" : "0")"
+             data-grande="@(esGrande ? "1" : "0")">
+          <div class="animal-card h-100 d-flex flex-column">
+            <div class="card-img-wrap">
+              <img alt="@mascota.masc_Nombre" src="@imgSrc" style="width:100%;height:240px;object-fit:cover;"/>
+              @if (enProceso)
+              {
+                <div class="card-badge badge-inprogress"><i class="fa-solid fa-clock"></i> En proceso</div>
+              }
+              else
+              {
+                <div class="card-badge badge-available"><span class="badge-dot"></span> Disponible</div>
+              }
+            </div>
+            <div class="card-body flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <h5 class="mb-0" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">@mascota.masc_Nombre</h5>
+                <span class="animal-species-tag">@mascota.raza_Descripcion</span>
+              </div>
+              <div class="animal-meta mb-2">
+                @if (mascota.masc_Edad.HasValue)
+                {
+                  <span><i class="fa-regular fa-calendar"></i> @edadLabel</span>
+                }
+                @if (!string.IsNullOrEmpty(mascota.masc_Sexo))
+                {
+                  <span><i class="fa-solid fa-@(mascota.masc_Sexo == "M" ? "mars" : "venus")"></i> @(mascota.masc_Sexo == "M" ? "Macho" : "Hembra")</span>
+                }
+                @if (!string.IsNullOrEmpty(mascota.tall_Descripcion))
+                {
+                  <span><i class="fa-solid fa-ruler-vertical"></i> @mascota.tall_Descripcion</span>
+                }
+                @if (!string.IsNullOrEmpty(mascota.masc_Color))
+                {
+                  <span><i class="fa-solid fa-palette"></i> @mascota.masc_Color</span>
+                }
+              </div>
+              @if (!string.IsNullOrEmpty(mascota.masc_Historia))
+              {
+                <p class="animal-desc mb-1">@(mascota.masc_Historia.Length > 90 ? mascota.masc_Historia.Substring(0, 90) + "…" : mascota.masc_Historia)</p>
+              }
+              <div class="animal-meta mt-1">
+                <span><i class="fa-solid fa-house"></i> @mascota.refg_Nombre</span>
+              </div>
+            </div>
+            <div class="card-cta-wrap">
+              <a class="btn-card-cta" href="@Url.Action("Animal","Landing", new { id = mascota.masc_Id })">Conocer a @mascota.masc_Nombre <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (!Model.Mascotas.Any())
+      {
+        <div class="col-12 text-center py-5">
+          <i class="fa-solid fa-paw mb-3" style="font-size:3rem;color:var(--ph-border);"></i>
+          <p style="color:var(--ph-gray);">No hay animales disponibles en este momento.</p>
+          <a href="@Url.Action("Index","Landing")" class="btn-hero-primary mt-2" style="display:inline-flex;">Volver al inicio</a>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer mínimo -->
+<footer style="background:var(--ph-dark);padding:1.5rem 0;text-align:center;">
+  <span style="color:rgba(255,255,255,.5);font-size:.8125rem;">© 2024 PetsHome. Todos los derechos reservados.</span>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const filtroActivo = '@filtro';
+
+  function applyFilter(f) {
+    const cols = document.querySelectorAll('.animal-col');
+    let visible = 0;
+    cols.forEach(col => {
+      const raza    = col.dataset.raza    || '';
+      const esJoven   = col.dataset.joven   === '1';
+      const esPequeno = col.dataset.pequeno === '1';
+      const esGrande  = col.dataset.grande  === '1';
+      let show = true;
+      if (f === 'perros')   show = raza.includes('perro') || raza.includes('labrador') || raza.includes('golden') || raza.includes('husky') || raza.includes('bulldog') || raza.includes('pastor') || raza.includes('poodle') || raza.includes('beagle') || raza.includes('dachshund') || raza.includes('rottweiler') || raza.includes('schnauzer') || raza.includes('boxer') || raza.includes('pug');
+      else if (f === 'gatos')    show = raza.includes('gato') || raza.includes('siamés') || raza.includes('persa') || raza.includes('maine') || raza.includes('bengal') || raza.includes('ragdoll') || raza.includes('angora');
+      else if (f === 'jovenes')  show = esJoven;
+      else if (f === 'adultos')  show = !esJoven;
+      else if (f === 'pequenos') show = esPequeno;
+      else if (f === 'grandes')  show = esGrande;
+      if (f === 'todos' || !f)   show = true;
+      col.style.display = show ? '' : 'none';
+      if (show) visible++;
+      }
+      col.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('visible-count').textContent = visible;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (filtroActivo && filtroActivo !== 'todos') {
+      applyFilter(filtroActivo);
+    }
+  });
+</script>
+</body>
+</html>

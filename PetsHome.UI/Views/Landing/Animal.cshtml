@@ -1,0 +1,361 @@
+@model PetsHome.Business.Models.LandingAnimalDetalleViewModel
+@using System
+@{
+    Layout = null;
+    var m = Model.Mascota;
+    var imgSrc = m.masc_Imagen != null && m.masc_Imagen.Length > 0
+        ? $"data:image/jpeg;base64,{Convert.ToBase64String(m.masc_Imagen)}"
+        : "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=900&h=900&fit=crop";
+    var edadLabel = m.masc_Edad.HasValue
+        ? (m.masc_Edad < 12 ? $"{m.masc_Edad} meses" : $"{m.masc_Edad / 12} año(s)")
+        : "No registrada";
+    var sexoLabel = m.masc_Sexo == "M" ? "Macho" : m.masc_Sexo == "F" ? "Hembra" : "N/D";
+    var sexoIcon  = m.masc_Sexo == "M" ? "mars" : "venus";
+    var disponible = m.masc_EsAdoptado != true && m.masc_EsReservado != true;
+    var badgeClass = disponible ? "badge-available" : "badge-inprogress";
+    var badgeText  = disponible ? "Disponible" : (m.masc_EsReservado == true ? "En proceso" : "Adoptado");
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>@m.masc_Nombre — PetsHome</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="~/css/landing-page.css"/>
+  <style>
+    /* ── Layout ── */
+    .detail-page { min-height: 100vh; background: #f8f9fe; }
+
+    /* ── Navbar ── */
+    .detail-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(108,92,231,.08);
+      padding: .75rem 0;
+    }
+
+    /* ── Hero split ── */
+    .hero-split { padding-top: 72px; min-height: 100vh; display: flex; }
+    .hero-photo-col {
+      position: sticky; top: 72px; height: calc(100vh - 72px);
+      overflow: hidden; background: #1a1030;
+    }
+    .hero-photo-col img {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: .92;
+      transition: transform .6s ease;
+    }
+    .hero-photo-col:hover img { transform: scale(1.04); }
+    .hero-photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(14,23,38,.7) 0%, transparent 60%);
+    }
+    .hero-photo-bottom {
+      position: absolute; bottom: 2rem; left: 2rem; right: 2rem;
+    }
+    .hero-info-col {
+      overflow-y: auto;
+      padding: 4.5rem 4rem 5rem;
+      background: #f8f9fe;
+      max-width: 700px;
+    }
+
+    /* ── Badge ── */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .35rem .9rem; border-radius: 999px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .02em;
+      margin-bottom: 1.25rem;
+    }
+    .pill-available { background: #d4f5f7; color: #0e8b92; }
+    .pill-inprogress { background: #fef3c7; color: #92400e; }
+    .pill-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+    /* ── Name ── */
+    .animal-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 900; font-size: clamp(2.25rem, 4vw, 3rem);
+      color: #0e1726; line-height: 1.1; margin-bottom: .5rem;
+    }
+    .animal-breed {
+      font-size: 1rem; color: var(--ph-gray); margin-bottom: 2rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-tile {
+      background: #fff; border-radius: 1rem;
+      padding: 1.1rem 1.25rem;
+      border: 1px solid rgba(108,92,231,.1);
+      display: flex; align-items: center; gap: .85rem;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .stat-tile:hover { box-shadow: 0 6px 20px rgba(108,92,231,.1); transform: translateY(-2px); }
+    .stat-icon {
+      width: 42px; height: 42px; border-radius: .75rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .stat-label { font-size: .72rem; color: var(--ph-gray); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .stat-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1rem; color: #0e1726; }
+
+    /* ── Section titles ── */
+    .section-label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--ph-primary);
+      margin-bottom: .5rem;
+    }
+    .section-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1.25rem; color: #0e1726;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Historia card ── */
+    .historia-card {
+      background: #fff; border-radius: 1.25rem;
+      padding: 1.75rem; border: 1px solid rgba(108,92,231,.1);
+      margin-bottom: 1.5rem; position: relative; overflow: hidden;
+    }
+    .historia-card::before {
+      content: '\f10d';
+      font-family: 'Font Awesome 6 Free'; font-weight: 900;
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-size: 4rem; color: rgba(108,92,231,.06);
+      line-height: 1;
+    }
+    .historia-text {
+      font-family: 'Inter', sans-serif; font-size: 1rem;
+      line-height: 1.8; color: #374151;
+    }
+
+    /* ── Info chips ── */
+    .info-chip {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .4rem .9rem; border-radius: 999px;
+      background: #fff; border: 1px solid rgba(108,92,231,.15);
+      font-size: .8rem; font-weight: 600; color: #374151;
+      margin: .25rem;
+    }
+    .info-chip i { color: var(--ph-primary); font-size: .75rem; }
+
+    /* ── CTA ── */
+    .cta-box {
+      background: linear-gradient(135deg, var(--ph-primary) 0%, var(--ph-primary-dk) 100%);
+      border-radius: 1.5rem; padding: 2rem 2rem;
+      color: #fff; margin-top: 2rem;
+    }
+    .cta-box h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1.3rem; margin-bottom: .4rem;
+    }
+    .cta-box p { opacity: .85; font-size: .9rem; margin-bottom: 1.25rem; }
+    .btn-adopt {
+      background: #fff; color: var(--ph-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: .95rem;
+      padding: .75rem 1.75rem; border-radius: .75rem;
+      border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: .5rem;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-adopt:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      color: var(--ph-primary); text-decoration: none;
+    }
+    .btn-share {
+      background: rgba(255,255,255,.15); color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600; font-size: .9rem;
+      padding: .75rem 1.25rem; border-radius: .75rem;
+      border: 1px solid rgba(255,255,255,.3); cursor: pointer;
+      display: inline-flex; align-items: center; gap: .5rem;
+      transition: background .2s;
+    }
+    .btn-share:hover { background: rgba(255,255,255,.25); color: #fff; text-decoration: none; }
+
+    /* ── Mobile ── */
+    @@media (max-width: 991px) {
+      .hero-split { flex-direction: column; }
+      .hero-photo-col { position: relative; height: 55vw; min-height: 260px; }
+      .hero-info-col { padding: 2rem 1.25rem 4rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @@media (max-width: 575px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body class="detail-page">
+
+<!-- Navbar -->
+<nav class="detail-nav">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a class="d-flex align-items-center" href="@Url.Action("Index","Landing")" style="gap:.6rem;text-decoration:none;">
+      <div class="nav-logo-icon"><i class="fa-solid fa-paw"></i></div>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.05rem;color:#0e1726;">PetsHome</span>
+    </a>
+    <a href="@Url.Action("Animales","Landing")" style="font-size:.875rem;font-weight:600;color:var(--ph-gray);text-decoration:none;display:flex;align-items:center;gap:.4rem;">
+      <i class="fa-solid fa-arrow-left" style="font-size:.75rem;"></i> Ver todos los animales
+    </a>
+  </div>
+</nav>
+
+<!-- Hero Split -->
+<div class="hero-split">
+
+  <!-- Foto -->
+  <div class="col-lg-5 p-0 hero-photo-col d-none d-lg-block">
+    <img src="@imgSrc" alt="@m.masc_Nombre"/>
+    <div class="hero-photo-overlay"></div>
+    <div class="hero-photo-bottom">
+      <div class="d-flex align-items-center" style="gap:.6rem;">
+        <div class="nav-logo-icon" style="background:rgba(255,255,255,.15);backdrop-filter:blur(8px);">
+          <i class="fa-solid fa-paw" style="color:#fff;"></i>
+        </div>
+        <div>
+          <div style="color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;">@m.masc_Nombre</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.8rem;">@m.refg_Nombre</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="col-lg-7 hero-info-col">
+
+    <!-- Foto mobile -->
+    <div class="d-lg-none mb-3" style="height:55vw;min-height:240px;overflow:hidden;border-radius:0 0 1.5rem 1.5rem;position:relative;">
+      <img src="@imgSrc" alt="@m.masc_Nombre" style="width:100%;height:100%;object-fit:cover;"/>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,23,38,.5) 0%,transparent 60%);"></div>
+    </div>
+
+    <!-- Status pill -->
+    <div class="status-pill @(disponible ? "pill-available" : "pill-inprogress")">
+      <span class="pill-dot"></span>
+      @badgeText
+    </div>
+
+    <!-- Nombre -->
+    <h1 class="animal-name">@m.masc_Nombre</h1>
+    <p class="animal-breed">
+      <i class="fa-solid fa-dna mr-1" style="color:var(--ph-primary);"></i>@m.raza_Descripcion
+      @if (!string.IsNullOrEmpty(m.proc_Descripcion))
+      {
+        <span class="mx-2" style="color:#d1d5db;">·</span>
+        <i class="fa-solid fa-location-dot mr-1" style="color:var(--ph-accent);"></i>@m.proc_Descripcion
+      }
+    </p>
+
+    <!-- Stats grid -->
+    <div class="stats-grid">
+      <div class="stat-tile">
+        <div class="stat-icon" style="background:#ede9fe;">
+          <i class="fa-regular fa-calendar" style="color:var(--ph-primary);"></i>
+        </div>
+        <div>
+          <div class="stat-label">Edad</div>
+          <div class="stat-value">@edadLabel</div>
+        </div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-icon" style="background:@(m.masc_Sexo == "M" ? "#dbeafe" : "#fce7f3");">
+          <i class="fa-solid fa-@sexoIcon" style="color:@(m.masc_Sexo == "M" ? "#3b82f6" : "#ec4899");"></i>
+        </div>
+        <div>
+          <div class="stat-label">Sexo</div>
+          <div class="stat-value">@sexoLabel</div>
+        </div>
+      </div>
+      @if (m.masc_Peso.HasValue)
+      {
+        <div class="stat-tile">
+          <div class="stat-icon" style="background:#d1fae5;">
+            <i class="fa-solid fa-weight-scale" style="color:#059669;"></i>
+          </div>
+          <div>
+            <div class="stat-label">Peso</div>
+            <div class="stat-value">@m.masc_Peso kg</div>
+          </div>
+        </div>
+      }
+      @if (!string.IsNullOrEmpty(m.masc_Color))
+      {
+        <div class="stat-tile">
+          <div class="stat-icon" style="background:#fef3c7;">
+            <i class="fa-solid fa-palette" style="color:#d97706;"></i>
+          </div>
+          <div>
+            <div class="stat-label">Color</div>
+            <div class="stat-value">@m.masc_Color</div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Historia -->
+    @if (!string.IsNullOrEmpty(m.masc_Historia))
+    {
+      <div class="section-label">Su historia</div>
+      <div class="section-heading">Conócenos mejor</div>
+      <div class="historia-card">
+        <p class="historia-text">@m.masc_Historia</p>
+      </div>
+    }
+
+    <!-- Refugio -->
+    <div class="mb-3">
+      <div class="section-label">Dónde encontrarme</div>
+      <div class="d-flex flex-wrap" style="gap:.5rem;">
+        <span class="info-chip"><i class="fa-solid fa-house"></i> @m.refg_Nombre</span>
+        @if (!string.IsNullOrEmpty(m.proc_Descripcion))
+        {
+          <span class="info-chip"><i class="fa-solid fa-route"></i> @m.proc_Descripcion</span>
+        }
+      </div>
+    </div>
+
+    <!-- CTA -->
+    @if (disponible)
+    {
+      <div class="cta-box">
+        <h4><i class="fa-solid fa-heart mr-2"></i>¿Quieres adoptar a @m.masc_Nombre?</h4>
+        <p>Envíanos una solicitud y nos pondremos en contacto contigo para conocerte.</p>
+        <div class="d-flex flex-wrap" style="gap:.75rem;">
+          <a href="@Url.Action("Solicitar","Landing", new { id = m.masc_Id })" class="btn-adopt">
+            <i class="fa-solid fa-paw"></i> Quiero adoptar
+          </a>
+          <a href="@Url.Action("Animales","Landing")" class="btn-share">
+            <i class="fa-solid fa-arrow-left"></i> Ver más animales
+          </a>
+        </div>
+      </div>
+    }
+    else
+    {
+      <div class="cta-box" style="background:linear-gradient(135deg,#6b7280,#4b5563);">
+        <h4><i class="fa-solid fa-clock mr-2"></i>@m.masc_Nombre ya tiene un proceso activo</h4>
+        <p>Mientras tanto, hay otros animales esperando un hogar como el tuyo.</p>
+        <a href="@Url.Action("Animales","Landing")" class="btn-adopt">
+          <i class="fa-solid fa-search"></i> Ver otros animales
+        </a>
+      </div>
+    }
+
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

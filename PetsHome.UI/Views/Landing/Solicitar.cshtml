@@ -1,0 +1,336 @@
+@model PetsHome.Business.Models.SolicitudFormViewModel
+@using System
+@{
+    Layout = null;
+    ViewData["UseFormValidation"] = true;
+    var mascota = ViewBag.Mascota as PetsHome.Business.Models.MascotaDetailsViewModel;
+    var imgSrc = mascota?.masc_Imagen != null && mascota.masc_Imagen.Length > 0
+        ? $"data:image/jpeg;base64,{Convert.ToBase64String(mascota.masc_Imagen)}"
+        : "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solicitar adopción de @mascota?.masc_Nombre — PetsHome</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="~/css/landing-page.css"/>
+  <style>
+    body { background: #f8f9fe; font-family: 'Inter', sans-serif; }
+
+    .sol-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(108,92,231,.08); padding: .75rem 0;
+    }
+
+    .sol-page { padding-top: 72px; min-height: 100vh; }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      height: 3px; background: #e5e7eb;
+      position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+    }
+    .progress-bar-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--ph-primary), var(--ph-accent));
+      transition: width .4s ease;
+    }
+
+    .sol-layout { display: flex; min-height: calc(100vh - 72px); }
+
+    /* Sidebar animal */
+    .animal-sidebar {
+      width: 340px; flex-shrink: 0;
+      background: linear-gradient(160deg, #1a1030 0%, #0e1726 100%);
+      padding: 3rem 2rem; display: flex; flex-direction: column;
+      position: sticky; top: 72px; height: calc(100vh - 72px);
+      overflow: hidden;
+    }
+    .animal-sidebar-img {
+      border-radius: 1.25rem; overflow: hidden;
+      margin-bottom: 1.5rem; position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,.4);
+    }
+    .animal-sidebar-img img { width: 100%; height: 220px; object-fit: cover; }
+    .animal-sidebar-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(14,23,38,.5) 0%, transparent 60%);
+    }
+    .sidebar-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1.5rem; color: #fff; margin-bottom: .25rem;
+    }
+    .sidebar-breed { color: rgba(255,255,255,.6); font-size: .875rem; margin-bottom: 1.5rem; }
+    .sidebar-fact {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 0; border-bottom: 1px solid rgba(255,255,255,.07);
+      color: rgba(255,255,255,.8); font-size: .875rem;
+    }
+    .sidebar-fact:last-child { border-bottom: none; }
+    .sidebar-fact i { color: var(--ph-primary); width: 16px; text-align: center; }
+    .sidebar-fact strong { color: #fff; }
+    .sidebar-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(27,169,175,.2); color: #1ba9af;
+      border: 1px solid rgba(27,169,175,.3);
+      padding: .3rem .8rem; border-radius: 999px;
+      font-size: .75rem; font-weight: 700; margin-top: auto; width: fit-content;
+    }
+
+    /* Formulario */
+    .form-col { flex: 1; padding: 3.5rem 3rem 5rem; max-width: 620px; }
+    .form-header { margin-bottom: 2.5rem; }
+    .form-header .eyebrow {
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--ph-primary); margin-bottom: .5rem;
+    }
+    .form-header h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 900; font-size: 2rem; color: #0e1726; margin-bottom: .5rem;
+    }
+    .form-header p { color: #6b7280; font-size: .95rem; }
+
+    /* Secciones del form */
+    .form-section { margin-bottom: 2rem; }
+    .form-section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: .85rem; color: #0e1726;
+      margin-bottom: 1rem; padding-bottom: .5rem;
+      border-bottom: 2px solid #ede9fe;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .form-section-title i { color: var(--ph-primary); }
+
+    /* Inputs */
+    .sol-label {
+      font-size: .8rem; font-weight: 600; color: #374151;
+      margin-bottom: .35rem; display: block;
+    }
+    .sol-input {
+      width: 100%; padding: .75rem 1rem;
+      border: 1.5px solid #e5e7eb; border-radius: .75rem;
+      font-family: 'Inter', sans-serif; font-size: .95rem; color: #0e1726;
+      background: #fff; transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .sol-input:focus {
+      border-color: var(--ph-primary);
+      box-shadow: 0 0 0 3px rgba(108,92,231,.12);
+    }
+    .sol-input.is-invalid { border-color: #ef4444; }
+    .sol-input.is-invalid:focus { box-shadow: 0 0 0 3px rgba(239,68,68,.12); }
+    .invalid-msg { font-size: .78rem; color: #ef4444; margin-top: .3rem; }
+
+    .input-icon-wrap { position: relative; }
+    .input-icon-wrap .sol-input { padding-left: 2.75rem; }
+    .input-icon-wrap .input-icon {
+      position: absolute; left: .95rem; top: 50%; transform: translateY(-50%);
+      color: #9ca3af; font-size: .9rem;
+    }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%; padding: 1rem;
+      background: linear-gradient(135deg, var(--ph-primary) 0%, var(--ph-primary-dk) 100%);
+      color: #fff; border: none; border-radius: .875rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: .6rem;
+      cursor: pointer; transition: transform .2s, box-shadow .2s;
+      margin-top: 2rem;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,92,231,.35); }
+    .btn-submit:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+
+    .privacy-note {
+      text-align: center; font-size: .78rem; color: #9ca3af; margin-top: 1rem;
+    }
+    .privacy-note i { color: var(--ph-accent); }
+
+    /* Alert error */
+    .alert-sol {
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: .75rem;
+      padding: 1rem 1.25rem; color: #991b1b; font-size: .875rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+
+    @@media (max-width: 991px) {
+      .animal-sidebar { display: none; }
+      .form-col { padding: 2rem 1.25rem 4rem; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="sol-nav">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a class="d-flex align-items-center" href="@Url.Action("Index","Landing")" style="gap:.6rem;text-decoration:none;">
+      <div class="nav-logo-icon"><i class="fa-solid fa-paw"></i></div>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.05rem;color:#0e1726;">PetsHome</span>
+    </a>
+    <a href="@Url.Action("Animal","Landing", new { id = Model.masc_Id })"
+       style="font-size:.875rem;font-weight:600;color:#6b7280;text-decoration:none;display:flex;align-items:center;gap:.4rem;">
+      <i class="fa-solid fa-arrow-left" style="font-size:.75rem;"></i> Volver a @mascota?.masc_Nombre
+    </a>
+  </div>
+</nav>
+
+<!-- Progress -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="form-progress"></div>
+</div>
+
+<div class="sol-page">
+  <div class="sol-layout">
+
+    <!-- Sidebar -->
+    <div class="animal-sidebar d-none d-lg-flex">
+      <div class="animal-sidebar-img">
+        <img src="@imgSrc" alt="@mascota?.masc_Nombre"/>
+      </div>
+      <div class="sidebar-name">@mascota?.masc_Nombre</div>
+      <div class="sidebar-breed">@mascota?.raza_Descripcion</div>
+
+      @if (mascota != null)
+      {
+        @if (mascota.masc_Edad.HasValue)
+        {
+          var edadLabel = mascota.masc_Edad < 12 ? $"{mascota.masc_Edad} meses" : $"{mascota.masc_Edad / 12} año(s)";
+          <div class="sidebar-fact"><i class="fa-regular fa-calendar"></i> <span>Edad: <strong>@edadLabel</strong></span></div>
+        }
+        @if (!string.IsNullOrEmpty(mascota.masc_Sexo))
+        {
+          <div class="sidebar-fact">
+            <i class="fa-solid fa-@(mascota.masc_Sexo == "M" ? "mars" : "venus")"></i>
+            <span>Sexo: <strong>@(mascota.masc_Sexo == "M" ? "Macho" : "Hembra")</strong></span>
+          </div>
+        }
+        @if (!string.IsNullOrEmpty(mascota.refg_Nombre))
+        {
+          <div class="sidebar-fact"><i class="fa-solid fa-house"></i> <span>Refugio: <strong>@mascota.refg_Nombre</strong></span></div>
+        }
+      }
+
+      <div class="sidebar-badge mt-4"><span style="width:7px;height:7px;border-radius:50%;background:#1ba9af;display:inline-block;"></span> Disponible para adopción</div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="form-col">
+      <div class="form-header">
+        <div class="eyebrow">Solicitud de adopción</div>
+        <h1>Cuéntanos sobre ti</h1>
+        <p>Completa el formulario y nos pondremos en contacto contigo para continuar el proceso.</p>
+      </div>
+
+      @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+      {
+        <div class="alert-sol">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          Por favor revisa los campos marcados en rojo antes de continuar.
+        </div>
+      }
+
+      <form asp-action="Solicitar" asp-controller="Landing" method="post" id="sol-form" novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="masc_Id"/>
+        <input type="hidden" asp-for="sol_Fecha"/>
+
+        <!-- Datos personales -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i class="fa-solid fa-user"></i> Datos personales
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="sol-label">Nombres <span style="color:#ef4444;">*</span></label>
+              <div class="input-icon-wrap">
+                <i class="input-icon fa-solid fa-user"></i>
+                <input asp-for="sol_Nombres" class="sol-input @(ViewData.ModelState["sol_Nombres"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Tus nombres"/>
+              </div>
+              <span asp-validation-for="sol_Nombres" class="invalid-msg"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="sol-label">Apellidos <span style="color:#ef4444;">*</span></label>
+              <div class="input-icon-wrap">
+                <i class="input-icon fa-solid fa-user"></i>
+                <input asp-for="sol_Apellidos" class="sol-input @(ViewData.ModelState["sol_Apellidos"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Tus apellidos"/>
+              </div>
+              <span asp-validation-for="sol_Apellidos" class="invalid-msg"></span>
+            </div>
+            <div class="col-12 mb-3">
+              <label class="sol-label">Número de identidad <span style="color:#ef4444;">*</span></label>
+              <div class="input-icon-wrap">
+                <i class="input-icon fa-solid fa-id-card"></i>
+                <input asp-for="sol_Identidad" class="sol-input @(ViewData.ModelState["sol_Identidad"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="0000-0000-00000" maxlength="13"/>
+              </div>
+              <span asp-validation-for="sol_Identidad" class="invalid-msg"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i class="fa-solid fa-address-book"></i> Información de contacto
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="sol-label">Correo electrónico <span style="color:#ef4444;">*</span></label>
+              <div class="input-icon-wrap">
+                <i class="input-icon fa-regular fa-envelope"></i>
+                <input asp-for="sol_Correo" type="email" class="sol-input @(ViewData.ModelState["sol_Correo"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="tu@@correo.com"/>
+              </div>
+              <span asp-validation-for="sol_Correo" class="invalid-msg"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="sol-label">Teléfono <span style="color:#ef4444;">*</span></label>
+              <div class="input-icon-wrap">
+                <i class="input-icon fa-solid fa-phone"></i>
+                <input asp-for="sol_Telefono" class="sol-input @(ViewData.ModelState["sol_Telefono"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="00000000" maxlength="8"/>
+              </div>
+              <span asp-validation-for="sol_Telefono" class="invalid-msg"></span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <i class="fa-solid fa-paw"></i> Enviar solicitud de adopción
+        </button>
+
+        <p class="privacy-note">
+          <i class="fa-solid fa-shield-halved"></i>
+          Tus datos se usan únicamente para el proceso de adopción y no se comparten con terceros.
+        </p>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Progress bar según campos llenados
+  const fields = document.querySelectorAll('.sol-input');
+  const bar = document.getElementById('form-progress');
+  function updateProgress() {
+    const filled = Array.from(fields).filter(f => f.value.trim() !== '').length;
+    bar.style.width = Math.round((filled / fields.length) * 100) + '%';
+  }
+  fields.forEach(f => f.addEventListener('input', updateProgress));
+  updateProgress();
+
+  // Disable button on submit
+  document.getElementById('sol-form').addEventListener('submit', function() {
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+  });
+</script>
+</body>
+</html>
