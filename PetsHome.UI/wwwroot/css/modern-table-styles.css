@@ -6,7 +6,7 @@
 /* Container */
 .modern-container,
 .pets-container {
-    margin: -1.5rem -1.5rem 0 -1.5rem;
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
 }
 
 /* Header púrpura completo con gradiente */
@@ -167,6 +167,31 @@
     .btn-control i {
         font-size: 14px;
     }
+
+/* Select dentro del header púrpura */
+.pets-header-full select.btn-control,
+.modern-header-full select.btn-control {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+.pets-header-full select.btn-control:hover,
+.modern-header-full select.btn-control:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.pets-header-full select.btn-control option,
+.modern-header-full select.btn-control option {
+    background: #6C5CE7;
+    color: white;
+}
 
 /* Botón de refrescar */
 .btn-icon {

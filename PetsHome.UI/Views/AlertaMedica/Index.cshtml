@@ -6,30 +6,34 @@
 }
 
 @section Styles {
+  <link rel="stylesheet" href="~/css/modern-table-styles.css" />
   <link rel="stylesheet" href="~/css/alertas-medicas.css" />
 }
 
-<div class="page">
-
-  <!-- ── PAGE HEADER ── -->
-  <div class="page-header">
-    <div class="header-left">
-      <div class="header-icon">
-        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+<div class="col-12">
+  <div class="pets-container">
+    <div class="pets-header-full">
+      <breadcrumb></breadcrumb>
+      <div class="pets-header-content">
+        <div class="pets-title-section">
+          <h2 class="text-white"><i class="fas fa-bell mr-2 text-white"></i>Alertas Médicas</h2>
+          <span class="text-white" style="font-size:12px;opacity:.8">Actualizado · @DateTime.Now.ToString("dd MMM yyyy").ToUpper() &nbsp;·&nbsp; @Model.TotalAlertas alertas activas</span>
+        </div>
+        <div class="pets-controls">
+          <div class="action-buttons" style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-control filter-pill active" data-filter="all"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;margin-right:4px"></span>Todas</button>
+            <button class="btn-control filter-pill" data-filter="vacunas"><span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;margin-right:4px"></span>Vacunas</button>
+            <button class="btn-control filter-pill" data-filter="tratamientos"><span style="width:7px;height:7px;border-radius:50%;background:#f97316;display:inline-block;margin-right:4px"></span>Tratamientos</button>
+            <button class="btn-control filter-pill" data-filter="recetas"><span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:4px"></span>Recetas</button>
+            <button class="btn-control filter-pill" data-filter="sinconsulta"><span style="width:7px;height:7px;border-radius:50%;background:#3b82f6;display:inline-block;margin-right:4px"></span>Sin consulta</button>
+          </div>
+        </div>
       </div>
-      <div class="header-text">
-        <h1>Alertas médicas</h1>
-        <p>ACTUALIZADO HOY · @DateTime.Now.ToString("dd MMM yyyy").ToUpper() &nbsp;·&nbsp; @Model.TotalAlertas ALERTAS ACTIVAS</p>
-      </div>
-    </div>
-    <div class="header-right">
-      <button class="filter-pill active" data-filter="all"><span class="pill-dot"></span>Todas</button>
-      <button class="filter-pill" data-filter="vacunas"><span class="pill-dot" style="background:var(--red)"></span>Vacunas</button>
-      <button class="filter-pill" data-filter="tratamientos"><span class="pill-dot" style="background:var(--orange)"></span>Tratamientos</button>
-      <button class="filter-pill" data-filter="recetas"><span class="pill-dot" style="background:var(--amber)"></span>Recetas</button>
-      <button class="filter-pill" data-filter="sinconsulta"><span class="pill-dot" style="background:var(--blue)"></span>Sin consulta</button>
     </div>
   </div>
+</div>
+
+<div class="page">
 
   <!-- ── STATS GRID ── -->
   <div class="stats-grid">
