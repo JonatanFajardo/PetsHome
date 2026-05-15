@@ -170,8 +170,9 @@ function buildDonutChart(d) {
 
 /* ── BREEDS LIST ───────────────────────────────────── */
 function buildBreeds(breeds) {
-  const max = breeds[0].count;
   const cont = document.getElementById('breedsList');
+  if (!cont || !breeds.length) return;
+  const max = breeds[0].count;
   cont.innerHTML = breeds.map((b,i) => `
     <div class="breed-item" style="animation-delay:${i*60}ms">
       <span class="breed-rank">#${i+1}</span>
@@ -204,6 +205,7 @@ const avatarBg = { aprobada:'#d4f5ee', pendiente:'#fff3d4', revision:'#d6ecff', 
 
 function buildRecentTable(rows) {
   const tbody = document.getElementById('recentTableBody');
+  if (!tbody) return;
   tbody.innerHTML = rows.map((r,i) => `
     <tr style="animation-delay:${i*70}ms">
       <td>
