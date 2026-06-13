@@ -1,14 +1,13 @@
 /* ===========================================
-   SIDEBAR MODERN STYLES - PETSHOME
-   Consolidated menu styles with purple theme
-   Primary Color: #6C5CE7
+   SIDEBAR DARK STYLES - PETSHOME
+   Dark purple gradient theme
+   Primary: #6366f1 / #1e1b4b
    =========================================== */
 
 /* ========================================
    1. BASE SIDEBAR STRUCTURE
    ======================================== */
 
-/* Modern system font stack */
 .sidebar-wrapper {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     width: 255px;
@@ -21,60 +20,70 @@
     user-select: none;
     -webkit-user-drag: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
-    -moz-box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
-    box-shadow: 4px 0 6px 0 rgba(85, 85, 85, 0.08), 1px 0 20px 0 rgba(0, 0, 0, 0.07), 1px 0 11px 0px rgba(0, 0, 0, 0.07);
-    border-right: 1px solid #e0e6ed;
+    box-shadow: 4px 0 24px 0 rgba(30, 27, 75, 0.35);
+    border-right: none;
     overflow: hidden;
 }
 
 .sidebar-theme {
-    background: #fff;
+    background: linear-gradient(180deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
 }
 
 /* ========================================
    2. SIDEBAR HEADER (BRAND)
    ======================================== */
 
-/* Brand header with purple gradient */
 .sidebar-wrapper .navbar-nav.theme-brand {
-    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%) !important;
-    height: 56px;
+    background: rgba(0, 0, 0, 0.2) !important;
+    height: 60px;
     padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 4px rgba(108, 92, 231, 0.15);
+    box-shadow: none;
 }
 
+/* Logo icon — gradient rounded square */
 .sidebar-wrapper .theme-logo {
-    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #818cf8, #6366f1);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 }
 
+.sidebar-wrapper .theme-logo i {
+    color: #fff !important;
+    font-size: 15px;
+    margin: 0 !important;
+}
+
 .sidebar-wrapper .theme-text a {
-    color: white !important;
-    font-size: 18px;
+    color: #ffffff !important;
+    font-size: 16px;
     font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
-    transition: opacity 0.3s;
-    letter-spacing: 0.5px;
+    transition: opacity 0.2s;
+    letter-spacing: 0.03em;
 }
 
 .sidebar-wrapper .theme-text a:hover {
-    opacity: 0.9;
+    opacity: 0.85;
 }
 
 .sidebar-wrapper .toggle-sidebar {
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     transition: color 0.2s;
 }
 
 .sidebar-wrapper .toggle-sidebar:hover {
-    color: white;
+    color: #fff;
 }
 
 .sidebar-wrapper .sidebarCollapse {
@@ -83,12 +92,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background 0.2s;
 }
 
 .sidebar-wrapper .sidebarCollapse:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .sidebar-wrapper .sidebarCollapse i {
@@ -104,7 +113,7 @@
 .sidebar-wrapper #sidebar {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 56px);
+    height: calc(100vh - 60px);
     overflow: hidden;
 }
 
@@ -112,10 +121,9 @@
     white-space: nowrap;
 }
 
-/* Menu categories container with scroll */
 #sidebar ul.menu-categories {
     position: relative;
-    padding: 20px 0 20px 0;
+    padding: 16px 0;
     margin: 0;
     width: 100%;
     overflow-y: auto;
@@ -123,31 +131,29 @@
     flex: 1 1 0;
     min-height: 0;
     scrollbar-width: thin;
-    scrollbar-color: #d1d5db #f9fafb;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
 }
 
-/* Scrollbar styling */
 #sidebar ul.menu-categories::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
 }
 
 #sidebar ul.menu-categories::-webkit-scrollbar-track {
-    background: #f9fafb;
+    background: transparent;
 }
 
 #sidebar ul.menu-categories::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
 }
 
 #sidebar ul.menu-categories::-webkit-scrollbar-thumb:hover {
-    background-color: #9ca3af;
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* User section fixed at bottom of sidebar */
 .sidebar-user-section {
-    border-top: 1px solid #eef2f7;
-    background: #fff;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.15);
     flex-shrink: 0;
     position: relative;
     z-index: 10;
@@ -163,8 +169,8 @@
    ======================================== */
 
 .sidebar-wrapper .menu {
-    margin: 0 15px 3px 15px;
-    transition: 0.3s;
+    margin: 0 10px 2px 10px;
+    transition: 0.2s;
 }
 
 .sidebar-wrapper .menu > a,
@@ -172,22 +178,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
-    color: #6b7280;
-    text-decoration: none;
-    transition: all 0.2s;
-    border-left: 4px solid transparent;
+    padding: 10px 12px;
+    color: #a5b4fc !important;
+    text-decoration: none !important;
+    transition: background 0.15s, color 0.15s;
+    border-left: none !important;
     position: relative;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 13.5px;
+    font-weight: 500;
     letter-spacing: 0;
 }
 
 .sidebar-wrapper .menu > a > div,
 .sidebar-wrapper .menu > .dropdown-toggle > div {
     align-self: center;
+    display: flex;
+    align-items: center;
 }
 
 .sidebar-wrapper .menu .dropdown-toggle:after {
@@ -196,27 +204,26 @@
 
 .sidebar-wrapper .menu > a:hover,
 .sidebar-wrapper .menu > .dropdown-toggle:hover {
-    background-color: #f9fafb;
-    text-decoration: none;
-    color: #374151;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
 }
 
 /* ========================================
-   5. MENU ITEMS - ACTIVE STATE (RED THEME)
+   5. MENU ITEMS - ACTIVE STATE
    ======================================== */
 
-/* Active menu item with purple accent */
 .sidebar-wrapper .menu.active > a,
 .sidebar-wrapper .menu.active > .dropdown-toggle,
 .sidebar-wrapper .menu > a.active,
 .sidebar-wrapper .menu > .dropdown-toggle.active {
-    background-color: #F8F9FE;
-    color: #6C5CE7;
-    border-left-color: #6C5CE7;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-left: none !important;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
-    background: #F8F9FE;
+    background: rgba(255, 255, 255, 0.15) !important;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg.feather-chevron-right {
@@ -224,27 +231,25 @@
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=false] i {
-    color: #6C5CE7;
-    stroke-width: 2px;
+    color: #ffffff !important;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=false] span {
-    color: #6C5CE7;
+    color: #ffffff !important;
     font-weight: 600;
 }
 
-/* Active menu item WHEN EXPANDED - keep purple background */
+/* Active + expanded: slightly brighter */
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] {
-    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%) !important;
+    background: rgba(99, 102, 241, 0.5) !important;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] i {
-    color: #fff;
-    stroke-width: 2px;
+    color: #fff !important;
 }
 
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] span {
-    color: #fff;
+    color: #fff !important;
     font-weight: 600;
 }
 
@@ -252,21 +257,17 @@
    6. MENU ITEMS - EXPANDED STATE
    ======================================== */
 
-/* Expanded/open menu items with purple background */
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] i {
-    color: #fff;
-    fill: rgba(255, 255, 255, 0.28);
-    stroke-width: 2px;
+    color: #fff !important;
 }
 
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] span {
-    color: #fff;
+    color: #fff !important;
     font-weight: 600;
 }
 
 #sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle[aria-expanded=true] {
-    background: var(--primary-color);
-    background: linear-gradient(135deg, #6C5CE7 0%, #5849C9 100%);
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] svg.feather-chevron-right {
@@ -281,26 +282,33 @@
     width: 20px;
     height: 20px;
     margin-right: 12px;
-    font-size: 18px;
+    font-size: 15px;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #888ea8;
+    color: #a5b4fc !important;
     vertical-align: middle;
-    stroke-width: 1px;
-    fill: rgba(172, 176, 195, 0.25);
-    transition: all 0.2s ease-in-out;
+    transition: color 0.15s;
+    opacity: 0.85;
+    fill: none !important;
+}
+
+.sidebar-wrapper .menu > a:hover i,
+.sidebar-wrapper .menu > .dropdown-toggle:hover i,
+.sidebar-wrapper .menu.active i,
+.sidebar-wrapper .menu > .dropdown-toggle[aria-expanded=true] i {
+    color: #fff !important;
+    opacity: 1;
 }
 
 .sidebar-wrapper .menu svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
     transition: transform 0.2s;
 }
 
-/* Chevron arrow rotation */
 .sidebar-wrapper .menu > a[aria-expanded="true"] svg.feather-chevron-right,
 .sidebar-wrapper .menu > .dropdown-toggle[aria-expanded="true"] svg.feather-chevron-right {
     transform: rotate(90deg);
@@ -309,12 +317,15 @@
 #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
     vertical-align: middle;
     margin-right: 0;
-    width: 15px;
+    width: 14px;
+    color: #a5b4fc;
+    opacity: 0.7;
 }
 
-#sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle:not([aria-expanded=true]):hover svg:not(.feather-chevron-right),
-#sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle:hover svg:not(.feather-chevron-right) {
-    margin-right: 22px;
+#sidebar ul.menu-categories li.menu > .dropdown-toggle:hover svg.feather-chevron-right,
+#sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] svg.feather-chevron-right {
+    color: #fff;
+    opacity: 1;
 }
 
 /* ========================================
@@ -322,9 +333,10 @@
    ======================================== */
 
 .sidebar-wrapper .submenu {
-    background-color: #f9fafb;
-    padding: 0;
-    margin: 0;
+    background: transparent;
+    padding: 2px 0 4px 0;
+    margin: 0 0 0 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-wrapper .submenu li {
@@ -332,70 +344,71 @@
 }
 
 .sidebar-wrapper .submenu li a {
-    display: block;
-    padding: 10px 16px 10px 52px;
-    padding-left: 61px;
-    color: #6b7280;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.2s;
-    border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px 8px 20px;
+    color: #a5b4fc !important;
+    text-decoration: none !important;
+    font-size: 12.5px;
+    font-weight: 400;
+    transition: background 0.15s, color 0.15s;
+    border-left: none !important;
+    border-radius: 8px;
     position: relative;
+    margin: 1px 6px 1px 0;
 }
 
-/* Submenu bullet points */
+/* Remove default bullet dots */
 #sidebar ul.menu-categories li.menu ul.submenu > li a:before {
-    content: "";
-    background-color: #d1d5db;
-    position: absolute;
-    height: 3px;
-    width: 3px;
-    top: 22.5px;
-    left: 50px;
-    border-radius: 50%;
+    display: none;
 }
 
 .sidebar-wrapper .submenu li a:hover {
-    background-color: #f3f4f6;
-    color: #374151;
-    padding-left: 65px;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    padding-left: 20px;
 }
 
 #sidebar ul.menu-categories ul.submenu > li a:hover {
-    color: #6C5CE7;
+    color: #ffffff !important;
 }
 
-#sidebar ul.menu-categories ul.submenu > li a:hover:before {
-    background-color: #6C5CE7 !important;
+/* Small dot indicator on active submenu item */
+.sidebar-wrapper .submenu li a.active::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #a5b4fc;
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
-/* Active submenu item */
 .sidebar-wrapper .submenu li a.active {
-    color: #6C5CE7;
-    background-color: #F8F9FE;
-    border-left-color: #6C5CE7;
+    color: #ffffff !important;
+    background: rgba(99, 102, 241, 0.4) !important;
+    border-left: none !important;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12.5px;
 }
 
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a:before {
-    background-color: #6C5CE7;
+    display: none;
 }
 
 #sidebar ul.menu-categories ul.submenu > li.active a {
-    color: #6C5CE7;
-    font-size: 14px;
-    font-weight: 700;
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 600;
 }
 
 #sidebar ul.menu-categories ul.submenu li > [aria-expanded=true]:before {
-    background-color: #6C5CE7 !important;
+    display: none;
 }
 
 #sidebar ul.menu-categories ul.submenu li > a[aria-expanded=true] {
-    color: #6C5CE7;
-    font-size: 14px;
+    color: #ffffff;
+    font-size: 12.5px;
 }
 
 /* ========================================
@@ -404,36 +417,18 @@
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a {
     position: relative;
-    padding: 10px 12px 10px 48px;
-    padding-left: 13px;
-    margin-left: 62px;
-    font-size: 11px;
-    color: #506690;
+    padding: 8px 12px 8px 32px;
+    font-size: 12px;
+    color: #a5b4fc;
 }
 
-#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a {
-    color: #6C5CE7;
-}
-
+#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a,
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover {
-    color: #6C5CE7;
-}
-
-#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover:before {
-    background-color: #6C5CE7;
+    color: #ffffff;
 }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:before {
-    content: "";
-    background-color: #515365;
-    position: absolute;
-    top: 15px !important;
-    border-radius: 50%;
-    left: 0;
-}
-
-#sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a:before {
-    background-color: #6C5CE7;
+    display: none;
 }
 
 /* ========================================
@@ -445,13 +440,14 @@
 }
 
 .sidebar-closed #sidebar ul.menu-categories li.menu {
-    margin: 0px 8px;
+    margin: 0 6px;
 }
 
 .sidebar-closed #sidebar ul.menu-categories li.menu > .dropdown-toggle {
     padding: 11px 7px;
     transition: 0.6s;
     position: relative;
+    justify-content: center;
 }
 
 .sidebar-closed #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
@@ -477,9 +473,9 @@
     margin-right: 0;
 }
 
-/* Hover state when collapsed */
+/* Hover restore when collapsed */
 .sidebar-closed #sidebar:hover ul.menu-categories li.menu {
-    margin: 0px 15px 3px 15px;
+    margin: 0 10px 2px 10px;
 }
 
 .sidebar-closed > .sidebar-wrapper:hover {
@@ -487,30 +483,19 @@
 }
 
 .sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories {
-    padding: 20px 0 20px 0;
-}
-
-.sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true]:before {
-    display: none;
+    padding: 16px 0;
 }
 
 .sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
     display: inline-block;
 }
 
-.sidebar-closed .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] i {
-    padding: 0;
-    background: transparent;
-    border-radius: 0;
-    border: none;
-}
-
 .sidebar-closed > .sidebar-wrapper:hover #sidebar ul.menu-categories li.menu > .dropdown-toggle {
-    padding: 14px 10px;
+    padding: 10px 12px;
     transition: 0.6s;
+    justify-content: space-between;
 }
 
-/* Hide user section when sidebar is collapsed */
 .sidebar-closed .sidebar-user-section {
     display: none;
 }
@@ -519,7 +504,6 @@
     display: block;
 }
 
-/* Restore text on hover when collapsed */
 .sidebar-closed > .sidebar-wrapper:hover .theme-text,
 .sidebar-closed > .sidebar-wrapper:hover .menu span {
     display: inline;
@@ -532,7 +516,7 @@
 .sidebar-closed > .sidebar-wrapper:hover .menu > a,
 .sidebar-closed > .sidebar-wrapper:hover .menu > .dropdown-toggle {
     justify-content: space-between;
-    padding: 12px 16px;
+    padding: 10px 12px;
 }
 
 .sidebar-closed > .sidebar-wrapper:hover .menu i {
@@ -540,21 +524,67 @@
 }
 
 /* ========================================
-   11. SMOOTH TRANSITIONS
+   11. USER SECTION - DARK THEME OVERRIDES
    ======================================== */
 
-.sidebar-wrapper * {
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+.sidebar-user-section .user-name {
+    color: #ffffff !important;
+    font-size: 12.5px;
+    font-weight: 500;
 }
 
-/* Better focus states */
-.sidebar-wrapper a:focus {
-    outline: none;
-    box-shadow: inset 0 0 0 2px rgba(108, 92, 231, 0.2);
+.sidebar-user-section .user-role {
+    color: #a5b4fc !important;
+    font-size: 11px;
+}
+
+.sidebar-user-section .user-avatar-icon {
+    color: #a5b4fc !important;
+    font-size: 36px;
+}
+
+.sidebar-user-section .user-avatar {
+    border-color: rgba(165, 180, 252, 0.4) !important;
+}
+
+.sidebar-user-section .btn-logout {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none !important;
+    color: #a5b4fc !important;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-user-section .btn-logout:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.sidebar-user-section .btn-logout i {
+    color: inherit;
 }
 
 /* ========================================
-   12. RESPONSIVE ADJUSTMENTS
+   12. SMOOTH TRANSITIONS
+   ======================================== */
+
+.sidebar-wrapper .menu > a,
+.sidebar-wrapper .menu > .dropdown-toggle,
+.sidebar-wrapper .submenu li a {
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-wrapper a:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(165, 180, 252, 0.25);
+}
+
+/* ========================================
+   13. RESPONSIVE ADJUSTMENTS
    ======================================== */
 
 @media (max-width: 768px) {
@@ -563,21 +593,13 @@
     }
 
     .sidebar-wrapper .theme-text a {
-        font-size: 16px;
+        font-size: 15px;
     }
 }
 
 @media (max-width: 991px) {
     #content {
         margin-left: 0;
-    }
-
-    #sidebar .theme-brand {
-        border-radius: 0;
-    }
-
-    .sidebar-closed #sidebar .theme-brand {
-        padding: 0.9px 12px 0.9px 24px;
     }
 
     .main-container:not(.sbar-open) .sidebar-wrapper,
@@ -605,9 +627,6 @@
 
     #sidebar {
         height: 100vh !important;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        -webkit-transform: translate3d(0, 0, 0);
     }
 }
 
@@ -624,7 +643,7 @@
 }
 
 /* ========================================
-   13. PERFECT SCROLLBAR INTEGRATION
+   14. PERFECT SCROLLBAR INTEGRATION
    ======================================== */
 
 #sidebar ul.menu-categories.ps .ps__rail-y:hover {
@@ -632,36 +651,7 @@
 }
 
 #sidebar ul.menu-categories.ps:hover > .ps__rail-y .ps__thumb-y {
-    background-color: #888ea8;
-}
-
-/* ========================================
-   14. MENU HEADING (IF USED)
-   ======================================== */
-
-.sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading {
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    color: #515365;
-    padding: 20px 0 20px 12px;
-    letter-spacing: 1px;
-}
-
-.sidebar-closed .sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading {
-    padding: 20px 9px 20px 13px;
-}
-
-.sidebar-closed > .sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading span {
-    display: none;
-}
-
-.sidebar-closed > .sidebar-wrapper:hover ul.menu-categories li.menu.menu-heading > .heading {
-    padding: 20px 0 20px 20px;
-}
-
-.sidebar-closed > .sidebar-wrapper:hover ul.menu-categories li.menu.menu-heading > .heading span {
-    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* ========================================
@@ -692,7 +682,6 @@
     opacity: 0.7;
 }
 
-/* Overlay solo visible en móvil, en desktop no debe interceptar clics */
 @media (min-width: 992px) {
     .overlay {
         display: none !important;
