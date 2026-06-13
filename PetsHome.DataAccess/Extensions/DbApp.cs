@@ -140,8 +140,9 @@ namespace PetsHome.DataAccess.Extensions
                     // result == -1 when SP uses SET NOCOUNT ON (success, row count suppressed)
                     return result > 0 || result == -1;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.Error(ex, "DbApp operation failed for SP {Sp}", sqlQuery);
                     database.Close();
                     database.Dispose();
                     return false;
@@ -168,8 +169,9 @@ namespace PetsHome.DataAccess.Extensions
                     // result == -1 when SP uses SET NOCOUNT ON (success, row count suppressed)
                     return result > 0 || result == -1;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.Error(ex, "DbApp operation failed for SP {Sp}", sqlQuery);
                     database.Close();
                     database.Dispose();
                     return false;
@@ -275,8 +277,9 @@ namespace PetsHome.DataAccess.Extensions
                     // result == -1 when SP uses SET NOCOUNT ON (success, row count suppressed)
                     return result > 0 || result == -1;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.Error(ex, "DbApp operation failed for SP {Sp}", sqlQuery);
                     database.Close();
                     database.Dispose();
                     return false;

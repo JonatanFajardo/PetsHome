@@ -44,7 +44,7 @@ namespace PetsHome.Logic.Repositories
             const string sqlQuery = "[Seguridad].[PR_Seguridad_RolesPantallas_Save]";
             var parameter = new DynamicParameters();
             parameter.Add("@rol_Id", rolId, DbType.Int32);
-            parameter.Add("@permisosJson", permisosJson, DbType.String);
+            parameter.Add("@permisosJson", permisosJson, DbType.String, size: -1);
             return await DbApp.Insert(sqlQuery, parameter);
         }
     }
