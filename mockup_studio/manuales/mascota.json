@@ -1,0 +1,162 @@
+{
+  "titulo": "Manual del Módulo de Mascota",
+  "subtitulo": "Cómo gestionar el catálogo de mascota",
+  "autor": "PetsHome",
+  "secciones": [
+    {
+      "nombre": "Acceder al listado de mascota",
+      "pasos": [
+        {
+          "descripcion": "Desde el menú lateral, ingresa a 'Mascota' para abrir el listado.",
+          "url": "/Mascota/Index",
+          "click": "a[href='/Mascota']",
+          "expandir_menu": [
+            "#Adopcion"
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Crear un nuevo registro",
+      "pasos": [
+        {
+          "descripcion": "En la pantalla de listado, haz clic en el botón 'Nuevo' para abrir el formulario.",
+          "url": "/Mascota/Index",
+          "click": ".btn-nueva-mascota",
+          "esperar_selector": ".btn-nueva-mascota"
+        },
+        {
+          "descripcion": "Completa el campo 'Nombre'.",
+          "url": "/Mascota/Create",
+          "click": "[name='masc_Nombre']",
+          "fill": {
+            "[name='masc_Nombre']": "Juan"
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Raza'.",
+          "url": "/Mascota/Create",
+          "click": "[name='raza_Id']",
+          "select": {
+            "[name='raza_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Edad'.",
+          "url": "/Mascota/Create",
+          "click": "[name='masc_Edad']",
+          "fill": {
+            "[name='masc_Edad']": "3"
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Sexo'.",
+          "url": "/Mascota/Create",
+          "click": "[name='masc_Sexo']",
+          "select": {
+            "[name='masc_Sexo']": 1
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Peso'.",
+          "url": "/Mascota/Create",
+          "click": "[name='masc_Peso']",
+          "fill": {
+            "[name='masc_Peso']": "12"
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Talla'.",
+          "url": "/Mascota/Create",
+          "click": "[name='tall_Id']",
+          "select": {
+            "[name='tall_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Color'.",
+          "url": "/Mascota/Create",
+          "click": "[name='masc_Color']",
+          "fill": {
+            "[name='masc_Color']": "Café"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Historia'.",
+          "url": "/Mascota/Create",
+          "click": "[name='masc_Historia']",
+          "fill": {
+            "[name='masc_Historia']": "Texto de ejemplo."
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Refugio'.",
+          "url": "/Mascota/Create",
+          "click": "[name='refg_Id']",
+          "select": {
+            "[name='refg_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Procedencia'.",
+          "url": "/Mascota/Create",
+          "click": "[name='proc_Id']",
+          "select": {
+            "[name='proc_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Cuando todos los campos estén completos, haz clic en 'Guardar' para registrar el nuevo registro.",
+          "url": "/Mascota/Create",
+          "click": "button.btn-primary[type='submit']"
+        }
+      ]
+    },
+    {
+      "nombre": "Editar un registro existente",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila del registro que deseas modificar y haz clic en el botón de editar (lápiz). Se abrirá el mismo formulario que en 'Crear', pero con los datos del registro pre-cargados — sigue los mismos pasos descritos en la sección 'Crear un nuevo registro'.",
+          "url": "/Mascota/Index",
+          "esperar_selector": ".action-btn.btn-edit",
+          "click": ".action-btn.btn-edit"
+        }
+      ]
+    },
+    {
+      "nombre": "Eliminar un registro",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila del registro que deseas eliminar y haz clic en el botón de eliminar (papelera). El sistema te pedirá confirmar la acción antes de borrar el registro.",
+          "url": "/Mascota/Index",
+          "esperar_selector": ".action-btn.btn-delete",
+          "click": ".action-btn.btn-delete"
+        }
+      ]
+    },
+    {
+      "nombre": "Acción adicional: Perfil Médico",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila correspondiente y haz clic en el botón 'Perfil Médico'. El sistema abrirá la pantalla asociada a esta acción.",
+          "url": "/Mascota/Index",
+          "esperar_selector": ".action-btn.btn-medical",
+          "click": ".action-btn.btn-medical"
+        }
+      ]
+    },
+    {
+      "nombre": "Buscar en el listado",
+      "pasos": [
+        {
+          "descripcion": "Usa el buscador global para filtrar los resultados por nombre o cualquier campo visible.",
+          "url": "/Mascota/Index",
+          "fill": {
+            "#globalSearch": "Ejemplo"
+          },
+          "click": "#globalSearch"
+        }
+      ]
+    }
+  ]
+}

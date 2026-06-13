@@ -1,0 +1,167 @@
+{
+  "titulo": "Manual del Módulo de Empleado",
+  "subtitulo": "Cómo gestionar el catálogo de empleado",
+  "autor": "PetsHome",
+  "secciones": [
+    {
+      "nombre": "Acceder al listado de empleado",
+      "pasos": [
+        {
+          "descripcion": "Desde el menú lateral, ingresa a 'Empleado' para abrir el listado.",
+          "url": "/Empleado/Index",
+          "click": "a[href='/Empleado']",
+          "expandir_menu": [
+            "#Cuenta"
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Crear un nuevo registro",
+      "pasos": [
+        {
+          "descripcion": "En la pantalla de listado, haz clic en el botón 'Nuevo' para abrir el formulario.",
+          "url": "/Empleado/Index",
+          "click": ".btn-nueva-mascota",
+          "esperar_selector": ".btn-nueva-mascota"
+        },
+        {
+          "descripcion": "Completa el campo 'Primer Nombre'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_PrimerNombre']",
+          "fill": {
+            "[name='per.per_PrimerNombre']": "Juan"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Segundo Nombre'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_SegundoNombre']",
+          "fill": {
+            "[name='per.per_SegundoNombre']": "Juan"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Apellido Paterno'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_ApellidoPaterno']",
+          "fill": {
+            "[name='per.per_ApellidoPaterno']": "Pérez"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Apellido Materno'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_ApellidoMaterno']",
+          "fill": {
+            "[name='per.per_ApellidoMaterno']": "Pérez"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Identidad'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_Identidad']",
+          "fill": {
+            "[name='per.per_Identidad']": "0801199012345"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Fecha Nacimiento'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_FechaNacimiento']",
+          "fill": {
+            "[name='per.per_FechaNacimiento']": "2000-01-01"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Correo Electrónico'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_Correo']",
+          "fill": {
+            "[name='per.per_Correo']": "ejemplo@correo.com"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Teléfono'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_Telefono']",
+          "fill": {
+            "[name='per.per_Telefono']": "55512345"
+          }
+        },
+        {
+          "descripcion": "Escribe el contenido en el campo 'Domicilio'.",
+          "url": "/Empleado/Create",
+          "click": "[name='per.per_Domicilio']",
+          "fill": {
+            "[name='per.per_Domicilio']": "Av. Siempre Viva 742"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Código'.",
+          "url": "/Empleado/Create",
+          "click": "[name='emp_Codigo']",
+          "fill": {
+            "[name='emp_Codigo']": "COD-001"
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Refugio'.",
+          "url": "/Empleado/Create",
+          "click": "[name='refg_Id']",
+          "select": {
+            "[name='refg_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Cargo'.",
+          "url": "/Empleado/Create",
+          "click": "[name='cag_Id']",
+          "select": {
+            "[name='cag_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Cuando todos los campos estén completos, haz clic en 'Guardar' para registrar el nuevo registro.",
+          "url": "/Empleado/Create",
+          "click": "button.btn-primary[type='submit']"
+        }
+      ]
+    },
+    {
+      "nombre": "Editar un registro existente",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila del registro que deseas modificar y haz clic en el botón de editar (lápiz). Se abrirá el mismo formulario que en 'Crear', pero con los datos del registro pre-cargados — sigue los mismos pasos descritos en la sección 'Crear un nuevo registro'.",
+          "url": "/Empleado/Index",
+          "esperar_selector": ".action-btn.btn-edit",
+          "click": ".action-btn.btn-edit"
+        }
+      ]
+    },
+    {
+      "nombre": "Eliminar un registro",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila del registro que deseas eliminar y haz clic en el botón de eliminar (papelera). El sistema te pedirá confirmar la acción antes de borrar el registro.",
+          "url": "/Empleado/Index",
+          "esperar_selector": ".action-btn.btn-delete",
+          "click": ".action-btn.btn-delete"
+        }
+      ]
+    },
+    {
+      "nombre": "Buscar en el listado",
+      "pasos": [
+        {
+          "descripcion": "Usa el buscador global para filtrar los resultados por nombre o cualquier campo visible.",
+          "url": "/Empleado/Index",
+          "fill": {
+            "#globalSearch": "Ejemplo"
+          },
+          "click": "#globalSearch"
+        }
+      ]
+    }
+  ]
+}

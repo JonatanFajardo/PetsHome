@@ -1,0 +1,207 @@
+{
+  "titulo": "Manual del Módulo de Cita Medica",
+  "subtitulo": "Cómo gestionar el catálogo de cita medica",
+  "autor": "PetsHome",
+  "secciones": [
+    {
+      "nombre": "Acceder al listado de cita medica",
+      "pasos": [
+        {
+          "descripcion": "Desde el menú lateral, ingresa a 'Cita Medica' para abrir el listado.",
+          "url": "/CitaMedica/Index",
+          "click": "a[href='/CitaMedica']",
+          "expandir_menu": [
+            "#Medicamento"
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Crear un nuevo registro",
+      "pasos": [
+        {
+          "descripcion": "En la pantalla de listado, haz clic en el botón 'Nuevo' para abrir el formulario.",
+          "url": "/CitaMedica/Index",
+          "click": ".btn-nueva-mascota",
+          "esperar_selector": ".btn-nueva-mascota"
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Mascota'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='masc_Id']",
+          "select": {
+            "[name='masc_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Comportamiento'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='Com_Id']",
+          "select": {
+            "[name='Com_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Fecha de Consulta'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_FechaConsulta']",
+          "fill": {
+            "[name='cita_FechaConsulta']": "2025-01-01T10:00"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Tipo de Consulta'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_TipoConsulta']",
+          "fill": {
+            "[name='cita_TipoConsulta']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Escribe el contenido en el campo 'Motivo de Consulta'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_MotivoConsulta']",
+          "fill": {
+            "[name='cita_MotivoConsulta']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Escribe el contenido en el campo 'Diagnóstico'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_Diagnostico']",
+          "fill": {
+            "[name='cita_Diagnostico']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Peso (kg)'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_Peso']",
+          "fill": {
+            "[name='cita_Peso']": "12"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Temperatura (°C)'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_Temperatura']",
+          "fill": {
+            "[name='cita_Temperatura']": "1"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Frecuencia Cardíaca (lpm)'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_FrecuenciaCardiaca']",
+          "fill": {
+            "[name='cita_FrecuenciaCardiaca']": "1"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Frecuencia Respiratoria (rpm)'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_FrecuenciaRespiratoria']",
+          "fill": {
+            "[name='cita_FrecuenciaRespiratoria']": "1"
+          }
+        },
+        {
+          "descripcion": "Selecciona una opción en el desplegable 'Vacuna Aplicada'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='vac_Id']",
+          "select": {
+            "[name='vac_Id']": 1
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Medicamentos Recetados'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_MedicamentosRecetados']",
+          "fill": {
+            "[name='cita_MedicamentosRecetados']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Escribe el contenido en el campo 'Dosificación'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_Dosificacion']",
+          "fill": {
+            "[name='cita_Dosificacion']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Escribe el contenido en el campo 'Procedimientos Realizados'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_ProcedimientosRealizados']",
+          "fill": {
+            "[name='cita_ProcedimientosRealizados']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Escribe el contenido en el campo 'Resultados de Exámenes'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_ResultadosExamenes']",
+          "fill": {
+            "[name='cita_ResultadosExamenes']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Fecha de Próxima Cita'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_ProximaCita']",
+          "fill": {
+            "[name='cita_ProximaCita']": "2025-01-01T10:00"
+          }
+        },
+        {
+          "descripcion": "Completa el campo 'Motivo de Próxima Cita'.",
+          "url": "/CitaMedica/Create",
+          "click": "[name='cita_MotivoProximaCita']",
+          "fill": {
+            "[name='cita_MotivoProximaCita']": "Ejemplo"
+          }
+        },
+        {
+          "descripcion": "Cuando todos los campos estén completos, haz clic en 'Guardar' para registrar el nuevo registro.",
+          "url": "/CitaMedica/Create",
+          "click": "button.btn-primary[type='submit']"
+        }
+      ]
+    },
+    {
+      "nombre": "Editar un registro existente",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila del registro que deseas modificar y haz clic en el botón de editar (lápiz). Se abrirá el mismo formulario que en 'Crear', pero con los datos del registro pre-cargados — sigue los mismos pasos descritos en la sección 'Crear un nuevo registro'.",
+          "url": "/CitaMedica/Index",
+          "esperar_selector": ".action-btn.btn-edit",
+          "click": ".action-btn.btn-edit"
+        }
+      ]
+    },
+    {
+      "nombre": "Eliminar un registro",
+      "pasos": [
+        {
+          "descripcion": "En el listado, ubica la fila del registro que deseas eliminar y haz clic en el botón de eliminar (papelera). El sistema te pedirá confirmar la acción antes de borrar el registro.",
+          "url": "/CitaMedica/Index",
+          "esperar_selector": ".action-btn.btn-delete",
+          "click": ".action-btn.btn-delete"
+        }
+      ]
+    },
+    {
+      "nombre": "Buscar en el listado",
+      "pasos": [
+        {
+          "descripcion": "Usa el buscador global para filtrar los resultados por nombre o cualquier campo visible.",
+          "url": "/CitaMedica/Index",
+          "fill": {
+            "#globalSearch": "Ejemplo"
+          },
+          "click": "#globalSearch"
+        }
+      ]
+    }
+  ]
+}
