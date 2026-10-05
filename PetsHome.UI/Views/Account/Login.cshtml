@@ -5,6 +5,84 @@
     ViewData["UseFormValidation"] = true;
 }
 
+@* Estilos del panel de acceso rápido (demo/portafolio) — locales a esta vista *@
+<style>
+    .demo-access {
+        margin-top: .25rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .demo-access-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        font-weight: 600;
+        font-size: .85rem;
+        letter-spacing: .4px;
+        text-transform: uppercase;
+        color: #6d28d9;
+    }
+
+    .demo-access-header i {
+        color: #a855f7;
+    }
+
+    .demo-access-hint {
+        text-align: center;
+        font-size: .75rem;
+        color: #8b8b9e;
+        margin: .3rem 0 .9rem;
+    }
+
+    .demo-roles-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .55rem;
+    }
+
+    .demo-role-btn {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        padding: .6rem .7rem;
+        border: 1px solid rgba(124, 58, 237, .25);
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(124, 58, 237, .06), rgba(124, 58, 237, .02));
+        color: #4c1d95;
+        font-size: .82rem;
+        font-weight: 500;
+        text-align: left;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+        .demo-role-btn i {
+            flex-shrink: 0;
+            width: 1.2rem;
+            font-size: 1rem;
+            text-align: center;
+            color: #7c3aed;
+        }
+
+        .demo-role-btn:hover {
+            border-color: #7c3aed;
+            background: linear-gradient(135deg, rgba(124, 58, 237, .16), rgba(124, 58, 237, .08));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(124, 58, 237, .2);
+        }
+
+        .demo-role-btn:active {
+            transform: translateY(0);
+        }
+
+        /* El 5º botón (impar) ocupa toda la fila y se centra */
+        .demo-role-btn:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+            justify-content: center;
+        }
+</style>
+
 
 
 <!-- ===================== PANEL IZQUIERDO (NUEVO) ===================== -->
@@ -112,6 +190,37 @@
                     <!-- Separador -->
                     <div class="divider"><span>Gestión de Mascotas</span></div>
 
+                    @* Panel de acceso rápido solo para demo/portafolio *@
+                    <div class="demo-access">
+                        <div class="demo-access-header">
+                            <i class="fas fa-bolt"></i>
+                            <span>Acceso rápido (demo)</span>
+                        </div>
+                        <p class="demo-access-hint">Inicia sesión con un clic como cada rol</p>
+                        <div class="demo-roles-grid">
+                            <button type="button" class="demo-role-btn" data-user="admin" data-pass="admin123">
+                                <i class="fas fa-shield-halved"></i>
+                                <span>Administrador</span>
+                            </button>
+                            <button type="button" class="demo-role-btn" data-user="supervisor" data-pass="petshome123">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Supervisor</span>
+                            </button>
+                            <button type="button" class="demo-role-btn" data-user="veterinario" data-pass="petshome123">
+                                <i class="fas fa-user-doctor"></i>
+                                <span>Veterinario</span>
+                            </button>
+                            <button type="button" class="demo-role-btn" data-user="cuidador" data-pass="petshome123">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                <span>Cuidador</span>
+                            </button>
+                            <button type="button" class="demo-role-btn" data-user="recepcion" data-pass="petshome123">
+                                <i class="fas fa-user"></i>
+                                <span>Usuario Básico</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Footer -->
                     <div class="login-footer">
                         <div class="footer-icons">
@@ -149,5 +258,18 @@
         if (!wrap) return;
         inp.addEventListener('focus', () => wrap.classList.add('focused'));
         inp.addEventListener('blur',  () => wrap.classList.remove('focused'));
+    });
+
+    // Acceso rápido (demo/portafolio): rellena credenciales y envía el formulario,
+    // reutilizando el POST de login y el antiforgery token existente del form.
+    document.querySelectorAll('.demo-role-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const userInput = document.getElementById('Username')
+                || document.querySelector('input[name="Username"]');
+            const passInput = document.getElementById('passwordInput');
+            if (userInput) userInput.value = this.dataset.user;
+            if (passInput) passInput.value = this.dataset.pass;
+            document.getElementById('loginForm').submit();
+        });
     });
 </script>
