@@ -46,9 +46,18 @@ namespace PetsHome.UI.Controllers
 
         [Breadcrumb("Crear", FromAction = "Index", FromController = typeof(CitaMedicaController))]
         [PantallaAuthorize("Listado de citas medicas", "insertar")]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? masc_Id = null, int? vac_Id = null, DateTime? fecha = null, string motivo = null)
         {
-            var model = new CitaMedicaFormViewModel();
+            var model = new CitaMedicaFormViewModel
+            {
+                cita_FechaConsulta = fecha ?? DateTime.Now
+            };
+
+            // Pre-carga opcional cuando se llega desde Control de vacunación
+            if (masc_Id.HasValue) model.masc_Id = masc_Id.Value;
+            if (vac_Id.HasValue) model.vac_Id = vac_Id.Value;
+            if (!string.IsNullOrWhiteSpace(motivo)) model.cita_MotivoConsulta = motivo;
+
             var drop = DropdownForm(model);
 
             return View(drop);

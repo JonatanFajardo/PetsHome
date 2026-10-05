@@ -72,7 +72,7 @@
                                 <div class="form-group">
                                     <label asp-for="cita_FechaConsulta">Fecha de Consulta <span class="required">*</span></label>
                                     <input class="form-control" asp-for="cita_FechaConsulta" type="datetime-local"
-                                           value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                                           value="@((Model.cita_FechaConsulta == default(DateTime) ? DateTime.Now : Model.cita_FechaConsulta).ToString("yyyy-MM-ddTHH:mm"))" />
                                     <span class="text-danger" asp-validation-for="cita_FechaConsulta"></span>
                                 </div>
 

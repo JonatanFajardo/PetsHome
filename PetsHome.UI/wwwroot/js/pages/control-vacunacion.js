@@ -55,13 +55,6 @@ function init() {
     }).fail(function () {
         showToast('Error al cargar datos de vacunación', 'warn');
     });
-
-    // Cargar veterinarios en el modal
-    if (window._urls.refugiosList) {
-        $('#scheduleModal').on('show.bs.modal', function () {
-            // veterinarios hardcodeados por ahora; el SP puede proveerlos
-        });
-    }
 }
 
 // ── BUILD FILTERS ────────────────────────────────────────────────────────────
@@ -363,25 +356,24 @@ window.openModal = function (petId, vacId, vacName, lastDate) {
 };
 
 window.confirmSchedule = function () {
-    bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
-    const date = document.getElementById('modalDate').value;
-    const dateStr = date ? new Date(date).toLocaleDateString('es-HN', { day: '2-digit', month: 'short' }) : '—';
+    if (!currentModal) return;
 
-    if (window._urls.agendarCita && currentModal) {
-        $.post(window._urls.agendarCita, {
-            masc_Id: currentModal.petId,
-            vac_Id:  currentModal.vacId,
-            fecha:   date,
-            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-        }).done(function () {
-            showToast(`Cita agendada para el ${dateStr}`, 'green');
-            init(); // refrescar
-        }).fail(function () {
-            showToast(`Cita registrada para el ${dateStr}`, 'green');
-        });
-    } else {
-        showToast(`Cita agendada para el ${dateStr}`, 'green');
-    }
+    const date = document.getElementById('modalDate').value;
+    const time = (document.getElementById('modalTime') || {}).value || '09:00';
+    const obs  = (document.getElementById('modalObs')  || {}).value || '';
+    const fecha = date ? (date + 'T' + time) : '';
+
+    bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
+
+    // Redirige al flujo real de creación de cita médica (persistencia + permisos).
+    // La cita se crea con el formulario/acción Add de CitaMedica, pre-cargando lo posible.
+    const params = new URLSearchParams();
+    params.set('masc_Id', currentModal.petId);
+    if (currentModal.vacId) params.set('vac_Id', currentModal.vacId);
+    if (fecha) params.set('fecha', fecha);
+    if (obs)   params.set('motivo', obs);
+
+    window.location.href = window._urls.crearCitaMedica + '?' + params.toString();
 };
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────

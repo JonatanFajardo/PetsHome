@@ -105,21 +105,17 @@
                 <div class="modal-pet-info" id="modalPetInfo"></div>
                 <div class="alert-vencida" id="modalAlert"></div>
                 <div class="row g-3">
-                    <div class="col-12">
-                        <label class="form-label"><i class="bi bi-person-badge"></i> Veterinario responsable</label>
-                        <select class="form-select" id="modalVeterinario"></select>
-                    </div>
                     <div class="col-sm-6">
                         <label class="form-label"><i class="bi bi-calendar3"></i> Fecha propuesta</label>
                         <input type="date" class="form-control" id="modalDate"/>
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label"><i class="bi bi-clock"></i> Hora</label>
-                        <input type="time" class="form-control" value="09:00"/>
+                        <input type="time" class="form-control" id="modalTime" value="09:00"/>
                     </div>
                     <div class="col-12">
                         <label class="form-label"><i class="bi bi-chat-left-text"></i> Observaciones</label>
-                        <textarea class="form-control" rows="2" placeholder="Notas adicionales…"></textarea>
+                        <textarea class="form-control" id="modalObs" rows="2" placeholder="Notas adicionales…"></textarea>
                     </div>
                 </div>
             </div>
@@ -136,9 +132,8 @@
 @section Scripts {
     <script>
         window._urls = {
-            matrizData:   '@Url.Action("MatrizData",   "ControlVacunacion")',
-            refugiosList: '@Url.Action("RefugiosList", "ControlVacunacion")',
-            agendarCita:  '@Url.Action("AgendarCita",  "ControlVacunacion")'
+            matrizData:      '@Url.Action("MatrizData", "ControlVacunacion")',
+            crearCitaMedica: '@Url.Action("Create", "CitaMedica")'
         };
     </script>
     <script src="~/js/pages/control-vacunacion.js"></script>
