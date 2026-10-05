@@ -37,7 +37,19 @@
                 </div>
             </li>
 
-            @if (tiene("Dashboard veterinario") || tiene("Control de vacunacion") || tiene("Reporte de adopciones") || tiene("Perfil medico de mascota") || tiene("Listado de empleados") || tiene("Listado de voluntarios"))
+            @if (tiene("Dashboard cuidador"))
+            {
+                <li class="menu">
+                    <div class="dropdown-toggle">
+                       <div class="">
+                            <i class="fa-solid fa-paw"></i>
+                        @Html.ActionLink("Dashboard cuidador", "Index", "DashboardCuidador")
+                       </div>
+                    </div>
+                </li>
+            }
+
+            @if (tiene("Listado de empleados") || tiene("Listado de voluntarios"))
             {
                 <li class="menu">
                     <a href="#Cuenta" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -124,7 +136,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de mascotas") || tiene("Listado de adopciones") || tiene("Listado de solicitudes"))
+            @if (tiene("Listado de mascotas") || tiene("Listado de adopciones") || tiene("Listado de solicitudes") || tiene("Reporte de adopciones"))
             {
                 <li class="menu">
                     <a href="#Adopcion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -157,7 +169,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
+            @if (tiene("Dashboard veterinario") || tiene("Control de vacunacion") || tiene("Perfil medico de mascota") || tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
             {
                 <li class="menu">
                     <a href="#Medicamento" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
