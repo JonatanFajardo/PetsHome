@@ -1,0 +1,178 @@
+@model ClientesDetailViewModel
+@{
+    ViewData["Title"] = "Detalle de Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de clientes";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <!-- Header -->
+        <div class="detail-header">
+            <breadcrumb></breadcrumb>
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.cli_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.cli_Nombres @Model.cli_Apellidos</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-id-card"></i>
+                            <span>@(string.IsNullOrEmpty(Model.cli_Identidad) ? "Sin identidad" : Model.cli_Identidad)</span>
+                        </div>
+                        <div class="profile-meta">
+                            @if (!string.IsNullOrEmpty(Model.cli_Telefono))
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>@Model.cli_Telefono</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.cli_Correo))
+                            {
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>@Model.cli_Correo</span>
+                                </div>
+                            }
+                            <div class="profile-meta-item">
+                                <i class="fas fa-@(Model.cli_EsConsumidorFinal ? "check-circle" : "circle")"></i>
+                                <span>@(Model.cli_EsConsumidorFinal ? "Consumidor final" : "Cliente regular")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.cli_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <!-- Información de Contacto -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Información de Contacto</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-tag"></i><span>Nombres</span></div>
+                                <div class="detail-value detail-value-large">@Model.cli_Nombres</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-tag"></i><span>Apellidos</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.cli_Apellidos) ? "—" : Model.cli_Apellidos)</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-id-card"></i><span>Identidad</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.cli_Identidad) ? "—" : Model.cli_Identidad)</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-phone"></i><span>Teléfono</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.cli_Telefono) ? "—" : Model.cli_Telefono)</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-envelope"></i><span>Correo</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.cli_Correo) ? "—" : Model.cli_Correo)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Otros Datos -->
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Dirección y Tipo</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-home"></i><span>Dirección</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.cli_Direccion) ? "—" : Model.cli_Direccion)</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-user-tag"></i><span>Tipo de cliente</span></div>
+                                <div class="detail-value">
+                                    @if (Model.cli_EsConsumidorFinal)
+                                    {
+                                        <span class="status-badge status-disponible">Consumidor final</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-tratamiento">Cliente regular</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auditoría -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Información de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label"><i class="fas fa-user-plus"></i><span>Creado por</span></div>
+                                        <div class="detail-value">@(Model.UsuarioCreacion ?? "Sistema")</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label"><i class="fas fa-calendar-plus"></i><span>Fecha de creación</span></div>
+                                        <div class="detail-value">@Model.FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.FechaModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-user-edit"></i><span>Modificado por</span></div>
+                                            <div class="detail-value">@(Model.UsuarioModificacion ?? "Sistema")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-calendar-check"></i><span>Última modificación</span></div>
+                                            <div class="detail-value">@Model.FechaModifica.Value.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

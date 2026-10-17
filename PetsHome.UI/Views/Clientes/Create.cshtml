@@ -1,0 +1,133 @@
+@model ClientesFormViewModel
+@{
+    ViewData["Title"] = Model.isEdit ? "Editar Cliente" : "Nuevo Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["UseFormValidation"] = true;
+    ViewData["CurrentPantalla"] = "Listado de clientes";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <!-- Header -->
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-user mr-2 text-white"></i>@(Model.isEdit ? "Editar Cliente" : "Registro de Cliente")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">
+                    @(Model.isEdit ? "Actualice la información del cliente" : "Complete la información del nuevo cliente")
+                </p>
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <form asp-action="Add" asp-controller="Clientes" method="post" autocomplete="ON" id="clientesForm">
+                    <input class="form-control" asp-for="cli_Id" type="hidden" />
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Datos del cliente</h2>
+                            <p class="card-description">Información general de contacto</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label asp-for="cli_Nombres">Nombres <span class="required">*</span></label>
+                                    <input class="form-control" asp-for="cli_Nombres" type="text" placeholder="Ingrese los nombres" />
+                                    <span class="text-danger" asp-validation-for="cli_Nombres"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="cli_Apellidos">Apellidos</label>
+                                    <input class="form-control" asp-for="cli_Apellidos" type="text" placeholder="Ingrese los apellidos" />
+                                    <span class="text-danger" asp-validation-for="cli_Apellidos"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="cli_Identidad">Identidad (RTN/DNI)</label>
+                                    <input class="form-control" asp-for="cli_Identidad" type="text" placeholder="Ingrese el número de identidad" />
+                                    <span class="text-danger" asp-validation-for="cli_Identidad"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="cli_Telefono">Teléfono</label>
+                                    <input class="form-control" asp-for="cli_Telefono" type="text" placeholder="Ingrese el teléfono" />
+                                    <span class="text-danger" asp-validation-for="cli_Telefono"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="cli_Correo">Correo electrónico</label>
+                                    <input class="form-control" asp-for="cli_Correo" type="email" placeholder="ejemplo@correo.com" />
+                                    <span class="text-danger" asp-validation-for="cli_Correo"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="cli_Direccion">Dirección</label>
+                                    <input class="form-control" asp-for="cli_Direccion" type="text" placeholder="Ingrese la dirección" />
+                                    <span class="text-danger" asp-validation-for="cli_Direccion"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+                                    <div class="custom-control custom-checkbox" style="padding-top:8px;">
+                                        <input class="custom-control-input" asp-for="cli_EsConsumidorFinal" type="checkbox" id="cli_EsConsumidorFinal" />
+                                        <label class="custom-control-label" for="cli_EsConsumidorFinal">
+                                            Consumidor final
+                                        </label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="cli_EsConsumidorFinal"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-content-save"></i> @(Model.isEdit ? "Actualizar" : "Guardar")
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        $(function () {
+            $("#clientesForm").validate({
+                rules: {
+                    cli_Nombres: { required: true }
+                },
+                messages: {
+                    cli_Nombres: { required: "Los nombres son requeridos." }
+                },
+                errorElement: "span",
+                errorClass: "text-danger",
+                highlight: function (el) { $(el).addClass("is-invalid"); },
+                unhighlight: function (el) { $(el).removeClass("is-invalid"); }
+            });
+        });
+    </script>
+}
