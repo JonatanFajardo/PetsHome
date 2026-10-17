@@ -104,52 +104,18 @@
 <!-- ===== ZONAS 2-3-4 ===== -->
 <div class="row g-3 mb-3">
 
-  <!-- ZONA 2: Agenda del día -->
+  <!-- ZONA 2: Sala de espera (cola de hoy "En espera") -->
   <div class="col-xl-4 col-lg-5 anim-up delay-1">
     <div class="card-panel" style="height:560px;overflow:hidden;display:flex;flex-direction:column;">
       <div class="panel-header">
-        <div class="panel-title"><i class="bi bi-calendar2-week me-2" style="color:var(--teal);"></i>Agenda de hoy</div>
-        <a href="@Url.Action("Index","CitaMedica")" class="panel-link">Ver todo <i class="bi bi-arrow-right"></i></a>
+        <div class="panel-title"><i class="bi bi-people-fill me-2" style="color:var(--teal);"></i>Sala de espera</div>
+        <a href="@Url.Action("Index","CitaMedica")" class="panel-link">Agenda <i class="bi bi-arrow-right"></i></a>
       </div>
-      <div style="overflow-y:auto;flex:1;padding-right:4px;">
-        @if (!agenda.Any())
-        {
-          <div style="text-align:center;padding:40px 0;color:var(--text-3);">
-            <i class="bi bi-calendar-x" style="font-size:32px;"></i>
-            <div style="margin-top:8px;">Sin citas para hoy</div>
-          </div>
-        }
-        else
-        {
-          <div class="timeline">
-            @foreach (var cita in agenda)
-            {
-              <div class="timeline-item @(cita.cita_EsUrgente ? "timeline-item--urgent" : "")">
-                <div class="timeline-time">@cita.cita_FechaHora.ToString("hh:mm tt")</div>
-                <div class="timeline-dot @(cita.cita_EsUrgente ? "dot-red" : (cita.cita_Estado == "Completada" ? "dot-green" : "dot-teal"))"></div>
-                <div class="timeline-body">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                    <div>
-                      <span style="font-weight:600;color:var(--text-1);">@EmojiEspecie(cita.masc_Especie) @cita.masc_Nombre</span>
-                      <span style="font-size:11px;color:var(--text-3);margin-left:6px;">@cita.raz_Descripcion</span>
-                    </div>
-                    <span class="@BadgeTipo(cita.cita_Estado)" style="font-size:10px;">@cita.cita_Estado</span>
-                  </div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">
-                    <div style="font-size:12px;color:var(--text-3);">
-                      <i class="bi bi-clipboard2-pulse me-1"></i>@cita.cita_TipoConsulta
-                    </div>
-                    <a href="@Url.Action("Index","PerfilMedico", new { mascId = cita.masc_Id })"
-                       title="Ver Perfil Médico"
-                       style="font-size:11px;color:var(--purple,#6C5CE7);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
-                      <i class="bi bi-stethoscope"></i> Perfil
-                    </a>
-                  </div>
-                </div>
-              </div>
-            }
-          </div>
-        }
+      <div id="vetSalaEspera" style="overflow-y:auto;flex:1;padding-right:4px;">
+        <div style="text-align:center;padding:40px 0;color:var(--text-3);">
+          <i class="bi bi-hourglass-split" style="font-size:32px;"></i>
+          <div style="margin-top:8px;">Cargando sala de espera…</div>
+        </div>
       </div>
     </div>
   </div>
@@ -368,8 +334,106 @@
 </div><!-- /row zona 5 -->
 </div><!-- /dashboard-wrapper -->
 
+@Html.AntiForgeryToken()
+
 @section Scripts {
 <script>
+  window._vetUrls = {
+    salaEspera: '@Url.Action("SalaEspera", "Recepcion")',
+    atender: '@Url.Action("Atender", "Consulta")',
+    consultaIndex: '@Url.Action("Index", "Consulta")'
+  };
+
+  // ───────────── Widget Sala de espera (cola de hoy) ─────────────
+  (function () {
+    var box = document.getElementById('vetSalaEspera');
+    if (!box || !window._vetUrls) return;
+
+    function esc(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function token() {
+      var el = document.querySelector('input[name="__RequestVerificationToken"]');
+      return el ? el.value : '';
+    }
+    function empty(msg) {
+      box.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-3);">' +
+        '<i class="bi bi-cup-hot" style="font-size:32px;"></i>' +
+        '<div style="margin-top:8px;">' + esc(msg) + '</div>' +
+        '<div style="font-size:11px;margin-top:4px;">Puedes abrir <b>En Consulta</b> directamente.</div></div>';
+    }
+
+    function render(list) {
+      list = Array.isArray(list) ? list : [];
+      if (!list.length) { empty('Nadie en espera'); return; }
+      box.innerHTML = '<div class="timeline">' + list.map(function (c) {
+        var urgente = /urg/i.test(c.prioridad || '');
+        var dueno = c.esInterno ? '🏠 Interno' : esc(c.duenoNombre || 'Dueño');
+        var vetTag = c.vetAsignado
+          ? '<span style="font-size:10px;color:var(--teal,#22d3ee);margin-left:6px;"><i class="bi bi-person-check"></i> ' + esc(c.vetAsignado) + '</span>'
+          : '<span style="font-size:10px;color:var(--text-3);margin-left:6px;"><i class="bi bi-person-dash"></i> sin asignar</span>';
+        var min = (c.minutosEspera != null) ? c.minutosEspera + ' min' : '';
+        return '<div class="timeline-item' + (urgente ? ' timeline-item--urgent' : '') + '">' +
+          '<div class="timeline-time">' + esc(min) + '</div>' +
+          '<div class="timeline-dot ' + (urgente ? 'dot-red' : 'dot-teal') + '"></div>' +
+          '<div class="timeline-body">' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+              '<div><span style="font-weight:600;color:var(--text-1);">' + esc(c.mascotaNombre || '—') + '</span>' +
+              '<span style="font-size:11px;color:var(--text-3);margin-left:6px;">' + dueno + '</span>' + vetTag + '</div>' +
+              (urgente ? '<span class="badge bg-danger" style="font-size:10px;">Urgente</span>' : '') +
+            '</div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">' +
+              '<div style="font-size:12px;color:var(--text-3);"><i class="bi bi-clipboard2-pulse me-1"></i>' +
+                esc(c.tipoConsulta || c.motivo || 'Consulta') + '</div>' +
+              '<button type="button" class="vet-atender-btn" data-cita="' + (c.citaId || 0) + '" ' +
+                'style="font-size:11px;background:var(--teal,#22d3ee);color:#063;border:none;border-radius:8px;' +
+                'padding:4px 10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">' +
+                '<i class="bi bi-play-circle"></i> Atender</button>' +
+            '</div>' +
+          '</div></div>';
+      }).join('') + '</div>';
+    }
+
+    function load() {
+      fetch(window._vetUrls.salaEspera, { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(render)
+        .catch(function () { empty('Nadie en espera'); });
+    }
+
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('.vet-atender-btn');
+      if (!btn) return;
+      var citaId = parseInt(btn.dataset.cita, 10) || 0;
+      btn.disabled = true;
+      fetch(window._vetUrls.atender, {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() },
+        body: JSON.stringify({ citaId: citaId })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (res && res.ok) {
+            window.location.href = window._vetUrls.consultaIndex +
+              '?mascId=' + (res.mascId || 0) + '&citaId=' + citaId;
+          } else {
+            btn.disabled = false;
+            if (window.Swal) { Swal.fire({ icon: 'error', title: 'No se pudo atender', text: (res && res.mensaje) || '' }); }
+            else { alert((res && res.mensaje) || 'No se pudo atender'); }
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          window.location.href = window._vetUrls.consultaIndex;
+        });
+    });
+
+    load();
+    setInterval(load, 20000);
+  })();
+
   // Live clock
   (function () {
     var days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
