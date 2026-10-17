@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Demo SearchSelect";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/search-select.css" />
+}
+
+@* Token para el POST /Lookup/Create (el componente lo lee de este input) *@
+@Html.AntiForgeryToken()
+
+<div style="max-width:760px;margin:24px auto;padding:0 16px;font-family:inherit;">
+    <h2 style="margin-bottom:4px;">Demo · Componente SearchSelect</h2>
+    <p style="color:#6b7280;font-size:13px;margin-top:0;">
+        Escribe para buscar. Si el catálogo permite crear y no hay coincidencia exacta,
+        aparece la opción «＋ Crear …» al final.
+    </p>
+
+    <div style="display:grid;gap:22px;margin-top:22px;">
+        <div>
+            <label style="display:block;font-weight:600;font-size:13px;margin-bottom:6px;">
+                Tipo de medicamento <span style="color:#6d28d9;">(permiteCrear: true)</span>
+            </label>
+            <div id="ssTipoMedicamento"></div>
+            <div id="outTipoMedicamento" style="font-size:12px;color:#6b7280;margin-top:6px;"></div>
+        </div>
+
+        <div>
+            <label style="display:block;font-weight:600;font-size:13px;margin-bottom:6px;">
+                Raza <span style="color:#6d28d9;">(permiteCrear: true)</span>
+            </label>
+            <div id="ssRaza"></div>
+            <div id="outRaza" style="font-size:12px;color:#6b7280;margin-top:6px;"></div>
+        </div>
+
+        <div>
+            <label style="display:block;font-weight:600;font-size:13px;margin-bottom:6px;">
+                Vacuna <span style="color:#9ca3af;">(solo búsqueda)</span>
+            </label>
+            <div id="ssVacuna"></div>
+            <div id="outVacuna" style="font-size:12px;color:#6b7280;margin-top:6px;"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window._urls = {
+            lookupSearch: '@Url.Action("Search", "Lookup")',
+            lookupCreate: '@Url.Action("Create", "Lookup")'
+        };
+    </script>
+    <script src="~/js/components/search-select.js"></script>
+    <script>
+        (function () {
+            function out(id, item) {
+                document.getElementById(id).textContent =
+                    item ? ('Seleccionado → id=' + item.id + ', text="' + item.text + '"' + (item.meta ? ', meta="' + item.meta + '"' : '')) : '';
+            }
+
+            SearchSelect.create(document.getElementById('ssTipoMedicamento'), {
+                tipo: 'tipomedicamento',
+                searchUrl: window._urls.lookupSearch,
+                createUrl: window._urls.lookupCreate,
+                permiteCrear: true,
+                placeholder: 'Buscar tipo de medicamento...',
+                onSelect: function (i) { out('outTipoMedicamento', i); },
+                onCreate: function (i) { out('outTipoMedicamento', i); }
+            });
+
+            SearchSelect.create(document.getElementById('ssRaza'), {
+                tipo: 'raza',
+                searchUrl: window._urls.lookupSearch,
+                createUrl: window._urls.lookupCreate,
+                permiteCrear: true,
+                placeholder: 'Buscar raza...',
+                onSelect: function (i) { out('outRaza', i); },
+                onCreate: function (i) { out('outRaza', i); }
+            });
+
+            SearchSelect.create(document.getElementById('ssVacuna'), {
+                tipo: 'vacuna',
+                searchUrl: window._urls.lookupSearch,
+                createUrl: window._urls.lookupCreate,
+                permiteCrear: false,
+                placeholder: 'Buscar vacuna...',
+                onSelect: function (i) { out('outVacuna', i); }
+            });
+        })();
+    </script>
+}
