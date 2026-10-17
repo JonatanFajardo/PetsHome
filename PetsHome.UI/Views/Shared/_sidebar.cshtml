@@ -49,6 +49,18 @@
                 </li>
             }
 
+            @if (tiene("Recepcion"))
+            {
+                <li class="menu">
+                    <div class="dropdown-toggle">
+                       <div class="">
+                            <i class="fa-solid fa-bell-concierge"></i>
+                        @Html.ActionLink("Recepción", "Index", "Recepcion")
+                       </div>
+                    </div>
+                </li>
+            }
+
             @if (tiene("Listado de empleados") || tiene("Listado de voluntarios"))
             {
                 <li class="menu">
@@ -169,26 +181,28 @@
                 </li>
             }
 
-            @if (tiene("Dashboard veterinario") || tiene("Control de vacunacion") || tiene("Perfil medico de mascota") || tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
+            @* ══════════ CLÍNICA — trabajo diario del veterinario ══════════ *@
+            @if (tiene("En consulta") || tiene("Control de vacunacion") || tiene("Perfil medico de mascota") || tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos"))
             {
                 <li class="menu">
-                    <a href="#Medicamento" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#Clinica" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
-                            <i class="fa-solid fa-suitcase-medical" style="width: 24px;"></i>
-                            <span>Medicamento</span>
+                            <i class="fa-solid fa-stethoscope" style="width: 24px;"></i>
+                            <span>Clínica</span>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled" id="Medicamento" data-parent="#accordionExample">
-                                                                                                                        @if (tiene("Dashboard veterinario"))
+                    <ul class="collapse submenu list-unstyled" id="Clinica" data-parent="#accordionExample">
+                        @if (tiene("En consulta"))
                         {
-                            <li>@Html.ActionLink("DashboardVeterinario", "Index", "DashboardVeterinario")</li>
+                            <li>@Html.ActionLink("🔴 En Consulta", "Index", "Consulta")</li>
                         }
-                        @if (tiene("Control de vacunacion"))
+                        @if (tiene("Listado de citas medicas"))
                         {
-                            <li>@Html.ActionLink("ControlVacunacion", "Index", "ControlVacunacion")</li>
+                            <li>@Html.ActionLink("Citas Medicas", "Index", "CitaMedica")</li>
+                            <li>@Html.ActionLink("Calendario", "Calendario", "CitaMedica")</li>
                         }
                         @if (tiene("Perfil medico de mascota"))
                         {
@@ -198,11 +212,6 @@
                         {
                             <li>@Html.ActionLink("Alertas Medicas", "Index", "AlertaMedica")</li>
                         }
-                        @if (tiene("Listado de citas medicas"))
-                        {
-                            <li>@Html.ActionLink("Citas Medicas", "Index", "CitaMedica")</li>
-                            <li>@Html.ActionLink("Calendario", "Calendario", "CitaMedica")</li>
-                        }
                         @if (tiene("Listado de recetas"))
                         {
                             <li>@Html.ActionLink("Recetas", "Index", "Receta")</li>
@@ -211,17 +220,39 @@
                         {
                             <li>@Html.ActionLink("Tratamientos", "Index", "Tratamiento")</li>
                         }
-                        @if (tiene("Listado de vacunas"))
+                        @if (tiene("Control de vacunacion"))
                         {
-                            <li>@Html.ActionLink("Vacuna", "Index", "Vacuna")</li>
+                            <li>@Html.ActionLink("Control Vacunación", "Index", "ControlVacunacion")</li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            @* ══════════ CATÁLOGOS CLÍNICOS — configuración que se toca poco ══════════ *@
+            @if (tiene("Listado de vacunas") || tiene("Listado de procedencias") || tiene("Listado de razas") || tiene("Listado de tipos de consulta") || tiene("Listado de gravedades") || tiene("Listado de tipos de medicamento") || tiene("Listado de vias de administracion") || tiene("Listado de tipos de parasito") || tiene("Listado de tipos de esterilizacion"))
+            {
+                <li class="menu">
+                    <a href="#CatalogosClinicos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-list-check" style="width: 24px;"></i>
+                            <span>Catálogos clínicos</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="CatalogosClinicos" data-parent="#accordionExample">
+                        @if (tiene("Listado de razas"))
+                        {
+                            <li>@Html.ActionLink("Raza", "Index", "Raza")</li>
                         }
                         @if (tiene("Listado de procedencias"))
                         {
                             <li>@Html.ActionLink("Procedencia", "Index", "Procedencia")</li>
                         }
-                        @if (tiene("Listado de razas"))
+                        @if (tiene("Listado de vacunas"))
                         {
-                            <li>@Html.ActionLink("Raza", "Index", "Raza")</li>
+                            <li>@Html.ActionLink("Vacuna", "Index", "Vacuna")</li>
                         }
                         @if (tiene("Listado de tipos de consulta"))
                         {
@@ -251,7 +282,36 @@
                 </li>
             }
 
-            @if (tiene("Listado de usuarios") || tiene("Listado de roles"))
+            @if (tiene("Listado de clientes") || tiene("Listado de servicios") || tiene("Facturacion"))
+            {
+                <li class="menu">
+                    <a href="#Veterinaria" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="fa-solid fa-stethoscope" style="width: 24px;"></i>
+                            <span>Veterinaria</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Veterinaria" data-parent="#accordionExample">
+                        @if (tiene("Listado de clientes"))
+                        {
+                            <li>@Html.ActionLink("Clientes", "Index", "Clientes")</li>
+                        }
+                        @if (tiene("Listado de servicios"))
+                        {
+                            <li>@Html.ActionLink("Servicios", "Index", "Servicios")</li>
+                        }
+                        @if (tiene("Facturacion"))
+                        {
+                            <li>@Html.ActionLink("Facturacion", "Index", "Facturacion")</li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            @if (tiene("Listado de usuarios") || tiene("Listado de roles") || tiene("Configuracion de modulos"))
             {
                 <li class="menu">
                     <a href="#Seguridad" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -271,6 +331,10 @@
                         @if (tiene("Listado de roles"))
                         {
                             <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                        }
+                        @if (tiene("Configuracion de modulos"))
+                        {
+                            <li>@Html.ActionLink("Ajustes / Módulos", "Index", "Configuracion")</li>
                         }
                     </ul>
                 </li>
