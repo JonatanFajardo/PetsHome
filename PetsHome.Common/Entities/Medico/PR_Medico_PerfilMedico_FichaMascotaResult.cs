@@ -19,5 +19,11 @@ public string EstadoSalud { get; set; }
 public int TotalCitas { get; set; }
 public int TratamientosActivos { get; set; }
 public int VacunasAlDia { get; set; }
+
+// ── Responsable binario (script 56) ──────────────────────────
+// 'Cliente' (externo, con dueno) o 'Interno' (refugio/rescate, sin dueno).
+public string ResponsableTipo { get; set; }
+public string ResponsableNombre { get; set; }
+public string ResponsableContacto { get; set; }
     }
 }

@@ -17,6 +17,10 @@ namespace PetsHome.Common.Entities
         public DateTime? receta_FechaInicio { get; set; }
         public DateTime? receta_FechaFin { get; set; }
         public string receta_Estado { get; set; }
+
+        /// <summary>Item de inventario del que proviene el medicamento (NULL = texto libre).</summary>
+        public int? itm_Id { get; set; }
+
         public bool receta_EsEliminado { get; set; }
         public int receta_UsuarioCrea { get; set; }
         public DateTime receta_FechaCrea { get; set; }

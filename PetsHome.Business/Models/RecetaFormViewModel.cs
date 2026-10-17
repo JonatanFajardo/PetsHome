@@ -65,6 +65,9 @@ namespace PetsHome.Business.Models
         [StringLength(20)]
         public string receta_Estado { get; set; }
 
+        /// <summary>Item de inventario vinculado (NULL = medicamento de texto libre).</summary>
+        public int? itm_Id { get; set; }
+
         public int receta_UsuarioCrea { get; set; }
 
         public DateTime receta_FechaCrea { get; set; }

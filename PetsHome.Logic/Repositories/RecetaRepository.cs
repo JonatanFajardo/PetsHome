@@ -52,6 +52,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@receta_FechaInicio", entity.receta_FechaInicio, DbType.Date, ParameterDirection.Input);
             parameter.Add("@receta_FechaFin", entity.receta_FechaFin, DbType.Date, ParameterDirection.Input);
             parameter.Add("@receta_Estado", entity.receta_Estado, DbType.String, ParameterDirection.Input);
+            parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@receta_UsuarioCrea", entity.receta_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
