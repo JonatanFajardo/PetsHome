@@ -1,0 +1,157 @@
+@using PetsHome.Business.Models
+@model List<ModuloViewModel>
+@{
+    ViewData["Title"] = "Ajustes · Módulos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var config = ViewBag.Configuracion as ConfiguracionSistemaViewModel;
+
+    // Códigos activos actuales (para resolver dependencias en el render inicial)
+    var activos = Model.Where(m => m.modu_EsActivo)
+                       .Select(m => m.modu_Codigo)
+                       .ToList();
+
+    // Orden y etiquetas de áreas
+    var areasOrden = new[] { "Comun", "Refugio", "Veterinaria", "Ventas" };
+    var areaMeta = new Dictionary<string, (string Label, string Icon)>
+    {
+        ["Comun"]       = ("Común", "fas fa-layer-group"),
+        ["Refugio"]     = ("Refugio", "fas fa-home"),
+        ["Veterinaria"] = ("Veterinaria", "fas fa-stethoscope"),
+        ["Ventas"]      = ("Ventas", "fas fa-cash-register")
+    };
+
+    // Evalúa si una expresión de requisitos ("A,B" = AND ; "A|B" = OR) se cumple
+    Func<string, bool> cumpleRequisito = (req) =>
+    {
+        if (string.IsNullOrWhiteSpace(req)) return true;
+        if (req.Contains("|"))
+            return req.Split('|').Select(x => x.Trim())
+                      .Any(x => x.Length > 0 && activos.Contains(x));
+        return req.Split(',').Select(x => x.Trim())
+                  .Where(x => x.Length > 0)
+                  .All(x => activos.Contains(x));
+    };
+
+    // Nombre legible de un código de módulo (para las notas "Requiere: X")
+    var nombrePorCodigo = Model.ToDictionary(m => m.modu_Codigo, m => m.modu_Nombre);
+    Func<string, string> etiquetaReq = (req) =>
+    {
+        if (string.IsNullOrWhiteSpace(req)) return "";
+        var sep = req.Contains("|") ? " o " : " y ";
+        var partes = req.Split(req.Contains("|") ? '|' : ',')
+                        .Select(x => x.Trim())
+                        .Where(x => x.Length > 0)
+                        .Select(x => nombrePorCodigo.ContainsKey(x) ? nombrePorCodigo[x] : x);
+        return string.Join(sep, partes);
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/modulos.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-sliders-h mr-2 text-white"></i>Ajustes · Módulos del sistema
+                    </h2>
+                </div>
+                @if (config != null && !string.IsNullOrWhiteSpace(config.cfg_NombreOrganizacion))
+                {
+                    <div class="pets-controls">
+                        <span class="modulos-org-chip">
+                            <i class="fas fa-building mr-2"></i>@config.cfg_NombreOrganizacion
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="modulos-body">
+
+            <!-- Aviso de refresco de claims -->
+            <div class="modulos-aviso">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Los cambios de módulos se reflejan al cerrar sesión y volver a entrar.</strong>
+                    <span>Los permisos y menús se recalculan al iniciar sesión.</span>
+                </div>
+            </div>
+
+            @foreach (var area in areasOrden)
+            {
+                var items = Model.Where(m => string.Equals(m.modu_Area, area, StringComparison.OrdinalIgnoreCase))
+                                 .OrderBy(m => m.modu_Orden)
+                                 .ToList();
+                if (!items.Any()) { continue; }
+
+                var meta = areaMeta.ContainsKey(area) ? areaMeta[area] : (area, "fas fa-cube");
+
+                <section class="modulos-area">
+                    <header class="modulos-area-header">
+                        <i class="@meta.Item2"></i>
+                        <h3>@meta.Item1</h3>
+                        <span class="modulos-area-count">@items.Count(i => i.modu_EsActivo)/@items.Count activos</span>
+                    </header>
+
+                    <div class="modulos-grid">
+                        @foreach (var m in items)
+                        {
+                            var puedeEncender = cumpleRequisito(m.modu_RequiereModulos);
+                            // Bloqueado = núcleo (siempre ON) o requisito no satisfecho estando apagado
+                            var bloqueado = m.modu_EsNucleo || (!m.modu_EsActivo && !puedeEncender);
+                            var reqLabel = etiquetaReq(m.modu_RequiereModulos);
+
+                            <div class="modulo-card @(m.modu_EsActivo ? "is-on" : "is-off") @(m.modu_EsNucleo ? "is-nucleo" : "")"
+                                 data-codigo="@m.modu_Codigo"
+                                 data-nombre="@m.modu_Nombre"
+                                 data-nucleo="@m.modu_EsNucleo.ToString().ToLower()"
+                                 data-activo="@m.modu_EsActivo.ToString().ToLower()"
+                                 data-requiere="@(m.modu_RequiereModulos ?? "")">
+
+                                <div class="modulo-info">
+                                    <div class="modulo-nombre">
+                                        @m.modu_Nombre
+                                        @if (m.modu_EsNucleo)
+                                        {
+                                            <i class="fas fa-lock modulo-lock" title="Módulo núcleo (no se puede apagar)"></i>
+                                        }
+                                    </div>
+                                    <div class="modulo-codigo">@m.modu_Codigo</div>
+
+                                    <div class="modulo-nota modulo-nota-req"
+                                         style="@(string.IsNullOrEmpty(reqLabel) ? "display:none;" : "")">
+                                        <i class="fas fa-link"></i> Requiere: <span>@reqLabel</span>
+                                    </div>
+                                </div>
+
+                                <label class="switch @(bloqueado ? "switch-disabled" : "")">
+                                    <input type="checkbox" class="modulo-toggle"
+                                           @(m.modu_EsActivo ? "checked" : "")
+                                           @(bloqueado ? "disabled" : "") />
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Html.AntiForgeryToken()
+    <script>
+        window._urls = {
+            setModulo: '@Url.Action("SetModulo", "Configuracion")'
+        };
+    </script>
+    <script src="~/js/pages/modulos.js"></script>
+}

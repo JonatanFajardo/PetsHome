@@ -1,0 +1,276 @@
+/* ============================================================
+   Ajustes · Módulos del sistema  (Configuracion/Index)
+   Toggles agrupados por área, look púrpura del proyecto.
+   ============================================================ */
+
+.modulos-body {
+    padding: 20px 24px 32px;
+}
+
+.modulos-org-chip {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Aviso de refresco de claims */
+.modulos-aviso {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #faf5ff;
+    border: 1px solid #e9d5ff;
+    border-left: 4px solid #7c3aed;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+}
+
+.modulos-aviso > i {
+    color: #7c3aed;
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+.modulos-aviso strong {
+    display: block;
+    color: #4c1d95;
+    font-size: 13.5px;
+}
+
+.modulos-aviso span {
+    display: block;
+    color: #6b21a8;
+    font-size: 12.5px;
+    margin-top: 2px;
+}
+
+/* ---------- Área ---------- */
+.modulos-area {
+    margin-bottom: 28px;
+}
+
+.modulos-area-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 2px 12px;
+    border-bottom: 2px solid #ede9fe;
+    margin-bottom: 16px;
+}
+
+.modulos-area-header i {
+    color: #7c3aed;
+    font-size: 17px;
+    width: 22px;
+    text-align: center;
+}
+
+.modulos-area-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    flex: 1;
+}
+
+.modulos-area-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: #7c3aed;
+    background: #f5f3ff;
+    border: 1px solid #ede9fe;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+/* ---------- Grid de tarjetas ---------- */
+.modulos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.modulo-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px 18px;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+.modulo-card.is-on {
+    border-color: #ddd6fe;
+    box-shadow: 0 1px 3px rgba(124, 58, 237, .08);
+}
+
+.modulo-card.is-off {
+    background: #fafafa;
+}
+
+.modulo-card.is-nucleo {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.modulo-card.saving {
+    opacity: .6;
+    pointer-events: none;
+}
+
+.modulo-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.modulo-nombre {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.modulo-lock {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+.modulo-codigo {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 3px;
+    letter-spacing: .3px;
+}
+
+.modulo-nota {
+    font-size: 11.5px;
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #6b7280;
+}
+
+.modulo-nota i {
+    font-size: 10px;
+}
+
+.modulo-nota.req-no-cumplido {
+    color: #b45309;
+    font-weight: 600;
+}
+
+/* ---------- Switch (toggle) ---------- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 999px;
+    transition: background .25s;
+}
+
+.switch-slider::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform .25s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+}
+
+.switch input:checked + .switch-slider {
+    background: #7c3aed;
+}
+
+.switch input:checked + .switch-slider::before {
+    transform: translateX(20px);
+}
+
+.switch-disabled {
+    cursor: not-allowed;
+}
+
+.switch-disabled .switch-slider {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+/* Núcleo bloqueado en ON */
+.modulo-card.is-nucleo .switch input:checked + .switch-slider {
+    background: #a78bfa;
+}
+
+/* ---------- Toast ---------- */
+.modulo-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .18);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform .3s, opacity .3s;
+    max-width: 360px;
+}
+
+.modulo-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modulo-toast i {
+    font-size: 16px;
+}
+
+.toast-ok {
+    background: #16a34a;
+}
+
+.toast-err {
+    background: #dc2626;
+}
+
+@media (max-width: 640px) {
+    .modulos-grid {
+        grid-template-columns: 1fr;
+    }
+}

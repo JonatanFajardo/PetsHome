@@ -40,6 +40,7 @@ namespace PetsHome.Business
             services.AddScoped<UsuarioRepository>();
             services.AddScoped<RolRepository>();
             services.AddScoped<PantallaRepository>();
+            services.AddScoped<ConfiguracionRepository>();
             services.AddScoped<TipoConsultaRepository>();
             services.AddScoped<GravedadRepository>();
             services.AddScoped<TipoMedicamentoRepository>();
@@ -94,6 +95,7 @@ namespace PetsHome.Business
             services.AddScoped<RecepcionDetalleService>();
             services.AddScoped<UsuarioService>();
             services.AddScoped<RolService>();
+            services.AddScoped<ConfiguracionService>();
             services.AddScoped<TipoConsultaService>();
             services.AddScoped<GravedadService>();
             services.AddScoped<TipoMedicamentoService>();
