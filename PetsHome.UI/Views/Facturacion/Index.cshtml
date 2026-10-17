@@ -1,0 +1,209 @@
+@{
+    ViewData["Title"] = "Punto de Venta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Facturacion";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/pos.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-cash-register mr-2 text-white"></i>Punto de Venta / Facturación
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="pos-tabs">
+            <button id="tab-pos" class="pos-tab active" onclick="POS.switchTab('pos')">
+                <i class="fas fa-cash-register mr-1"></i>Nueva venta
+            </button>
+            <button id="tab-historial" class="pos-tab" onclick="POS.switchTab('historial')">
+                <i class="fas fa-receipt mr-1"></i>Historial
+            </button>
+        </div>
+
+        <!-- ===================== VISTA POS ===================== -->
+        <div id="view-pos">
+            <div class="pos-layout">
+
+                <!-- Columna izquierda: cliente + líneas -->
+                <div>
+                    <!-- Cliente / Mascota -->
+                    <div class="pos-card">
+                        <div class="pos-card-header">
+                            <i class="fas fa-user"></i>
+                            <h3>Datos de la venta</h3>
+                        </div>
+                        <div class="pos-card-body">
+                            <div style="display:grid;grid-template-columns:1fr 200px;gap:14px;">
+                                <div class="pos-field">
+                                    <label for="pos-cliente">Cliente</label>
+                                    <select id="pos-cliente" class="pos-control"></select>
+                                </div>
+                                <div class="pos-field">
+                                    <label for="pos-mascota">Mascota (ID opcional)</label>
+                                    <input type="number" id="pos-mascota" class="pos-control"
+                                           min="1" step="1" placeholder="Opcional" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agregar línea -->
+                    <div class="pos-card">
+                        <div class="pos-card-header">
+                            <i class="fas fa-plus-circle"></i>
+                            <h3>Agregar ítem a la factura</h3>
+                        </div>
+                        <div class="pos-card-body">
+                            <div class="pos-add-grid">
+                                <div class="pos-field">
+                                    <label>Tipo</label>
+                                    <div class="pos-type-toggle" id="pos-type-toggle">
+                                        <button type="button" data-tipo="Servicio" class="active">
+                                            <i class="fas fa-stethoscope"></i>Servicio
+                                        </button>
+                                        <button type="button" data-tipo="Producto">
+                                            <i class="fas fa-box"></i>Producto
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="pos-field">
+                                    <label for="pos-item">Ítem</label>
+                                    <select id="pos-item" class="pos-control"></select>
+                                </div>
+
+                                <div class="pos-field">
+                                    <label for="pos-desc">Descripción</label>
+                                    <input type="text" id="pos-desc" class="pos-control"
+                                           placeholder="Descripción" />
+                                </div>
+
+                                <div class="pos-field">
+                                    <label for="pos-cant">Cantidad</label>
+                                    <input type="number" id="pos-cant" class="pos-control"
+                                           min="0.01" step="1" value="1" />
+                                </div>
+
+                                <div class="pos-field">
+                                    <label for="pos-precio">Precio unit.</label>
+                                    <input type="number" id="pos-precio" class="pos-control"
+                                           min="0" step="0.01" value="0.00" />
+                                </div>
+
+                                <div class="pos-field">
+                                    <label>&nbsp;</label>
+                                    <button type="button" id="pos-add-btn" class="pos-btn pos-btn-primary">
+                                        <i class="fas fa-plus"></i>Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de líneas -->
+                    <div class="pos-card">
+                        <div class="pos-card-header">
+                            <i class="fas fa-list-ul"></i>
+                            <h3>Detalle de la factura</h3>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="pos-lines-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:110px;">Tipo</th>
+                                        <th>Descripción</th>
+                                        <th style="width:90px;" class="text-center">Cant.</th>
+                                        <th style="width:120px;" class="text-right">Precio unit.</th>
+                                        <th style="width:130px;" class="text-right">Subtotal</th>
+                                        <th style="width:60px;" class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pos-lines-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna derecha: totales -->
+                <div class="pos-card">
+                    <div class="pos-card-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Totales</h3>
+                    </div>
+                    <div class="pos-card-body">
+                        <div class="pos-totals-row">
+                            <span>Subtotal</span>
+                            <span class="pos-dinero" id="pos-subtotal">L. 0.00</span>
+                        </div>
+                        <div class="pos-totals-row">
+                            <span>ISV (15%)</span>
+                            <span class="pos-dinero" id="pos-isv">L. 0.00</span>
+                        </div>
+                        <hr class="pos-totals-divider" />
+                        <div class="pos-totals-row pos-totals-total">
+                            <span>Total</span>
+                            <span class="pos-dinero" id="pos-total">L. 0.00</span>
+                        </div>
+
+                        <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <button type="button" id="pos-facturar-btn" class="pos-btn pos-btn-success" disabled>
+                                <i class="fas fa-check-circle"></i>Facturar
+                            </button>
+                            <button type="button" id="pos-limpiar-btn" class="pos-btn pos-btn-ghost">
+                                <i class="fas fa-eraser"></i>Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===================== VISTA HISTORIAL ===================== -->
+        <div id="view-historial" style="display:none;" class="pets-table-container">
+            <table class="pets-table" id="pos-historial">
+                <thead>
+                    <tr>
+                        <th width="80">ID</th>
+                        <th width="140">Número</th>
+                        <th>Cliente</th>
+                        <th width="140">Fecha</th>
+                        <th width="130" class="text-right">Total</th>
+                        <th width="120" class="text-center">Estado</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window._urls = {
+            clientesDropdown:  '@Url.Action("ClientesDropdown", "Facturacion")',
+            serviciosDropdown: '@Url.Action("ServiciosDropdown", "Facturacion")',
+            productosDropdown: '@Url.Action("ProductosDropdown", "Facturacion")',
+            crear:             '@Url.Action("Crear", "Facturacion")',
+            list:              '@Url.Action("List", "Facturacion")'
+        };
+    </script>
+    <script src="~/js/pages/pos.js"></script>
+    <script>
+        $(function () { POS.init(window._urls); });
+    </script>
+}

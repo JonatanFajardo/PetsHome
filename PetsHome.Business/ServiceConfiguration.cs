@@ -61,6 +61,7 @@ namespace PetsHome.Business
             services.AddScoped<DashboardAdminRepository>();
             services.AddScoped<ClientesRepository>();
             services.AddScoped<ServiciosRepository>();
+            services.AddScoped<FacturacionRepository>();
             //https://www.it-swarm.dev/es/c%23/obtencion-de-url-absolutas-utilizando-asp.net-core/1053425403/
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
                 .AddScoped<IUrlHelper>(x => x
@@ -119,6 +120,7 @@ namespace PetsHome.Business
             services.AddScoped<DashboardAdminService>();
             services.AddScoped<ClientesService>();
             services.AddScoped<ServiciosService>();
+            services.AddScoped<FacturacionService>();
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
             {
