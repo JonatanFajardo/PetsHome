@@ -470,6 +470,12 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Veterinaria_Clientes_DetailResult, ClientesDetailViewModel>().ReverseMap();
             CreateMap<PR_Veterinaria_Clientes_DropdownResult, ClientesDropdownViewModel>().ReverseMap();
             CreateMap<tbClientes, ClientesFormViewModel>().ReverseMap();
+            // Mapeos para Veterinaria - Servicios
+            CreateMap<PR_Veterinaria_Servicios_ListResult, ServiciosListViewModel>().ReverseMap();
+            CreateMap<PR_Veterinaria_Servicios_FindResult, ServiciosFindViewModel>().ReverseMap();
+            CreateMap<PR_Veterinaria_Servicios_DetailResult, ServiciosDetailViewModel>().ReverseMap();
+            CreateMap<PR_Veterinaria_Servicios_DropdownResult, ServiciosDropdownViewModel>().ReverseMap();
+            CreateMap<tbServicios, ServiciosFormViewModel>().ReverseMap();
         }
     }
 }

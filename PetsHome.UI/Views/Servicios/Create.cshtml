@@ -1,0 +1,104 @@
+@model ServiciosFormViewModel
+@{
+    bool esEdicion = Model.isEdit;
+    ViewData["Title"] = esEdicion ? "Editar Servicio" : "Nuevo Servicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de servicios";
+    ViewData["UseFormValidation"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header con gradiente igual al Index -->
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-concierge-bell mr-2 text-white"></i>@(esEdicion ? "Editar Servicio" : "Registro de Servicio")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">
+                    @(esEdicion ? "Modifique la información del servicio" : "Complete la información del nuevo servicio")
+                </p>
+            </div>
+        </div>
+
+        <!-- Contenedor del formulario -->
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <form asp-action="Add" method="post" autocomplete="ON">
+                    <input class="form-control" asp-for="serv_Id" type="hidden" />
+
+                    <!-- Datos del Servicio -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Información del servicio</h2>
+                            <p class="card-description">Datos generales del servicio de veterinaria</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+
+                                <!-- Campo Código -->
+                                <div class="form-group">
+                                    <label asp-for="serv_Codigo">Código</label>
+                                    <input class="form-control" asp-for="serv_Codigo" type="text" placeholder="Ingrese el código del servicio" />
+                                    <span class="text-danger" asp-validation-for="serv_Codigo"></span>
+                                </div>
+
+                                <!-- Campo Nombre -->
+                                <div class="form-group">
+                                    <label asp-for="serv_Nombre">Nombre <span class="required">*</span></label>
+                                    <input class="form-control" asp-for="serv_Nombre" type="text" placeholder="Ingrese el nombre del servicio" required />
+                                    <span class="text-danger" asp-validation-for="serv_Nombre"></span>
+                                </div>
+
+                                <!-- Campo Precio -->
+                                <div class="form-group">
+                                    <label asp-for="serv_Precio">Precio <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">L.</span>
+                                        </div>
+                                        <input class="form-control" asp-for="serv_Precio" type="number" step="0.01" min="0" placeholder="0.00" required />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="serv_Precio"></span>
+                                </div>
+
+                                <!-- Campo Descripción -->
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label asp-for="serv_Descripcion">Descripción</label>
+                                    <textarea class="form-control" asp-for="serv_Descripcion" rows="3" placeholder="Ingrese una descripción del servicio"></textarea>
+                                    <span class="text-danger" asp-validation-for="serv_Descripcion"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-content-save"></i> @(esEdicion ? "Actualizar" : "Guardar")
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
