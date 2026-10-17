@@ -13,16 +13,19 @@ namespace PetsHome.UI.Controllers
         private readonly DashboardVeterinarioService _dashboardVetService;
         private readonly DashboardSupervisorService _dashboardSupService;
         private readonly DashboardCuidadorService _dashboardCuidService;
+        private readonly RecepcionService _recepcionService;
 
         public HomeController(HomeService homeService,
             DashboardVeterinarioService dashboardVetService,
             DashboardSupervisorService dashboardSupService,
-            DashboardCuidadorService dashboardCuidService)
+            DashboardCuidadorService dashboardCuidService,
+            RecepcionService recepcionService)
         {
             _homeService         = homeService;
             _dashboardVetService = dashboardVetService;
             _dashboardSupService = dashboardSupService;
             _dashboardCuidService = dashboardCuidService;
+            _recepcionService    = recepcionService;
         }
 
         [DefaultBreadcrumb("Inicio")]
@@ -42,6 +45,9 @@ namespace PetsHome.UI.Controllers
                     case 5: // Cuidador
                         var modelCuid = await _dashboardCuidService.GetDashboardAsync();
                         return View("~/Views/DashboardCuidador/Index.cshtml", modelCuid);
+                    case 7: // Recepcionista -> tablero de sala de espera
+                        var modelRec = await _recepcionService.GetTableroAsync();
+                        return View("~/Views/Recepcion/Index.cshtml", modelRec);
                 }
             }
 

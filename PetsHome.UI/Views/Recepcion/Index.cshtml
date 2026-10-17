@@ -1,0 +1,179 @@
+@{
+    ViewData["Title"] = "Recepción";
+    ViewData["CurrentPantalla"] = "Recepcion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/search-select.css" />
+    <link rel="stylesheet" href="~/css/recepcion.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="col-12">
+    <div class="pets-container">
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="bi bi-bell mr-2 text-white"></i>Recepción — Sala de espera</h2>
+                </div>
+                <div class="pets-controls">
+                    <button type="button" id="rcBtnNueva" class="rc-btn-primary">
+                        <i class="bi bi-plus-circle"></i> Nueva visita
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-12" style="padding:0">
+    <div class="rc-wrap">
+
+        <!-- ════════ Sala de espera ════════ -->
+        <div class="rc-card rc-queue-card">
+            <div class="rc-card-head">
+                <div class="rc-card-title"><i class="bi bi-people-fill"></i> En espera</div>
+                <div class="rc-queue-meta">
+                    <span id="rcQueueCount" class="rc-count">0</span> paciente(s)
+                    <span class="rc-refresh-note"><i class="bi bi-arrow-repeat"></i> actualiza solo</span>
+                </div>
+            </div>
+
+            <div class="rc-table-scroll">
+                <table class="rc-table">
+                    <thead>
+                        <tr>
+                            <th>Turno</th>
+                            <th>Mascota</th>
+                            <th>Dueño</th>
+                            <th>Motivo</th>
+                            <th>Tipo</th>
+                            <th>Prioridad</th>
+                            <th>Vet</th>
+                            <th>Espera</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="rcQueueBody">
+                        <tr><td colspan="10" class="rc-empty">Cargando sala de espera…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ════════ Modal Nueva visita (check-in) ════════ -->
+<div id="rcModal" class="rc-modal" aria-hidden="true">
+    <div class="rc-modal-backdrop" data-close="1"></div>
+    <div class="rc-modal-box" role="dialog" aria-modal="true" aria-labelledby="rcModalTitle">
+        <div class="rc-modal-head">
+            <div id="rcModalTitle" class="rc-modal-title"><i class="bi bi-clipboard-plus"></i> Nueva visita</div>
+            <button type="button" class="rc-modal-close" data-close="1">&times;</button>
+        </div>
+
+        <div class="rc-modal-body">
+            <!-- Toggle Interno / Cliente -->
+            <div class="rc-field">
+                <label class="rc-label">¿Quién es el paciente?</label>
+                <div class="rc-toggle">
+                    <button type="button" class="rc-toggle-btn is-active" data-tipo="interno">
+                        <i class="bi bi-house-heart"></i> Interno (refugio/rescate)
+                    </button>
+                    <button type="button" class="rc-toggle-btn" data-tipo="cliente">
+                        <i class="bi bi-person-badge"></i> Cliente (con dueño)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dueño (solo si Cliente) -->
+            <div class="rc-field" id="rcDuenoField" style="display:none">
+                <label class="rc-label">Dueño</label>
+                <div id="rcClienteSelect"></div>
+                <div id="rcClienteSel" class="rc-chip-sel" style="display:none"></div>
+            </div>
+
+            <!-- Mascota -->
+            <div class="rc-field">
+                <label class="rc-label">Mascota</label>
+                <div class="rc-search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="rcMascSearch" placeholder="Buscar mascota existente…" autocomplete="off" />
+                    <div id="rcMascResults" class="rc-search-results"></div>
+                </div>
+                <div id="rcMascSel" class="rc-chip-sel" style="display:none"></div>
+                <div class="rc-hint">
+                    ¿No existe? <a id="rcCrearMasc" href="#" target="_blank" rel="noopener">Registrar mascota nueva</a>
+                    y vuelve a buscarla.
+                </div>
+            </div>
+
+            <div class="rc-grid-2">
+                <div class="rc-field">
+                    <label class="rc-label">Tipo de consulta</label>
+                    <select id="rcTipoConsulta" class="rc-select">
+                        <option value="">Seleccione…</option>
+                    </select>
+                </div>
+                <div class="rc-field">
+                    <label class="rc-label">Prioridad</label>
+                    <select id="rcPrioridad" class="rc-select">
+                        <option value="Normal" selected>Normal</option>
+                        <option value="Urgente">Urgente</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="rc-grid-2">
+                <div class="rc-field">
+                    <label class="rc-label">Peso (opcional)</label>
+                    <input type="number" step="0.01" min="0" id="rcPeso" class="rc-input" placeholder="0.00 kg" />
+                </div>
+                <div class="rc-field">
+                    <label class="rc-label">Veterinario (opcional)</label>
+                    <select id="rcVeterinario" class="rc-select">
+                        <option value="">Sin asignar</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="rc-field">
+                <label class="rc-label">Motivo de la visita</label>
+                <textarea id="rcMotivo" class="rc-textarea" placeholder="Describe brevemente el motivo…"></textarea>
+            </div>
+
+            <div id="rcModalError" class="rc-modal-error" style="display:none"></div>
+        </div>
+
+        <div class="rc-modal-foot">
+            <button type="button" class="rc-btn-ghost" data-close="1">Cancelar</button>
+            <button type="button" id="rcBtnCheckIn" class="rc-btn-primary">
+                <i class="bi bi-check2"></i> Registrar en sala
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/components/search-select.js"></script>
+    <script>
+        window._urls = {
+            salaEspera: '@Url.Action("SalaEspera", "Recepcion")',
+            veterinarios: '@Url.Action("Veterinarios", "Recepcion")',
+            checkIn: '@Url.Action("CheckIn", "Recepcion")',
+            cambiarEstado: '@Url.Action("CambiarEstado", "Recepcion")',
+            buscarMascota: '@Url.Action("Search", "Mascota")',
+            crearMascota: '@Url.Action("Create", "Mascota")',
+            tiposConsulta: '@Url.Action("Search", "Lookup")',
+            lookupSearch: '@Url.Action("Search", "Lookup")',
+            lookupCreate: '@Url.Action("Create", "Lookup")'
+        };
+    </script>
+    <script src="~/js/pages/recepcion.js"></script>
+}
