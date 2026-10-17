@@ -265,6 +265,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/intro.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     }
 
+    <!-- SweetAlert2 global: notificaciones bonitas disponibles en todas las páginas (window.Swal) -->
+    <link rel="stylesheet" href="~/plugins/sweet-alert2/sweetalert2.min.css" />
+    <script src="~/plugins/sweet-alert2/sweetalert2.min.js"></script>
+
     @Html.ShowAlert();
     @RenderSection("scripts", required: false)
 
