@@ -30,7 +30,7 @@ import textwrap
 from datetime import datetime
 from pathlib import Path
 
-BASE = Path(__file__).parent
+BASE = Path(__file__).resolve().parent.parent
 
 # ============================================================
 #  MAPEO DE TIPOS
