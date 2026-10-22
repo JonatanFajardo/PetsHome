@@ -57,6 +57,31 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
 
+        /// <summary>
+        /// Inserta una receta y devuelve el nuevo receta_Id (el SP retorna SCOPE_IDENTITY).
+        /// A diferencia de AddAsync, respeta el receta_UsuarioCrea recibido (no lo fuerza a 1).
+        /// </summary>
+        public async Task<int> AddReturningIdAsync(tbRecetas entity)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Recetas_Insert]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@cita_Id", entity.cita_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@masc_Id", entity.masc_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@receta_Medicamento", entity.receta_Medicamento, DbType.String, ParameterDirection.Input);
+            parameter.Add("@tipoMed_Id", entity.tipoMed_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@viaAdmin_Id", entity.viaAdmin_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@receta_Dosis", entity.receta_Dosis, DbType.String, ParameterDirection.Input);
+            parameter.Add("@receta_Frecuencia", entity.receta_Frecuencia, DbType.String, ParameterDirection.Input);
+            parameter.Add("@receta_Duracion", entity.receta_Duracion, DbType.String, ParameterDirection.Input);
+            parameter.Add("@receta_Instrucciones", entity.receta_Instrucciones, DbType.String, ParameterDirection.Input);
+            parameter.Add("@receta_FechaInicio", entity.receta_FechaInicio, DbType.Date, ParameterDirection.Input);
+            parameter.Add("@receta_FechaFin", entity.receta_FechaFin, DbType.Date, ParameterDirection.Input);
+            parameter.Add("@receta_Estado", entity.receta_Estado, DbType.String, ParameterDirection.Input);
+            parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@receta_UsuarioCrea", entity.receta_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Select<int>(sqlQuery, parameter);
+        }
+
         public async Task<RequestResult> EditAsync(tbRecetas entity)
         {
             entity.receta_UsuarioModifica = 1;

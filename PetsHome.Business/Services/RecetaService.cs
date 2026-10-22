@@ -79,6 +79,21 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>Inserta una receta y devuelve su nuevo id (0 si falló).</summary>
+        public async Task<int> AddReturningIdAsync(RecetaFormViewModel model)
+        {
+            try
+            {
+                tbRecetas mappedResult = _mapper.Map<tbRecetas>(model);
+                return await _recetaRepository.AddReturningIdAsync(mappedResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return 0;
+            }
+        }
+
         public async Task<bool> UpdateAsync(RecetaFormViewModel model)
         {
             try
