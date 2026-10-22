@@ -256,12 +256,9 @@
                     <div class="ec-flag-none"><i class="bi bi-check-circle-fill"></i> Sin medicamentos activos ni vacunas vencidas.</div>
                 }
 
-                @* Alergias y enfermedades crónicas: tbMascotas no tiene estos campos hoy. *@
-                @* TODO: requiere campo nuevo en tbMascotas para registrar alergias/crónicas. *@
+                @* Mejoras v3 - Fase 1: banderas rojas REALES (alergias + padecimientos) *@
                 <div class="ec-divider"></div>
-                <div class="ec-flag-none" style="background:#F9FAFB;border-color:#E5E7EB;color:#6B7280">
-                    <i class="bi bi-info-circle"></i> Sin alergias registradas
-                </div>
+                @await Html.PartialAsync("~/Views/BanderaClinica/_AlertBarHost.cshtml", (int)Model.MascId)
             </div>
 
             <div class="ec-card">

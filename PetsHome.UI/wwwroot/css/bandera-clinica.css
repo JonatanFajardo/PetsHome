@@ -1,0 +1,118 @@
+/* ============================================================
+   Banderas rojas clínicas (alergias + padecimientos)
+   Identidad PetsHome: morado base, rojo/ámbar para alerta.
+   Estructura inspirada en el alert bar de OpenVPM.
+   ============================================================ */
+:root {
+    --bc-purple: #5b4fcf;
+    --bc-purple-dark: #1e1657;
+    --bc-surface: #ffffff;
+    --bc-red: #ef4444;
+    --bc-red-bg: #fef2f2;
+    --bc-amber: #d97706;
+    --bc-amber-bg: #fffbeb;
+    --bc-blue: #3b82f6;
+    --bc-blue-bg: #eff6ff;
+    --bc-muted: #8b80b8;
+    --bc-border: #ece9fb;
+}
+
+.bclin {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 14px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+.bclin-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bc-surface);
+    border: 1px solid var(--bc-border);
+    border-left: 4px solid var(--bc-border);
+    border-radius: 12px;
+}
+/* cuando hay banderas, el borde izquierdo se enciende */
+.bclin-row.has-flag { border-left-color: var(--bc-red); background: var(--bc-red-bg); }
+.bclin-row.has-flag.warn { border-left-color: var(--bc-amber); background: var(--bc-amber-bg); }
+
+.bclin-head { display: flex; align-items: center; gap: 7px; min-width: 150px; }
+.bclin-ico { font-size: 1.05rem; }
+.ico-alergia { color: var(--bc-red); }
+.ico-cronico { color: var(--bc-amber); }
+.bclin-label { font-weight: 600; color: var(--bc-purple-dark); }
+.bclin-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 22px; height: 22px; padding: 0 6px;
+    font-size: .78rem; font-weight: 700; color: #fff;
+    background: var(--bc-purple); border-radius: 11px;
+}
+
+.bclin-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; flex: 1; }
+.bclin-empty { color: var(--bc-muted); font-size: .88rem; font-style: italic; }
+
+.bclin-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: .84rem; color: var(--bc-purple-dark);
+    background: #fff; border: 1px solid var(--bc-border);
+}
+.bclin-chip strong { font-weight: 600; }
+.chip-sev { font-size: .72rem; text-transform: uppercase; letter-spacing: .3px; opacity: .85; }
+.chip-extra { color: var(--bc-muted); font-size: .8rem; }
+.chip-x {
+    border: none; background: transparent; cursor: pointer;
+    font-size: 1rem; line-height: 1; color: var(--bc-muted); padding: 0 0 0 2px;
+}
+.chip-x:hover { color: var(--bc-red); }
+
+/* severidad de alergia */
+.bclin-chip.sev-alta  { background: var(--bc-red-bg);  border-color: #fecaca; }
+.bclin-chip.sev-alta .chip-sev { color: var(--bc-red); }
+.bclin-chip.sev-media { background: var(--bc-amber-bg); border-color: #fde68a; }
+.bclin-chip.sev-media .chip-sev { color: var(--bc-amber); }
+.bclin-chip.sev-leve  { background: var(--bc-blue-bg);  border-color: #bfdbfe; }
+.bclin-chip.sev-leve .chip-sev { color: var(--bc-blue); }
+
+/* estado de padecimiento */
+.bclin-chip.est-cronico  { background: var(--bc-amber-bg); border-color: #fde68a; }
+.bclin-chip.est-cronico .chip-sev { color: var(--bc-amber); }
+.bclin-chip.est-vigente  { background: #f5f3ff; border-color: #ddd6fe; }
+.bclin-chip.est-vigente .chip-sev { color: var(--bc-purple); }
+.bclin-chip.est-superado { background: #f0fdf4; border-color: #bbf7d0; }
+.bclin-chip.est-superado .chip-sev { color: #16a34a; }
+
+.bclin-add {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 999px; cursor: pointer;
+    font-size: .82rem; font-weight: 600;
+    color: var(--bc-purple); background: #f5f3ff; border: 1px dashed #c7bdf5;
+}
+.bclin-add:hover { background: #ede9ff; }
+
+/* form inline */
+.bclin-form {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 7px;
+    width: 100%; margin-top: 4px; padding-top: 10px;
+    border-top: 1px dashed var(--bc-border);
+}
+.bclin-form input, .bclin-form select {
+    padding: 6px 10px; border: 1px solid var(--bc-border); border-radius: 8px;
+    font-size: .85rem; font-family: inherit;
+}
+.bclin-form .f-sustancia, .bclin-form .f-nombre { flex: 1; min-width: 180px; }
+.bclin-form .f-reaccion { flex: 1; min-width: 150px; }
+.bclin-form .f-save {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer;
+    font-weight: 600; font-size: .85rem; color: #fff; background: var(--bc-purple);
+}
+.bclin-form .f-save:hover { background: #4a38b8; }
+.bclin-form .f-cancel {
+    padding: 6px 9px; border: 1px solid var(--bc-border); border-radius: 8px;
+    cursor: pointer; background: #fff; color: var(--bc-muted);
+}
