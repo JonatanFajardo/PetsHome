@@ -21,6 +21,8 @@ namespace PetsHome.Business.Extensions
             CreateMap<tbMascotaAlergia, MascotaAlergiaViewModel>().ReverseMap();
             CreateMap<PR_Medico_MascotaPadecimiento_ListResult, MascotaPadecimientoViewModel>().ReverseMap();
             CreateMap<tbMascotaPadecimiento, MascotaPadecimientoViewModel>().ReverseMap();
+            // Mejoras v3 - Fase 3: cola dispensar→cobrar
+            CreateMap<PR_Veterinaria_CargoDispensacion_ListPendientesResult, CargoDispensacionViewModel>().ReverseMap();
 
             // Mapeos para Departamento - ViewModels separados
             CreateMap<PR_General_Departamentos_ListResult, DepartamentoListViewModel>().ReverseMap();
