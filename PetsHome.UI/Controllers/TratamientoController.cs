@@ -20,19 +20,25 @@ namespace PetsHome.UI.Controllers
         private readonly TipoParasitoService _tipoParasitoService;
         private readonly TipoMedicamentoService _tipoMedicamentoService;
         private readonly ViaAdministracionService _viaAdministracionService;
+        private readonly CitaMedicaService _citaMedicaService;
+        private readonly RecetaService _recetaService;
 
         public TratamientoController(
             TratamientoService tratamientoService,
             MascotaService mascotaService,
             TipoParasitoService tipoParasitoService,
             TipoMedicamentoService tipoMedicamentoService,
-            ViaAdministracionService viaAdministracionService)
+            ViaAdministracionService viaAdministracionService,
+            CitaMedicaService citaMedicaService,
+            RecetaService recetaService)
         {
             _tratamientoService = tratamientoService;
             _mascotaService = mascotaService;
             _tipoParasitoService = tipoParasitoService;
             _tipoMedicamentoService = tipoMedicamentoService;
             _viaAdministracionService = viaAdministracionService;
+            _citaMedicaService = citaMedicaService;
+            _recetaService = recetaService;
         }
 
         [Breadcrumb("Tratamiento", FromAction = "Index", FromController = typeof(HomeController))]
@@ -157,8 +163,8 @@ namespace PetsHome.UI.Controllers
         {
             model.LoadDropDownList(
                 _mascotaService.MascotaDropdown(),
-                new System.Collections.Generic.List<object>(), // CitaMedica - puede implementarse después
-                new System.Collections.Generic.List<object>(), // Receta - puede implementarse después
+                _citaMedicaService.CitaMedicaDropdown(),
+                _recetaService.RecetaDropdown(),
                 _tipoParasitoService.TipoParasitoDropdown(),
                 _tipoMedicamentoService.TipoMedicamentoDropdown(),
                 _viaAdministracionService.ViaAdministracionDropdown()

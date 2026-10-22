@@ -55,6 +55,28 @@
                                     </div>
                                     <span class="text-danger" asp-validation-for="masc_Id"></span>
                                 </div>
+
+                                <!-- Campo Cita médica (opcional: liga el tratamiento a la consulta que lo originó) -->
+                                <div class="form-group">
+                                    <label asp-for="cita_Id">Cita médica</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="cita_Id" asp-items="Model.CitaMedicaList">
+                                            <option value="">-- Sin cita asociada --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="cita_Id"></span>
+                                </div>
+
+                                <!-- Campo Receta (opcional: liga el tratamiento a la receta que lo indicó) -->
+                                <div class="form-group">
+                                    <label asp-for="receta_Id">Receta</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-control" asp-for="receta_Id" asp-items="Model.RecetaList">
+                                            <option value="">-- Sin receta asociada --</option>
+                                        </select>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="receta_Id"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
