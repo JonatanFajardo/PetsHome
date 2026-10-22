@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Cobros pendientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Cobros de dispensacion";
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <style>
+        .cobros-wrap { padding: 8px 4px; font-family: 'DM Sans', system-ui, sans-serif; color: #1e1657; }
+        .cobros-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+        .cobros-head h2 { margin:0; color:#1e1657; }
+        .cobros-sum { margin-left:auto; font-weight:600; color:#4a38b8; }
+        .cobros-table { width:100%; border-collapse:separate; border-spacing:0 6px; }
+        .cobros-table th { text-align:left; font-size:.8rem; text-transform:uppercase; letter-spacing:.3px; color:#8b80b8; padding:4px 10px; }
+        .cobros-table td { background:#fff; padding:10px; border-top:1px solid #ece9fb; border-bottom:1px solid #ece9fb; }
+        .cobros-table td:first-child { border-left:1px solid #ece9fb; border-radius:10px 0 0 10px; }
+        .cobros-table td:last-child { border-right:1px solid #ece9fb; border-radius:0 10px 10px 0; }
+        .cli-badge { display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:24px; padding:0 8px; background:#5b4fcf; color:#fff; border-radius:12px; font-weight:700; font-size:.8rem; }
+        .btn-cobrar { background:#5b4fcf; color:#fff; border:none; border-radius:8px; padding:6px 12px; font-weight:600; cursor:pointer; font-size:.85rem; }
+        .btn-cobrar:hover { background:#4a38b8; }
+        .btn-condonar { background:#fff; color:#d97706; border:1px solid #fde68a; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:.85rem; }
+        .btn-condonar:hover { background:#fffbeb; }
+        .cobros-empty { text-align:center; color:#8b80b8; padding:40px; font-style:italic; }
+        .txt-right { text-align:right; }
+    </style>
+}
+
+<div class="col-12">
+  <div class="pets-container">
+    <div class="pets-header-full">
+      <div class="pets-header-content">
+        <div class="pets-title-section">
+          <h2 class="text-white"><i class="bi bi-cash-coin mr-2 text-white"></i>Cobros pendientes</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="cobros-wrap">
+      <div class="cobros-head">
+        <i class="bi bi-receipt" style="font-size:1.2rem;color:#5b4fcf"></i>
+        <span>Medicamentos dispensados en consulta pendientes de cobro</span>
+        <span class="cobros-sum" id="cobrosTotal"></span>
+      </div>
+      <div id="cobrosBody"><div class="cobros-empty">Cargando…</div></div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+    window._urlsCobros = {
+        list: '@Url.Action("ListPendientes", "Cobros")',
+        facturar: '@Url.Action("FacturarCliente", "Cobros")',
+        condonar: '@Url.Action("Condonar", "Cobros")'
+    };
+</script>
+<script src="~/js/pages/cobros.js" asp-append-version="true"></script>
+}
