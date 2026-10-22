@@ -40,9 +40,23 @@ namespace PetsHome.Business.Services
             catch (Exception ex) { _logger.LogError(ex, ex.Message); return false; }
         }
 
+        /// <summary>Encola un cargo desde consulta (snapshot automático). Idempotente por receta.</summary>
+        public async Task<bool> EncolarDesdeConsultaAsync(int receta_Id, int masc_Id, int cli_Id, int? cita_Id, int itm_Id, int cantidad, int usuario)
+        {
+            try { return (await _repo.EncolarDesdeConsultaAsync(receta_Id, masc_Id, cli_Id, cita_Id, itm_Id, cantidad, usuario)).Success; }
+            catch (Exception ex) { _logger.LogError(ex, ex.Message); return false; }
+        }
+
         public async Task<bool> FacturarAsync(int cargo_Id, int fact_Id, int fdet_Id, int usuario)
         {
             try { return (await _repo.FacturarAsync(cargo_Id, fact_Id, fdet_Id, usuario)).Success; }
+            catch (Exception ex) { _logger.LogError(ex, ex.Message); return false; }
+        }
+
+        /// <summary>Factura todos los cargos pendientes de un cliente en una sola factura.</summary>
+        public async Task<bool> FacturarClienteAsync(int cli_Id, int usuario)
+        {
+            try { return (await _repo.FacturarClienteAsync(cli_Id, usuario)).Success; }
             catch (Exception ex) { _logger.LogError(ex, ex.Message); return false; }
         }
 

@@ -38,6 +38,25 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sql, p);
         }
 
+        /// <summary>
+        /// Encola desde el flujo de consulta: omite los snapshots de precio/descripción
+        /// para que el SP los capture automáticamente desde tbItems. Idempotente por receta.
+        /// </summary>
+        public async Task<RequestResult> EncolarDesdeConsultaAsync(int receta_Id, int masc_Id, int cli_Id, int? cita_Id, int itm_Id, int cantidad, int usuario)
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_Encolar]";
+            var p = new DynamicParameters();
+            p.Add("@receta_Id", receta_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@masc_Id", masc_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cli_Id", cli_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cita_Id", cita_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@itm_Id", itm_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cargo_Cantidad", cantidad, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cargo_UsuarioCrea", usuario, DbType.Int32, ParameterDirection.Input);
+            // price/desc omitidos -> el SP los toma de tbItems (snapshot)
+            return await DbApp.ExecuteWithResult(sql, p);
+        }
+
         public async Task<RequestResult> FacturarAsync(int cargo_Id, int fact_Id, int fdet_Id, int usuario)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_Facturar]";
@@ -46,6 +65,16 @@ namespace PetsHome.Logic.Repositories
             p.Add("@fact_Id", fact_Id, DbType.Int32, ParameterDirection.Input);
             p.Add("@fdet_Id", fdet_Id, DbType.Int32, ParameterDirection.Input);
             p.Add("@cargo_ResueltoPor", usuario, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sql, p);
+        }
+
+        /// <summary>Crea UNA factura con todos los cargos pendientes del cliente y los marca Facturado.</summary>
+        public async Task<RequestResult> FacturarClienteAsync(int cli_Id, int usuario)
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_FacturarCliente]";
+            var p = new DynamicParameters();
+            p.Add("@cli_Id", cli_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sql, p);
         }
 
