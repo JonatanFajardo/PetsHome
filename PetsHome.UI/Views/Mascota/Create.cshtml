@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="~/css/modern-form-styles.css" />
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
     <link rel="stylesheet" href="~/css/image-upload-styles.css" />
-    <link rel="stylesheet" href="~/plugins/select2/select2.min.css" />
     <style>
         .form-layout {
             display: grid;
@@ -274,47 +273,4 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
     <script src="~/js/Extensions/image-Extension.js"></script>
-    <script src="~/plugins/select2/select2.min.js"></script>
-    <script>
-        $(function () {
-            // Quita acentos para que "jose" encuentre "José" y "callejero" ignore tildes.
-            function sinAcentos(s) {
-                return (s || '').toString().normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-            }
-
-            // Matcher de select2 que busca sin acentos ni mayúsculas.
-            function matcherSinAcentos(params, data) {
-                var term = (params.term || '').trim();
-                if (term === '') return data;
-                if (typeof data.text === 'undefined') return null;
-                return sinAcentos(data.text).indexOf(sinAcentos(term)) > -1 ? data : null;
-            }
-
-            // Inicializa un select con buscador + "Agregar" que abre el modal de su pantalla.
-            function initSelect(selector, urlModal, textoAgregar) {
-                $(selector).select2({
-                    width: '100%',
-                    placeholder: '-- Seleccionar --',
-                    matcher: matcherSinAcentos,
-                    language: {
-                        // Solo aparece cuando lo que escribes no está en la lista.
-                        noResults: function () {
-                            return '<a href="#" class="s2-add-link" data-url="' + urlModal + '">'
-                                 + '<i class="fas fa-plus mr-1"></i>' + textoAgregar + '</a>';
-                        }
-                    },
-                    escapeMarkup: function (m) { return m; } // permite el HTML del enlace
-                });
-            }
-
-            initSelect('#raza_Id', '@Url.Action("Index", "Raza")?openCreate=1', 'Agregar nueva raza');
-            initSelect('#proc_Id', '@Url.Action("Index", "Procedencia")?openCreate=1', 'Agregar nueva procedencia');
-
-            // Clic en "Agregar" -> abre el modal de la pantalla correspondiente (otra pestaña).
-            $(document).on('click', '.s2-add-link', function (e) {
-                e.preventDefault();
-                window.open($(this).data('url'), '_blank');
-            });
-        });
-    </script>
 }
