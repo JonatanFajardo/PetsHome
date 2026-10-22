@@ -188,6 +188,22 @@ var datatable = (function () {
                         },
                         error: function (jqXHR, textStatus) {
                             console.log('error:' + textStatus);
+                            // Liberar el overlay "Procesando..." para que no quede colgado
+                            callback({ data: [] });
+                            var msg = jqXHR.status === 401
+                                ? 'Tu sesión expiró. Vuelve a iniciar sesión.'
+                                : 'No se pudo mostrar la información. Intenta recargar la página.';
+                            if (window.Swal) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    icon: 'info',
+                                    title: msg,
+                                    showConfirmButton: false,
+                                    timer: 5000,
+                                    timerProgressBar: true
+                                });
+                            }
                         }
                     });
                 },
