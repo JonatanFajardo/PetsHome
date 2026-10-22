@@ -229,6 +229,12 @@
     // Inicializar tooltips
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+
+        // Abrir automáticamente el modal de "Nuevo" si se llega con ?openCreate=1
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('openCreate') === '1') {
+            $('#add-btn').trigger('click');
+        }
     });
 </script>
 <script src="~/js/pages/procedencia.js"></script>

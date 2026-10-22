@@ -1,95 +1,7 @@
 ﻿//==================================================
-//Recorre el arreglo de encabezados
+// Motor DataTable reutilizable: cada página declara su
+// arreglo de encabezados (header) y llama a datatable.init.
 //==================================================
-
-
-var datatable = (function () {
-    var obj = {},
-        action,
-        table,
-        $deleteModal;
-
-    //obj.NewModal
-
-    table = $("#datatable");
-
-    function deleteModal(params) {
-
-        $deleteModal = $(params.deleteModalId);
-        $deleteModal.on("show.bs.modal", function () {
-            var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
-            $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
-
-        });
-        $deleteModal.on("hidden.bs.modal", function () { });
-    }
-
-    function typeModal(params) {
-        switch (params.type) {
-
-            case 'delete':
-                $(function () {
-                    deleteModal(params);
-                    $deleteModal.modal("show");
-                });
-                break;
-        }
-    }
-
-    obj.configure = function (params) {
-        //if (params.dataTableId === undefined)
-        //    params.dataTableId = "#datatable";
-        if (params.editModalId === undefined)
-            params.editModalId = "#edit-modal";
-
-        if (params.deleteModalId === undefined)
-            params.deleteModalId = "#delete-modal-secondary";
-
-        $(function () {
-            //createDataTable(params);
-            typeModal(params);
-            //createModal(params);
-            //createEditModal(params);
-        });
-    };
-
-    obj.begin = function (xhr, settings) {
-        if (action == "edit") {
-            submitBtn = Ladda.create($(".ladda-button")[0]);
-        }
-        else {
-            submitBtn = Ladda.create($(".ladda-button")[0]);
-        }
-        submitBtn.start();
-    };
-
-    obj.success = function (data, status, xhr) {
-        if (data.success) {
-            //$editModal.modal("hide");
-            $deleteModal.modal("hide");
-            /*alertConfig.alert("Success", data.type);*/
-            table.DataTable().ajax.reload(null, false);
-        }
-        else {
-            //$editModal.modal("hide");
-            $deleteModal.modal("hide");
-            alertConfig.alert("Ocurrió  un error.", data.error);
-        }
-        alertConfig.alert(data.message, data.type);
-    };
-
-    obj.failure = function (xhr, status, error) {
-        console.log("Ocurrió  un error.");
-    }
-
-    obj.complete = function (xhr, status) {
-        submitBtn.stop();
-    };
-    return obj;
-}());
-
-
 
 var datatable = (function () {
     var obj = {};
@@ -162,13 +74,11 @@ var datatable = (function () {
                 order: [],
                 scrollCollapse: true,
                 paging: true,
-                stateSave: true,
                 //bLengthChange: false,
                 //bInfo: false,
                 processing: true,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLenght: 10,
-                displayLength: 10,
+                pageLength: 10,
                 language: {
                     processing: "Procesando...",
                     lengthMenu: " _MENU_ ",

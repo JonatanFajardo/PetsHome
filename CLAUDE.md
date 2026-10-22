@@ -1,5 +1,17 @@
 # PetsHome — Guía para Claude Code
 
+## Estilo de respuesta
+Responder corto, en una sola frase cuando se pueda. Ampliar solo si el usuario lo pide.
+
+## Mínima interferencia (aplica a TODO, no solo dropdowns)
+Interferir lo menos posible en lo que ya está estructurado. Antes de construir algo nuevo, reutilizar lo que ya existe y funciona.
+
+- **No reemplazar lo que ya funciona.** Si ya hay un mecanismo establecido (carga de datos, dropdown, modal, pantalla, endpoint, componente), NO reescribirlo ni cambiarlo por uno propio.
+- **Mejorar encima, no sustituir.** Preferir una capa ligera (un JS pequeño, un plugin que YA está incluido —ej. `select2`—) que potencie lo existente, en vez de un componente nuevo paralelo.
+- **Reutilizar pantallas/modales/flujos existentes.** Ej.: un botón "Agregar" que redirige al modal que YA existe en otra pantalla, en lugar de clonar ese modal o crear un endpoint nuevo.
+- **Tocar lo mínimo.** Evitar editar archivos compartidos, agregar dependencias o crear endpoints si el flujo ya se resuelve con lo que hay.
+- **Ante la duda, preguntar.** Si no está claro qué mecanismo existente usar, preguntar antes de inventar uno.
+
 ## Arquitectura del proyecto
 
 4 capas, sin Entity Framework (solo Dapper + Stored Procedures):
@@ -13,7 +25,24 @@ PetsHome.DataAccess  → DbApp helper (Select, Find, Detail, ExecuteWithResult, 
 ```
 
 Base de datos: SQL Server, schema `PETSHOMEDB`.
-Schemas SQL: `Refugio`, `Medico`, `Inventario`, `Seguridad`, `General`.
+Schemas SQL: `Refugio`, `Medico`, `Inventario`, `Seguridad`, `General`, `Veterinaria`, `Rescate`, `Ventas`.
+
+---
+
+## Cómo pensar este proyecto (principios de diseño — leer ANTES de modelar)
+
+Pensar PRIMERO el dominio real → luego entidades → luego pantallas. Si hay ambigüedad de negocio, **preguntar la regla temprano**; no proponer modelos a medias ni "arreglar" conflatando conceptos.
+
+1. **Separar dominios, no conflar.** Si dos conceptos se parecen (ej. *adoptante* vs *dueño*), sepáralos limpio — cada uno en su lane — en lugar de unirlos con reglas de prioridad. Tres dominios DISTINTOS aquí:
+   - **Adopción** (`tbAdopciones`, *adoptante*): hecho histórico de que una persona adoptó un animal del refugio. **NO entra al flujo clínico.**
+   - **Interno (refugio/rescate)**: animal de la organización, **sin dueño personal**; responsable = el departamento (refugio/rescate).
+   - **Clínica (cliente externo)**: mascota con dueño = `Cliente` (`Veterinaria.tbClientes`), vía `tbMascotas.cli_Id`.
+   En consulta un paciente es SOLO **interno** (`cli_Id` null) o **de cliente** (`cli_Id` set). *Adoptante nunca aparece en lo clínico.*
+2. **Aditivo, no reemplazo.** Lo nuevo se suma sin romper/reemplazar lo existente (adoptante intacto; se agrega `cli_Id`).
+3. **Opcional y degradable.** Roles/módulos nuevos deben poder apagarse y el sistema seguir funcionando. Usar el config de módulos existente (`tbModulosConfig.modu_EsActivo`; áreas `Comun/Refugio/Veterinaria/Ventas`) en vez de dependencias duras. Ej: recepción OFF → el vet se auto-sirve.
+4. **Feed, no gate.** Un rol de apoyo (recepción) rellena/encola; nunca es un paso obligatorio para que otra cosa funcione.
+5. **Un dato, múltiples lentes por rol.** Una sola fuente de verdad (ej. cola = citas de hoy "En espera") que cada rol ve distinto (recepción gestiona · vet atiende · admin supervisa), no pantallas separadas.
+6. **Verificar contra los datos reales antes de recomendar.** Revisar esquema/SP/config vivo con `sqlcmd` antes de afirmar; no asumir.
 
 ---
 
@@ -230,3 +259,4 @@ python tools/bind_razor.py <Entidad> Index
 | `PetsHome.Business/ServiceConfiguration.cs` | Registro de repos y services |
 | `PetsHome.Business/Extensions/MappingProfileExtensions.cs` | Mapeos AutoMapper |
 | `PetsHome.UI/Views/Shared/_Layout.cshtml` | Layout principal, sidebar, secciones Styles/Scripts |
+| `docs/HANDOFF_EN_CONSULTA.md` | **Traspaso del módulo "En Consulta" + inventario de recetas**: estado actual, plan pendiente, contratos, modelo de datos, plan de agentes. Leer para continuar ese trabajo. |

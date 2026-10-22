@@ -101,8 +101,7 @@ var datatableCatalogs = (function () {
             //bInfo: false,
             processing: true,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-            pageLenght: 10,
-            displayLength: 10,
+            pageLength: 10,
             language: {
                 processing: "Procesando...",
                 lengthMenu: " _MENU_ ",
