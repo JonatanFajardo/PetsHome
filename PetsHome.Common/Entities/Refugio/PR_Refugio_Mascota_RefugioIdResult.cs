@@ -8,5 +8,8 @@ namespace PetsHome.Common.Entities
     {
         public int refg_Id { get; set; }
         public string masc_Nombre { get; set; }
+
+        /// <summary>NULL = paciente interno (refugio) | con valor = paciente de cliente externo.</summary>
+        public int? cli_Id { get; set; }
     }
 }

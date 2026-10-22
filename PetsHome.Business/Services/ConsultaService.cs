@@ -170,6 +170,7 @@ namespace PetsHome.Business.Services
                     .ToList();
 
                 int refgId = 0;
+                int? cliId = null;
                 string nombreMascota = "Mascota";
 
                 if (lineasEntrega.Count > 0)
@@ -181,6 +182,7 @@ namespace PetsHome.Business.Services
                         if (info != null)
                         {
                             refgId = info.refg_Id;
+                            cliId = info.cli_Id;
                             if (!string.IsNullOrWhiteSpace(info.masc_Nombre))
                                 nombreMascota = info.masc_Nombre;
                         }
@@ -188,6 +190,17 @@ namespace PetsHome.Business.Services
                     catch (Exception refgError)
                     {
                         _logger.LogWarning(refgError, "No se pudo resolver el refugio de la mascota {MascId}", dto.MascId);
+                    }
+
+                    // Si la mascota no tiene refugio (paciente de cliente externo), el stock
+                    // sale del SITIO DONDE ATIENDE el vet (su refugio asignado), no de la mascota.
+                    if (refgId <= 0)
+                    {
+                        try { refgId = await _inventarioSalidaRepository.RefugioPorUsuarioAsync(usuarioCrea); }
+                        catch (Exception usuError)
+                        {
+                            _logger.LogWarning(usuError, "No se pudo resolver el refugio del usuario {Usuario}", usuarioCrea);
+                        }
                     }
 
                     // Solo validamos/descontamos si hay un refugio (misma cantidad que luego se descuenta).
@@ -283,8 +296,10 @@ namespace PetsHome.Business.Services
 
                 // ── 3. Medicamentos/recetas por linea ──
                 // Persiste cada medicamento como una receta reutilizando RecetaService.
-                // itm_Id se guarda solo cuando el medicamento proviene del inventario
-                // (id > 0 && enStock); el resto queda como receta de texto libre.
+                // INVARIANTE: itm_Id (afirma que salio del inventario) se guarda SOLO si la
+                // linea de verdad se descuenta: marcada Entregar + en stock + con ubicacion
+                // resuelta (refgId > 0). Si no hay ubicacion, NO se vincula item: queda como
+                // receta de texto libre (no mentir diciendo que se entrego del inventario).
                 if (resultado.CitaId > 0 && dto.Medicamentos != null)
                 {
                     foreach (var linea in dto.Medicamentos)
@@ -299,7 +314,7 @@ namespace PetsHome.Business.Services
                                 cita_Id = resultado.CitaId,
                                 masc_Id = dto.MascId,
                                 receta_Medicamento = linea.Nombre.Trim(),
-                                itm_Id = (linea.EnStock && linea.Id > 0) ? linea.Id : (int?)null,
+                                itm_Id = (linea.Entregar && linea.EnStock && linea.Id > 0 && refgId > 0) ? linea.Id : (int?)null,
                                 receta_Dosis = linea.Dosis,
                                 receta_Frecuencia = linea.Frecuencia,
                                 receta_Duracion = linea.Duracion,
@@ -324,8 +339,11 @@ namespace PetsHome.Business.Services
                 {
                     try
                     {
+                        // Paciente de cliente externo (cli_Id set) => Venta ('V'); interno => Uso ('U').
+                        // El movimiento queda correctamente clasificado; la factura es el paso siguiente.
+                        char tipoSalida = cliId.HasValue ? 'V' : TipoSalidaConsulta;
                         int salId = await _inventarioSalidaRepository.InsertSalidaAsync(
-                            "Consulta medica - " + nombreMascota, TipoSalidaConsulta, refgId, usuarioCrea);
+                            "Consulta medica - " + nombreMascota, tipoSalida, refgId, usuarioCrea);
 
                         if (salId > 0)
                         {

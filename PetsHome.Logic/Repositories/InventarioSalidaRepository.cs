@@ -31,6 +31,19 @@ namespace PetsHome.Logic.Repositories
         }
 
         /// <summary>
+        /// Refugio del usuario que atiende (via su empleado). 0 si no tiene.
+        /// Se usa como ubicacion del stock cuando la mascota no tiene refugio propio
+        /// (paciente de cliente externo): el medicamento sale del sitio donde atiende el vet.
+        /// </summary>
+        public async Task<int> RefugioPorUsuarioAsync(int usuId)
+        {
+            const string sqlQuery = "[Refugio].[PR_Refugio_Refugio_PorUsuario]";
+            var p = new DynamicParameters();
+            p.Add("@usu_Id", usuId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Select<int>(sqlQuery, p);
+        }
+
+        /// <summary>
         /// Existencia disponible (exi_Cantidad) de un item en un refugio. 0 si no hay fila.
         /// </summary>
         public async Task<int> ExistenciaPorItemAsync(int itmId, int refgId)
