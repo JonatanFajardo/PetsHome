@@ -3,6 +3,13 @@
 ## Estilo de respuesta
 Responder corto, en una sola frase cuando se pueda. Ampliar solo si el usuario lo pide.
 
+**Preferir SIEMPRE lo visual sobre el texto largo.** El usuario lee rápido y odia los muros de texto. Formato por defecto:
+- **Diagramas ASCII** en bloque de código para flujos, decisiones y árboles (`│ ▼ ├ └ ┌ ┐`).
+- **Mockups ASCII** (cajas `┌─┐`) para mostrar cómo se vería una pantalla: ANTES / DESPUÉS.
+- **Opciones en lista de 1 línea** con etiqueta de esfuerzo `[poco]/[medio]/[mucho]` y marcar la recomendada con `★`.
+- **Tablas compactas** en vez de párrafos cuando se comparan cosas.
+- Mínimo texto alrededor: una frase antes del visual, una pregunta concreta al final. Nada de explicaciones largas salvo que las pida.
+
 ## Mínima interferencia (aplica a TODO, no solo dropdowns)
 Interferir lo menos posible en lo que ya está estructurado. Antes de construir algo nuevo, reutilizar lo que ya existe y funciona.
 
@@ -43,6 +50,11 @@ Pensar PRIMERO el dominio real → luego entidades → luego pantallas. Si hay a
 4. **Feed, no gate.** Un rol de apoyo (recepción) rellena/encola; nunca es un paso obligatorio para que otra cosa funcione.
 5. **Un dato, múltiples lentes por rol.** Una sola fuente de verdad (ej. cola = citas de hoy "En espera") que cada rol ve distinto (recepción gestiona · vet atiende · admin supervisa), no pantallas separadas.
 6. **Verificar contra los datos reales antes de recomendar.** Revisar esquema/SP/config vivo con `sqlcmd` antes de afirmar; no asumir.
+7. **Analizar utilidad y solapamiento antes de construir una pantalla** (cuando aplique — pantalla nueva, ampliar una existente, o dudar si vale la pena). No preguntar "¿cómo la hago?" sino "¿debe existir y para quién?". Hacer este chequeo ANTES de escribir código y reportarlo visual (tablas/mockups):
+   - **Utilidad por rol:** tabla rol × valor (★/★★/★★★) + por qué. Si a casi nadie le sirve, decirlo.
+   - **Solapamiento:** ¿alguna pantalla ya cumple objetivo similar? Mapear quién-hace-qué en el grupo. Marcar lo que sería DUPLICADO.
+   - **Escala/volumen:** ¿el enfoque aguanta el universo real de datos? (ej. matriz de manada fija ≠ universo abierto de clientes → por demanda, no volcado completo).
+   - **Recomendación honesta:** incluso "no construir / reusar X / recortar alcance". Decir el valor ÚNICO que justifica la pantalla, o admitir que no lo hay.
 
 ---
 
