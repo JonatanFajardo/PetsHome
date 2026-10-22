@@ -16,6 +16,10 @@ namespace PetsHome.Business.Extensions
         /// </summary>
         public MappingProfileExtensions()
         {
+            // Mejoras v3 - Fase 1: banderas rojas clínicas (alergias)
+            CreateMap<PR_Medico_MascotaAlergia_ListResult, MascotaAlergiaViewModel>().ReverseMap();
+            CreateMap<tbMascotaAlergia, MascotaAlergiaViewModel>().ReverseMap();
+
             // Mapeos para Departamento - ViewModels separados
             CreateMap<PR_General_Departamentos_ListResult, DepartamentoListViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_FindResult, DepartamentoFormViewModel>().ReverseMap();
