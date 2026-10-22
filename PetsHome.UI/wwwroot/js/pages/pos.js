@@ -276,7 +276,7 @@ var POS = (function () {
                                escapeHtml(d || '—') + '</span>';
                     }
                 },
-                { data: 'Cliente', render: function (d) { return escapeHtml(d || 'Consumidor Final'); } },
+                { data: 'cliente', render: function (d) { return escapeHtml(d || 'Consumidor Final'); } },
                 {
                     data: 'fact_Fecha',
                     render: function (d, t) {

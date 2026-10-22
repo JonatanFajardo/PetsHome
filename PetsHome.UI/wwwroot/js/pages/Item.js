@@ -115,7 +115,7 @@ var Item = (function () {
                       return d ? new Date(d).toLocaleDateString('es-HN') : '—';
                   }
                 },
-                { data: 'DiasRestantes', title: 'Días', width: '80px', className: 'text-center',
+                { data: 'diasRestantes', title: 'Días', width: '80px', className: 'text-center',
                   render: function (d, t) {
                       if (t !== 'display') return d;
                       var bg = d < 7 ? '#fee2e2' : '#fef3c7';

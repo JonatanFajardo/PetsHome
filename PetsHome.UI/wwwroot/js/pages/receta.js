@@ -41,7 +41,7 @@ var Receta = (function () {
                     }
                 },
                 {
-                    FieldName: 'TipoMedicamento',
+                    FieldName: 'tipoMedicamento',
                     Size: 120,
                     render: function (data, type) {
                         if (type === 'display') {

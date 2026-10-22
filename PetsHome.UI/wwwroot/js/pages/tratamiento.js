@@ -13,7 +13,7 @@ var Tratamiento = (function () {
                     Visibility: false
                 },
                 {
-                    FieldName: 'Mascota',
+                    FieldName: 'mascota',
                     render: function (data, type) {
                         if (type === 'display') {
                             if (!data) return '<span style="color:#9ca3af;">—</span>';
@@ -41,7 +41,7 @@ var Tratamiento = (function () {
                     }
                 },
                 {
-                    FieldName: 'TipoMedicamento',
+                    FieldName: 'tipoMedicamento',
                     Size: 120,
                     render: function (data, type) {
                         if (type === 'display') {
@@ -54,7 +54,7 @@ var Tratamiento = (function () {
                     }
                 },
                 {
-                    FieldName: 'ViaAdministracion',
+                    FieldName: 'viaAdministracion',
                     Size: 130,
                     render: function (data, type) {
                         if (type === 'display') {
