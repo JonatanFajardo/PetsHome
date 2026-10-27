@@ -11,5 +11,7 @@ namespace PetsHome.Common.Entities
         public string cita_MotivoConsulta { get; set; }
         public string Gravedad { get; set; }
         public int Duracion { get; set; }
+        public int? cita_Veterinario { get; set; }
+        public string Veterinario { get; set; }
     }
 }

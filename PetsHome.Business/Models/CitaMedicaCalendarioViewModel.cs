@@ -19,5 +19,9 @@ namespace PetsHome.Business.Models
         public string owner { get; set; }
         /// <summary>Tipo de consulta (Emergencia, Vacunación, Control, Cirugía, Consulta General)</summary>
         public string type { get; set; }
+        /// <summary>Id del veterinario asignado (null = sin asignar)</summary>
+        public int? vetId { get; set; }
+        /// <summary>Nombre del veterinario asignado</summary>
+        public string vet { get; set; }
     }
 }

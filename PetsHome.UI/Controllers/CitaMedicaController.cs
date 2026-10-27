@@ -207,15 +207,32 @@ namespace PetsHome.UI.Controllers
 
         [Breadcrumb("Calendario Data", FromAction = "Index", FromController = typeof(CitaMedicaController))]
         [HttpGet]
-        public async Task<JsonResult> CalendarioData(string inicio, string fin)
+        public async Task<JsonResult> CalendarioData(string inicio, string fin, int? vetId = null)
         {
             if (!DateTime.TryParse(inicio, out DateTime fechaInicio))
                 fechaInicio = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             if (!DateTime.TryParse(fin, out DateTime fechaFin))
                 fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
 
-            var data = await _HistorialMedicoService.CalendarioAsync(fechaInicio, fechaFin);
+            // Lente por rol: el veterinario ve SOLO sus citas (+ sin asignar);
+            // recepción/admin ven todo, o filtran por el doctor elegido (vetId).
+            var data = await _HistorialMedicoService.CalendarioAsync(fechaInicio, fechaFin, ResolverVetLente(vetId));
             return Json(data);
+        }
+
+        /// <summary>
+        /// Lente del calendario: vetId explícito manda; si no y el usuario es veterinario
+        /// (RoleId 4), filtra por su propio id; cualquier otro rol => null (ve todo).
+        /// </summary>
+        private int? ResolverVetLente(int? vetIdExplicito)
+        {
+            // Veterinario (rol 4): SIEMPRE su propia agenda, no puede espiar otras columnas.
+            var roleId = User.FindFirst("RoleId")?.Value;
+            if (roleId == "4" && CurrentUserId.HasValue)
+                return CurrentUserId.Value;
+
+            // Admin/Supervisor/Recepción: filtran por el doctor elegido, o ven todo (null).
+            return (vetIdExplicito.HasValue && vetIdExplicito.Value > 0) ? vetIdExplicito : (int?)null;
         }
 
         [Breadcrumb("Get Mascotas Dropdown", FromAction = "Index", FromController = typeof(CitaMedicaController))]

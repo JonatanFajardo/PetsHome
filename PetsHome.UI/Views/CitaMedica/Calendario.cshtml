@@ -74,6 +74,20 @@
     <!-- ══ SIDEBAR ══ -->
     <div class="cal-sidebar">
 
+      @if (User.FindFirst("RoleId")?.Value != "4")
+      {
+        <!-- Filtro por doctor (admin / recepción) -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <span class="sidebar-card-title"><i class="bi bi-person-badge me-1" style="color:var(--purple)"></i>Doctor</span>
+          </div>
+          <select id="filtro-doctor" class="form-select" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;"
+                  onchange="window.calFiltrarDoctor(this.value)">
+            <option value="">Todos los doctores</option>
+          </select>
+        </div>
+      }
+
       <!-- Mini calendario -->
       <div class="sidebar-card">
         <div class="mini-cal-header">
@@ -135,6 +149,23 @@
 <script>
 const URL_CALENDARIO = '@Url.Action("CalendarioData", "CitaMedica")';
 const URL_DETALLE    = '@Url.Action("Detail", "CitaMedica")';
+const URL_VETERINARIOS = '@Url.Action("Veterinarios", "Recepcion")';
 </script>
 <script src="~/js/pages/calendario-citas.js"></script>
+<script>
+  // Poblar el filtro de doctores (reusa el endpoint de Recepción).
+  (function () {
+    var sel = document.getElementById('filtro-doctor');
+    if (!sel) return;
+    fetch(URL_VETERINARIOS, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (r) { return r.json(); })
+      .then(function (vets) {
+        (vets || []).forEach(function (v) {
+          var o = document.createElement('option');
+          o.value = v.id; o.textContent = v.nombre;
+          sel.appendChild(o);
+        });
+      }).catch(function () {});
+  })();
+</script>
 }

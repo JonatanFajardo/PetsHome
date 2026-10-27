@@ -60,7 +60,8 @@ async function ensureDataFetched(refDate) {
 
   document.getElementById('cal-loading').style.display = 'flex';
   try {
-    const resp = await fetch(`${URL_CALENDARIO}?inicio=${fmt(start)}&fin=${fmt(end)}`);
+    const vetParam = (window._calVetId ? `&vetId=${window._calVetId}` : '');
+    const resp = await fetch(`${URL_CALENDARIO}?inicio=${fmt(start)}&fin=${fmt(end)}${vetParam}`);
     if (!resp.ok) throw new Error('Error ' + resp.status);
     appointments = await resp.json();
     fetchedStart  = start;
@@ -72,6 +73,14 @@ async function ensureDataFetched(refDate) {
     document.getElementById('cal-loading').style.display = 'none';
   }
 }
+
+// Filtro por doctor (dropdown del sidebar): resetea el cache y recarga el calendario.
+window.calFiltrarDoctor = function (vetId) {
+  window._calVetId = (vetId && Number(vetId) > 0) ? vetId : '';
+  fetchedStart = null;
+  fetchedEnd = null;
+  if (typeof refresh === 'function') refresh();
+};
 
 // ═══════════════════════════════════════════════════════
 //  ESTADO

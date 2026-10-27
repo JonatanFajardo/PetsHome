@@ -109,12 +109,13 @@ namespace PetsHome.Logic.Repositories
             }
         }
 
-        public async Task<IEnumerable<PR_Medico_CitaMedica_CalendarioResult>> CalendarioAsync(DateTime fechaInicio, DateTime fechaFin)
+        public async Task<IEnumerable<PR_Medico_CitaMedica_CalendarioResult>> CalendarioAsync(DateTime fechaInicio, DateTime fechaFin, int? vetId = null)
         {
             const string sqlQuery = "[Medico].[PR_Medico_CitaMedica_Calendario]";
             var parameter = new DynamicParameters();
             parameter.Add("@FechaInicio", fechaInicio.Date, DbType.Date, ParameterDirection.Input);
             parameter.Add("@FechaFin", fechaFin.Date, DbType.Date, ParameterDirection.Input);
+            parameter.Add("@vet_Id", vetId, DbType.Int32, ParameterDirection.Input);
             return await DbApp.SelectById<PR_Medico_CitaMedica_CalendarioResult>(sqlQuery, parameter);
         }
 
