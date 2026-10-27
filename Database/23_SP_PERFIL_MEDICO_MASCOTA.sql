@@ -156,7 +156,7 @@ BEGIN
     FROM  [Medico].[tbRecetas] AS receta
     WHERE  receta.masc_Id          = @masc_Id
       AND  receta.receta_EsEliminado = 0
-      AND  receta.receta_Estado      = 'Activo'
+      AND  receta.receta_Estado      = 'Activa'
     ORDER BY receta.receta_FechaInicio DESC
 END
 GO

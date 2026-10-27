@@ -162,7 +162,7 @@ CREATE PROCEDURE [Medico].[PR_Medico_Recetas_Insert]
     @receta_Instrucciones NVARCHAR(500) = NULL,
     @receta_FechaInicio DATE = NULL,
     @receta_FechaFin DATE = NULL,
-    @receta_Estado NVARCHAR(20) = 'Activo',
+    @receta_Estado NVARCHAR(20) = 'Activa',
     @receta_UsuarioCrea INT
 AS
 BEGIN
@@ -227,7 +227,7 @@ CREATE PROCEDURE [Medico].[PR_Medico_Recetas_Update]
     @receta_Instrucciones NVARCHAR(500) = NULL,
     @receta_FechaInicio DATE = NULL,
     @receta_FechaFin DATE = NULL,
-    @receta_Estado NVARCHAR(20) = 'Activo',
+    @receta_Estado NVARCHAR(20) = 'Activa',
     @receta_UsuarioModifica INT
 AS
 BEGIN
