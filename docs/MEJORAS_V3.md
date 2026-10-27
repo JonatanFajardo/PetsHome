@@ -370,3 +370,60 @@ Nicho/regulatorio  →  Sustancias controladas (#8), seguros (#16), membresías 
 ✗ Reescribir con triggers — al revés: movernos hacia lógica explícita, no esconderla en la BD
 ✗ Su stack (Next.js/PostgreSQL/tRPC) — solo tomamos patrones, no código
 ```
+
+---
+
+## SOAP + signos vitales en "En Consulta" (script 70)
+
+**Qué se hizo:** la pantalla `Views/Consulta/Index.cshtml` se reorganizó en los 4 bloques clínicos SOAP (Subjetivo / Objetivo / Evaluación / Plan) y se enriqueció el bloque Objetivo con más signos vitales. No es pantalla nueva: se reagruparon los campos que ya existían y se agregaron inputs de vitales. Todo lo que ya funcionaba sigue intacto (alert bar de banderas rojas, SearchSelect de medicamentos, check "Entregar", flujo de guardar recetas + salida de inventario + cola de cobro).
+
+**Mapeo SOAP de la pantalla:**
+
+```
+S · Subjetivo   → tipo de consulta + motivo
+O · Objetivo    → peso, temperatura, FC, FR + mucosas, llenado capilar,
+                  escala de dolor, condición corporal
+A · Evaluación  → diagnóstico (+ sugerencias por texto)
+P · Plan        → medicamentos, vacuna, próxima cita
+```
+
+**Columnas de `Medico.tbCitaMedica`:**
+
+| Vital | Columna | Estado previo |
+|-------|---------|---------------|
+| Frecuencia cardíaca | `cita_FrecuenciaCardiaca` (int) | Ya existía; el SP y el repo ya la recibían, pero el flujo de consulta NO la guardaba |
+| Frecuencia respiratoria | `cita_FrecuenciaRespiratoria` (int) | Igual que FC |
+| Mucosas | `cita_Mucosas` (nvarchar 50) | **Agregada** — enum sin tildes (Rosadas/Palidas/Ictericas/Cianoticas/Congestivas) |
+| Llenado capilar | `cita_LlenadoCapilar` (decimal 3,1, seg) | **Agregada** |
+| Escala de dolor | `cita_EscalaDolor` (int 0–10) | **Agregada** |
+| Condición corporal | `cita_CondicionCorporal` (decimal 3,1, 1–9) | **Agregada** |
+
+Todas opcionales (NULL). Enums almacenados sin tildes, mostrados con tilde en la UI.
+
+**Rangos de referencia (aviso suave en el front, NO bloquea):**
+
+```
+Temperatura         37.5–39.2 °C
+Frecuencia cardíaca 60–180 lpm
+Frec. respiratoria  10–40 rpm
+Llenado capilar     1–2 seg
+Escala de dolor     0–3 esperado (>3 = dolor moderado/severo)
+Condición corporal  4–5 ideal (escala 1–9)
+Mucosas             normal = Rosadas (otro valor = hallazgo a valorar)
+```
+
+Fuera de rango → borde ámbar + nota breve. No impide finalizar la consulta.
+
+**Archivos tocados:**
+- `Database/70_SOAP_VITALS.sql` — columnas nuevas + `CREATE OR ALTER` de los SP Insert/Update de cita.
+- `PetsHome.Common/Entities/Medico/tbCitaMedica.cs` — 4 propiedades nuevas.
+- `PetsHome.Logic/Repositories/CitaMedicaRepository.cs` — 4 parámetros en Add/Edit.
+- `PetsHome.Business/Models/ConsultaViewModels.cs` — DTO `GuardarConsultaDto` con FC/FR + 4 vitales.
+- `PetsHome.Business/Services/ConsultaService.cs` — `GuardarAsync` ahora persiste FC/FR + vitales (best-effort).
+- `PetsHome.UI/Views/Consulta/Index.cshtml` — reorganización SOAP + inputs de vitales.
+- `PetsHome.UI/wwwroot/css/en-consulta.css` — estilos SOAP (letra S/O/A/P morada) + campo vital + aviso de rango.
+- `PetsHome.UI/wwwroot/js/pages/en-consulta.js` — envío de vitales en el payload + validación de rango suave.
+
+**Rol × función:** SOAP y signos vitales los llena el **veterinario** durante la consulta. No hay variación relevante por rol, no se agregaron permisos ni filtros nuevos.
+
+**Verificación:** `dotnet build` 0 errores. Insert probado en transacción (BEGIN TRAN / ROLLBACK) contra la BD viva: FC/FR + los 4 vitales persisten correctamente y Mucosas se guarda sin tilde.

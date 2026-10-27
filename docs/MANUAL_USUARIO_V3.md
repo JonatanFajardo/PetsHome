@@ -96,6 +96,44 @@
 
 ---
 
+## 5. Consulta en formato SOAP (nota clínica ordenada)
+
+**Qué es:** la pantalla **En Consulta** ahora está organizada en cuatro bloques que siguen el orden natural de una revisión médica. Son las iniciales **SOAP**, el estándar que usan las clínicas veterinarias para dejar la historia clínica ordenada.
+
+**Para qué sirve:** que el veterinario capture la consulta en el mismo orden en que piensa (primero escucha, luego examina, luego concluye y al final decide el tratamiento). La nota queda clara y completa, y nada importante se queda sin anotar.
+
+**Los cuatro bloques:**
+
+```
+S · Subjetivo   →  Lo que cuenta el dueño: el motivo de la visita y
+                   qué ha notado en la mascota. (tipo de consulta + motivo)
+
+O · Objetivo    →  Lo que mide el veterinario: los signos vitales.
+                   peso · temperatura · frecuencia cardíaca · frecuencia
+                   respiratoria · color de mucosas · llenado capilar ·
+                   escala de dolor · condición corporal.
+
+A · Evaluación  →  La conclusión del veterinario: el diagnóstico.
+
+P · Plan        →  Qué se va a hacer: medicamentos recetados, vacuna
+                   aplicada y la próxima cita de seguimiento.
+```
+
+**Signos vitales ampliados (bloque Objetivo):** además del peso y la temperatura que ya existían, ahora se pueden registrar frecuencia cardíaca, frecuencia respiratoria, color de mucosas, tiempo de llenado capilar, escala de dolor (0 a 10) y condición corporal (1 a 9). **Todos son opcionales**: se llena lo que se haya medido.
+
+**Aviso de rango:** si un valor se sale de lo normal (por ejemplo, una temperatura muy alta), el campo se marca en **ámbar** con una nota breve. Es solo un **aviso** para que el veterinario lo revise; **no impide guardar** la consulta.
+
+**Qué NO cambió:** sigue estando el **aviso de banderas rojas** (alergias y padecimientos) a la derecha, el **buscador de medicamentos**, la casilla **"Entregar del inventario"** y el botón **Finalizar consulta**. Solo se reordenó la pantalla y se agregaron más signos vitales.
+
+**Dónde:** pantalla **En Consulta**.
+
+| Rol | Le sirve para |
+|-----|---------------|
+| Veterinario | Capturar la consulta ordenada y registrar más signos vitales |
+| Quien lea el historial después | Entender rápido qué pasó en cada visita |
+
+---
+
 ## Preguntas frecuentes
 
 **¿Por qué el veterinario no ve las citas de otros?**
