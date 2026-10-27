@@ -1,0 +1,34 @@
+/* ============================================================
+   Whiteboard / tablero Kanban de recepción (Mejoras v3 - Fase 4)
+   Identidad PetsHome (morado). Estructura inspirada en OpenVPM.
+   ============================================================ */
+.wb-live { display:inline-flex; align-items:center; gap:6px; color:#fff; font-weight:600; font-size:.85rem; }
+.wb-dot { width:9px; height:9px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.6); animation:wbpulse 1.8s infinite; }
+@keyframes wbpulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)} 70%{box-shadow:0 0 0 7px rgba(34,197,94,0)} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0)} }
+
+.wb-board { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; padding:14px 4px; font-family:'DM Sans',system-ui,sans-serif; }
+.wb-col { background:#f8f7ff; border:1px solid #ece9fb; border-radius:14px; min-height:120px; display:flex; flex-direction:column; }
+.wb-col-head { padding:12px 14px; font-weight:700; color:#fff; border-radius:14px 14px 0 0; display:flex; align-items:center; gap:8px; }
+.wb-h-espera   { background:#5b4fcf; }
+.wb-h-atencion { background:#d97706; }
+.wb-h-final    { background:#16a34a; }
+.wb-count { margin-left:auto; background:rgba(255,255,255,.25); border-radius:11px; min-width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:.8rem; padding:0 6px; }
+.wb-col-body { padding:10px; display:flex; flex-direction:column; gap:10px; flex:1; min-height:60px; }
+.wb-col-body.wb-over { background:#ede9ff; border-radius:0 0 14px 14px; outline:2px dashed #c7bdf5; outline-offset:-6px; }
+
+.wb-card { background:#fff; border:1px solid #ece9fb; border-left:4px solid #5b4fcf; border-radius:10px; padding:10px 12px; cursor:grab; box-shadow:0 1px 3px rgba(30,22,87,.06); }
+.wb-card:active { cursor:grabbing; }
+.wb-card.prio-Urgente { border-left-color:#ef4444; }
+.wb-card.prio-Alta    { border-left-color:#f97316; }
+.wb-card-top { display:flex; align-items:center; gap:8px; }
+.wb-pet { font-weight:700; color:#1e1657; }
+.wb-min { margin-left:auto; font-size:.78rem; color:#8b80b8; white-space:nowrap; }
+.wb-sub { font-size:.82rem; color:#4a3f7a; margin-top:3px; }
+.wb-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+.wb-tag { font-size:.72rem; padding:2px 8px; border-radius:999px; background:#f5f3ff; color:#5b4fcf; }
+.wb-tag.interno { background:#eef2ff; color:#4338ca; }
+.wb-tag.prio-Urgente { background:#fef2f2; color:#ef4444; }
+.wb-tag.prio-Alta { background:#fff7ed; color:#f97316; }
+.wb-empty { color:#b5aed6; font-size:.82rem; text-align:center; padding:16px 6px; font-style:italic; }
+
+@media (max-width:900px){ .wb-board{ grid-template-columns:1fr; } }

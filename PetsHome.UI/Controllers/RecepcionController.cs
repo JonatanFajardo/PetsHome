@@ -49,6 +49,34 @@ namespace PetsHome.UI.Controllers
             return null;
         }
 
+        /// <summary>GET /Recepcion/Tablero -> vista Kanban (whiteboard) del dia.</summary>
+        [Breadcrumb("Tablero", FromAction = "Index", FromController = typeof(HomeController))]
+        [PantallaAuthorize("Recepcion")]
+        public IActionResult Tablero() => View();
+
+        /// <summary>
+        /// GET /Recepcion/WhiteboardData -> JSON del tablero del dia (3 estados: espera/atencion/finalizada).
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> WhiteboardData(int? vetId = null)
+        {
+            var cola = await _service.WhiteboardAsync(null, ResolverVetLente(vetId));
+            return Json(cola.ConvertAll(c => new
+            {
+                citaId = c.CitaId,
+                mascId = c.MascId,
+                mascotaNombre = c.MascotaNombre,
+                duenoNombre = c.DuenoNombre,
+                esInterno = c.EsInterno,
+                motivo = c.Motivo,
+                tipoConsulta = c.TipoConsulta,
+                prioridad = c.Prioridad,
+                minutosEspera = c.MinutosEspera,
+                estado = c.Estado,
+                vetAsignado = c.VetAsignado
+            }));
+        }
+
         /// <summary>
         /// GET /Recepcion/SalaEspera -> JSON de la cola del dia (alimenta widgets de dashboards).
         /// Sin vetId: el backend aplica el lente del usuario logueado (vet ve su cola; admin/recepcion ven todo).

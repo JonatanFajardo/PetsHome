@@ -1,0 +1,99 @@
+@model PetsHome.Business.Models.BanderasClinicasViewModel
+@{
+    string SevCss(string g) => g switch {
+        "Alta" => "sev-alta",
+        "Leve" => "sev-leve",
+        _      => "sev-media"
+    };
+    string EstCss(string e) => e switch {
+        "Cronico"  => "est-cronico",
+        "Superado" => "est-superado",
+        _          => "est-vigente"
+    };
+}
+
+<div class="bclin" data-mascid="@Model.masc_Id">
+
+    <!-- ======= ALERGIAS ======= -->
+    <div class="bclin-row @(Model.Alergias.Count > 0 ? "has-flag" : "")">
+        <div class="bclin-head">
+            <i class="bi bi-exclamation-octagon-fill bclin-ico ico-alergia"></i>
+            <span class="bclin-label">Alergias</span>
+            <span class="bclin-count">@Model.Alergias.Count</span>
+        </div>
+        <div class="bclin-chips">
+            @if (Model.Alergias.Count == 0)
+            {
+                <span class="bclin-empty">Sin alergias registradas</span>
+            }
+            else
+            {
+                foreach (var a in Model.Alergias)
+                {
+                    <span class="bclin-chip @SevCss(a.alrg_Gravedad)" title="@a.alrg_Reaccion">
+                        <strong>@a.alrg_Sustancia</strong>
+                        <span class="chip-sev">@a.alrg_Gravedad</span>
+                        @if (!string.IsNullOrWhiteSpace(a.alrg_Reaccion))
+                        {
+                            <span class="chip-extra">· @a.alrg_Reaccion</span>
+                        }
+                        <button type="button" class="chip-x" data-corregir="alergia" data-id="@a.alrg_Id" title="Corregir (marcar como error)">&times;</button>
+                    </span>
+                }
+            }
+            <button type="button" class="bclin-add" data-add="alergia"><i class="bi bi-plus-lg"></i> Agregar</button>
+        </div>
+
+        <!-- form inline alergia -->
+        <div class="bclin-form" data-form="alergia" hidden>
+            <input type="text" class="f-sustancia" placeholder="Sustancia (ej: Penicilina)" maxlength="255" />
+            <input type="text" class="f-reaccion" placeholder="Reacción (opcional)" maxlength="500" />
+            <select class="f-gravedad">
+                <option value="Leve">Leve</option>
+                <option value="Media" selected>Media</option>
+                <option value="Alta">Alta</option>
+            </select>
+            <button type="button" class="f-save" data-save="alergia"><i class="bi bi-check-lg"></i> Guardar</button>
+            <button type="button" class="f-cancel"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+
+    <!-- ======= PADECIMIENTOS / CRÓNICOS ======= -->
+    <div class="bclin-row @(Model.Padecimientos.Count > 0 ? "has-flag warn" : "")">
+        <div class="bclin-head">
+            <i class="bi bi-clipboard2-pulse-fill bclin-ico ico-cronico"></i>
+            <span class="bclin-label">Padecimientos</span>
+            <span class="bclin-count">@Model.Padecimientos.Count</span>
+        </div>
+        <div class="bclin-chips">
+            @if (Model.Padecimientos.Count == 0)
+            {
+                <span class="bclin-empty">Sin padecimientos registrados</span>
+            }
+            else
+            {
+                foreach (var p in Model.Padecimientos)
+                {
+                    <span class="bclin-chip @EstCss(p.pade_Estado)">
+                        <strong>@p.pade_Nombre</strong>
+                        <span class="chip-sev">@p.EstadoDisplay</span>
+                        <button type="button" class="chip-x" data-corregir="padecimiento" data-id="@p.pade_Id" title="Corregir (marcar como error)">&times;</button>
+                    </span>
+                }
+            }
+            <button type="button" class="bclin-add" data-add="padecimiento"><i class="bi bi-plus-lg"></i> Agregar</button>
+        </div>
+
+        <!-- form inline padecimiento -->
+        <div class="bclin-form" data-form="padecimiento" hidden>
+            <input type="text" class="f-nombre" placeholder="Padecimiento (ej: Insuficiencia renal)" maxlength="500" />
+            <select class="f-estado">
+                <option value="Vigente" selected>Vigente</option>
+                <option value="Cronico">Crónico</option>
+                <option value="Superado">Superado</option>
+            </select>
+            <button type="button" class="f-save" data-save="padecimiento"><i class="bi bi-check-lg"></i> Guardar</button>
+            <button type="button" class="f-cancel"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+</div>

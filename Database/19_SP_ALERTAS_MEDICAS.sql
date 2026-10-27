@@ -130,7 +130,7 @@ BEGIN
     LEFT JOIN [Refugio].[tbRazas] AS raza
         ON masc.raza_Id = raza.raza_Id
     WHERE rec.receta_EsEliminado = 0
-      AND rec.receta_Estado IN ('Activo', 'Activa')
+      AND rec.receta_Estado = 'Activa'
       AND (rec.receta_FechaFin IS NULL OR rec.receta_FechaFin >= GETDATE())
       AND masc.masc_EsEliminado = 0
     ORDER BY rec.receta_FechaInicio DESC

@@ -132,7 +132,7 @@ BEGIN
     FROM [Medico].[tbRecetas] r
     INNER JOIN [Refugio].[tbMascotas] m ON m.masc_Id = r.masc_Id
     WHERE r.receta_EsEliminado = 0
-      AND ISNULL(r.receta_Estado,'Activa') NOT IN ('Finalizada','Cancelada')
+      AND ISNULL(r.receta_Estado,'Activa') NOT IN ('Completada','Cancelada','Vencida')
       AND DATEDIFF(DAY, r.receta_FechaInicio, GETDATE()) > 30
 
     ORDER BY alert_Tipo, alert_FechaRef

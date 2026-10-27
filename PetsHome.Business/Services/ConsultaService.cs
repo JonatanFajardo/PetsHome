@@ -27,6 +27,7 @@ namespace PetsHome.Business.Services
         private readonly InventarioSalidaRepository _inventarioSalidaRepository;
         private readonly RecepcionRepository _recepcionRepository;
         private readonly RecepcionService _recepcionService;
+        private readonly CargoDispensacionService _cargoService;
         private readonly ILogger<ConsultaService> _logger;
 
         // Tipo de salida de inventario usado al entregar medicamentos en consulta.
@@ -43,6 +44,7 @@ namespace PetsHome.Business.Services
             InventarioSalidaRepository inventarioSalidaRepository,
             RecepcionRepository recepcionRepository,
             RecepcionService recepcionService,
+            CargoDispensacionService cargoService,
             ILogger<ConsultaService> logger)
         {
             _perfilService = perfilService;
@@ -53,6 +55,7 @@ namespace PetsHome.Business.Services
             _inventarioSalidaRepository = inventarioSalidaRepository;
             _recepcionRepository = recepcionRepository;
             _recepcionService = recepcionService;
+            _cargoService = cargoService;
             _logger = logger;
         }
 
@@ -300,6 +303,12 @@ namespace PetsHome.Business.Services
                 // linea de verdad se descuenta: marcada Entregar + en stock + con ubicacion
                 // resuelta (refgId > 0). Si no hay ubicacion, NO se vincula item: queda como
                 // receta de texto libre (no mentir diciendo que se entrego del inventario).
+                // Mapa linea->recetaId: liga cada linea entregada con la receta que genero,
+                // para poblar saldet_RecetaId en el paso 4 (trazabilidad receta->salida).
+                // Clave por referencia: las entradas de lineasEntrega son los MISMOS objetos
+                // que las de dto.Medicamentos (Where sin copia), asi el lookup en paso 4 acierta.
+                var recetaPorLinea = new Dictionary<MedicamentoLineaDto, int>();
+
                 if (resultado.CitaId > 0 && dto.Medicamentos != null)
                 {
                     foreach (var linea in dto.Medicamentos)
@@ -309,21 +318,55 @@ namespace PetsHome.Business.Services
 
                         try
                         {
+                            bool entregaItem = linea.Entregar && linea.EnStock && linea.Id > 0 && refgId > 0;
                             var receta = new RecetaFormViewModel
                             {
                                 cita_Id = resultado.CitaId,
                                 masc_Id = dto.MascId,
                                 receta_Medicamento = linea.Nombre.Trim(),
-                                itm_Id = (linea.Entregar && linea.EnStock && linea.Id > 0 && refgId > 0) ? linea.Id : (int?)null,
+                                itm_Id = entregaItem ? linea.Id : (int?)null,
                                 receta_Dosis = linea.Dosis,
                                 receta_Frecuencia = linea.Frecuencia,
                                 receta_Duracion = linea.Duracion,
-                                receta_Estado = "Activo",
+                                receta_Estado = "Activa",
                                 receta_FechaInicio = DateTime.Now,
                                 receta_UsuarioCrea = usuarioCrea
                             };
 
-                            await _recetaService.AddAsync(receta);
+                            // Lineas que SE DISPENSAN del inventario (internas y de cliente):
+                            // capturamos el receta_Id para ligarlo a la salida (paso 4) y, si es
+                            // cliente externo, encolar el cargo con el MISMO receta_Id.
+                            if (entregaItem)
+                            {
+                                int recetaId = await _recetaService.AddReturningIdAsync(receta);
+                                if (recetaId > 0)
+                                {
+                                    recetaPorLinea[linea] = recetaId;
+
+                                    // Dispensación a CLIENTE EXTERNO (cli_Id set): encolar el cargo
+                                    // (cola dispensar→cobrar). El stock ya se descuenta en el paso 4;
+                                    // la cola es solo el cobro pendiente (feed, no gate).
+                                    if (cliId.HasValue)
+                                    {
+                                        int cant = linea.Cantidad <= 0 ? 1 : linea.Cantidad;
+                                        try
+                                        {
+                                            await _cargoService.EncolarDesdeConsultaAsync(
+                                                recetaId, dto.MascId, cliId.Value,
+                                                resultado.CitaId > 0 ? resultado.CitaId : (int?)null,
+                                                linea.Id, cant, usuarioCrea);
+                                        }
+                                        catch (Exception cargoError)
+                                        {
+                                            _logger.LogWarning(cargoError, "No se pudo encolar el cargo de dispensación (receta {RecetaId})", recetaId);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                await _recetaService.AddAsync(receta);
+                            }
                         }
                         catch (Exception recetaError)
                         {
@@ -352,8 +395,11 @@ namespace PetsHome.Business.Services
                                 int pedido = linea.Cantidad <= 0 ? 1 : linea.Cantidad;
                                 try
                                 {
+                                    // Si la linea genero receta (paso 3), ligarla a la salida.
+                                    int? recetaIdLinea = recetaPorLinea.TryGetValue(linea, out int rid) && rid > 0
+                                        ? rid : (int?)null;
                                     bool ok = await _inventarioSalidaRepository.InsertSalidaDetalleAsync(
-                                        salId, linea.Id, pedido, "Entregado en consulta", usuarioCrea);
+                                        salId, linea.Id, pedido, "Entregado en consulta", usuarioCrea, recetaIdLinea);
                                     if (!ok)
                                         _logger.LogWarning("No se pudo descontar el item {ItmId} (x{Cantidad}) de la salida {SalId}", linea.Id, pedido, salId);
                                 }

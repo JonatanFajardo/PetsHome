@@ -83,6 +83,22 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>Tablero Kanban del día (incluye Finalizadas) para el whiteboard.</summary>
+        public async Task<List<SalaEsperaItemViewModel>> WhiteboardAsync(DateTime? fecha = null, int? vetId = null)
+        {
+            try
+            {
+                var result = await _repository.WhiteboardAsync(fecha, vetId)
+                             ?? new List<PR_Medico_SalaEspera_ListResult>();
+                return result.Select(Map).ToList();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new List<SalaEsperaItemViewModel>();
+            }
+        }
+
         /// <summary>
         /// Arma el ViewModel completo del tablero (cola + conteos).
         /// </summary>

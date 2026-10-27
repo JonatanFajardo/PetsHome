@@ -432,3 +432,12 @@ docs/image-6.png
 docs/image-7.png
 docs/image.png
 docs/PANTALLAS_MODELO_PROPOSITO.md
+Database/61_MASCOTA_ALERGIA_PADECIMIENTO.sql
+Database/62_SP_MASCOTA_ALERGIA_PADECIMIENTO.sql
+Database/63_SALIDA_SNAPSHOT_TRAZABILIDAD.sql
+Database/64_RECETA_CANTIDAD_OPERACION.sql
+Database/65_CARGO_DISPENSACION.sql
+Database/66_CARGO_FACTURAR_CLIENTE.sql
+
+# Plan de trabajo del script de commits (artefacto local)
+tools/commit_plan.json

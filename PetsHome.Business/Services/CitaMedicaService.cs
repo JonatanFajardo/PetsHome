@@ -170,11 +170,11 @@ namespace PetsHome.Business.Services
             }
         }
 
-        public async Task<List<CitaMedicaCalendarioViewModel>> CalendarioAsync(DateTime fechaInicio, DateTime fechaFin)
+        public async Task<List<CitaMedicaCalendarioViewModel>> CalendarioAsync(DateTime fechaInicio, DateTime fechaFin, int? vetId = null)
         {
             try
             {
-                var results = await _historialmedicoRepository.CalendarioAsync(fechaInicio, fechaFin);
+                var results = await _historialmedicoRepository.CalendarioAsync(fechaInicio, fechaFin, vetId);
                 return results.Select(r => new CitaMedicaCalendarioViewModel
                 {
                     id    = r.cita_Id,
@@ -183,7 +183,9 @@ namespace PetsHome.Business.Services
                     dur   = r.Duracion,
                     pet   = r.Mascota,
                     owner = !string.IsNullOrWhiteSpace(r.cita_MotivoConsulta) ? r.cita_MotivoConsulta : r.Gravedad,
-                    type  = r.TipoConsulta
+                    type  = r.TipoConsulta,
+                    vetId = r.cita_Veterinario,
+                    vet   = r.Veterinario
                 }).ToList();
             }
             catch (Exception error)

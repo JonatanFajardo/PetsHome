@@ -80,7 +80,7 @@ namespace PetsHome.Logic.Repositories
         /// registran el movimiento UNA vez. (No se usa PR_Inventario_SalidasDetalles_Insert
         /// porque ese SP descuenta por su cuenta y, sumado a los triggers, duplicaba el stock.)
         /// </summary>
-        public async Task<bool> InsertSalidaDetalleAsync(int salId, int itmId, int cantidad, string observaciones, int usuarioCrea)
+        public async Task<bool> InsertSalidaDetalleAsync(int salId, int itmId, int cantidad, string observaciones, int usuarioCrea, int? saldetRecetaId = null)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Consulta_SalidaDetalle_Insert]";
             var p = new DynamicParameters();
@@ -89,6 +89,9 @@ namespace PetsHome.Logic.Repositories
             p.Add("@saldet_Cantidad", cantidad, DbType.Int32, ParameterDirection.Input);
             p.Add("@saldet_Observaciones", observaciones, DbType.String, ParameterDirection.Input);
             p.Add("@saldet_UsuarioCrea", usuarioCrea, DbType.Int32, ParameterDirection.Input);
+            // Trazabilidad receta->salida: se pasa solo si la linea dispensada genero receta.
+            // El SP lo acepta opcional (default NULL); si es null la columna queda sin ligar.
+            p.Add("@saldet_RecetaId", saldetRecetaId, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Insert(sqlQuery, p);
         }
     }

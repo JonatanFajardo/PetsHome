@@ -48,6 +48,16 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.SelectById<PR_Medico_SalaEspera_ListResult>(sqlQuery, p);
         }
 
+        /// <summary>Tablero Kanban del día: En espera / En atencion / Finalizada.</summary>
+        public async Task<IEnumerable<PR_Medico_SalaEspera_ListResult>> WhiteboardAsync(DateTime? fecha, int? vetId)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Whiteboard_List]";
+            var p = new DynamicParameters();
+            p.Add("@fecha", fecha, DbType.Date, ParameterDirection.Input);
+            p.Add("@vet_Id", vetId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Medico_SalaEspera_ListResult>(sqlQuery, p);
+        }
+
         /// <summary>
         /// Dropdown de veterinarios (usuarios rol 4 activos) para el check-in.
         /// </summary>

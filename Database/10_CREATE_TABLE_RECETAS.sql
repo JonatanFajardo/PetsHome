@@ -40,7 +40,7 @@ BEGIN
         -- PERÍODO
         receta_FechaInicio DATE NULL,
         receta_FechaFin DATE NULL,
-        receta_Estado NVARCHAR(20) NOT NULL DEFAULT 'Activo',  -- Activo/Completado/Suspendido
+        receta_Estado NVARCHAR(20) NOT NULL DEFAULT 'Activa',  -- Activa/Completada/Cancelada/Vencida (ver 68_RECETA_ESTADO_NORMALIZAR)
 
         -- AUDITORÍA
         receta_EsEliminado BIT NOT NULL DEFAULT 0,

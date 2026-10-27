@@ -1,0 +1,18 @@
+@model int
+@*
+    Host del alert bar de banderas rojas clínicas.
+    Uso desde cualquier vista:  @await Html.PartialAsync("~/Views/BanderaClinica/_AlertBarHost.cshtml", (int)mascId)
+    Carga el contenido por AJAX (mínima interferencia: no toca el modelo de la vista anfitriona).
+*@
+<link rel="stylesheet" href="~/css/bandera-clinica.css" />
+<div id="banderaClinicaHost" data-mascid="@Model"></div>
+<script>
+    window._urlsBandera = {
+        bar: '@Url.Action("Bar", "BanderaClinica")',
+        agregarAlergia: '@Url.Action("AgregarAlergia", "BanderaClinica")',
+        corregirAlergia: '@Url.Action("CorregirAlergia", "BanderaClinica")',
+        agregarPadecimiento: '@Url.Action("AgregarPadecimiento", "BanderaClinica")',
+        corregirPadecimiento: '@Url.Action("CorregirPadecimiento", "BanderaClinica")'
+    };
+</script>
+<script src="~/js/pages/bandera-clinica.js" asp-append-version="true"></script>
