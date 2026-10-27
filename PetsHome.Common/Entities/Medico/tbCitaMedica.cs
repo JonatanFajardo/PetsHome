@@ -22,6 +22,10 @@ namespace PetsHome.Common.Entities
         public decimal? cita_Temperatura { get; set; }
         public int? cita_FrecuenciaCardiaca { get; set; }
         public int? cita_FrecuenciaRespiratoria { get; set; }
+        public string cita_Mucosas { get; set; }
+        public decimal? cita_LlenadoCapilar { get; set; }
+        public int? cita_EscalaDolor { get; set; }
+        public decimal? cita_CondicionCorporal { get; set; }
         public int? com_Id { get; set; }
         public int? vac_Id { get; set; }
         public string cita_ProcedimientosRealizados { get; set; }

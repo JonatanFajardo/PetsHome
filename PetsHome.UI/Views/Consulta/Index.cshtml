@@ -132,11 +132,14 @@
             </div>
         </div>
 
-        <!-- ════════════ CENTRO: FLUJO DE TRABAJO ════════════ -->
+        <!-- ════════════ CENTRO: NOTA CLÍNICA SOAP ════════════ -->
         <div>
-            <!-- ① Motivo / Tipo de consulta -->
-            <div class="ec-card">
-                <div class="ec-step"><span class="ec-step-num">1</span> Motivo y tipo de consulta</div>
+            <!-- ═══ S · SUBJETIVO ═══ (motivo + lo que reporta el dueño) -->
+            <div class="ec-card ec-soap soap-s">
+                <div class="ec-step">
+                    <span class="ec-soap-letter">S</span>
+                    <span class="ec-soap-head">Subjetivo <small>· motivo y relato</small></span>
+                </div>
                 <div class="ec-field">
                     <label class="ec-label">Tipo de consulta</label>
                     <select id="ecTipoConsulta" class="ec-select">
@@ -149,38 +152,105 @@
                 </div>
                 <div class="ec-field" style="margin-bottom:0">
                     <label class="ec-label">Motivo de la consulta</label>
-                    <textarea id="ecMotivo" class="ec-textarea" placeholder="Describe el motivo de la visita..."></textarea>
+                    <textarea id="ecMotivo" class="ec-textarea" placeholder="Qué reporta el dueño / motivo de la visita..."></textarea>
                 </div>
             </div>
 
-            <!-- ② Signos vitales -->
-            <div class="ec-card">
-                <div class="ec-step"><span class="ec-step-num">2</span> Signos vitales</div>
+            <!-- ═══ O · OBJETIVO ═══ (signos vitales medidos por el vet) -->
+            <div class="ec-card ec-soap soap-o">
+                <div class="ec-step">
+                    <span class="ec-soap-letter">O</span>
+                    <span class="ec-soap-head">Objetivo <small>· signos vitales</small></span>
+                </div>
                 <div class="ec-grid-2">
-                    <div class="ec-field ec-vital" style="margin-bottom:0">
+                    <div class="ec-field">
                         <label class="ec-label">Peso</label>
-                        <input type="number" step="0.01" min="0" id="ecPeso" class="ec-input"
-                               value="@(ficha?.Peso?.ToString("0.##") ?? "")" placeholder="0.00" />
-                        <span class="ec-unit">kg</span>
+                        <div class="ec-vinput">
+                            <input type="number" step="0.01" min="0" id="ecPeso" class="ec-input ec-vital-in"
+                                   value="@(ficha?.Peso?.ToString("0.##") ?? "")" placeholder="0.00" />
+                            <span class="ec-unit">kg</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecPeso"></div>
                     </div>
-                    <div class="ec-field ec-vital" style="margin-bottom:0">
+                    <div class="ec-field">
                         <label class="ec-label">Temperatura</label>
-                        <input type="number" step="0.1" min="0" id="ecTemperatura" class="ec-input" placeholder="38.5" />
-                        <span class="ec-unit">°C</span>
+                        <div class="ec-vinput">
+                            <input type="number" step="0.1" min="0" id="ecTemperatura" class="ec-input ec-vital-in" placeholder="38.5" />
+                            <span class="ec-unit">°C</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecTemperatura"></div>
+                    </div>
+                    <div class="ec-field">
+                        <label class="ec-label">Frecuencia cardíaca</label>
+                        <div class="ec-vinput">
+                            <input type="number" step="1" min="0" id="ecFC" class="ec-input ec-vital-in" placeholder="90" />
+                            <span class="ec-unit">lpm</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecFC"></div>
+                    </div>
+                    <div class="ec-field">
+                        <label class="ec-label">Frecuencia respiratoria</label>
+                        <div class="ec-vinput">
+                            <input type="number" step="1" min="0" id="ecFR" class="ec-input ec-vital-in" placeholder="24" />
+                            <span class="ec-unit">rpm</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecFR"></div>
+                    </div>
+                    <div class="ec-field">
+                        <label class="ec-label">Mucosas</label>
+                        <select id="ecMucosas" class="ec-select ec-vital-in">
+                            <option value="">Seleccione...</option>
+                            <option value="Rosadas">Rosadas</option>
+                            <option value="Palidas">Pálidas</option>
+                            <option value="Ictericas">Ictéricas</option>
+                            <option value="Cianoticas">Cianóticas</option>
+                            <option value="Congestivas">Congestivas</option>
+                        </select>
+                        <div class="ec-vital-note" data-for="ecMucosas"></div>
+                    </div>
+                    <div class="ec-field">
+                        <label class="ec-label">Llenado capilar</label>
+                        <div class="ec-vinput">
+                            <input type="number" step="0.1" min="0" id="ecLlenadoCapilar" class="ec-input ec-vital-in" placeholder="1.5" />
+                            <span class="ec-unit">seg</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecLlenadoCapilar"></div>
+                    </div>
+                    <div class="ec-field">
+                        <label class="ec-label">Escala de dolor</label>
+                        <div class="ec-vinput">
+                            <input type="number" step="1" min="0" max="10" id="ecEscalaDolor" class="ec-input ec-vital-in" placeholder="0" />
+                            <span class="ec-unit">/10</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecEscalaDolor"></div>
+                    </div>
+                    <div class="ec-field">
+                        <label class="ec-label">Condición corporal</label>
+                        <div class="ec-vinput">
+                            <input type="number" step="0.5" min="1" max="9" id="ecCondicionCorporal" class="ec-input ec-vital-in" placeholder="5" />
+                            <span class="ec-unit">/9</span>
+                        </div>
+                        <div class="ec-vital-note" data-for="ecCondicionCorporal"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- ③ Diagnóstico -->
-            <div class="ec-card">
-                <div class="ec-step"><span class="ec-step-num">3</span> Diagnóstico</div>
+            <!-- ═══ A · EVALUACIÓN ═══ (diagnóstico / assessment) -->
+            <div class="ec-card ec-soap soap-a">
+                <div class="ec-step">
+                    <span class="ec-soap-letter">A</span>
+                    <span class="ec-soap-head">Evaluación <small>· diagnóstico</small></span>
+                </div>
                 <textarea id="ecDiagnostico" class="ec-textarea" placeholder="Diagnóstico y observaciones clínicas..."></textarea>
                 <div id="ecSugerencias" class="ec-sug" style="display:none"></div>
             </div>
 
-            <!-- ④ Recetar / Aplicar -->
-            <div class="ec-card">
-                <div class="ec-step"><span class="ec-step-num">4</span> Recetar y aplicar</div>
+            <!-- ═══ P · PLAN ═══ (recetar, aplicar, seguimiento) -->
+            <div class="ec-card ec-soap soap-p">
+                <div class="ec-step">
+                    <span class="ec-soap-letter">P</span>
+                    <span class="ec-soap-head">Plan <small>· tratamiento y seguimiento</small></span>
+                </div>
 
                 <div class="ec-field">
                     <label class="ec-label">Medicamentos recetados</label>
@@ -190,21 +260,18 @@
                     </div>
                 </div>
 
-                <div class="ec-field" style="margin-bottom:0">
+                <div class="ec-field">
                     <label class="ec-label">Vacuna aplicada</label>
                     <div id="ecVacSelect"></div>
                     <div class="ec-lines" id="ecVacLines">
                         <div class="ec-empty-line">Ninguna vacuna aplicada en esta consulta.</div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ⑤ Próxima cita -->
-            <div class="ec-card">
-                <div class="ec-step"><span class="ec-step-num">5</span> Próxima cita</div>
+                <div class="ec-divider"></div>
                 <div class="ec-grid-2">
                     <div class="ec-field" style="margin-bottom:0">
-                        <label class="ec-label">Fecha de seguimiento</label>
+                        <label class="ec-label">Próxima cita</label>
                         <input type="date" id="ecProximaCita" class="ec-input" />
                     </div>
                     <div class="ec-field" style="margin-bottom:0">

@@ -519,9 +519,75 @@
     });
   }
 
+  // ───────────────────────── Validación suave de signos vitales ─────────────────────────
+  // Rangos de referencia (guía general perro/gato; NO bloquea, solo avisa).
+  // Fuera de rango => borde ámbar + nota; dentro => limpio.
+  var VITAL_RANGES = {
+    ecTemperatura:       { min: 37.5, max: 39.2, msg: 'Fuera del rango normal (37.5–39.2 °C).' },
+    ecFC:                { min: 60,   max: 180,  msg: 'Fuera del rango normal (60–180 lpm).' },
+    ecFR:                { min: 10,   max: 40,   msg: 'Fuera del rango normal (10–40 rpm).' },
+    ecLlenadoCapilar:    { min: 1,    max: 2,    msg: 'Fuera del rango normal (1–2 seg).' },
+    ecEscalaDolor:       { min: 0,    max: 3,    msg: 'Dolor moderado/severo (0–3 esperado).' },
+    ecCondicionCorporal: { min: 4,    max: 5,    msg: 'Condición no ideal (4–5 es ideal, escala 1–9).' }
+  };
+
+  function noteFor(id) { return document.querySelector('.ec-vital-note[data-for="' + id + '"]'); }
+
+  function checkVital(id) {
+    var el = document.getElementById(id);
+    var note = noteFor(id);
+    if (!el || !note) return;
+    var raw = (el.value || '').trim();
+
+    // Mucosas: cualquier valor distinto de "Rosadas" es un hallazgo a valorar.
+    if (id === 'ecMucosas') {
+      if (raw && raw !== 'Rosadas') {
+        el.classList.add('out-range');
+        note.textContent = 'Hallazgo anormal, valorar.';
+        note.classList.add('show');
+      } else {
+        el.classList.remove('out-range');
+        note.classList.remove('show'); note.textContent = '';
+      }
+      return;
+    }
+
+    var r = VITAL_RANGES[id];
+    if (!r || raw === '') {
+      el.classList.remove('out-range');
+      note.classList.remove('show'); note.textContent = '';
+      return;
+    }
+    var n = parseFloat(raw);
+    if (isNaN(n)) {
+      el.classList.remove('out-range');
+      note.classList.remove('show'); note.textContent = '';
+      return;
+    }
+    if (n < r.min || n > r.max) {
+      el.classList.add('out-range');
+      note.textContent = r.msg;
+      note.classList.add('show');
+    } else {
+      el.classList.remove('out-range');
+      note.classList.remove('show'); note.textContent = '';
+    }
+  }
+
+  (function initVitalValidation() {
+    var ids = ['ecTemperatura', 'ecFC', 'ecFR', 'ecMucosas', 'ecLlenadoCapilar', 'ecEscalaDolor', 'ecCondicionCorporal'];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var evt = (el.tagName === 'SELECT') ? 'change' : 'input';
+      el.addEventListener(evt, function () { checkVital(id); });
+    });
+  })();
+
   // ───────────────────────── Finalizar / Guardar ─────────────────────────
   function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
   function numOrNull(id) { var v = val(id); return v === '' ? null : parseFloat(v); }
+  function intOrNull(id) { var v = val(id); if (v === '') return null; var n = parseInt(v, 10); return isNaN(n) ? null : n; }
 
   var btn = document.getElementById('btnFinalizar');
   if (btn) {
@@ -534,6 +600,12 @@
         diagnostico: val('ecDiagnostico'),
         peso: numOrNull('ecPeso'),
         temperatura: numOrNull('ecTemperatura'),
+        frecuenciaCardiaca: intOrNull('ecFC'),
+        frecuenciaRespiratoria: intOrNull('ecFR'),
+        mucosas: val('ecMucosas') || null,
+        llenadoCapilar: numOrNull('ecLlenadoCapilar'),
+        escalaDolor: intOrNull('ecEscalaDolor'),
+        condicionCorporal: numOrNull('ecCondicionCorporal'),
         vacunaId: vacunaAplicada ? vacunaAplicada.id : null,
         medicamentos: medsSeleccionados.map(function (m) {
           return {

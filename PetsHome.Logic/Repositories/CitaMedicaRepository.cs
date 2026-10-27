@@ -52,6 +52,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cita_Temperatura", entity.cita_Temperatura, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@cita_FrecuenciaCardiaca", entity.cita_FrecuenciaCardiaca, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cita_FrecuenciaRespiratoria", entity.cita_FrecuenciaRespiratoria, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Mucosas", entity.cita_Mucosas, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_LlenadoCapilar", entity.cita_LlenadoCapilar, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cita_EscalaDolor", entity.cita_EscalaDolor, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_CondicionCorporal", entity.cita_CondicionCorporal, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@com_Id", entity.com_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vac_Id", entity.vac_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cita_ProcedimientosRealizados", entity.cita_ProcedimientosRealizados, DbType.String, ParameterDirection.Input);
@@ -78,6 +82,10 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@cita_Temperatura", entity.cita_Temperatura, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@cita_FrecuenciaCardiaca", entity.cita_FrecuenciaCardiaca, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cita_FrecuenciaRespiratoria", entity.cita_FrecuenciaRespiratoria, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_Mucosas", entity.cita_Mucosas, DbType.String, ParameterDirection.Input);
+            parameter.Add("@cita_LlenadoCapilar", entity.cita_LlenadoCapilar, DbType.Decimal, ParameterDirection.Input);
+            parameter.Add("@cita_EscalaDolor", entity.cita_EscalaDolor, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@cita_CondicionCorporal", entity.cita_CondicionCorporal, DbType.Decimal, ParameterDirection.Input);
             parameter.Add("@com_Id", entity.com_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@vac_Id", entity.vac_Id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@cita_ProcedimientosRealizados", entity.cita_ProcedimientosRealizados, DbType.String, ParameterDirection.Input);

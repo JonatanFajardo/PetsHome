@@ -492,3 +492,42 @@
   background: var(--purple-light, #EDE9FE);
   color: var(--purple-2, #5849C9);
 }
+
+/* ============================================================
+   Nota clínica SOAP (S/O/A/P) — identidad morada PetsHome
+   ============================================================ */
+.ec-soap { position: relative; border-left: 4px solid var(--purple-1, #6C5CE7); }
+.ec-soap.soap-s { border-left-color: #8B7CF6; }
+.ec-soap.soap-o { border-left-color: #6C5CE7; }
+.ec-soap.soap-a { border-left-color: #5849C9; }
+.ec-soap.soap-p { border-left-color: #7C3AED; }
+
+.ec-soap-letter {
+  width: 30px; height: 30px; min-width: 30px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--purple-3, #8B7CF6), var(--purple-1, #6C5CE7));
+  color: #fff; font-size: 16px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(108, 92, 231, .35);
+}
+.ec-soap-head { font-size: 15px; font-weight: 700; color: var(--text-dark, #1E1B3A); }
+.ec-soap-head small { font-size: 12px; font-weight: 500; color: var(--text-muted, #8E87B3); }
+
+/* Campo de signo vital: input + unidad alineada, nota de rango debajo */
+.ec-vinput { position: relative; }
+.ec-vinput .ec-unit {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-muted, #8E87B3); pointer-events: none;
+}
+.ec-vinput .ec-input { padding-right: 42px; }
+
+/* Aviso suave de rango fuera de lo normal (no bloquea) */
+.ec-vital-note {
+  display: none; margin-top: 5px; font-size: 11.5px; line-height: 1.35;
+  color: #B45309;
+}
+.ec-vital-note.show { display: block; }
+.ec-vital-note::before { content: "⚠ "; }
+.ec-vital-in.out-range {
+  border-color: #F59E0B !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, .15) !important;
+}

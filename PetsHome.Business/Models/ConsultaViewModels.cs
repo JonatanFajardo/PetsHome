@@ -78,6 +78,25 @@ namespace PetsHome.Business.Models
         public decimal? Peso { get; set; }
         public decimal? Temperatura { get; set; }
 
+        // ── Signos vitales (bloque Objetivo del formato SOAP) ──────────
+        /// <summary>Frecuencia cardiaca (latidos por minuto). Columna ya existente.</summary>
+        public int? FrecuenciaCardiaca { get; set; }
+
+        /// <summary>Frecuencia respiratoria (respiraciones por minuto). Columna ya existente.</summary>
+        public int? FrecuenciaRespiratoria { get; set; }
+
+        /// <summary>Color de mucosas (enum sin tildes: Rosadas/Palidas/Ictericas/Cianoticas/Congestivas).</summary>
+        public string Mucosas { get; set; }
+
+        /// <summary>Tiempo de llenado capilar en segundos.</summary>
+        public decimal? LlenadoCapilar { get; set; }
+
+        /// <summary>Escala de dolor 0 a 10.</summary>
+        public int? EscalaDolor { get; set; }
+
+        /// <summary>Condicion corporal (BCS) 1 a 9.</summary>
+        public decimal? CondicionCorporal { get; set; }
+
         /// <summary>Vacuna aplicada en la consulta (se persiste en la cita).</summary>
         public int? VacunaId { get; set; }
 
