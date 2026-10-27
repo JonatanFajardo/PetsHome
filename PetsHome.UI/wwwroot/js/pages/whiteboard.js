@@ -1,0 +1,91 @@
+// ============================================================
+// Whiteboard / tablero Kanban de recepción (Mejoras v3 - Fase 4)
+// Carga por AJAX, auto-refresca, y permite arrastrar tarjetas
+// entre columnas → cambia el estado de la visita (CambiarEstado).
+// ============================================================
+(function () {
+    "use strict";
+    var urls = window._urlsWb;
+    if (!urls) return;
+
+    var board = document.getElementById("wbBoard");
+    var bodies = {
+        "En espera": board.querySelector('[data-drop="En espera"]'),
+        "En atencion": board.querySelector('[data-drop="En atencion"]'),
+        "Finalizada": board.querySelector('[data-drop="Finalizada"]')
+    };
+    var dragId = null;
+    var refreshTimer = null;
+
+    function esc(s) { return (s || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function tiempo(m) { m = Number(m) || 0; if (m < 60) return "hace " + m + "m"; return "hace " + Math.floor(m / 60) + "h " + (m % 60) + "m"; }
+
+    function cargar() {
+        fetch(urls.data, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+            .then(function (r) { return r.json(); })
+            .then(render)
+            .catch(function () {});
+    }
+
+    function render(rows) {
+        var groups = { "En espera": [], "En atencion": [], "Finalizada": [] };
+        (rows || []).forEach(function (r) { if (groups[r.estado]) groups[r.estado].push(r); });
+
+        Object.keys(bodies).forEach(function (estado) {
+            var body = bodies[estado];
+            var list = groups[estado];
+            body.parentElement.querySelector("[data-count]").textContent = list.length;
+            if (!list.length) { body.innerHTML = '<div class="wb-empty">Sin pacientes</div>'; return; }
+            body.innerHTML = list.map(card).join("");
+        });
+        wireCards();
+    }
+
+    function card(r) {
+        var prio = r.prioridad || "Normal";
+        var prioCls = (prio === "Urgente" || prio === "Alta") ? " prio-" + prio : "";
+        var quien = r.esInterno ? '<span class="wb-tag interno">Interno</span>'
+                                : (r.duenoNombre ? '<span class="wb-sub">' + esc(r.duenoNombre) + '</span>' : '');
+        var vet = r.vetAsignado ? '<span class="wb-tag">Dr(a). ' + esc(r.vetAsignado) + '</span>' : '';
+        var prioTag = (prio === "Urgente" || prio === "Alta") ? '<span class="wb-tag prio-' + prio + '">' + prio + '</span>' : '';
+        var tipo = r.tipoConsulta ? '<span class="wb-tag">' + esc(r.tipoConsulta) + '</span>' : '';
+        return '<div class="wb-card' + prioCls + '" draggable="true" data-cita="' + r.citaId + '">' +
+            '<div class="wb-card-top"><span class="wb-pet">' + esc(r.mascotaNombre || "Mascota") + '</span>' +
+            '<span class="wb-min">' + tiempo(r.minutosEspera) + '</span></div>' +
+            (r.esInterno ? '' : (r.duenoNombre ? '<div class="wb-sub">' + esc(r.duenoNombre) + '</div>' : '')) +
+            (r.motivo ? '<div class="wb-sub">' + esc(r.motivo) + '</div>' : '') +
+            '<div class="wb-tags">' + (r.esInterno ? '<span class="wb-tag interno">Interno</span>' : '') + prioTag + tipo + vet + '</div>' +
+            '</div>';
+    }
+
+    function wireCards() {
+        board.querySelectorAll(".wb-card").forEach(function (c) {
+            c.addEventListener("dragstart", function () { dragId = c.getAttribute("data-cita"); c.style.opacity = ".5"; });
+            c.addEventListener("dragend", function () { c.style.opacity = "1"; });
+        });
+    }
+
+    Object.keys(bodies).forEach(function (estado) {
+        var body = bodies[estado];
+        body.addEventListener("dragover", function (e) { e.preventDefault(); body.classList.add("wb-over"); });
+        body.addEventListener("dragleave", function () { body.classList.remove("wb-over"); });
+        body.addEventListener("drop", function (e) {
+            e.preventDefault();
+            body.classList.remove("wb-over");
+            if (!dragId) return;
+            var cita = dragId; dragId = null;
+            var nuevo = body.getAttribute("data-drop");
+            fetch(urls.cambiarEstado, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8", "X-Requested-With": "XMLHttpRequest" },
+                body: new URLSearchParams({ citaId: cita, estado: nuevo }).toString()
+            }).then(function (r) { return r.json(); })
+              .then(function (res) { if (!res.ok) alert(res.mensaje || "No se pudo cambiar el estado."); cargar(); })
+              .catch(function () { cargar(); });
+        });
+    });
+
+    cargar();
+    refreshTimer = setInterval(cargar, 30000); // auto-refresh cada 30s
+    window.addEventListener("beforeunload", function () { if (refreshTimer) clearInterval(refreshTimer); });
+})();

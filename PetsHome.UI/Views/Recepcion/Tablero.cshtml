@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Tablero del día";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Recepcion";
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/whiteboard.css" />
+}
+
+<div class="col-12">
+  <div class="pets-container">
+    <div class="pets-header-full">
+      <div class="pets-header-content">
+        <div class="pets-title-section">
+          <h2 class="text-white"><i class="bi bi-kanban mr-2 text-white"></i>Tablero del día</h2>
+        </div>
+        <div class="pets-controls">
+          <span class="wb-live"><span class="wb-dot"></span> En vivo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wb-board" id="wbBoard">
+      <div class="wb-col" data-estado="En espera">
+        <div class="wb-col-head wb-h-espera">En espera <span class="wb-count" data-count>0</span></div>
+        <div class="wb-col-body" data-drop="En espera"></div>
+      </div>
+      <div class="wb-col" data-estado="En atencion">
+        <div class="wb-col-head wb-h-atencion">En atención <span class="wb-count" data-count>0</span></div>
+        <div class="wb-col-body" data-drop="En atencion"></div>
+      </div>
+      <div class="wb-col" data-estado="Finalizada">
+        <div class="wb-col-head wb-h-final">Finalizada <span class="wb-count" data-count>0</span></div>
+        <div class="wb-col-body" data-drop="Finalizada"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+    window._urlsWb = {
+        data: '@Url.Action("WhiteboardData", "Recepcion")',
+        cambiarEstado: '@Url.Action("CambiarEstado", "Recepcion")'
+    };
+</script>
+<script src="~/js/pages/whiteboard.js" asp-append-version="true"></script>
+}
