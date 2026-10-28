@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Laboratorio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de laboratorio";
+    ViewData["UseDatatableInit"] = true;
+    ViewData["UsePdfExport"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header -->
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-flask mr-2 text-white"></i>Exámenes de Laboratorio</h2>
+                    <button class="btn-nueva-mascota btn-insertar"
+                            onclick="window.location.href='@Url.Action("Create")'">
+                        <i class="fas fa-plus mr-2"></i>Nuevo examen
+                    </button>
+                </div>
+                <div class="pets-controls">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Buscar por examen, mascota o tipo...">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-export-datatable" onclick="location.reload()">Recargar</button>
+                        <div id="export-buttons-container" class="export-buttons-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="pets-table-container">
+            <table class="pets-table" id="datatable">
+                <thead>
+                    <tr>
+                        <th width="70">ID</th>
+                        <th>Examen</th>
+                        <th width="110">Tipo</th>
+                        <th>Mascota</th>
+                        <th width="130">Estado</th>
+                        <th width="150">Solicitado</th>
+                        <th width="120" class="text-center">Fuera de rango</th>
+                        <th width="130" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form asp-action="Remove" method="post" autocomplete="off">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="lab_Id" id="delete-item-id">
+                        <div class="modal-body text-center py-4">
+                            <div class="mb-3"><i class="fas fa-trash-alt text-danger" style="font-size:48px;"></i></div>
+                            <h5>¿Está seguro de eliminar este examen?</h5>
+                            <p class="text-muted">Se eliminarán también sus parámetros. Esta acción no se puede deshacer.</p>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                                <i class="fas fa-times mr-2"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-danger px-4">
+                                <i class="fas fa-trash mr-2"></i>Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/components/datatable/datatable.init.js"></script>
+<script src="~/js/pages/laboratorio.js"></script>
+<script>
+    window._urls = {
+        list:   '@Url.Action("List")',
+        detail: '@Url.Action("Detail")',
+        insert: '@Url.Action("Create")',
+        update: '@Url.Action("Find")',
+        remove: '@Url.Action("Remove")'
+    };
+
+    Laboratorio.datatable({
+        urlList:   "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
+
+    $('#globalSearch').on('keyup', function () {
+        $('#datatable').DataTable().search(this.value).draw();
+    });
+</script>
+}

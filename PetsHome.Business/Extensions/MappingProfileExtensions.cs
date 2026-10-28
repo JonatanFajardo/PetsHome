@@ -478,6 +478,21 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Veterinaria_Clientes_DetailResult, ClientesDetailViewModel>().ReverseMap();
             CreateMap<PR_Veterinaria_Clientes_DropdownResult, ClientesDropdownViewModel>().ReverseMap();
             CreateMap<tbClientes, ClientesFormViewModel>().ReverseMap();
+            // Mapeos para modulo medico - Laboratorio
+            CreateMap<PR_Medico_Laboratorio_ListResult, LaboratorioListViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Laboratorio_FindResult, LaboratorioFindViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Laboratorio_DetailResult, LaboratorioDetailViewModel>().ReverseMap();
+            CreateMap<PR_Medico_LaboratorioDetalle_ListResult, LaboratorioDetalleViewModel>().ReverseMap();
+            CreateMap<LaboratorioFindViewModel, LaboratorioFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoList, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<tbLaboratorio, LaboratorioFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoList, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<tbLaboratorioDetalle, LaboratorioDetalleViewModel>().ReverseMap();
+
             // Mapeos para Veterinaria - Servicios
             CreateMap<PR_Veterinaria_Servicios_ListResult, ServiciosListViewModel>().ReverseMap();
             CreateMap<PR_Veterinaria_Servicios_FindResult, ServiciosFindViewModel>().ReverseMap();
