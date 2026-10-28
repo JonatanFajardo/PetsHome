@@ -1,0 +1,155 @@
+@model ListaEsperaDetailViewModel
+@{
+    ViewData["Title"] = "Detalle de lista de espera";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Lista de espera";
+    var puedeEditar = PetsHome.UI.Filters.PantallaAuthorizeAttribute.TienePermiso(User, "Lista de espera", "editar");
+    string Estado(string e) => e ?? "Esperando";
+    var esEsperando = Model.lesp_Estado == "Esperando";
+    string espera = Model.DiasEsperando == 0 ? "Hoy" : (Model.DiasEsperando == 1 ? "1 día" : Model.DiasEsperando + " días");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+@Html.AntiForgeryToken()
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-hourglass-half mr-2 text-white"></i>Lista de espera · @Model.Mascota</h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    <i class="fas fa-user mr-1"></i>@Model.Responsable
+                    @if (!string.IsNullOrWhiteSpace(Model.ResponsableContacto))
+                    {
+                        <text>&nbsp;·&nbsp;<i class="fas fa-phone mr-1"></i>@Model.ResponsableContacto</text>
+                    }
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <div class="card">
+                    <div class="card-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Estado actual</label>
+                                <div style="font-size:16px;font-weight:700;">@Estado(Model.lesp_Estado)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Prioridad</label>
+                                <div>@Model.lesp_Prioridad</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de consulta deseado</label>
+                                <div>@Model.TipoConsulta</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha deseada</label>
+                                <div>@(Model.lesp_FechaDeseada?.ToString("dd/MM/yyyy") ?? "Lo antes posible")</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tiempo esperando</label>
+                                <div>@espera</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Registrado</label>
+                                <div>@Model.lesp_FechaCrea.ToString("dd/MM/yyyy HH:mm") @(string.IsNullOrWhiteSpace(Model.UsuarioCreacion) ? "" : "· " + Model.UsuarioCreacion)</div>
+                            </div>
+                        </div>
+
+                        @if (puedeEditar && esEsperando)
+                        {
+                            <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+                                <button class="btn btn-success" id="btnAgendar"><i class="fas fa-calendar-check mr-1"></i>Marcar como agendada</button>
+                                <button class="btn btn-danger" id="btnCancelar"><i class="fas fa-ban mr-1"></i>Cancelar</button>
+                                <a class="btn btn-outline" href="@Url.Action("Find", new { id = Model.lesp_Id })"><i class="fas fa-edit mr-1"></i>Editar</a>
+                            </div>
+                        }
+                        else if (!esEsperando)
+                        {
+                            <div style="margin-top:14px;" class="text-muted">
+                                <i class="fas fa-lock mr-1"></i>Este registro está @(Model.lesp_Estado == "Agendada" ? "agendado" : "cancelado") y ya no está en la cola de espera.
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.lesp_Notas))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Notas</h2>
+                        </div>
+                        <div class="card-content">
+                            <div style="white-space:pre-wrap;line-height:1.6;color:#111827;background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:16px;">@Model.lesp_Notas</div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    window._urls = {
+        cambiarEstado: '@Url.Action("CambiarEstado")'
+    };
+    var LESP_ID = @Model.lesp_Id;
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (settings.type && settings.type.toUpperCase() === 'POST') {
+                var t = $('input[name="__RequestVerificationToken"]').val();
+                if (t) xhr.setRequestHeader('RequestVerificationToken', t);
+            }
+        }
+    });
+
+    function cambiar(estado) {
+        $.post(window._urls.cambiarEstado, { lesp_Id: LESP_ID, estado: estado }, function (r) {
+            if (r && r.ok) { window.location.reload(); }
+            else if (window.Swal) { Swal.fire('Aviso', (r && r.mensaje) || 'No se pudo cambiar el estado.', 'info'); }
+        });
+    }
+
+    $('#btnAgendar').on('click', function () {
+        if (window.Swal) {
+            Swal.fire({
+                title: '¿Marcar como agendada?',
+                text: 'Se le dio cupo a este paciente; saldrá de la cola de espera.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, agendada',
+                cancelButtonText: 'Cancelar'
+            }).then(function (res) { if (res.isConfirmed) cambiar('Agendada'); });
+        } else if (confirm('¿Marcar como agendada?')) { cambiar('Agendada'); }
+    });
+
+    $('#btnCancelar').on('click', function () {
+        if (window.Swal) {
+            Swal.fire({
+                title: '¿Cancelar la espera?',
+                text: 'El paciente ya no quiere que lo avisen; quedará como cancelado.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cancelar',
+                cancelButtonText: 'No'
+            }).then(function (res) { if (res.isConfirmed) cambiar('Cancelada'); });
+        } else if (confirm('¿Cancelar la espera?')) { cambiar('Cancelada'); }
+    });
+</script>
+}

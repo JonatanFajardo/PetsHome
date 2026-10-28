@@ -1,0 +1,119 @@
+@model ListaEsperaFormViewModel
+@{
+    ViewData["Title"] = Model.isEdit ? "Editar lista de espera" : "Anotar en lista de espera";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["UseFormValidation"] = true;
+    ViewData["CurrentPantalla"] = "Lista de espera";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-hourglass-half mr-2 text-white"></i>@(Model.isEdit ? "Editar lista de espera" : "Anotar en lista de espera")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    @(Model.isEdit ? "Actualice los datos mientras siga esperando cupo" : "Anote a quién avisar cuando se libere un espacio. No agenda cita; solo guarda la demanda.")
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+                <form asp-action="Add" asp-controller="ListaEspera" method="post" autocomplete="off" id="lespForm">
+                    <input asp-for="lesp_Id" type="hidden" />
+                    <input asp-for="cli_Id" type="hidden" />
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Datos de la demanda</h2>
+                            <p class="card-description">Mascota, tipo de consulta deseado, para cuándo y con qué prioridad</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label asp-for="masc_Id">Mascota <span class="required">*</span></label>
+                                    <select class="form-control" asp-for="masc_Id">
+                                        <option value="">-- Seleccione --</option>
+                                        @foreach (var m in Model.MascotaList)
+                                        {
+                                            <option value="@m.masc_Id">@m.masc_Nombre</option>
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="masc_Id"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="tipoCon_Id">Tipo de consulta deseado</label>
+                                    <select class="form-control" asp-for="tipoCon_Id">
+                                        <option value="">Cualquiera</option>
+                                        @foreach (var t in Model.TipoConsultaList)
+                                        {
+                                            <option value="@t.tipoCon_Id">@t.tipoCon_Descripcion</option>
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="tipoCon_Id"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="lesp_FechaDeseada">Fecha deseada (opcional)</label>
+                                    <input class="form-control" asp-for="lesp_FechaDeseada" type="date" />
+                                    <small class="text-muted">Déjelo vacío si quiere el primer cupo disponible.</small>
+                                    <span class="text-danger" asp-validation-for="lesp_FechaDeseada"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="lesp_Prioridad">Prioridad <span class="required">*</span></label>
+                                    <select class="form-control" asp-for="lesp_Prioridad" asp-items="Model.PrioridadList"></select>
+                                    <span class="text-danger" asp-validation-for="lesp_Prioridad"></span>
+                                </div>
+
+                                <div class="form-group" style="grid-column:1 / -1;">
+                                    <label asp-for="lesp_Notas">Notas</label>
+                                    <textarea class="form-control" asp-for="lesp_Notas" rows="3" placeholder="Ej: prefiere mañanas, teléfono alterno, motivo..."></textarea>
+                                    <span class="text-danger" asp-validation-for="lesp_Notas"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-content-save"></i> @(Model.isEdit ? "Actualizar" : "Guardar")
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        $(function () {
+            $("#lespForm").validate({
+                rules: {
+                    masc_Id: { required: true },
+                    lesp_Prioridad: { required: true }
+                }
+            });
+        });
+    </script>
+}

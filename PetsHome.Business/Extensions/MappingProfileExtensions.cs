@@ -506,6 +506,22 @@ namespace PetsHome.Business.Extensions
                 .ForMember(dest => dest.TipoList, opt => opt.Ignore())
                 .ReverseMap();
 
+            // Mapeos para modulo medico - Lista de espera (waitlist)
+            CreateMap<PR_Medico_ListaEspera_ListResult, ListaEsperaListViewModel>().ReverseMap();
+            CreateMap<PR_Medico_ListaEspera_SugerenciaResult, ListaEsperaSugerenciaViewModel>().ReverseMap();
+            CreateMap<PR_Medico_ListaEspera_FindResult, ListaEsperaFindViewModel>().ReverseMap();
+            CreateMap<PR_Medico_ListaEspera_DetailResult, ListaEsperaDetailViewModel>().ReverseMap();
+            CreateMap<ListaEsperaFindViewModel, ListaEsperaFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoConsultaList, opt => opt.Ignore())
+                .ForMember(dest => dest.PrioridadList, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<tbListaEspera, ListaEsperaFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoConsultaList, opt => opt.Ignore())
+                .ForMember(dest => dest.PrioridadList, opt => opt.Ignore())
+                .ReverseMap();
+
             // Mapeos para modulo medico - Sustancias controladas
             CreateMap<PR_Medico_SustanciaMovimiento_ListResult, SustanciaMovimientoListViewModel>();
             CreateMap<PR_Medico_SustanciaMovimiento_DetailResult, SustanciaMovimientoDetailViewModel>();
