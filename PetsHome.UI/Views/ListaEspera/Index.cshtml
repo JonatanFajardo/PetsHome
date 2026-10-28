@@ -1,0 +1,200 @@
+@{
+    ViewData["Title"] = "Lista de espera";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Lista de espera";
+    ViewData["UseDatatableInit"] = true;
+    ViewData["UsePdfExport"] = true;
+    var tipos = ViewBag.TiposConsulta as List<PetsHome.Business.Models.TipoConsultaViewModel>
+        ?? new List<PetsHome.Business.Models.TipoConsultaViewModel>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <!-- Header -->
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-hourglass-half mr-2 text-white"></i>Lista de espera</h2>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="btn-nueva-mascota btn-insertar"
+                                onclick="window.location.href='@Url.Action("Create")'">
+                            <i class="fas fa-plus mr-2"></i>Anotar en lista
+                        </button>
+                        <button class="btn-nueva-mascota" id="btnAQuienLlamar" style="background:rgba(255,255,255,.18);">
+                            <i class="fas fa-phone-volume mr-2"></i>¿A quién llamar?
+                        </button>
+                    </div>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    Demanda sin cupo todavía: "avíseme si se libera un espacio". Distinto del Tablero del día (pacientes que ya llegaron).
+                </p>
+                <div class="pets-controls">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Buscar por mascota, responsable o tipo...">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-export-datatable" onclick="location.reload()">Recargar</button>
+                        <div id="export-buttons-container" class="export-buttons-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="pets-table-container">
+            <table class="pets-table" id="datatable">
+                <thead>
+                    <tr>
+                        <th width="70">ID</th>
+                        <th>Mascota</th>
+                        <th>Responsable</th>
+                        <th width="130">Tipo deseado</th>
+                        <th width="130">Fecha deseada</th>
+                        <th width="110">Prioridad</th>
+                        <th width="120">Estado</th>
+                        <th width="110">Esperando</th>
+                        <th width="130" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar eliminación</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form asp-action="Remove" method="post" autocomplete="off">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="lesp_Id" id="delete-item-id">
+                        <div class="modal-body text-center py-4">
+                            <div class="mb-3"><i class="fas fa-trash-alt text-danger" style="font-size:48px;"></i></div>
+                            <h5>¿Quitar este registro de la lista de espera?</h5>
+                            <p class="text-muted">Saldrá del listado. Para dejar historial de que ya no quiere, use mejor "Cancelar" desde el detalle.</p>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                                <i class="fas fa-times mr-2"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-danger px-4">
+                                <i class="fas fa-trash mr-2"></i>Quitar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/components/datatable/datatable.init.js"></script>
+<script src="~/js/pages/lista-espera.js"></script>
+<script>
+    window._urls = {
+        list:          '@Url.Action("List")',
+        detail:        '@Url.Action("Detail")',
+        insert:        '@Url.Action("Create")',
+        update:        '@Url.Action("Find")',
+        remove:        '@Url.Action("Remove")',
+        sugerencias:   '@Url.Action("Sugerencias")'
+    };
+
+    // Tipos de consulta para el buscador de sugerencias
+    var TIPOS_CONSULTA = [
+        @Html.Raw(string.Join(",", tipos.Select(t => "{id:" + t.tipoCon_Id + ",nombre:'" + t.tipoCon_Descripcion.Replace("'", "\\'") + "'}")))
+    ];
+
+    ListaEspera.datatable({
+        urlList:   "@Url.Action("List")",
+        urlDetail: "@Url.Action("Detail")",
+        urlInsert: "@Url.Action("Create")",
+        urlUpdate: "@Url.Action("Find")"
+    });
+
+    $('#globalSearch').on('keyup', function () {
+        $('#datatable').DataTable().search(this.value).draw();
+    });
+
+    // ── "¿A quién llamar?" — sugerencias FIFO para un hueco liberado ──
+    function tipoOptions() {
+        var html = '<option value="">Cualquier tipo</option>';
+        TIPOS_CONSULTA.forEach(function (t) { html += '<option value="' + t.id + '">' + t.nombre + '</option>'; });
+        return html;
+    }
+
+    function pintarSugerencias(rows) {
+        if (!rows || rows.length === 0) {
+            return '<div style="padding:16px;color:#6b7280;text-align:center;">Nadie en la lista de espera encaja con ese hueco.</div>';
+        }
+        var html = '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+        html += '<thead><tr style="text-align:left;color:#6b21a8;border-bottom:1px solid #e9d5ff;">'
+             + '<th style="padding:6px;">#</th><th style="padding:6px;">Mascota</th><th style="padding:6px;">Responsable</th>'
+             + '<th style="padding:6px;">Teléfono</th><th style="padding:6px;">Prioridad</th><th style="padding:6px;">Espera</th></tr></thead><tbody>';
+        rows.forEach(function (r, i) {
+            html += '<tr style="border-bottom:1px solid #f3f4f6;">'
+                 + '<td style="padding:6px;font-weight:700;color:#7c3aed;">' + (i + 1) + '</td>'
+                 + '<td style="padding:6px;">' + (r.Mascota || '—') + '</td>'
+                 + '<td style="padding:6px;">' + (r.Responsable || '—') + '</td>'
+                 + '<td style="padding:6px;">' + (r.Telefono || '—') + '</td>'
+                 + '<td style="padding:6px;">' + (r.lesp_Prioridad || 'Normal') + '</td>'
+                 + '<td style="padding:6px;">' + (r.DiasEsperando === 0 ? 'Hoy' : r.DiasEsperando + ' días') + '</td>'
+                 + '</tr>';
+        });
+        html += '</tbody></table>';
+        return html;
+    }
+
+    function buscarSugerencias(fecha, tipoConId) {
+        $.get(window._urls.sugerencias, { fecha: fecha || null, tipoConId: tipoConId || null }, function (resp) {
+            var rows = (resp && resp.data) || [];
+            if (window.Swal) {
+                Swal.fire({
+                    title: '<i class="fas fa-phone-volume"></i> A quién llamar (más antiguo primero)',
+                    html: pintarSugerencias(rows),
+                    width: 720,
+                    confirmButtonText: 'Cerrar'
+                });
+            }
+        });
+    }
+
+    $('#btnAQuienLlamar').on('click', function () {
+        var hoy = new Date().toISOString().slice(0, 10);
+        if (window.Swal) {
+            Swal.fire({
+                title: 'Hueco liberado',
+                html: '<div style="text-align:left;">'
+                    + '<label style="font-weight:600;">Fecha del hueco</label>'
+                    + '<input id="swFecha" type="date" class="swal2-input" value="' + hoy + '" style="margin-top:4px;">'
+                    + '<label style="font-weight:600;">Tipo de consulta</label>'
+                    + '<select id="swTipo" class="swal2-input" style="margin-top:4px;">' + tipoOptions() + '</select>'
+                    + '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Ver sugerencias',
+                cancelButtonText: 'Cancelar',
+                focusConfirm: false,
+                preConfirm: function () {
+                    return { fecha: document.getElementById('swFecha').value, tipo: document.getElementById('swTipo').value };
+                }
+            }).then(function (res) {
+                if (res.isConfirmed && res.value) buscarSugerencias(res.value.fecha, res.value.tipo);
+            });
+        } else {
+            buscarSugerencias(hoy, '');
+        }
+    });
+</script>
+}

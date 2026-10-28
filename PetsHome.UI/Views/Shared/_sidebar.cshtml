@@ -69,6 +69,18 @@
                 </li>
             }
 
+            @if (tiene("Lista de espera"))
+            {
+                <li class="menu">
+                    <div class="dropdown-toggle">
+                       <div class="">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        @Html.ActionLink("⏳ Lista de espera", "Index", "ListaEspera")
+                       </div>
+                    </div>
+                </li>
+            }
+
             @if (tiene("Listado de empleados") || tiene("Listado de voluntarios"))
             {
                 <li class="menu">
