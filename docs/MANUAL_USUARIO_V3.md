@@ -134,6 +134,26 @@ P · Plan        →  Qué se va a hacer: medicamentos recetados, vacuna
 
 ---
 
+## 6. Laboratorio (exámenes y resultados)
+
+**Qué es:** una pantalla para registrar los **exámenes de laboratorio** de una mascota (hemograma, orina, etc.), con sus resultados por parámetro y los **rangos normales**.
+
+**Para qué sirve:** llevar ordenados los exámenes pedidos y sus resultados, y que el sistema **resalte los valores fuera de lo normal** para que el veterinario los detecte rápido. Es la versión ordenada de "resultados de exámenes", que antes se anotaban como texto suelto.
+
+**Cómo se usa:**
+- Entra a **Laboratorio** (menú Clínica).
+- Se registra un examen (nombre, tipo y la mascota); queda como **Pendiente**.
+- Cuando llegan los resultados, se cargan por parámetro (valor y unidad); los que salen **fuera del rango** se marcan.
+- El examen pasa a **Completado** y luego a **Revisado** cuando el veterinario lo valida.
+
+| Rol | Qué puede hacer |
+|-----|-----------------|
+| Veterinario | Solicitar exámenes, cargar y revisar resultados |
+| Recepción | Registrar la solicitud y consultar |
+| Administrador | Ver y gestionar todo |
+
+---
+
 ## Preguntas frecuentes
 
 **¿Por qué el veterinario no ve las citas de otros?**
