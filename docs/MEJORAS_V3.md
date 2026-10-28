@@ -477,3 +477,28 @@ Fuera de rango → borde ámbar + nota breve. No impide finalizar la consulta.
 - Registros en `ServiceConfiguration.cs` + `MappingProfileExtensions.cs`; link en `_sidebar.cshtml` (grupo Clínica). La vista Create pre-llena `cons_Texto` con plantillas simples por tipo (JS).
 
 **Verificación:** `dotnet build` 0 errores. SPs probados en transacción (BEGIN TRAN/ROLLBACK) contra la BD viva: Insert OK (1) + inválidos (tipo −2, texto vacío −3); Update pendiente (1) y bloqueado tras firmar (−2); firmar sin nombre (−4) y con nombre (1); re-cambiar estado terminal (−3); Detail/List/Delete OK. Rutas verificadas: `/Consentimiento/{Index,Create,Detail,List}` → 302 Login (auth-gated); Index sigue a `/Account/Login` (200).
+
+---
+
+## Lista de espera por demanda (waitlist)
+
+**Qué es:** módulo nuevo (pantalla "Lista de espera", menú Recepción) inspirado en `waitlist.ts` de OpenVPM (status waiting→scheduled|cancelled; `matchesForSlot(date,typeId)` FIFO al liberarse una cita). Registra **demanda SIN cupo todavía** ("avíseme si se libera un espacio"). Es DISTINTO de la sala de espera del día (`Medico.tbCitaMedica` estado 'En espera' + Tablero Kanban de Recepción), que es la cola de HOY de pacientes que ya llegaron. Son tablas y pantallas distintas.
+
+**Modelo:** `Medico.tbListaEspera` (prefijo `lesp_`). FKs a `Refugio.tbMascotas(masc_Id)`, `Veterinaria.tbClientes(cli_Id)` (dueño, NULL si interno/sin cliente), `Medico.tbTiposConsulta(tipoCon_Id)` (tipo deseado, NULL = cualquiera), `Seguridad.tbUsuarios(usu_Id)`. `lesp_FechaDeseada` DATE NULL (NULL = lo antes posible). Enums sin tildes con CHECK: `lesp_Prioridad` (`Normal|Alta|Urgente`), `lesp_Estado` (`Esperando|Agendada|Cancelada`). El `cli_Id` se **resuelve de la mascota** en el Insert (responsable binario). Índice filtrado `IX_tbListaEspera_Esperando` (SET ANSI_NULLS/QUOTED_IDENTIFIER ON) para acelerar la cola FIFO.
+
+**Sugerencia FIFO (feed, no gate):** `PR_Medico_ListaEspera_SugerenciasParaHueco @fecha @tipoCon_Id` devuelve los `Esperando` que encajan con el hueco, **más antiguo primero** respetando prioridad. Reglas de encaje (análogas a `matchWaitlist` de OpenVPM): tipo → el registro no pide tipo (NULL) o coincide con el del hueco (o el hueco no especifica); fecha → el registro no pide fecha (NULL) o el hueco cae en/antes de su fecha deseada (`@fecha <= lesp_FechaDeseada`, interpretada como "para tal fecha a más tardar"). Orden: `Urgente > Alta > Normal`, luego `lesp_FechaCrea ASC`. La waitlist nunca bloquea el agendado normal; solo sugiere a quién llamar.
+
+**Reglas (en SPs):** Insert valida mascota/prioridad/tipo y **evita duplicado activo** (misma mascota ya 'Esperando' → −4). Update solo mientras `Esperando` (−2 si ya agendada/cancelada → histórico inmutable). CambiarEstado solo desde `Esperando` a `Agendada`/`Cancelada` (estados terminales, −3 si no sigue esperando). Delete = soft-delete. Todos devuelven `CodeStatus/MessageStatus`. List ordena Esperando primero, luego prioridad y FIFO.
+
+**Rol × función (pantalla + permisos):** Administrador = todo; Recepcionista = consultar + insertar + editar + eliminar (gestiona la lista: anota, agenda, cancela, quita); Veterinario = solo consultar (ve a quién llamar). Sin acceso para el resto. Permisos en `Database/78_LISTA_ESPERA_PANTALLA.sql` (pantalla "Lista de espera", grupo Veterinaria, modu_Id 13 = módulo Recepción, degradable con él); `[PantallaAuthorize("Lista de espera")]` en el controller. Agendar/cancelar requiere "editar"; quitar requiere "eliminar".
+
+**Archivos:**
+- `Database/77_LISTA_ESPERA.sql` — tabla + índice filtrado + 7 SPs (List, SugerenciasParaHueco, Find, Detail, Insert, Update, CambiarEstado, Delete).
+- `Database/78_LISTA_ESPERA_PANTALLA.sql` — pantalla + matriz de permisos (roles 1/4/7).
+- `PetsHome.Common/Entities/Medico/` — `tbListaEspera` + 4 Result (List/Find/Detail/Sugerencia).
+- `PetsHome.Business/Models/ListaEsperaViewModels.cs`, `Services/ListaEsperaService.cs` (reusa `TipoConsultaService` para el dropdown de tipos).
+- `PetsHome.Logic/Repositories/ListaEsperaRepository.cs` (reusa `PR_Refugio_Mascotas_Dropdown`).
+- `PetsHome.UI/Controllers/ListaEsperaController.cs`; `Views/ListaEspera/{Index,Create,Detail}.cshtml`; `wwwroot/js/pages/lista-espera.js`.
+- Registros en `ServiceConfiguration.cs` + `MappingProfileExtensions.cs`; link en `_sidebar.cshtml` (grupo Recepción). Index tiene botón "¿A quién llamar?" (modal fecha+tipo → Sugerencias); Detail tiene Agendar/Cancelar.
+
+**Verificación:** `dotnet build` 0 errores. SPs probados en transacción (BEGIN TRAN/ROLLBACK) contra la BD viva: Insert x3 OK + duplicado (−4); List con orden prioridad+FIFO; SugerenciasParaHueco (fecha 2026-10-25 tipo 1 → solo el de tipo 1/sin fecha; excluye tipo 2 y el de fecha deseada anterior) y sin filtros (todos los esperando); CambiarEstado Agendada (1) y re-cambio terminal (−3); Detail/Find OK. Rutas verificadas: `/ListaEspera/{Index,Create,Sugerencias}` → 302 → `/Account/Login` (auth-gated); `/` → 200.

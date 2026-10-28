@@ -202,6 +202,33 @@ P · Plan        →  Qué se va a hacer: medicamentos recetados, vacuna
 
 ---
 
+## 9. Lista de espera (avíseme si se libera un espacio)
+
+**Qué es:** una lista de pacientes que **quieren una cita pero hoy no hay cupo**, y piden que se les avise cuando se libere un espacio. No es una cita: es solo una anotación de "demanda en espera".
+
+**En qué se diferencia del Tablero del día:** son dos cosas distintas.
+
+- **Tablero del día (sala de espera):** pacientes que **ya tienen cita y ya llegaron** a la clínica; están haciendo fila para ser atendidos hoy. Es la cola de recepción de HOY.
+- **Lista de espera (esta pantalla):** pacientes **sin cita todavía**; nadie ha llegado. Solo esperan que se libere un hueco para que los llamen.
+
+**Para qué sirve:** no perder clientes cuando la agenda está llena. En vez de decir "no hay cupo" y que se vayan, se les anota; y cuando alguien cancela una cita, el sistema dice a quién llamar primero.
+
+**Cómo se usa:**
+- Entra a **Lista de espera** (menú Recepción).
+- **"Anotar en lista"**: elige la **mascota**, opcionalmente el **tipo de consulta** que necesita, **para cuándo** la quiere (o déjalo vacío si es lo antes posible) y la **prioridad** (Normal, Alta o Urgente). Puedes dejar una nota (por ejemplo, que prefiere mañanas).
+- Cuando se **libera o se cancela** una cita, usa el botón **"¿A quién llamar?"**: indica la **fecha** del hueco y el **tipo** de consulta, y el sistema muestra la lista de a quién avisar, **del que lleva más tiempo esperando al más reciente**, respetando la prioridad. Aparece su teléfono para llamarlo.
+- Cuando ya se le da cita a alguien, abre su detalle y usa **"Marcar como agendada"** (sale de la cola). Si ya no quiere, usa **"Cancelar"**.
+
+**Importante:** la lista de espera **nunca bloquea** el agendado normal de citas; solo ayuda a rellenar huecos. Es una ayuda, no un paso obligatorio.
+
+| Rol | Qué puede hacer |
+|-----|-----------------|
+| Recepción | Gestiona la lista: anota, agenda, cancela y quita |
+| Administrador | Todo |
+| Veterinario | Solo consultar (ver a quién conviene llamar) |
+
+---
+
 ## Preguntas frecuentes
 
 **¿Por qué el veterinario no ve las citas de otros?**
@@ -215,3 +242,6 @@ Usa la ✕ para quitarla; queda marcada como corregida, sin perder el registro.
 
 **¿Los cambios de permisos se aplican al instante?**
 No: si se cambian permisos de un usuario, debe **cerrar sesión y volver a entrar** para que tomen efecto.
+
+**¿La Lista de espera es lo mismo que el Tablero del día?**
+No. El **Tablero del día** es la fila de pacientes que **ya tienen cita y ya llegaron** hoy. La **Lista de espera** son pacientes **sin cita todavía** que piden que se les avise cuando se libere un hueco.
