@@ -1,0 +1,241 @@
+@model LaboratorioDetailViewModel
+@{
+    ViewData["Title"] = "Detalle del examen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de laboratorio";
+    var puedeEditar = PetsHome.UI.Filters.PantallaAuthorizeAttribute.TienePermiso(User, "Listado de laboratorio", "editar");
+    string Acc(string e) => e == "Pendiente" ? "Pendiente" : e == "Completado" ? "Completado" : e == "Revisado" ? "Revisado" : e;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+@Html.AntiForgeryToken()
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-flask mr-2 text-white"></i>@Model.lab_Examen</h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    <i class="fas fa-paw mr-1"></i>@Model.Mascota &nbsp;·&nbsp;
+                    <i class="fas fa-vial mr-1"></i>@Model.lab_Tipo
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <!-- Encabezado / estado -->
+                <div class="card">
+                    <div class="card-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Estado actual</label>
+                                <div id="estado-badge" data-estado="@Model.lab_Estado" style="font-size:16px;font-weight:700;">@Acc(Model.lab_Estado)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha de solicitud</label>
+                                <div>@Model.lab_FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha de resultado</label>
+                                <div>@(Model.lab_FechaResultado?.ToString("dd/MM/yyyy HH:mm") ?? "—")</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Veterinario</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.Veterinario) ? "Sin asignar" : Model.Veterinario)</div>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.lab_Observaciones))
+                        {
+                            <div class="form-group" style="margin-top:10px;">
+                                <label>Observaciones</label>
+                                <div>@Model.lab_Observaciones</div>
+                            </div>
+                        }
+
+                        @if (puedeEditar)
+                        {
+                            <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+                                <button class="btn btn-outline btn-estado" data-estado="Pendiente">Marcar Pendiente</button>
+                                <button class="btn btn-primary btn-estado" data-estado="Completado">Marcar Completado</button>
+                                <button class="btn btn-success btn-estado" data-estado="Revisado">Marcar Revisado</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Parametros / resultados -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Resultados por parámetro</h2>
+                        <p class="card-description">Los valores fuera del rango de referencia se marcan en rojo</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="pets-table-container">
+                            <table class="pets-table" id="tablaParametros">
+                                <thead>
+                                    <tr>
+                                        <th>Parámetro</th>
+                                        <th width="130">Valor</th>
+                                        <th width="90">Unidad</th>
+                                        <th width="160">Rango referencia</th>
+                                        <th width="120" class="text-center">Estado</th>
+                                        @if (puedeEditar)
+                                        {
+                                            <th width="70" class="text-center">—</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Parametros.Count == 0)
+                                    {
+                                        <tr><td colspan="@(puedeEditar ? 6 : 5)" class="text-center text-muted py-3">Aún no hay resultados cargados.</td></tr>
+                                    }
+                                    @foreach (var p in Model.Parametros)
+                                    {
+                                        <tr style="@(p.labd_FueraRango ? "background:#fef2f2;" : "")">
+                                            <td style="font-weight:600;color:#111827;">@p.labd_Parametro</td>
+                                            <td style="@(p.labd_FueraRango ? "color:#b91c1c;font-weight:700;" : "color:#111827;font-weight:600;")">@p.labd_Valor</td>
+                                            <td>@(p.labd_Unidad ?? "—")</td>
+                                            <td>
+                                                @if (p.labd_RangoMin.HasValue || p.labd_RangoMax.HasValue)
+                                                {
+                                                    <span>@(p.labd_RangoMin?.ToString("0.##") ?? "–") – @(p.labd_RangoMax?.ToString("0.##") ?? "–")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">—</span>
+                                                }
+                                            </td>
+                                            <td class="text-center">
+                                                @if (p.labd_FueraRango)
+                                                {
+                                                    <span style="background:#fee2e2;color:#991b1b;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;"><i class="fas fa-triangle-exclamation mr-1"></i>Fuera</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="background:#dcfce7;color:#166534;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;"><i class="fas fa-check mr-1"></i>En rango</span>
+                                                }
+                                            </td>
+                                            @if (puedeEditar)
+                                            {
+                                                <td class="text-center">
+                                                    <button class="action-btn btn-delete btn-quitar" data-id="@p.labd_Id" title="Quitar"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @if (puedeEditar)
+                        {
+                            <div class="card" style="margin-top:16px;background:#faf5ff;border:1px dashed #d8b4fe;">
+                                <div class="card-content">
+                                    <h3 style="font-size:15px;font-weight:700;color:#6b21a8;margin-bottom:10px;"><i class="fas fa-plus-circle mr-1"></i>Agregar parámetro</h3>
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label>Parámetro</label>
+                                            <input class="form-control" id="p_parametro" type="text" placeholder="Ej: Hematocrito" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Valor</label>
+                                            <input class="form-control" id="p_valor" type="text" placeholder="Ej: 45 o Amarillo" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Unidad</label>
+                                            <input class="form-control" id="p_unidad" type="text" placeholder="Ej: %" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Rango mínimo</label>
+                                            <input class="form-control" id="p_min" type="number" step="any" placeholder="Opcional" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Rango máximo</label>
+                                            <input class="form-control" id="p_max" type="number" step="any" placeholder="Opcional" />
+                                        </div>
+                                        <div class="form-group" style="display:flex;align-items:flex-end;">
+                                            <button class="btn btn-primary" id="btnAgregarParam" type="button"><i class="fas fa-plus mr-1"></i>Agregar</button>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">Si el valor es numérico y queda fuera del rango, se marcará automáticamente en rojo.</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    window._urls = {
+        cambiarEstado:    '@Url.Action("CambiarEstado")',
+        agregarParametro: '@Url.Action("AgregarParametro")',
+        quitarParametro:  '@Url.Action("QuitarParametro")'
+    };
+    var LAB_ID = @Model.lab_Id;
+
+    // Incluir el token antiforgery en todos los POST (filtro global AutoValidateAntiforgeryToken)
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (settings.type && settings.type.toUpperCase() === 'POST') {
+                var t = $('input[name="__RequestVerificationToken"]').val();
+                if (t) xhr.setRequestHeader('RequestVerificationToken', t);
+            }
+        }
+    });
+
+    function labReload() { window.location.reload(); }
+
+    $(document).on('click', '.btn-estado', function () {
+        var estado = $(this).data('estado');
+        $.post(window._urls.cambiarEstado, { lab_Id: LAB_ID, estado: estado }, function (r) {
+            if (r && r.ok) { labReload(); }
+            else if (window.Swal) { Swal.fire('Aviso', (r && r.mensaje) || 'No se pudo cambiar el estado.', 'info'); }
+        });
+    });
+
+    $('#btnAgregarParam').on('click', function () {
+        var data = {
+            lab_Id: LAB_ID,
+            labd_Parametro: $('#p_parametro').val(),
+            labd_Valor: $('#p_valor').val(),
+            labd_Unidad: $('#p_unidad').val(),
+            labd_RangoMin: $('#p_min').val() === '' ? null : $('#p_min').val(),
+            labd_RangoMax: $('#p_max').val() === '' ? null : $('#p_max').val()
+        };
+        if (!data.labd_Parametro || !data.labd_Valor) {
+            if (window.Swal) Swal.fire('Faltan datos', 'Parámetro y valor son obligatorios.', 'warning');
+            return;
+        }
+        $.post(window._urls.agregarParametro, data, function (r) {
+            if (r && r.ok) { labReload(); }
+            else if (window.Swal) { Swal.fire('Aviso', (r && r.mensaje) || 'No se pudo agregar el parámetro.', 'info'); }
+        });
+    });
+
+    $(document).on('click', '.btn-quitar', function () {
+        var id = $(this).data('id');
+        $.post(window._urls.quitarParametro, { labd_Id: id }, function (r) {
+            if (r && r.ok) { labReload(); }
+            else if (window.Swal) { Swal.fire('Aviso', (r && r.mensaje) || 'No se pudo quitar el parámetro.', 'info'); }
+        });
+    });
+</script>
+}
