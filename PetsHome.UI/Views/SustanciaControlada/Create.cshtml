@@ -1,0 +1,168 @@
+@model SustanciaMovimientoFormViewModel
+@{
+    ViewData["Title"] = "Registrar movimiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["UseFormValidation"] = true;
+    ViewData["CurrentPantalla"] = "Sustancias controladas";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-prescription-bottle-medical mr-2 text-white"></i>Registrar movimiento de sustancia controlada
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver a la bitácora
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    Al <strong>administrar</strong> se exige el paciente; al <strong>desechar</strong> se exige un testigo. El saldo no puede quedar negativo.
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form asp-action="Add" asp-controller="SustanciaControlada" method="post" autocomplete="off" id="scmForm">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Datos del movimiento</h2>
+                            <p class="card-description">Fármaco, tipo de movimiento y cantidad</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label asp-for="itm_Id">Fármaco controlado <span class="required">*</span></label>
+                                    <select class="form-control" asp-for="itm_Id">
+                                        <option value="">-- Seleccione --</option>
+                                        @foreach (var f in Model.FarmacoList)
+                                        {
+                                            <option value="@f.itm_Id">@f.itm_Descripcion (@f.itm_Codigo)</option>
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="itm_Id"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="scm_Tipo">Tipo de movimiento <span class="required">*</span></label>
+                                    <select class="form-control" asp-for="scm_Tipo" asp-items="Model.TipoList" id="scm_Tipo">
+                                        <option value="">-- Seleccione --</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="scm_Tipo"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="scm_Cantidad">Cantidad <span class="required">*</span></label>
+                                    <input class="form-control" asp-for="scm_Cantidad" type="number" step="0.001" min="0.001" placeholder="Ej: 5" />
+                                    <span class="text-danger" asp-validation-for="scm_Cantidad"></span>
+                                </div>
+
+                                <div class="form-group" id="grp_masc">
+                                    <label asp-for="masc_Id">Paciente <span class="required" id="req_masc" style="display:none;">*</span></label>
+                                    <select class="form-control" asp-for="masc_Id">
+                                        <option value="">-- Seleccione --</option>
+                                        @foreach (var m in Model.MascotaList)
+                                        {
+                                            <option value="@m.masc_Id">@m.masc_Nombre</option>
+                                        }
+                                    </select>
+                                    <small class="text-muted">Obligatorio cuando el movimiento es <strong>Administrado</strong>.</small>
+                                    <span class="text-danger" asp-validation-for="masc_Id"></span>
+                                </div>
+
+                                <div class="form-group" id="grp_testigo">
+                                    <label asp-for="scm_TestigoId">Testigo <span class="required" id="req_testigo" style="display:none;">*</span></label>
+                                    <select class="form-control" asp-for="scm_TestigoId">
+                                        <option value="">-- Seleccione --</option>
+                                        @foreach (var t in Model.TestigoList)
+                                        {
+                                            <option value="@t.Id">@t.Nombre</option>
+                                        }
+                                    </select>
+                                    <small class="text-muted">Obligatorio cuando el movimiento es <strong>Desechado</strong>.</small>
+                                    <span class="text-danger" asp-validation-for="scm_TestigoId"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="scm_DeaSchedule">Clasificación DEA</label>
+                                    <select class="form-control" asp-for="scm_DeaSchedule" asp-items="Model.DeaScheduleList">
+                                        <option value="">-- No aplica --</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="scm_DeaSchedule"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="scm_Lote">Lote</label>
+                                    <input class="form-control" asp-for="scm_Lote" type="text" placeholder="Ej: L-2026-014" />
+                                    <span class="text-danger" asp-validation-for="scm_Lote"></span>
+                                </div>
+
+                                <div class="form-group" style="grid-column:1 / -1;">
+                                    <label asp-for="scm_Notas">Notas</label>
+                                    <textarea class="form-control" asp-for="scm_Notas" rows="3" placeholder="Motivo, referencia de la orden, observaciones..."></textarea>
+                                    <span class="text-danger" asp-validation-for="scm_Notas"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-content-save"></i> Registrar movimiento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        $(function () {
+            function sync() {
+                var tipo = $('#scm_Tipo').val();
+                var esAdmin = tipo === 'Administrado';
+                var esDesecho = tipo === 'Desechado';
+                $('#req_masc').toggle(esAdmin);
+                $('#req_testigo').toggle(esDesecho);
+            }
+            $('#scm_Tipo').on('change', sync);
+            sync();
+
+            $.validator.addMethod('pacienteSiAdmin', function (value) {
+                return $('#scm_Tipo').val() !== 'Administrado' || (value && value !== '');
+            }, 'Debe indicar el paciente al administrar.');
+
+            $.validator.addMethod('testigoSiDesecho', function (value) {
+                return $('#scm_Tipo').val() !== 'Desechado' || (value && value !== '');
+            }, 'El desecho requiere un testigo.');
+
+            $('#scmForm').validate({
+                rules: {
+                    itm_Id: { required: true },
+                    scm_Tipo: { required: true },
+                    scm_Cantidad: { required: true, min: 0.001 },
+                    masc_Id: { pacienteSiAdmin: true },
+                    scm_TestigoId: { testigoSiDesecho: true }
+                }
+            });
+        });
+    </script>
+}

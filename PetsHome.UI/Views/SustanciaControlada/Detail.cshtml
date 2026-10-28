@@ -1,0 +1,86 @@
+@model SustanciaMovimientoDetailViewModel
+@{
+    ViewData["Title"] = "Detalle del movimiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Sustancias controladas";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-prescription-bottle-medical mr-2 text-white"></i>@Model.Farmaco</h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver a la bitácora
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    Movimiento <strong>@Model.scm_Tipo</strong> &nbsp;·&nbsp; @Model.scm_Cantidad.ToString("0.###") unidades
+                    @if (!string.IsNullOrEmpty(Model.scm_DeaSchedule)) { <text> &nbsp;·&nbsp; DEA @Model.scm_DeaSchedule</text> }
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Fármaco</label>
+                                <div>@Model.Farmaco <span class="text-muted">(@Model.itm_Codigo)</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de movimiento</label>
+                                <div>@Model.scm_Tipo</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <div>@Model.scm_Cantidad.ToString("0.###")</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Paciente</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.Mascota) ? "—" : Model.Mascota)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Testigo</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.Testigo) ? "—" : Model.Testigo)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Lote</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.scm_Lote) ? "—" : Model.scm_Lote)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Clasificación DEA</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.scm_DeaSchedule) ? "—" : Model.scm_DeaSchedule)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha del movimiento</label>
+                                <div>@Model.scm_Fecha.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Registrado por</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.RegistradoPor) ? "—" : Model.RegistradoPor)</div>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.scm_Notas))
+                        {
+                            <div class="form-group" style="margin-top:14px;">
+                                <label>Notas</label>
+                                <div>@Model.scm_Notas</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
