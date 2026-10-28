@@ -452,3 +452,28 @@ Fuera de rango → borde ámbar + nota breve. No impide finalizar la consulta.
 - Registros en `ServiceConfiguration.cs` + `MappingProfileExtensions.cs`; link en `_sidebar.cshtml` (grupo Clínica).
 
 **Verificación:** `dotnet build` 0 errores. SPs probados en transacción (BEGIN TRAN/ROLLBACK) contra la BD viva: casos OK (Recibido/Administrado/Desechado/Devuelto, saldo final 80) y los que deben fallar — administrar sin paciente (−4), desechar sin testigo (−5), saldo insuficiente (−8), cantidad cero (−2). Rutas verificadas: 302 → Login (auth-gated).
+
+---
+
+## Consentimientos (autorizaciones firmadas por el dueño)
+
+**Qué es:** módulo nuevo (pantalla "Listado de consentimientos", menú Clínica) inspirado en `consents.ts` de OpenVPM (consent forms / consent requests). Formularios que el dueño firma autorizando un procedimiento, ligados a mascota/cliente y opcionalmente a la consulta, con estado y bitácora de firma poco mutable.
+
+**Modelo:** `Medico.tbConsentimiento` (prefijo `cons_`). FKs a `Refugio.tbMascotas(masc_Id)`, `Veterinaria.tbClientes(cli_Id)` (dueño, NULL si interno), `Medico.tbCitaMedica(cita_Id)` (opcional), `Seguridad.tbUsuarios(usu_Id)`. Enums sin tildes con CHECK: `cons_Tipo` (`General|Cirugia|Anestesia|Eutanasia`), `cons_Estado` (`Pendiente|Firmado|Rechazado`). `cons_Texto` (nvarchar max) es la declaración; `cons_FirmanteNombre` + `cons_FechaFirma` registran la firma. El `cli_Id` se **resuelve de la mascota** en el Insert (concepto responsable binario del script 56: cliente o interno). La UI muestra los enums con tilde.
+
+**Firma (fuera de alcance v1):** no hay captura de firma gráfica (trazo/imagen). Se registra nombre del firmante + fecha + estado "Firmado". Documentado como mejora futura.
+
+**Reglas (en SPs):** Insert valida mascota/tipo/texto. Update solo mientras `Pendiente` (−2 si ya firmado/rechazado → texto inmutable). CambiarEstado solo desde `Pendiente` a `Firmado`/`Rechazado` (estados terminales, −3 si no está pendiente); `Firmado` exige firmante (−4). Delete = soft-delete (anular, deja rastro). Todos devuelven `CodeStatus/MessageStatus`.
+
+**Rol × función (pantalla + permisos):** Administrador = todo (incluye anular); Veterinario = consultar + insertar + editar (crea y marca firmado/rechazado; no anula); Recepcionista = consultar + insertar + editar (crea y registra la firma del dueño; no anula). Sin acceso para el resto. Permisos en `Database/76_CONSENTIMIENTOS_PANTALLA.sql`; `[PantallaAuthorize("Listado de consentimientos")]` en el controller. Firmar/rechazar requiere permiso "editar"; anular requiere "eliminar".
+
+**Archivos:**
+- `Database/75_CONSENTIMIENTOS.sql` — tabla + 6 SPs (List, Find, Detail, Insert, Update, CambiarEstado, Delete).
+- `Database/76_CONSENTIMIENTOS_PANTALLA.sql` — pantalla + matriz de permisos (roles 1/4/7).
+- `PetsHome.Common/Entities/Medico/` — `tbConsentimiento` + 3 Result (List/Find/Detail).
+- `PetsHome.Business/Models/ConsentimientoViewModels.cs`, `Services/ConsentimientoService.cs`.
+- `PetsHome.Logic/Repositories/ConsentimientoRepository.cs`.
+- `PetsHome.UI/Controllers/ConsentimientoController.cs`; `Views/Consentimiento/{Index,Create,Detail}.cshtml`; `wwwroot/js/pages/consentimiento.js`.
+- Registros en `ServiceConfiguration.cs` + `MappingProfileExtensions.cs`; link en `_sidebar.cshtml` (grupo Clínica). La vista Create pre-llena `cons_Texto` con plantillas simples por tipo (JS).
+
+**Verificación:** `dotnet build` 0 errores. SPs probados en transacción (BEGIN TRAN/ROLLBACK) contra la BD viva: Insert OK (1) + inválidos (tipo −2, texto vacío −3); Update pendiente (1) y bloqueado tras firmar (−2); firmar sin nombre (−4) y con nombre (1); re-cambiar estado terminal (−3); Detail/List/Delete OK. Rutas verificadas: `/Consentimiento/{Index,Create,Detail,List}` → 302 Login (auth-gated); Index sigue a `/Account/Login` (200).
