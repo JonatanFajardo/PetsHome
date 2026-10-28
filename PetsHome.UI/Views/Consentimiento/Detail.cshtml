@@ -1,0 +1,170 @@
+@model ConsentimientoDetailViewModel
+@{
+    ViewData["Title"] = "Detalle del consentimiento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de consentimientos";
+    var puedeEditar = PetsHome.UI.Filters.PantallaAuthorizeAttribute.TienePermiso(User, "Listado de consentimientos", "editar");
+    string Tipo(string t) => t == "Cirugia" ? "Cirugía" : t;
+    string Estado(string e) => e == "Firmado" ? "Firmado" : e == "Rechazado" ? "Rechazado" : "Pendiente";
+    var esPendiente = Model.cons_Estado == "Pendiente";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+@Html.AntiForgeryToken()
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white"><i class="fas fa-file-signature mr-2 text-white"></i>Consentimiento de @Tipo(Model.cons_Tipo)</h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity:0.9;">
+                    <i class="fas fa-paw mr-1"></i>@Model.Mascota &nbsp;·&nbsp;
+                    <i class="fas fa-user mr-1"></i>@Model.Responsable
+                    @if (!string.IsNullOrWhiteSpace(Model.ResponsableContacto))
+                    {
+                        <text>&nbsp;·&nbsp;<i class="fas fa-phone mr-1"></i>@Model.ResponsableContacto</text>
+                    }
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <!-- Encabezado / estado -->
+                <div class="card">
+                    <div class="card-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Estado actual</label>
+                                <div id="estado-badge" data-estado="@Model.cons_Estado" style="font-size:16px;font-weight:700;">@Estado(Model.cons_Estado)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Firmante</label>
+                                <div>@(string.IsNullOrWhiteSpace(Model.cons_FirmanteNombre) ? "—" : Model.cons_FirmanteNombre)</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha de firma / rechazo</label>
+                                <div>@(Model.cons_FechaFirma?.ToString("dd/MM/yyyy HH:mm") ?? "—")</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Registrado</label>
+                                <div>@Model.cons_FechaCrea.ToString("dd/MM/yyyy HH:mm") @(string.IsNullOrWhiteSpace(Model.UsuarioCreacion) ? "" : "· " + Model.UsuarioCreacion)</div>
+                            </div>
+                        </div>
+
+                        @if (puedeEditar && esPendiente)
+                        {
+                            <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+                                <button class="btn btn-success" id="btnFirmar"><i class="fas fa-signature mr-1"></i>Registrar firma</button>
+                                <button class="btn btn-danger" id="btnRechazar"><i class="fas fa-ban mr-1"></i>Rechazar</button>
+                                <a class="btn btn-outline" href="@Url.Action("Find", new { id = Model.cons_Id })"><i class="fas fa-edit mr-1"></i>Editar texto</a>
+                            </div>
+                        }
+                        else if (!esPendiente)
+                        {
+                            <div style="margin-top:14px;" class="text-muted">
+                                <i class="fas fa-lock mr-1"></i>Este consentimiento está @(Model.cons_Estado == "Firmado" ? "firmado" : "rechazado") y su texto es inmutable.
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Texto del consentimiento -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Declaración autorizada</h2>
+                        <p class="card-description">Texto que el dueño autoriza con su firma</p>
+                    </div>
+                    <div class="card-content">
+                        <div style="white-space:pre-wrap;line-height:1.6;color:#111827;background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:16px;">@Model.cons_Texto</div>
+                        @if (!string.IsNullOrWhiteSpace(Model.cons_Notas))
+                        {
+                            <div class="form-group" style="margin-top:14px;">
+                                <label>Notas internas</label>
+                                <div class="text-muted">@Model.cons_Notas</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    window._urls = {
+        cambiarEstado: '@Url.Action("CambiarEstado")'
+    };
+    var CONS_ID = @Model.cons_Id;
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (settings.type && settings.type.toUpperCase() === 'POST') {
+                var t = $('input[name="__RequestVerificationToken"]').val();
+                if (t) xhr.setRequestHeader('RequestVerificationToken', t);
+            }
+        }
+    });
+
+    function cambiar(estado, firmante) {
+        $.post(window._urls.cambiarEstado, { cons_Id: CONS_ID, estado: estado, firmante: firmante || '' }, function (r) {
+            if (r && r.ok) { window.location.reload(); }
+            else if (window.Swal) { Swal.fire('Aviso', (r && r.mensaje) || 'No se pudo cambiar el estado.', 'info'); }
+        });
+    }
+
+    $('#btnFirmar').on('click', function () {
+        if (window.Swal) {
+            Swal.fire({
+                title: 'Registrar firma',
+                input: 'text',
+                inputLabel: 'Nombre de quien firma (dueño o responsable)',
+                inputPlaceholder: 'Ej: Juan Pérez',
+                showCancelButton: true,
+                confirmButtonText: 'Firmar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: function (value) {
+                    if (!value || value.trim() === '') return 'Debe indicar el nombre de quien firma.';
+                }
+            }).then(function (res) {
+                if (res.isConfirmed && res.value) cambiar('Firmado', res.value.trim());
+            });
+        } else {
+            var nombre = prompt('Nombre de quien firma:');
+            if (nombre && nombre.trim()) cambiar('Firmado', nombre.trim());
+        }
+    });
+
+    $('#btnRechazar').on('click', function () {
+        if (window.Swal) {
+            Swal.fire({
+                title: '¿Rechazar consentimiento?',
+                input: 'text',
+                inputLabel: 'Nombre de quien rechaza (opcional)',
+                inputPlaceholder: 'Opcional',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Rechazar',
+                cancelButtonText: 'Cancelar'
+            }).then(function (res) {
+                if (res.isConfirmed) cambiar('Rechazado', (res.value || '').trim());
+            });
+        } else {
+            if (confirm('¿Rechazar este consentimiento?')) cambiar('Rechazado', '');
+        }
+    });
+</script>
+}

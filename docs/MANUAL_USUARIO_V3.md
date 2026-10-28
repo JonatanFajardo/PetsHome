@@ -179,6 +179,29 @@ P · Plan        →  Qué se va a hacer: medicamentos recetados, vacuna
 
 ---
 
+## 8. Consentimientos (autorizaciones firmadas por el dueño)
+
+**Qué es:** una pantalla para registrar las **autorizaciones que el dueño firma** antes de un procedimiento: consentimiento general, de cirugía, de anestesia o de eutanasia. Cada autorización queda ligada a la mascota (y a su dueño cuando lo tiene) y guarda el texto que se autorizó, quién firmó y cuándo.
+
+**Para qué sirve:** dejar constancia de que el responsable del animal **fue informado y autorizó** el procedimiento, con un texto claro y su firma registrada. Protege a la clínica y al dueño, y deja un historial consultable por mascota.
+
+**Cómo se usa:**
+- Entra a **Consentimientos** (menú Clínica).
+- Crea uno nuevo: elige la **mascota**, el **tipo** y el **texto** de la autorización. Puedes usar el botón **"Usar plantilla del tipo"** para partir de un texto sugerido y ajustarlo. Queda como **Pendiente**.
+- Cuando el dueño acepta, abre el detalle y usa **Registrar firma**: se escribe el **nombre de quien firma** y queda como **Firmado** con la fecha.
+- Si el dueño no acepta, usa **Rechazar**; queda como **Rechazado**.
+- Mientras está **Pendiente** se puede editar el texto. Una vez **Firmado o Rechazado**, el texto **ya no se puede cambiar** (solo se puede anular el registro).
+
+> **Nota:** en esta versión la firma se registra como el **nombre del firmante + la fecha**. La firma gráfica (el trazo en pantalla o en papel digitalizado) queda como mejora futura.
+
+| Rol | Qué puede hacer |
+|-----|-----------------|
+| Veterinario | Crear consentimientos y marcarlos firmados o rechazados |
+| Recepción | Crear consentimientos y registrar la firma del dueño |
+| Administrador | Todo, incluido anular |
+
+---
+
 ## Preguntas frecuentes
 
 **¿Por qué el veterinario no ve las citas de otros?**
