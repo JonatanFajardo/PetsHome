@@ -493,6 +493,19 @@ namespace PetsHome.Business.Extensions
                 .ReverseMap();
             CreateMap<tbLaboratorioDetalle, LaboratorioDetalleViewModel>().ReverseMap();
 
+            // Mapeos para modulo medico - Consentimientos
+            CreateMap<PR_Medico_Consentimiento_ListResult, ConsentimientoListViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Consentimiento_FindResult, ConsentimientoFindViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Consentimiento_DetailResult, ConsentimientoDetailViewModel>().ReverseMap();
+            CreateMap<ConsentimientoFindViewModel, ConsentimientoFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoList, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<tbConsentimiento, ConsentimientoFormViewModel>()
+                .ForMember(dest => dest.MascotaList, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoList, opt => opt.Ignore())
+                .ReverseMap();
+
             // Mapeos para modulo medico - Sustancias controladas
             CreateMap<PR_Medico_SustanciaMovimiento_ListResult, SustanciaMovimientoListViewModel>();
             CreateMap<PR_Medico_SustanciaMovimiento_DetailResult, SustanciaMovimientoDetailViewModel>();

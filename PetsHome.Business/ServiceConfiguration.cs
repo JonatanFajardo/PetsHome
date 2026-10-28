@@ -71,6 +71,7 @@ namespace PetsHome.Business
             services.AddScoped<CargoDispensacionRepository>();
             services.AddScoped<LaboratorioRepository>();
             services.AddScoped<SustanciaControladaRepository>();
+            services.AddScoped<ConsentimientoRepository>();
             //https://www.it-swarm.dev/es/c%23/obtencion-de-url-absolutas-utilizando-asp.net-core/1053425403/
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
                 .AddScoped<IUrlHelper>(x => x
@@ -138,6 +139,7 @@ namespace PetsHome.Business
             services.AddScoped<CargoDispensacionService>();
             services.AddScoped<LaboratorioService>();
             services.AddScoped<SustanciaControladaService>();
+            services.AddScoped<ConsentimientoService>();
             /// Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
             {

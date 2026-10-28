@@ -190,7 +190,7 @@
             }
 
             @* ══════════ CLÍNICA — trabajo diario del veterinario ══════════ *@
-            @if (tiene("En consulta") || tiene("Control de vacunacion") || tiene("Perfil medico de mascota") || tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de laboratorio") || tiene("Sustancias controladas"))
+            @if (tiene("En consulta") || tiene("Control de vacunacion") || tiene("Perfil medico de mascota") || tiene("Listado de alertas medicas") || tiene("Listado de citas medicas") || tiene("Listado de recetas") || tiene("Listado de tratamientos") || tiene("Listado de laboratorio") || tiene("Sustancias controladas") || tiene("Listado de consentimientos"))
             {
                 <li class="menu">
                     <a href="#Clinica" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -240,6 +240,10 @@
                         @if (tiene("Sustancias controladas"))
                         {
                             <li>@Html.ActionLink("💊 Sustancias controladas", "Index", "SustanciaControlada")</li>
+                        }
+                        @if (tiene("Listado de consentimientos"))
+                        {
+                            <li>@Html.ActionLink("✍️ Consentimientos", "Index", "Consentimiento")</li>
                         }
                     </ul>
                 </li>
