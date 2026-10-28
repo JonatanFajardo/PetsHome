@@ -427,3 +427,28 @@ Fuera de rango → borde ámbar + nota breve. No impide finalizar la consulta.
 **Rol × función:** SOAP y signos vitales los llena el **veterinario** durante la consulta. No hay variación relevante por rol, no se agregaron permisos ni filtros nuevos.
 
 **Verificación:** `dotnet build` 0 errores. Insert probado en transacción (BEGIN TRAN / ROLLBACK) contra la BD viva: FC/FR + los 4 vitales persisten correctamente y Mucosas se guarda sin tilde.
+
+---
+
+## Sustancias controladas (bitácora regulatoria)
+
+**Qué es:** módulo nuevo (pantalla "Sustancias controladas", menú Clínica) inspirado en el `controlled-substances` de OpenVPM. Bitácora de movimientos de fármacos controlados con saldo calculado y auditoría completa.
+
+**Modelo:** `Medico.tbSustanciaMovimiento` (prefijo `scm_`). Referencia `Inventario.tbItems(itm_Id)` para reusar el catálogo de productos (no se altera tbItems ni se agrega flag "controlado"; el fármaco se elige del catálogo existente). Tipos sin tildes: `Recibido | Administrado | Desechado | Devuelto`. FKs a `tbItems`, `Refugio.tbMascotas` (paciente), `Seguridad.tbUsuarios` (testigo y usuario que registra). `scm_DeaSchedule` (II–V) y `scm_Lote` opcionales.
+
+**Saldo (calculado, no columna):** `SUM(Recibido + Devuelto) − SUM(Administrado + Desechado)` por fármaco. Lo entrega `PR_Medico_SustanciaSaldo_List`.
+
+**Validaciones (en `PR_Medico_SustanciaMovimiento_RegistrarMovimiento`):** cantidad > 0; `Administrado` exige paciente; `Desechado` exige testigo; en `Administrado`/`Desechado` el saldo no puede quedar negativo (se rechaza con el disponible en el mensaje). Devuelve `CodeStatus/MessageStatus/scm_Id`; el controller muestra el motivo del rechazo. Anular = soft-delete (deja rastro).
+
+**Rol × función (pantalla + permisos):** Administrador = todo (recibir + anular); Veterinario = consultar + registrar (administración/desecho); Supervisor = solo lectura (auditoría). Sin acceso para el resto. Permisos en `Database/74_SUSTANCIAS_CONTROLADAS_PANTALLA.sql`; `[PantallaAuthorize("Sustancias controladas")]` en el controller.
+
+**Archivos:**
+- `Database/73_SUSTANCIAS_CONTROLADAS.sql` — tabla + 5 SPs (List, Detail, SaldoList, RegistrarMovimiento, Delete).
+- `Database/74_SUSTANCIAS_CONTROLADAS_PANTALLA.sql` — pantalla + matriz de permisos.
+- `PetsHome.Common/Entities/Medico/` — `tbSustanciaMovimiento` + 3 Result.
+- `PetsHome.Business/Models/SustanciaControladaViewModels.cs`, `Services/SustanciaControladaService.cs`.
+- `PetsHome.Logic/Repositories/SustanciaControladaRepository.cs`.
+- `PetsHome.UI/Controllers/SustanciaControladaController.cs`; `Views/SustanciaControlada/{Index,Create,Detail}.cshtml`; `wwwroot/js/pages/sustancias-controladas.js`.
+- Registros en `ServiceConfiguration.cs` + `MappingProfileExtensions.cs`; link en `_sidebar.cshtml` (grupo Clínica).
+
+**Verificación:** `dotnet build` 0 errores. SPs probados en transacción (BEGIN TRAN/ROLLBACK) contra la BD viva: casos OK (Recibido/Administrado/Desechado/Devuelto, saldo final 80) y los que deben fallar — administrar sin paciente (−4), desechar sin testigo (−5), saldo insuficiente (−8), cantidad cero (−2). Rutas verificadas: 302 → Login (auth-gated).

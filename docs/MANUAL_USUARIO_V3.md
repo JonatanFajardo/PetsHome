@@ -154,6 +154,31 @@ P · Plan        →  Qué se va a hacer: medicamentos recetados, vacuna
 
 ---
 
+## 7. Sustancias controladas (bitácora regulatoria)
+
+**Qué es:** una pantalla para llevar la **bitácora de fármacos controlados** (los que la ley exige vigilar). Cada vez que un fármaco **entra, se aplica a un paciente, se desecha o se devuelve**, queda anotado quién lo hizo, cuándo y por qué.
+
+**Para qué sirve:** tener en todo momento el **saldo real** de cada fármaco controlado y un registro completo para auditorías. Evita descuadres y deja constancia de que cada desecho tuvo un testigo y cada aplicación tuvo un paciente.
+
+**Cómo se usa:**
+- Entra a **Sustancias controladas** (menú Clínica).
+- Arriba verás el **saldo por fármaco**: lo recibido más lo devuelto, menos lo administrado y lo desechado.
+- Abajo está la **bitácora**: la lista de todos los movimientos, del más reciente al más antiguo.
+- Para anotar un movimiento usa **Registrar movimiento** y elige el tipo:
+  - **Recibido / Devuelto:** suman al saldo (entra fármaco al inventario).
+  - **Administrado:** resta del saldo y **exige indicar el paciente**.
+  - **Desechado:** resta del saldo y **exige indicar un testigo**.
+- El sistema **no deja registrar** si falta el paciente, falta el testigo, la cantidad no es válida o **no hay saldo suficiente**.
+- Un movimiento mal anotado se puede **anular** (no se borra: queda el rastro por auditoría).
+
+| Rol | Qué puede hacer |
+|-----|-----------------|
+| Veterinario | Registrar administraciones y desechos (con testigo) y consultar |
+| Administrador | Todo: recibir inventario controlado, consultar y anular |
+| Supervisor | Consultar la bitácora y los saldos (auditoría) |
+
+---
+
 ## Preguntas frecuentes
 
 **¿Por qué el veterinario no ve las citas de otros?**
