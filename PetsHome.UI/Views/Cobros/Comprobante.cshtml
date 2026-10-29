@@ -1,0 +1,89 @@
+@model PetsHome.Business.Models.ComprobanteViewModel
+@{
+    Layout = null;
+    var h = Model.Header;
+    string Money(decimal v) => "L " + v.ToString("N2");
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Comprobante @h.fact_Numero</title>
+    <style>
+        :root { --p:#5b4fcf; --pd:#1e1657; --muted:#8b80b8; --bd:#ece9fb; }
+        * { box-sizing:border-box; }
+        body { font-family:'DM Sans',system-ui,Arial,sans-serif; color:var(--pd); background:#f0eeff; margin:0; padding:24px; }
+        .recibo { max-width:720px; margin:0 auto; background:#fff; border:1px solid var(--bd); border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(30,22,87,.08); }
+        .rec-head { background:var(--p); color:#fff; padding:20px 26px; display:flex; align-items:center; justify-content:space-between; }
+        .rec-head .brand { font-size:1.4rem; font-weight:700; }
+        .rec-head .brand small { display:block; font-weight:400; opacity:.85; font-size:.8rem; }
+        .rec-num { text-align:right; font-size:.9rem; }
+        .rec-num b { font-size:1.1rem; }
+        .rec-meta { display:flex; flex-wrap:wrap; gap:18px; padding:18px 26px; border-bottom:1px solid var(--bd); }
+        .rec-meta div { font-size:.9rem; }
+        .rec-meta .lbl { color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.4px; }
+        table { width:100%; border-collapse:collapse; }
+        thead th { text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); padding:12px 26px; border-bottom:1px solid var(--bd); }
+        tbody td { padding:11px 26px; border-bottom:1px solid #f4f2fe; font-size:.92rem; }
+        .r { text-align:right; }
+        .tot { padding:16px 26px; margin-left:auto; width:300px; }
+        .tot-row { display:flex; justify-content:space-between; padding:4px 0; font-size:.92rem; }
+        .tot-row.total { border-top:2px solid var(--p); margin-top:6px; padding-top:10px; font-size:1.15rem; font-weight:700; color:var(--p); }
+        .estado { display:inline-block; padding:3px 12px; border-radius:999px; background:#ede9ff; color:var(--p); font-weight:600; font-size:.78rem; }
+        .acciones { max-width:720px; margin:16px auto 0; display:flex; gap:10px; justify-content:flex-end; }
+        .btn { border:none; border-radius:9px; padding:10px 18px; font-weight:600; cursor:pointer; font-family:inherit; font-size:.9rem; }
+        .btn-print { background:var(--p); color:#fff; }
+        .btn-close { background:#fff; color:var(--muted); border:1px solid var(--bd); }
+        @@media print { body { background:#fff; padding:0; } .acciones { display:none; } .recibo { border:none; box-shadow:none; } }
+    </style>
+</head>
+<body>
+    <div class="recibo">
+        <div class="rec-head">
+            <div class="brand">PetsHome <small>Clínica Veterinaria</small></div>
+            <div class="rec-num">Comprobante<br /><b>@(string.IsNullOrWhiteSpace(h.fact_Numero) ? ("F-" + h.fact_Id) : h.fact_Numero)</b></div>
+        </div>
+
+        <div class="rec-meta">
+            <div><div class="lbl">Cliente</div>@(h.Cliente ?? "—")</div>
+            @if (!string.IsNullOrWhiteSpace(h.cli_Identidad)) { <div><div class="lbl">Identidad</div>@h.cli_Identidad</div> }
+            <div><div class="lbl">Fecha</div>@h.fact_Fecha.ToString("dd/MM/yyyy HH:mm")</div>
+            @if (h.fact_Vencimiento.HasValue) { <div><div class="lbl">Vence</div>@h.fact_Vencimiento.Value.ToString("dd/MM/yyyy")</div> }
+            <div><div class="lbl">Estado</div><span class="estado">@(h.fact_Estado == "PorCobrar" ? "Por cobrar" : h.fact_Estado)</span></div>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>Descripción</th><th class="r">Cant.</th><th class="r">Precio</th><th class="r">Subtotal</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var l in Model.Lineas)
+                {
+                    <tr>
+                        <td>@l.fdet_Descripcion</td>
+                        <td class="r">@l.fdet_Cantidad.ToString("0.##")</td>
+                        <td class="r">@Money(l.fdet_PrecioUnit)</td>
+                        <td class="r">@Money(l.fdet_Subtotal)</td>
+                    </tr>
+                }
+                @if (Model.Lineas.Count == 0)
+                {
+                    <tr><td colspan="4" style="text-align:center;color:#b5aed6">Sin líneas</td></tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="tot">
+            <div class="tot-row"><span>Subtotal</span><span>@Money(h.fact_Subtotal)</span></div>
+            <div class="tot-row"><span>ISV (15%)</span><span>@Money(h.fact_Impuesto)</span></div>
+            <div class="tot-row total"><span>Total</span><span>@Money(h.fact_Total)</span></div>
+        </div>
+    </div>
+
+    <div class="acciones">
+        <button class="btn btn-close" onclick="window.close()">Cerrar</button>
+        <button class="btn btn-print" onclick="window.print()">🖨 Imprimir</button>
+    </div>
+</body>
+</html>

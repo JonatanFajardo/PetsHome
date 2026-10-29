@@ -16,5 +16,6 @@ namespace PetsHome.Common.Entities
         public decimal fact_Impuesto { get; set; }
         public decimal fact_Total { get; set; }
         public string fact_Estado { get; set; }
+        public DateTime? fact_Vencimiento { get; set; }
     }
 }

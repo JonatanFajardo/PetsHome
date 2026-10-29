@@ -81,6 +81,19 @@ namespace PetsHome.Business.Services
             catch (Exception ex) { _logger.LogError(ex, ex.Message); return null; }
         }
 
+        /// <summary>Comprobante imprimible (encabezado + líneas tipado) de una factura.</summary>
+        public async Task<ComprobanteViewModel> ComprobanteAsync(int id)
+        {
+            try
+            {
+                var header = await _repo.FindAsync(id);
+                if (header == null) return null;
+                var lineas = (await _repo.DetalleAsync(id))?.ToList() ?? new List<PR_Veterinaria_FacturaDetalle_ListResult>();
+                return new ComprobanteViewModel { Header = header, Lineas = lineas };
+            }
+            catch (Exception ex) { _logger.LogError(ex, ex.Message); return null; }
+        }
+
         public async Task<IEnumerable<PR_Veterinaria_ProductosVendibles_DropdownResult>> ProductosVendiblesAsync()
         {
             try { return await _repo.ProductosVendiblesAsync(); }
