@@ -289,15 +289,47 @@ var POS = (function () {
                     render: function (d) { return '<span class="pos-dinero">' + money(d) + '</span>'; }
                 },
                 {
+                    data: 'saldo', className: 'text-right',
+                    render: function (d) {
+                        var v = parseFloat(d) || 0;
+                        if (v <= 0) return '<span style="color:#15803d;">' + money(0) + '</span>';
+                        return '<span style="color:#b45309;font-weight:600;">' + money(v) + '</span>';
+                    }
+                },
+                {
+                    data: 'fact_Vencimiento', className: 'text-center',
+                    render: function (d, t, row) {
+                        if (!d) return '—';
+                        var f = new Date(d);
+                        if (t !== 'display') return d;
+                        var txt = f.toLocaleDateString('es-HN');
+                        var saldo = parseFloat(row.saldo) || 0;
+                        var hoy = new Date(new Date().toDateString());
+                        if (saldo > 0 && f < hoy)
+                            return '<span style="color:#b91c1c;font-weight:600;" title="Vencida">' + txt + ' ⚠</span>';
+                        return txt;
+                    }
+                },
+                {
                     data: 'fact_Estado', className: 'text-center',
                     render: function (d) {
                         var e = (d || '').toLowerCase();
                         var bg = '#dcfce7', co = '#15803d';
                         if (e.indexOf('anul') > -1 || e.indexOf('cancel') > -1) { bg = '#fee2e2'; co = '#b91c1c'; }
-                        else if (e.indexOf('pend') > -1) { bg = '#fef3c7'; co = '#b45309'; }
+                        else if (e.indexOf('cobrar') > -1 || e.indexOf('pend') > -1 || e.indexOf('emit') > -1) { bg = '#fef3c7'; co = '#b45309'; }
                         return '<span style="display:inline-block;padding:2px 10px;border-radius:9999px;' +
                                'font-size:12px;font-weight:600;background:' + bg + ';color:' + co + ';">' +
                                escapeHtml(d || '—') + '</span>';
+                    }
+                },
+                {
+                    data: 'fact_Id', className: 'text-center', orderable: false,
+                    render: function (d, t, row) {
+                        var saldo = parseFloat(row.saldo) || 0;
+                        var txt = saldo > 0 ? 'Cobrar' : 'Ver';
+                        return '<a href="' + urls.comprobante + '/' + d + '" ' +
+                               'style="display:inline-block;padding:4px 12px;border-radius:6px;font-size:12px;' +
+                               'font-weight:600;text-decoration:none;background:#6d28d9;color:#fff;">' + txt + '</a>';
                     }
                 }
             ],

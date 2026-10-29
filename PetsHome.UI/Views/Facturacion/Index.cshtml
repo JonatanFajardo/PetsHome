@@ -182,7 +182,10 @@
                         <th>Cliente</th>
                         <th width="140">Fecha</th>
                         <th width="130" class="text-right">Total</th>
+                        <th width="120" class="text-right">Saldo</th>
+                        <th width="110" class="text-center">Vence</th>
                         <th width="120" class="text-center">Estado</th>
+                        <th width="110" class="text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -199,10 +202,11 @@
             serviciosDropdown: '@Url.Action("ServiciosDropdown", "Facturacion")',
             productosDropdown: '@Url.Action("ProductosDropdown", "Facturacion")',
             crear:             '@Url.Action("Crear", "Facturacion")',
-            list:              '@Url.Action("List", "Facturacion")'
+            list:              '@Url.Action("List", "Facturacion")',
+            comprobante:       '@Url.Action("Comprobante", "Cobros")'
         };
     </script>
-    <script src="~/js/pages/pos.js"></script>
+    <script src="~/js/pages/pos.js" asp-append-version="true"></script>
     <script>
         $(function () { POS.init(window._urls); });
     </script>
