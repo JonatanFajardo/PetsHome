@@ -10,6 +10,12 @@ Responder corto, en una sola frase cuando se pueda. Ampliar solo si el usuario l
 - **Tablas compactas** en vez de párrafos cuando se comparan cosas.
 - Mínimo texto alrededor: una frase antes del visual, una pregunta concreta al final. Nada de explicaciones largas salvo que las pida.
 
+**SIEMPRE en español y en lenguaje entendible — NADA de jerga sin explicar.** El usuario NO es técnico y lee rápido; si no se entiende al instante, está mal escrito.
+- **Prohibido dejar términos en inglés o tecnicismos sin traducir.** Nada de "biller", "dispensar", "snapshot", "idempotente", "feed/gate", "endpoint", "payload", etc. a secas.
+- Si un concepto técnico es inevitable, **escribirlo en español + una mini-explicación de 3-5 palabras entre paréntesis** la primera vez. Ej: "la factura (la cuenta a cobrar)", "entregar del inventario (dárselo en mano, no solo recetar)".
+- Preferir la palabra cotidiana: cobrador/cajero (no "biller"), entregar la medicina (no "dispensar"), foto del precio (no "snapshot"), no se duplica (no "idempotente").
+- Ante la duda de si una palabra se entiende rápido → explicarla. Mejor sobra-explicar que dejar al usuario perdido.
+
 ## Mínima interferencia (aplica a TODO, no solo dropdowns)
 Interferir lo menos posible en lo que ya está estructurado. Antes de construir algo nuevo, reutilizar lo que ya existe y funciona.
 
