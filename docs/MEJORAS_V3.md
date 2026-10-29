@@ -559,3 +559,26 @@ Fuera de rango → borde ámbar + nota breve. No impide finalizar la consulta.
 **Contrato front↔back:** GET `/Consulta/Servicios?categoria=...` → `[{id,nombre,precio,categoria}]`; payload de Guardar agrega `servicios: [{servId,nombre,precio,cantidad}]` (camelCase, enteros nunca null).
 
 **Archivos:** `Database/82_SERVICIOS_FACTURABLES.sql`; backend en CargoDispensacionRepository/ConsultaService/ConsultaViewModels/ConsultaController/ServiceConfiguration/MappingProfileExtensions + Result `PR_Veterinaria_Servicio_DropdownResult`; frontend en Views/Consulta/Index.cshtml + wwwroot/js/pages/en-consulta.js. (Construido por 2 agentes en paralelo: BD+Backend / Frontend.)
+
+---
+
+## Registro de pagos + abonos parciales (2026-10-28)
+
+**Decisión:** la factura solo guardaba estado ('Pagada'/'PorCobrar') sin un pago real detrás. Se agrega registro de pagos sobre la factura del CLIENTE (pago por la atención de su mascota; NO es la suscripción del software — eso en OpenVPM vive aparte en finance/plans). Verificado en el código de OpenVPM antes de construir.
+
+**Modelo de OpenVPM (verificado y replicado):** tabla `payments` (invoiceId, amount, method, receivedBy, receivedAt, externalId, notes) + `invoices.paidAmount` acumulado. Al registrar pago: valida amount ≤ saldo (rechaza sobrepago), suma a paidAmount, si paidAmount ≥ total → 'Pagada' (si no, sigue pendiente → permite **abonos parciales**). Métodos: efectivo, tarjeta crédito/débito, cheque, en línea/transferencia, otro.
+
+**En PetsHome:** nueva `Veterinaria.tbPagos` + `fact_MontoPagado` en tbFacturas (saldo = total − pagado, derivado). SPs `PR_Veterinaria_Pago_Registrar` (valida sobrepago, actualiza saldo/estado) y `PR_Veterinaria_Pago_ListPorFactura`. `FacturarVisita` extendido para registrar el pago en el mismo checkout (@pago_Metodo + @abono_Inicial).
+
+**UX (decisión del dueño):** integrar al modal "Cobrar visita" existente — **"Pagado" siempre primero/default** (pago completo con método); "Por cobrar" permite abono inicial opcional + vencimiento; "Sin cargo" igual. El comprobante muestra pagos + saldo y un botón "Registrar pago" para abonar el saldo después. Script: `Database/84_PAGOS.sql`. (2 agentes: BD+Backend / Frontend.)
+
+---
+
+## REGLA CLAVE: replicar OpenVPM tal cual (2026-10-28)
+
+El objetivo de PetsHome es **quedar igual que OpenVPM**, no "inspirarse". Por tanto:
+- El **default siempre** es hacerlo **como OpenVPM**. NO ofrecer alternativas propias que se desvíen (ej. preguntar "¿unificamos o separamos?" cuando OpenVPM ya lo tiene unificado → solo replicar).
+- **Validar contra el código de OpenVPM ANTES** de proponer o construir cualquier cosa, siempre.
+- Señalar brechas proactivamente (docs/BRECHAS_OPENVPM.md), sin que el usuario las tenga que descubrir.
+
+**Caso concreto — Facturación:** OpenVPM tiene **UNA** pantalla `/billing` con pestañas por estado (All/Draft/Sent/Paid/Overdue/Void/Estimates) + `/billing/new`. NO tiene una "cola de cobros" separada: las visitas generan facturas y todo se ve/cobra por estado en esa única pantalla. PetsHome debe replicar esto: **unificar /Cobros + /Facturacion en una sola pantalla con pestañas por estado** (Por cobrar / Pagadas / Vencidas / Anuladas / Todas), reemplazando el split actual.

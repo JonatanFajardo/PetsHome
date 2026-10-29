@@ -16,6 +16,13 @@ Responder corto, en una sola frase cuando se pueda. Ampliar solo si el usuario l
 - Preferir la palabra cotidiana: cobrador/cajero (no "biller"), entregar la medicina (no "dispensar"), foto del precio (no "snapshot"), no se duplica (no "idempotente").
 - Ante la duda de si una palabra se entiende rápido → explicarla. Mejor sobra-explicar que dejar al usuario perdido.
 
+## Objetivo: REPLICAR OpenVPM (no "inspirarse", no inventar)
+La meta de PetsHome es **quedar igual que OpenVPM** (clonado en `../openvpm`). Esto es una REGLA, no una sugerencia:
+- **El default SIEMPRE es "como lo hace el otro sistema".** No ofrecer alternativas propias que se desvíen de OpenVPM (ej. "¿unificamos o dejamos separado?" cuando OpenVPM ya lo tiene unificado → simplemente replicar lo de OpenVPM).
+- **Validar contra OpenVPM ANTES de proponer o construir CUALQUIER cosa.** Revisar su código/estructura y replicarlo. Si algo en PetsHome difiere de OpenVPM, señalarlo PROACTIVAMENTE como brecha a cerrar, sin que el usuario lo tenga que pedir.
+- Si OpenVPM no cubre un caso, recién ahí proponer; y decir explícitamente "OpenVPM no tiene esto".
+- Doc de brechas: `docs/BRECHAS_OPENVPM.md`. Mantenerlo vivo.
+
 ## Mínima interferencia (aplica a TODO, no solo dropdowns)
 Interferir lo menos posible en lo que ya está estructurado. Antes de construir algo nuevo, reutilizar lo que ya existe y funciona.
 
