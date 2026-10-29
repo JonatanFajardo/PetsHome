@@ -32,6 +32,10 @@ namespace PetsHome.UI
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).AddRazorRuntimeCompilation();
 
+            // Antiforgery: aceptar el token por HEADER (requerido para POST por fetch/AJAX
+            // con cuerpo JSON). Coincide con el <meta name="csrf-token"> y el $.ajaxSetup del _Layout.
+            services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
+
             services.AddBreadcrumbs(GetType().Assembly, options =>
             {
                 options.TagName = "nav";

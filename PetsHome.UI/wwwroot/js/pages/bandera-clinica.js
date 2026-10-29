@@ -20,14 +20,7 @@
             .catch(function () { host.innerHTML = '<div style="color:#8b80b8;font-size:.85rem">No se pudieron cargar las banderas clínicas.</div>'; });
     }
 
-    function post(url, data) {
-        var body = new URLSearchParams(data);
-        return fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8", "X-Requested-With": "XMLHttpRequest" },
-            body: body.toString()
-        }).then(function (r) { return r.json(); });
-    }
+    var post = window.postForm; // token y headers los maneja el helper global (http.js)
 
     function wire() {
         var root = host.querySelector(".bclin");
