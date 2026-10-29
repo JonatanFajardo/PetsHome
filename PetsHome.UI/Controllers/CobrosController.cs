@@ -22,7 +22,10 @@ namespace PetsHome.UI.Controllers
             _facturacionService = facturacionService;
         }
 
-        public IActionResult Index() => View();
+        // Pantalla unificada: /Cobros se fusiono en /Facturacion (pestañas por estado,
+        // replica de /billing de OpenVPM). Se redirige para no dejar huerfana la ruta vieja.
+        // El resto de acciones (ListPorVisita, FacturarVisita, RegistrarPago, Comprobante) se reusan.
+        public IActionResult Index() => RedirectToAction("Index", "Facturacion");
 
         /// <summary>
         /// Parsea un monto en dinero sin depender de la cultura del servidor.

@@ -225,6 +225,8 @@ var POS = (function () {
                       ' · Total ' + totalActual, 'success');
                 limpiar();
                 historialCargado = false; // forzar recarga del historial la próxima vez
+                // Aviso opcional: la pantalla de facturación vuelve a la lista y refresca.
+                if (typeof window.onFacturaCreada === 'function') window.onFacturaCreada(resp);
             } else {
                 toast((resp && resp.message) ? resp.message : 'No se pudo emitir la factura.', 'error');
             }
