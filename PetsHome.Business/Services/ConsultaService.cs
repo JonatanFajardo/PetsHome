@@ -28,6 +28,7 @@ namespace PetsHome.Business.Services
         private readonly RecepcionRepository _recepcionRepository;
         private readonly RecepcionService _recepcionService;
         private readonly CargoDispensacionService _cargoService;
+        private readonly ServiciosRepository _serviciosRepository;
         private readonly ILogger<ConsultaService> _logger;
 
         // Tipo de salida de inventario usado al entregar medicamentos en consulta.
@@ -45,6 +46,7 @@ namespace PetsHome.Business.Services
             RecepcionRepository recepcionRepository,
             RecepcionService recepcionService,
             CargoDispensacionService cargoService,
+            ServiciosRepository serviciosRepository,
             ILogger<ConsultaService> logger)
         {
             _perfilService = perfilService;
@@ -56,7 +58,28 @@ namespace PetsHome.Business.Services
             _recepcionRepository = recepcionRepository;
             _recepcionService = recepcionService;
             _cargoService = cargoService;
+            _serviciosRepository = serviciosRepository;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Picker de servicios facturables por categoria (Vacuna/Laboratorio/Procedimiento/Consulta).
+        /// Alimenta el endpoint GET /Consulta/Servicios. Si categoria es null devuelve todas.
+        /// </summary>
+        public async Task<List<PetsHome.Common.Entities.PR_Veterinaria_Servicio_DropdownResult>> ServiciosDropdownAsync(string categoria = null)
+        {
+            try
+            {
+                var result = await _serviciosRepository.ServicioDropdownAsync(categoria);
+                return result == null
+                    ? new List<PetsHome.Common.Entities.PR_Veterinaria_Servicio_DropdownResult>()
+                    : result.ToList();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new List<PetsHome.Common.Entities.PR_Veterinaria_Servicio_DropdownResult>();
+            }
         }
 
         /// <summary>
@@ -172,6 +195,11 @@ namespace PetsHome.Business.Services
                     .Where(l => l != null && l.Entregar && l.Id > 0 && !string.IsNullOrWhiteSpace(l.Nombre))
                     .ToList();
 
+                // Servicios facturables aplicados (vacuna/laboratorio/procedimiento).
+                var serviciosValidos = (dto.Servicios ?? new List<ServicioLineaDto>())
+                    .Where(s => s != null && s.ServId > 0)
+                    .ToList();
+
                 int refgId = 0;
                 int? cliId = null;
                 string nombreMascota = "Mascota";
@@ -232,6 +260,22 @@ namespace PetsHome.Business.Services
                             resultado.Mensaje = "Sin stock suficiente para entregar algunos medicamentos.";
                             return resultado;
                         }
+                    }
+                }
+
+                // Si solo hay servicios (sin medicamentos que entregar) aun necesitamos saber
+                // si el paciente es de cliente externo para encolar los cargos de servicio.
+                if (serviciosValidos.Count > 0 && !cliId.HasValue)
+                {
+                    try
+                    {
+                        var info = await _inventarioSalidaRepository.RefugioPorMascotaAsync(dto.MascId);
+                        if (info != null)
+                            cliId = info.cli_Id;
+                    }
+                    catch (Exception cliError)
+                    {
+                        _logger.LogWarning(cliError, "No se pudo resolver el cliente de la mascota {MascId} para encolar servicios", dto.MascId);
                     }
                 }
 
@@ -381,6 +425,28 @@ namespace PetsHome.Business.Services
                     }
                 }
 
+                // ── 3b. Servicios facturables (vacuna/laboratorio/procedimiento) ──
+                // Si el paciente es de cliente externo, cada servicio se encola como cargo
+                // a cobrar (feed, no gate). Idempotente por (cita, servicio) en el SP.
+                int serviciosEncolados = 0;
+                if (resultado.CitaId > 0 && cliId.HasValue && serviciosValidos.Count > 0)
+                {
+                    foreach (var serv in serviciosValidos)
+                    {
+                        int cant = serv.Cantidad <= 0 ? 1 : serv.Cantidad;
+                        try
+                        {
+                            bool ok = await _cargoService.EncolarServicioDesdeConsultaAsync(
+                                serv.ServId, dto.MascId, cliId.Value, resultado.CitaId, cant, usuarioCrea);
+                            if (ok) serviciosEncolados++;
+                        }
+                        catch (Exception servError)
+                        {
+                            _logger.LogWarning(servError, "No se pudo encolar el cargo del servicio {ServId}", serv.ServId);
+                        }
+                    }
+                }
+
                 // ── 4. Salida de inventario (descuento de stock) ──
                 // Ya se valido el stock en vivo (paso 0). Un header por consulta y un
                 // detalle por cada linea entregada; el SP de detalle descuenta exi_Cantidad.
@@ -425,6 +491,12 @@ namespace PetsHome.Business.Services
                         _logger.LogWarning(salError, "No se pudo generar la salida de inventario de la consulta (mascota {MascId}).", dto.MascId);
                     }
                 }
+
+                // Si se dispensó a un CLIENTE externo, hay cargos de esta visita por cobrar
+                // → el front llevará al cobro de la visita (checkout contextual, como OpenVPM).
+                // Hay cobro si se dispensaron medicamentos (stock descontado) O se encolaron servicios.
+                resultado.RequiereCobro = cliId.HasValue
+                    && ((lineasEntrega.Count > 0 && refgId > 0) || serviciosEncolados > 0);
 
                 resultado.Mensaje = "Consulta finalizada correctamente.";
                 return resultado;

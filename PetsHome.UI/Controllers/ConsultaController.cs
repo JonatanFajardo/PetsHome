@@ -47,6 +47,23 @@ namespace PetsHome.UI.Controllers
         }
 
         /// <summary>
+        /// Picker de servicios facturables por categoria (Vacuna/Laboratorio/Procedimiento/Consulta).
+        /// GET /Consulta/Servicios?categoria=Vacuna → JSON [{ id, nombre, precio, categoria }].
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Servicios(string categoria = null)
+        {
+            var lista = await _service.ServiciosDropdownAsync(categoria);
+            return Json(lista.Select(s => new
+            {
+                id = s.serv_Id,
+                nombre = s.serv_Nombre,
+                precio = s.serv_Precio,
+                categoria = s.serv_Categoria
+            }));
+        }
+
+        /// <summary>
         /// Persiste la consulta (cita medica + peso) al Finalizar. Devuelve JSON { ok, citaId }.
         /// </summary>
         [HttpPost]
@@ -64,6 +81,7 @@ namespace PetsHome.UI.Controllers
                 ok = result.Ok,
                 citaId = result.CitaId,
                 mensaje = result.Mensaje,
+                requiereCobro = result.RequiereCobro,
                 faltantes = (result.Faltantes ?? new System.Collections.Generic.List<FaltanteStockDto>())
                     .Select(f => new { nombre = f.Nombre, disponible = f.Disponible, pedido = f.Pedido })
             });

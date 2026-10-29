@@ -103,6 +103,12 @@ namespace PetsHome.Business.Models
         /// <summary>Lineas de medicamentos recetados/aplicados (ver TODO de persistencia por linea).</summary>
         public List<MedicamentoLineaDto> Medicamentos { get; set; } = new List<MedicamentoLineaDto>();
 
+        /// <summary>
+        /// Servicios facturables aplicados en la consulta (vacunas/laboratorio/procedimientos).
+        /// Se encolan como cargos a cobrar cuando el paciente es de cliente externo.
+        /// </summary>
+        public List<ServicioLineaDto> Servicios { get; set; } = new List<ServicioLineaDto>();
+
         public DateTime? ProximaCita { get; set; }
         public string MotivoProximaCita { get; set; }
     }
@@ -135,6 +141,22 @@ namespace PetsHome.Business.Models
     }
 
     /// <summary>
+    /// Servicio facturable seleccionado en la consulta (del picker por categoria).
+    /// </summary>
+    public class ServicioLineaDto
+    {
+        /// <summary>Id del servicio en el catalogo (Veterinaria.tbServicios).</summary>
+        public int ServId { get; set; }
+
+        public string Nombre { get; set; }
+
+        public decimal Precio { get; set; }
+
+        /// <summary>Cantidad aplicada. Valor &lt;= 0 se trata como 1.</summary>
+        public int Cantidad { get; set; }
+    }
+
+    /// <summary>
     /// Resultado de la operacion Guardar.
     /// </summary>
     public class GuardarConsultaResultDto
@@ -142,6 +164,12 @@ namespace PetsHome.Business.Models
         public bool Ok { get; set; }
         public int CitaId { get; set; }
         public string Mensaje { get; set; }
+
+        /// <summary>
+        /// True si la consulta dispensó medicamentos a un CLIENTE externo: hay cargos
+        /// de ESTA visita por cobrar. El front redirige al cobro de la visita (checkout).
+        /// </summary>
+        public bool RequiereCobro { get; set; }
 
         /// <summary>
         /// Medicamentos que no pudieron entregarse por falta de stock. Si tiene

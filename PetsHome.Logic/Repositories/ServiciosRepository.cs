@@ -19,6 +19,18 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Select<PR_Veterinaria_Servicios_ListResult>(sql);
         }
 
+        /// <summary>
+        /// Picker de servicios facturables por categoria (Vacuna/Laboratorio/Procedimiento/Consulta).
+        /// Solo activos y no eliminados. Si categoria es null devuelve todas.
+        /// </summary>
+        public async Task<IEnumerable<PR_Veterinaria_Servicio_DropdownResult>> ServicioDropdownAsync(string categoria = null)
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_Servicio_Dropdown]";
+            var p = new DynamicParameters();
+            p.Add("@categoria", string.IsNullOrWhiteSpace(categoria) ? null : categoria.Trim(), DbType.String, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Veterinaria_Servicio_DropdownResult>(sql, p);
+        }
+
         public async Task<PR_Veterinaria_Servicios_FindResult> FindAsync(int id)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_Servicios_Find]";

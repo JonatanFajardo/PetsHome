@@ -10,15 +10,21 @@ namespace PetsHome.Common.Entities
     public partial class tbCargoDispensacion
     {
         public int cargo_Id { get; set; }
-        public int receta_Id { get; set; }
+        public int? receta_Id { get; set; }
         public int masc_Id { get; set; }
         public int cli_Id { get; set; }
         public int? cita_Id { get; set; }
-        public int itm_Id { get; set; }
+        public int? itm_Id { get; set; }
         public int cargo_Cantidad { get; set; }
         public string cargo_DescripcionSnap { get; set; }
         public decimal cargo_PrecioUnitSnap { get; set; }
         public string cargo_Estado { get; set; }
+
+        /// <summary>'Medicamento' | 'Servicio'. Discrimina el origen del cargo.</summary>
+        public string cargo_TipoOrigen { get; set; }
+
+        /// <summary>receta_Id (medicamento) o serv_Id (servicio).</summary>
+        public int? cargo_OrigenId { get; set; }
         public int? fact_Id { get; set; }
         public int? fdet_Id { get; set; }
         public int? cargo_ResueltoPor { get; set; }
