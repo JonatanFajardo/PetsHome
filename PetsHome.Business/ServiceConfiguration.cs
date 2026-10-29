@@ -62,6 +62,7 @@ namespace PetsHome.Business
             services.AddScoped<ClientesRepository>();
             services.AddScoped<ServiciosRepository>();
             services.AddScoped<FacturacionRepository>();
+            services.AddScoped<PagoRepository>();
             services.AddScoped<RecepcionRepository>();
             services.AddScoped<ConsultaRepository>();
             services.AddScoped<SugerenciaClinicaRepository>();

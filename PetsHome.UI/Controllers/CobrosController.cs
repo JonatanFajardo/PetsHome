@@ -24,6 +24,22 @@ namespace PetsHome.UI.Controllers
 
         public IActionResult Index() => View();
 
+        /// <summary>
+        /// Parsea un monto en dinero sin depender de la cultura del servidor.
+        /// El front envia "302.50" (punto decimal); con la cultura local el binder
+        /// de formularios podria tomar el "." como separador de miles (-> 30250).
+        /// </summary>
+        private static decimal ParseMoneyInvariant(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return 0m;
+            s = s.Trim();
+            if (decimal.TryParse(s, System.Globalization.NumberStyles.Number,
+                    System.Globalization.CultureInfo.InvariantCulture, out var v)) return v;
+            if (decimal.TryParse(s, System.Globalization.NumberStyles.Number,
+                    System.Globalization.CultureInfo.CurrentCulture, out v)) return v;
+            return 0m;
+        }
+
         /// <summary>Comprobante imprimible de la factura generada al cobrar.</summary>
         [HttpGet]
         public async Task<IActionResult> Comprobante(int id)
@@ -47,15 +63,37 @@ namespace PetsHome.UI.Controllers
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> FacturarVisita([FromForm] int citaId, [FromForm] string disposicion,
-            [FromForm] DateTime? vencimiento, [FromForm] string motivo)
+            [FromForm] DateTime? vencimiento, [FromForm] string motivo,
+            [FromForm] string metodo = null, [FromForm] string abonoInicial = null)
         {
             if (!CurrentUserId.HasValue)
                 return Json(new { success = false, message = "Sesión expirada." });
+            // abonoInicial solo aplica en 'PorCobrar'; 0 o negativo => sin abono.
+            decimal abonoVal = ParseMoneyInvariant(abonoInicial);
+            decimal? abono = abonoVal > 0 ? abonoVal : (decimal?)null;
             var (ok, factId, message) = await _cargoService.FacturarVisitaAsync(
                 citaId, disposicion, vencimiento,
                 string.IsNullOrWhiteSpace(motivo) ? null : motivo.Trim(),
-                CurrentUserId.Value);
+                CurrentUserId.Value,
+                string.IsNullOrWhiteSpace(metodo) ? null : metodo.Trim(),
+                abono);
             return Json(new { success = ok, factId, message });
+        }
+
+        /// <summary>
+        /// Registra un pago/abono sobre una factura existente (abonar despues del checkout).
+        /// Rechaza sobrepago. Devuelve { ok, saldo, estado, mensaje }.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegistrarPago([FromForm] int factId, [FromForm] string monto,
+            [FromForm] string metodo, [FromForm] string referencia, [FromForm] string notas)
+        {
+            if (!CurrentUserId.HasValue)
+                return Json(new { ok = false, saldo = 0m, estado = (string)null, mensaje = "Sesión expirada." });
+            var (ok, saldo, estado, mensaje) = await _facturacionService.RegistrarPagoAsync(
+                factId, ParseMoneyInvariant(monto), metodo, referencia, notas, CurrentUserId.Value);
+            return Json(new { ok, saldo, estado, mensaje });
         }
 
         [HttpGet]

@@ -49,11 +49,12 @@ namespace PetsHome.Business.Services
         /// Devuelve (success, factId [null si SinCargo], message).
         /// </summary>
         public async Task<(bool success, int? factId, string message)> FacturarVisitaAsync(
-            int citaId, string disposicion, DateTime? vencimiento, string motivo, int usuario)
+            int citaId, string disposicion, DateTime? vencimiento, string motivo, int usuario,
+            string pagoMetodo = null, decimal? abonoInicial = null)
         {
             try
             {
-                var r = await _repo.FacturarVisitaAsync(citaId, disposicion, vencimiento, motivo, usuario);
+                var r = await _repo.FacturarVisitaAsync(citaId, disposicion, vencimiento, motivo, usuario, pagoMetodo, abonoInicial);
                 if (r == null) return (false, null, "No se pudo procesar la visita.");
                 return (r.CodeStatus > 0, r.fact_Id, r.MessageStatus);
             }

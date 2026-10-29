@@ -16,8 +16,13 @@
     var modal = document.getElementById("cobModal");
     var modalSub = document.getElementById("cobModalSub");
     var errEl = document.getElementById("cobErr");
+    var metodoBox = document.getElementById("cobMetodo");
+    var metodoInput = document.getElementById("cobMetodoInput");
     var vencBox = document.getElementById("cobVenc");
     var vencInput = document.getElementById("cobVencInput");
+    var abonoBox = document.getElementById("cobAbono");
+    var abonoInput = document.getElementById("cobAbonoInput");
+    var abonoMetodoInput = document.getElementById("cobAbonoMetodoInput");
     var motivoBox = document.getElementById("cobMotivo");
     var motivoInput = document.getElementById("cobMotivoInput");
     var btnConfirm = document.getElementById("cobConfirm");
@@ -124,7 +129,9 @@
     function seleccion() { var r = modal.querySelector("input[name='disp']:checked"); return r ? r.value : "Pagado"; }
     function pintarExtras() {
         var v = seleccion();
+        metodoBox.style.display = (v === "Pagado") ? "" : "none";
         vencBox.style.display = (v === "PorCobrar") ? "" : "none";
+        abonoBox.style.display = (v === "PorCobrar") ? "" : "none";
         motivoBox.style.display = (v === "SinCargo") ? "" : "none";
         modal.querySelectorAll(".cob-opt").forEach(function (o) {
             o.classList.toggle("sel", o.querySelector("input").checked);
@@ -138,6 +145,8 @@
         modalSub.textContent = "Visita #" + citaId + " · " + masc + " · " + cli + " · " + money(total);
         modal.querySelector("input[value='Pagado']").checked = true;
         vencInput.value = ""; motivoInput.value = "";
+        metodoInput.value = "Efectivo";
+        abonoInput.value = ""; abonoMetodoInput.value = "Efectivo";
         pintarExtras();
         modal.classList.add("open");
     }
@@ -148,12 +157,22 @@
     btnConfirm.addEventListener("click", function () {
         if (!currentCita) return;
         var disp = seleccion();
-        var data = { citaId: currentCita, disposicion: disp };
+        // metodo y abonoInicial siempre en el form (nunca null): por defecto Efectivo / 0.
+        var data = { citaId: currentCita, disposicion: disp, metodo: "Efectivo", abonoInicial: 0 };
         errEl.textContent = "";
 
+        if (disp === "Pagado") {
+            data.metodo = metodoInput.value || "Efectivo";
+        }
         if (disp === "PorCobrar") {
             if (!vencInput.value) { errEl.textContent = "Indica la fecha de vencimiento."; return; }
             data.vencimiento = vencInput.value;
+            var abono = parseFloat(abonoInput.value);
+            if (isNaN(abono) || abono < 0) abono = 0;
+            if (abono > 0) {
+                data.abonoInicial = abono;
+                data.metodo = abonoMetodoInput.value || "Efectivo";
+            }
         }
         if (disp === "SinCargo") {
             var m = motivoInput.value.trim();

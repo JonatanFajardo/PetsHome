@@ -30,7 +30,7 @@ namespace PetsHome.Logic.Repositories
         }
 
         /// <summary>Factura/resuelve SOLO los cargos de UNA visita según disposición. Devuelve fact_Id (null si SinCargo).</summary>
-        public async Task<PR_Veterinaria_CargoDispensacion_FacturarResult> FacturarVisitaAsync(int citaId, string disposicion, System.DateTime? vencimiento, string motivo, int usuario)
+        public async Task<PR_Veterinaria_CargoDispensacion_FacturarResult> FacturarVisitaAsync(int citaId, string disposicion, System.DateTime? vencimiento, string motivo, int usuario, string pagoMetodo = null, decimal? abonoInicial = null)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_FacturarVisita]";
             var p = new DynamicParameters();
@@ -39,6 +39,8 @@ namespace PetsHome.Logic.Repositories
             p.Add("@vencimiento", vencimiento, DbType.Date, ParameterDirection.Input);
             p.Add("@motivo", motivo, DbType.String, ParameterDirection.Input);
             p.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
+            p.Add("@pago_Metodo", pagoMetodo, DbType.String, ParameterDirection.Input);
+            p.Add("@abono_Inicial", abonoInicial, DbType.Decimal, ParameterDirection.Input);
             return await DbApp.Select<PR_Veterinaria_CargoDispensacion_FacturarResult>(sql, p);
         }
 
