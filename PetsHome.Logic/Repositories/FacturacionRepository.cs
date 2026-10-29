@@ -35,6 +35,14 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Select<PR_Veterinaria_Facturas_ListResult>(sql);
         }
 
+        /// <summary>Totales de cuentas por cobrar (Por cobrar / Vencido / Cobrado este mes).</summary>
+        public async Task<PR_Veterinaria_Facturas_ResumenARResult> ResumenARAsync()
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_Facturas_ResumenAR]";
+            var rows = await DbApp.Select<PR_Veterinaria_Facturas_ResumenARResult>(sql);
+            return System.Linq.Enumerable.FirstOrDefault(rows) ?? new PR_Veterinaria_Facturas_ResumenARResult();
+        }
+
         public async Task<PR_Veterinaria_Facturas_FindResult> FindAsync(int id)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_Facturas_Find]";

@@ -22,6 +22,28 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.SelectById<PR_Veterinaria_CargoDispensacion_ListPendientesResult>(sql, p);
         }
 
+        /// <summary>Pendientes agrupables POR VISITA (cita): incluye cita/mascota/cliente/fecha.</summary>
+        public async Task<IEnumerable<PR_Veterinaria_CargoDispensacion_ListPendientesResult>> ListPendientesPorVisitaAsync()
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_ListPendientesPorVisita]";
+            return await DbApp.Select<PR_Veterinaria_CargoDispensacion_ListPendientesResult>(sql);
+        }
+
+        /// <summary>Factura/resuelve SOLO los cargos de UNA visita según disposición. Devuelve fact_Id (null si SinCargo).</summary>
+        public async Task<PR_Veterinaria_CargoDispensacion_FacturarResult> FacturarVisitaAsync(int citaId, string disposicion, System.DateTime? vencimiento, string motivo, int usuario, string pagoMetodo = null, decimal? abonoInicial = null)
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_FacturarVisita]";
+            var p = new DynamicParameters();
+            p.Add("@cita_Id", citaId, DbType.Int32, ParameterDirection.Input);
+            p.Add("@disposicion", disposicion, DbType.String, ParameterDirection.Input);
+            p.Add("@vencimiento", vencimiento, DbType.Date, ParameterDirection.Input);
+            p.Add("@motivo", motivo, DbType.String, ParameterDirection.Input);
+            p.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
+            p.Add("@pago_Metodo", pagoMetodo, DbType.String, ParameterDirection.Input);
+            p.Add("@abono_Inicial", abonoInicial, DbType.Decimal, ParameterDirection.Input);
+            return await DbApp.Select<PR_Veterinaria_CargoDispensacion_FacturarResult>(sql, p);
+        }
+
         public async Task<RequestResult> EncolarAsync(tbCargoDispensacion entity)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_Encolar]";
@@ -57,6 +79,24 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sql, p);
         }
 
+        /// <summary>
+        /// Encola un cargo de SERVICIO (vacuna/laboratorio/procedimiento) desde consulta.
+        /// Snapshot automatico de precio/nombre desde tbServicios. Idempotente por (cita_Id, serv_Id).
+        /// </summary>
+        public async Task<RequestResult> EncolarServicioDesdeConsultaAsync(int serv_Id, int masc_Id, int cli_Id, int? cita_Id, int cantidad, int usuario)
+        {
+            const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_EncolarServicio]";
+            var p = new DynamicParameters();
+            p.Add("@serv_Id", serv_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@masc_Id", masc_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cli_Id", cli_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cita_Id", cita_Id, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cargo_Cantidad", cantidad, DbType.Int32, ParameterDirection.Input);
+            p.Add("@cargo_UsuarioCrea", usuario, DbType.Int32, ParameterDirection.Input);
+            // price/desc omitidos -> el SP los toma de tbServicios (snapshot)
+            return await DbApp.ExecuteWithResult(sql, p);
+        }
+
         public async Task<RequestResult> FacturarAsync(int cargo_Id, int fact_Id, int fdet_Id, int usuario)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_Facturar]";
@@ -68,14 +108,14 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.ExecuteWithResult(sql, p);
         }
 
-        /// <summary>Crea UNA factura con todos los cargos pendientes del cliente y los marca Facturado.</summary>
-        public async Task<RequestResult> FacturarClienteAsync(int cli_Id, int usuario)
+        /// <summary>Crea UNA factura con todos los cargos pendientes del cliente y los marca Facturado. Devuelve el id de factura.</summary>
+        public async Task<PR_Veterinaria_CargoDispensacion_FacturarResult> FacturarClienteAsync(int cli_Id, int usuario)
         {
             const string sql = "[Veterinaria].[PR_Veterinaria_CargoDispensacion_FacturarCliente]";
             var p = new DynamicParameters();
             p.Add("@cli_Id", cli_Id, DbType.Int32, ParameterDirection.Input);
             p.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
-            return await DbApp.ExecuteWithResult(sql, p);
+            return await DbApp.Select<PR_Veterinaria_CargoDispensacion_FacturarResult>(sql, p);
         }
 
         public async Task<RequestResult> CondonarAsync(int cargo_Id, string motivo, int usuario)

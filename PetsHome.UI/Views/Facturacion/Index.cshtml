@@ -1,12 +1,13 @@
 @{
-    ViewData["Title"] = "Punto de Venta";
+    ViewData["Title"] = "Facturación";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["CurrentPantalla"] = "Facturacion";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
-    <link rel="stylesheet" href="~/css/pos.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pos.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/facturacion.css" asp-append-version="true" />
 }
 
 <div class="col-12">
@@ -17,24 +18,118 @@
             <div class="pets-header-content">
                 <div class="pets-title-section">
                     <h2 class="text-white">
-                        <i class="fas fa-cash-register mr-2 text-white"></i>Punto de Venta / Facturación
+                        <i class="fas fa-file-invoice-dollar mr-2 text-white"></i>Facturación
                     </h2>
+                </div>
+                <div class="pets-header-actions">
+                    <button type="button" id="btn-nueva-factura" class="fact-new-btn">
+                        <i class="fas fa-plus mr-1"></i>Nueva factura
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Tabs -->
-        <div class="pos-tabs">
-            <button id="tab-pos" class="pos-tab active" onclick="POS.switchTab('pos')">
-                <i class="fas fa-cash-register mr-1"></i>Nueva venta
-            </button>
-            <button id="tab-historial" class="pos-tab" onclick="POS.switchTab('historial')">
-                <i class="fas fa-receipt mr-1"></i>Historial
-            </button>
+        <!-- ===================== VISTA LISTA (pestañas por estado) ===================== -->
+        <div id="view-lista">
+
+            <!-- Tarjetas de totales (cuentas por cobrar) -->
+            <div class="ar-cards">
+                <div class="ar-card porcobrar">
+                    <div class="ar-card-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <div class="ar-card-body">
+                        <div class="ar-card-label">Por cobrar</div>
+                        <div class="ar-card-amount" id="ar-porcobrar">L. 0.00</div>
+                    </div>
+                </div>
+                <div class="ar-card vencido">
+                    <div class="ar-card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="ar-card-body">
+                        <div class="ar-card-label">Vencido</div>
+                        <div class="ar-card-amount" id="ar-vencido">L. 0.00</div>
+                    </div>
+                </div>
+                <div class="ar-card cobradomes">
+                    <div class="ar-card-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="ar-card-body">
+                        <div class="ar-card-label">Cobrado este mes</div>
+                        <div class="ar-card-amount" id="ar-cobradomes">L. 0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestañas por estado -->
+            <div class="pos-tabs" id="fact-tabs">
+                <button type="button" class="pos-tab active" data-tab="todas">
+                    Todas <span class="fact-count" data-count="todas"></span>
+                </button>
+                <button type="button" class="pos-tab" data-tab="porFacturar">
+                    Por facturar <span class="fact-count alert" data-count="porFacturar"></span>
+                </button>
+                <button type="button" class="pos-tab" data-tab="porCobrar">
+                    Por cobrar <span class="fact-count" data-count="porCobrar"></span>
+                </button>
+                <button type="button" class="pos-tab" data-tab="vencidas">
+                    Vencidas <span class="fact-count danger" data-count="vencidas"></span>
+                </button>
+                <button type="button" class="pos-tab" data-tab="pagadas">
+                    Pagadas <span class="fact-count" data-count="pagadas"></span>
+                </button>
+                <button type="button" class="pos-tab" data-tab="anuladas">
+                    Anuladas <span class="fact-count" data-count="anuladas"></span>
+                </button>
+            </div>
+
+            <!-- Barra de búsqueda / resumen -->
+            <div class="fact-toolbar" id="fact-toolbar">
+                <div class="fact-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="fact-buscar" placeholder="Buscar por número, cliente o mascota…" autocomplete="off" />
+                </div>
+                <span class="fact-total-pill" id="fact-total-pill"></span>
+            </div>
+
+            <!-- Tabla de facturas -->
+            <div id="fact-table-wrap" class="pets-table-container">
+                <table class="pets-table" id="fact-table">
+                    <thead>
+                        <tr>
+                            <th width="140">Número</th>
+                            <th>Cliente</th>
+                            <th>Mascota</th>
+                            <th width="120">Fecha</th>
+                            <th width="130" class="text-right">Total</th>
+                            <th width="120" class="text-right">Saldo</th>
+                            <th width="110" class="text-center">Vence</th>
+                            <th width="130" class="text-center">Estado</th>
+                            <th width="110" class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fact-tbody"></tbody>
+                </table>
+            </div>
+
+            <!-- Por facturar: visitas con cargos pendientes aún sin factura -->
+            <div id="fact-porfacturar" style="display:none;">
+                <div class="cobros-head">
+                    <i class="fas fa-receipt"></i>
+                    <span>Visitas con cargos pendientes, aún sin factura. Usa "Cobrar visita" para facturarlas.</span>
+                    <span class="cobros-sum" id="pf-total"></span>
+                </div>
+                <div id="pf-body"><div class="cobros-empty">Cargando…</div></div>
+            </div>
+
         </div>
 
-        <!-- ===================== VISTA POS ===================== -->
-        <div id="view-pos">
+        <!-- ===================== VISTA POS (Nueva factura) ===================== -->
+        <div id="view-pos-composer" style="display:none;">
+
+            <div class="fact-composer-bar">
+                <button type="button" id="btn-volver-facturas" class="fact-back-btn">
+                    <i class="fas fa-arrow-left mr-1"></i>Volver a facturas
+                </button>
+                <span class="fact-composer-title"><i class="fas fa-cash-register mr-1"></i>Nueva factura</span>
+            </div>
+
             <div class="pos-layout">
 
                 <!-- Columna izquierda: cliente + líneas -->
@@ -172,38 +267,91 @@
             </div>
         </div>
 
-        <!-- ===================== VISTA HISTORIAL ===================== -->
-        <div id="view-historial" style="display:none;" class="pets-table-container">
-            <table class="pets-table" id="pos-historial">
-                <thead>
-                    <tr>
-                        <th width="80">ID</th>
-                        <th width="140">Número</th>
-                        <th>Cliente</th>
-                        <th width="140">Fecha</th>
-                        <th width="130" class="text-right">Total</th>
-                        <th width="120" class="text-center">Estado</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    </div>
+</div>
 
+<!-- ===================== Modal: Cobrar visita (reusado de Cobros) ===================== -->
+<div class="cob-modal-bg" id="cobModal">
+    <div class="cob-modal">
+        <h3>Cobrar visita</h3>
+        <div class="sub" id="cobModalSub"></div>
+        <div class="cob-err" id="cobErr"></div>
+        <div class="cob-opts">
+            <label class="cob-opt sel">
+                <input type="radio" name="disp" value="Pagado" checked />
+                <span><span class="t">Pagado</span><span class="d">Factura de la visita, saldada al instante.</span></span>
+            </label>
+            <label class="cob-opt">
+                <input type="radio" name="disp" value="PorCobrar" />
+                <span><span class="t">Por cobrar</span><span class="d">Factura con fecha de vencimiento (cuenta por cobrar).</span></span>
+            </label>
+            <label class="cob-opt">
+                <input type="radio" name="disp" value="SinCargo" />
+                <span><span class="t">Sin cargo</span><span class="d">Condonar los cargos de la visita con un motivo.</span></span>
+            </label>
+        </div>
+        <div class="cob-extra" id="cobMetodo" style="display:none;">
+            <label>Método de pago</label>
+            <select id="cobMetodoInput">
+                <option value="Efectivo" selected>Efectivo</option>
+                <option value="TarjetaCredito">Tarjeta de crédito</option>
+                <option value="TarjetaDebito">Tarjeta de débito</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+        <div class="cob-extra" id="cobVenc" style="display:none;">
+            <label>Fecha de vencimiento</label>
+            <input type="date" id="cobVencInput" />
+        </div>
+        <div class="cob-extra" id="cobAbono" style="display:none;">
+            <label>Abono inicial (opcional)</label>
+            <input type="number" id="cobAbonoInput" min="0" step="0.01" placeholder="0.00" />
+            <label style="margin-top:10px;">Método del abono</label>
+            <select id="cobAbonoMetodoInput">
+                <option value="Efectivo" selected>Efectivo</option>
+                <option value="TarjetaCredito">Tarjeta de crédito</option>
+                <option value="TarjetaDebito">Tarjeta de débito</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+        <div class="cob-extra" id="cobMotivo" style="display:none;">
+            <label>Motivo de la condonación (mínimo 5 caracteres)</label>
+            <textarea id="cobMotivoInput" rows="2" placeholder="Ej: Cortesía de la clínica"></textarea>
+        </div>
+        <div class="cob-modal-acts">
+            <button class="cob-btn cancel" id="cobCancel">Cancelar</button>
+            <button class="cob-btn ok" id="cobConfirm">Confirmar</button>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
         window._urls = {
+            // POS (Nueva factura)
             clientesDropdown:  '@Url.Action("ClientesDropdown", "Facturacion")',
             serviciosDropdown: '@Url.Action("ServiciosDropdown", "Facturacion")',
             productosDropdown: '@Url.Action("ProductosDropdown", "Facturacion")',
             crear:             '@Url.Action("Crear", "Facturacion")',
-            list:              '@Url.Action("List", "Facturacion")'
+            // Lista de facturas + cobro por visita
+            list:              '@Url.Action("List", "Facturacion")',
+            listPorVisita:     '@Url.Action("ListPorVisita", "Cobros")',
+            facturarVisita:    '@Url.Action("FacturarVisita", "Cobros")',
+            comprobante:       '@Url.Action("Comprobante", "Cobros")',
+            // Totales de cuentas por cobrar (tarjetas superiores)
+            resumenAR:         '@Url.Action("ResumenAR", "Facturacion")'
         };
     </script>
-    <script src="~/js/pages/pos.js"></script>
+    <script src="~/js/pages/pos.js" asp-append-version="true"></script>
+    <script src="~/js/pages/facturacion.js" asp-append-version="true"></script>
     <script>
-        $(function () { POS.init(window._urls); });
+        $(function () {
+            POS.init(window._urls);
+            Facturacion.init(window._urls);
+        });
     </script>
 }

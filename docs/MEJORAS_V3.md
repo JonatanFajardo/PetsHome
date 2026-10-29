@@ -57,15 +57,58 @@ Claude DEBE, sin que se lo pidan:
 
 ---
 
+## ✅ Flujo de confirmación y commits (IMPORTANTE — leer siempre)
+
+Reglas permanentes acordadas con el usuario:
+
+1. **NUNCA commitear sin confirmación.** Al terminar un cambio, Claude **pide al usuario que pruebe y confirme que TODO funciona**. No se commitea por iniciativa propia.
+2. **Commit solo con el comando `cm`.** Cuando el usuario escribe **`cm`**, Claude hace el commit — con **Conventional Commits, separados por tipo, y SIN ninguna autoría de Claude** (sin `Co-Authored-By`). Ver [[feedback_git_commits]].
+3. **Replicar en la API si existiera.** Si un cambio toca lógica/endpoints y existe una **API** (REST/servicios), el mismo cambio debe hacerse ahí también. *(Estado actual: PetsHome NO tiene API separada — solo UI MVC. Si se agrega una, aplicar esta regla.)*
+4. **Usar agentes para no llenar el contexto del chat principal.** El trabajo pesado (módulos, análisis grande) se delega a subagentes; el chat principal solo coordina, revisa y reporta.
+5. **PREGUNTAR las reglas de negocio ANTES de construir o validar.** No asumir cómo debe comportarse el negocio ni elogiar un diseño sin cuestionarlo. Señalar diseños riesgosos como PROBLEMA, no como ventaja. (Caso real: /Cobros deja acumular deuda entre visitas → es un riesgo, no una feature; debió preguntarse.) Ya está en CLAUDE.md ("preguntar la regla temprano") — aplicarlo de verdad. Ver [[feedback_preguntar_reglas_negocio]].
+
+---
+
 ## 🔎 Estándar de verificación (OBLIGATORIO antes de marcar [VERIFICADO])
 
 > Lección 2026-10-22: las clases C# (`*.cs`) están **desactualizadas** respecto a la DB real. `tbMascotas.cs` tenía 18 props; la DB viva tiene 23 columnas (faltaban `raza_Id, proc_Id, masc_IngresoId, tall_Id, masc_Origen, dueno_Id, cli_Id`).
 
-Regla: **ninguna tabla se diseña ni se marca [VERIFICADO] leyendo el `.cs`.** Siempre volcar columnas REALES desde LocalDB:
+Regla: **ninguna tabla/SP se diseña ni se marca [VERIFICADO] leyendo el `.cs` NI los `.sql`.** La **ÚNICA fuente de verdad es la BD VIVA** (los scripts `Database/*.sql` pueden estar desfasados, ya aplicados, re-ordenados o editados a mano; el `.cs` también). Siempre volcar lo REAL desde LocalDB:
 ```
-sqlcmd -S "(localdb)\MSSQLLocalDB" -d PETSHOMEDB  → sys.columns de la tabla
+sqlcmd -S "(localdb)\MSSQLLocalDB" -d PETSHOMEDB
+  → columnas:        sys.columns  (de la tabla)
+  → SP desplegado:   sys.sql_modules / sp_helptext  (definición real del SP)
+  → constraints:     sys.check_constraints, sys.foreign_keys
 ```
-Esto aplica a toda tabla que toquemos, en cada fase, antes de escribir SQL.
+NO leer `Database/*.sql` para "saber cómo es" una tabla/SP — leer la BD viva. Los `.sql` solo se usan para ESCRIBIR cambios nuevos, no como referencia del estado actual. Aplica a toda tabla/SP que toquemos, siempre, antes de diseñar.
+
+## 🔁 Rediseño: COBRO POR VISITA (alineado a OpenVPM) — en curso
+
+**Problema (confirmado por análisis):** el cobro de medicamentos dispensados se acumula como **deuda cross-visita por cliente**. Causas: (A) `ConsultaService.GuardarAsync` solo encola, no liquida; (B) `FacturarCliente` barre TODOS los pendientes del cliente sin importar visita (`66_...sql`); (C) la UI cobra por `cli_Id`, no por `cita_Id` (que existe en `tbCargoDispensacion` pero llega NULL y nadie lo usa). → El usuario NO quiere acumular deuda entre visitas.
+
+**Regla objetivo (de OpenVPM):**
+- Los cargos se atan a la **VISITA** (cita), nunca flotan por cliente.
+- Al **cerrar la consulta** se liquida ESA visita eligiendo destino del dinero (disposición):
+  - **PAGADO** → factura de la visita, saldada.
+  - **POR COBRAR (A/R)** → factura formal **con fecha de vencimiento**.
+  - **SIN CARGO** → cargos condonados **con motivo**.
+- **Una factura por visita**; cada cargo se cobra una sola vez y no cruza de visita.
+- "Deuda del cliente" = suma de SUS facturas por cobrar, pero cada una conserva su visita de origen (no es saldo flotante).
+
+**Cambios PetsHome (v1 pragmática):**
+- DB: `cita_Id` poblado/obligatorio en cargos de consulta; SP `FacturarVisita(@cita_Id, @disposicion, @vencimiento, @motivo, @usuario)` que factura/condona SOLO los cargos de esa cita; `ListPendientesPorVisita`. `FacturarCliente` deja de ser el mecanismo principal.
+- Backend: `ConsultaService` encola con `cita_Id` real; `CargoDispensacionService.FacturarVisitaAsync`; controller por cita.
+- UI: `/Cobros` agrupa cargos **por visita** con "Cobrar visita" + disposición (Pagado/Por cobrar/Sin cargo); comprobante se reutiliza. Nunca agrupa varias visitas.
+- (Siguiente) gate duro al cerrar la consulta + registrar pago de facturas A/R.
+
+Rama: `feature/cobro-por-visita`.
+
+**Estado 2026-10-28 (hecho inline tras caída de agentes):**
+- ✅ Cobro POR VISITA (SP `FacturarVisita` con disposición Pagado/PorCobrar/SinCargo; /Cobros agrupa por visita). Elimina la acumulación cross-visita.
+- ✅ Checkout CONTEXTUAL: al finalizar la consulta, si se dispensó a un cliente, el front redirige a `/Cobros` para cobrar ESA visita (`GuardarConsultaResultDto.RequiereCobro`).
+- ✅ `/Cobros` quitado del sidebar (OpenVPM no tiene esa pantalla); la ruta queda como red de seguridad para visitas no cobradas.
+- ◐ PENDIENTE: cobro inline (modal en la propia consulta en vez de redirect) · A/R visible en /Facturacion · cobrar vacunas/labs/procedimientos (ver docs/BRECHAS_OPENVPM.md).
+- Nota: los agentes del checkout/brechas murieron (0 bytes, injection en uno); el análisis de brechas se hizo inline → `docs/BRECHAS_OPENVPM.md`.
 
 ## ⚠️ Deuda técnica
 
@@ -502,3 +545,40 @@ Fuera de rango → borde ámbar + nota breve. No impide finalizar la consulta.
 - Registros en `ServiceConfiguration.cs` + `MappingProfileExtensions.cs`; link en `_sidebar.cshtml` (grupo Recepción). Index tiene botón "¿A quién llamar?" (modal fecha+tipo → Sugerencias); Detail tiene Agendar/Cancelar.
 
 **Verificación:** `dotnet build` 0 errores. SPs probados en transacción (BEGIN TRAN/ROLLBACK) contra la BD viva: Insert x3 OK + duplicado (−4); List con orden prioridad+FIFO; SugerenciasParaHueco (fecha 2026-10-25 tipo 1 → solo el de tipo 1/sin fecha; excluye tipo 2 y el de fecha deseada anterior) y sin filtros (todos los esperando); CambiarEstado Agendada (1) y re-cambio terminal (−3); Detail/Find OK. Rutas verificadas: `/ListaEspera/{Index,Create,Sugerencias}` → 302 → `/Account/Login` (auth-gated); `/` → 200.
+
+---
+
+## Vacuna / Laboratorio / Procedimiento facturables (2026-10-28)
+
+**Decisión de diseño (de OpenVPM):** en OpenVPM toda línea de factura es `product` (inventario, con stock) o `service` (todo lo demás, con `defaultPrice` en catálogo `services`). Vacuna, laboratorio y procedimiento **son servicios**. Lo trasladamos: `Veterinaria.tbServicios` (que ya tenía `serv_Precio`, estaba vacía) pasa a ser el catálogo de servicios facturables con `serv_Categoria` ('Vacuna'|'Laboratorio'|'Procedimiento'|'Consulta') + `serv_EsActivo`.
+
+**Cargo generalizado (aditivo, no rompe medicamentos):** `Veterinaria.tbCargoDispensacion` → `receta_Id` e `itm_Id` ahora NULLABLE; se agregan `cargo_TipoOrigen` ('Medicamento'|'Servicio') y `cargo_OrigenId` (receta_Id ó serv_Id). Los snapshots de precio/descripción ya existían, así que `FacturarVisita`/`ListPendientesPorVisita` (cobro por visita) siguen igual: agrupan por `cita_Id` y leen snapshots. Filas viejas backfill a 'Medicamento'.
+
+**Flujo:** nuevo SP `PR_Veterinaria_CargoDispensacion_EncolarServicio` (idempotente por cita_Id+serv_Id, snapshot desde tbServicios). En /Consulta se agrega sección "Servicios de la visita" con el componente `SearchSelect` existente: el vet agrega vacuna/lab/procedimiento → al finalizar se encola un cargo (TipoOrigen='Servicio') que cae en /Cobros de esa visita. La "vacuna aplicada" clínica (tbCitaMedica_tbVacunas) queda intacta (aditivo).
+
+**Contrato front↔back:** GET `/Consulta/Servicios?categoria=...` → `[{id,nombre,precio,categoria}]`; payload de Guardar agrega `servicios: [{servId,nombre,precio,cantidad}]` (camelCase, enteros nunca null).
+
+**Archivos:** `Database/82_SERVICIOS_FACTURABLES.sql`; backend en CargoDispensacionRepository/ConsultaService/ConsultaViewModels/ConsultaController/ServiceConfiguration/MappingProfileExtensions + Result `PR_Veterinaria_Servicio_DropdownResult`; frontend en Views/Consulta/Index.cshtml + wwwroot/js/pages/en-consulta.js. (Construido por 2 agentes en paralelo: BD+Backend / Frontend.)
+
+---
+
+## Registro de pagos + abonos parciales (2026-10-28)
+
+**Decisión:** la factura solo guardaba estado ('Pagada'/'PorCobrar') sin un pago real detrás. Se agrega registro de pagos sobre la factura del CLIENTE (pago por la atención de su mascota; NO es la suscripción del software — eso en OpenVPM vive aparte en finance/plans). Verificado en el código de OpenVPM antes de construir.
+
+**Modelo de OpenVPM (verificado y replicado):** tabla `payments` (invoiceId, amount, method, receivedBy, receivedAt, externalId, notes) + `invoices.paidAmount` acumulado. Al registrar pago: valida amount ≤ saldo (rechaza sobrepago), suma a paidAmount, si paidAmount ≥ total → 'Pagada' (si no, sigue pendiente → permite **abonos parciales**). Métodos: efectivo, tarjeta crédito/débito, cheque, en línea/transferencia, otro.
+
+**En PetsHome:** nueva `Veterinaria.tbPagos` + `fact_MontoPagado` en tbFacturas (saldo = total − pagado, derivado). SPs `PR_Veterinaria_Pago_Registrar` (valida sobrepago, actualiza saldo/estado) y `PR_Veterinaria_Pago_ListPorFactura`. `FacturarVisita` extendido para registrar el pago en el mismo checkout (@pago_Metodo + @abono_Inicial).
+
+**UX (decisión del dueño):** integrar al modal "Cobrar visita" existente — **"Pagado" siempre primero/default** (pago completo con método); "Por cobrar" permite abono inicial opcional + vencimiento; "Sin cargo" igual. El comprobante muestra pagos + saldo y un botón "Registrar pago" para abonar el saldo después. Script: `Database/84_PAGOS.sql`. (2 agentes: BD+Backend / Frontend.)
+
+---
+
+## REGLA CLAVE: replicar OpenVPM tal cual (2026-10-28)
+
+El objetivo de PetsHome es **quedar igual que OpenVPM**, no "inspirarse". Por tanto:
+- El **default siempre** es hacerlo **como OpenVPM**. NO ofrecer alternativas propias que se desvíen (ej. preguntar "¿unificamos o separamos?" cuando OpenVPM ya lo tiene unificado → solo replicar).
+- **Validar contra el código de OpenVPM ANTES** de proponer o construir cualquier cosa, siempre.
+- Señalar brechas proactivamente (docs/BRECHAS_OPENVPM.md), sin que el usuario las tenga que descubrir.
+
+**Caso concreto — Facturación:** OpenVPM tiene **UNA** pantalla `/billing` con pestañas por estado (All/Draft/Sent/Paid/Overdue/Void/Estimates) + `/billing/new`. NO tiene una "cola de cobros" separada: las visitas generan facturas y todo se ve/cobra por estado en esa única pantalla. PetsHome debe replicar esto: **unificar /Cobros + /Facturacion en una sola pantalla con pestañas por estado** (Por cobrar / Pagadas / Vencidas / Anuladas / Todas), reemplazando el split actual.

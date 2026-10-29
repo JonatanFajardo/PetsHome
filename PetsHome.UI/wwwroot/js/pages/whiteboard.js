@@ -75,11 +75,7 @@
             if (!dragId) return;
             var cita = dragId; dragId = null;
             var nuevo = body.getAttribute("data-drop");
-            fetch(urls.cambiarEstado, {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8", "X-Requested-With": "XMLHttpRequest" },
-                body: new URLSearchParams({ citaId: cita, estado: nuevo }).toString()
-            }).then(function (r) { return r.json(); })
+            window.postForm(urls.cambiarEstado, { citaId: cita, estado: nuevo })
               .then(function (res) { if (!res.ok) alert(res.mensaje || "No se pudo cambiar el estado."); cargar(); })
               .catch(function () { cargar(); });
         });

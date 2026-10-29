@@ -1,0 +1,247 @@
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@model PetsHome.Business.Models.ComprobanteViewModel
+@{
+    Layout = null;
+    var h = Model.Header;
+    string Money(decimal v) => "L " + v.ToString("N2");
+    string MetodoLabel(string m)
+    {
+        switch (m)
+        {
+            case "TarjetaCredito": return "Tarjeta de crédito";
+            case "TarjetaDebito": return "Tarjeta de débito";
+            default: return string.IsNullOrWhiteSpace(m) ? "—" : m;
+        }
+    }
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
+    <title>Comprobante @h.fact_Numero</title>
+    <style>
+        :root { --p:#5b4fcf; --pd:#1e1657; --muted:#8b80b8; --bd:#ece9fb; }
+        * { box-sizing:border-box; }
+        body { font-family:'DM Sans',system-ui,Arial,sans-serif; color:var(--pd); background:#f0eeff; margin:0; padding:24px; }
+        .recibo { max-width:720px; margin:0 auto; background:#fff; border:1px solid var(--bd); border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(30,22,87,.08); }
+        .rec-head { background:var(--p); color:#fff; padding:20px 26px; display:flex; align-items:center; justify-content:space-between; }
+        .rec-head .brand { font-size:1.4rem; font-weight:700; }
+        .rec-head .brand small { display:block; font-weight:400; opacity:.85; font-size:.8rem; }
+        .rec-num { text-align:right; font-size:.9rem; }
+        .rec-num b { font-size:1.1rem; }
+        .rec-meta { display:flex; flex-wrap:wrap; gap:18px; padding:18px 26px; border-bottom:1px solid var(--bd); }
+        .rec-meta div { font-size:.9rem; }
+        .rec-meta .lbl { color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.4px; }
+        table { width:100%; border-collapse:collapse; }
+        thead th { text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); padding:12px 26px; border-bottom:1px solid var(--bd); }
+        tbody td { padding:11px 26px; border-bottom:1px solid #f4f2fe; font-size:.92rem; }
+        .r { text-align:right; }
+        .tot { padding:16px 26px; margin-left:auto; width:300px; }
+        .tot-row { display:flex; justify-content:space-between; padding:4px 0; font-size:.92rem; }
+        .tot-row.total { border-top:2px solid var(--p); margin-top:6px; padding-top:10px; font-size:1.15rem; font-weight:700; color:var(--p); }
+        .estado { display:inline-block; padding:3px 12px; border-radius:999px; background:#ede9ff; color:var(--p); font-weight:600; font-size:.78rem; }
+        .acciones { max-width:720px; margin:16px auto 0; display:flex; gap:10px; justify-content:flex-end; }
+        .btn { border:none; border-radius:9px; padding:10px 18px; font-weight:600; cursor:pointer; font-family:inherit; font-size:.9rem; }
+        .btn-print { background:var(--p); color:#fff; }
+        .btn-close { background:#fff; color:var(--muted); border:1px solid var(--bd); }
+        .tot-row.pagado { color:#15803d; }
+        .tot-row.saldo { font-weight:700; }
+        .tot-row.saldo.pend { color:#b45309; }
+        .pagos-sec { padding:4px 26px 20px; }
+        .pagos-sec h4 { margin:0 0 8px; font-size:.8rem; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); }
+        .pagos-sec table td { padding:8px 0; border-bottom:1px solid #f4f2fe; font-size:.88rem; }
+        .pagos-empty { color:#b5aed6; font-size:.88rem; font-style:italic; }
+        .btn-pago { background:#15803d; color:#fff; }
+        /* Modal registrar pago */
+        .pg-modal-bg { position:fixed; inset:0; background:rgba(30,22,87,.45); display:none; align-items:center; justify-content:center; z-index:1050; }
+        .pg-modal-bg.open { display:flex; }
+        .pg-modal { background:#fff; border-radius:16px; width:min(420px,92vw); padding:22px 24px; box-shadow:0 20px 60px rgba(30,22,87,.3); }
+        .pg-modal h3 { margin:0 0 4px; font-size:1.2rem; }
+        .pg-modal .sub { color:var(--muted); font-size:.88rem; margin-bottom:16px; }
+        .pg-field { margin-bottom:12px; }
+        .pg-field label { display:block; font-size:.8rem; color:var(--p); font-weight:600; margin-bottom:4px; }
+        .pg-field input, .pg-field select, .pg-field textarea { width:100%; border:1px solid #d9d2f5; border-radius:8px; padding:9px; font-family:inherit; font-size:.9rem; background:#fff; }
+        .pg-err { color:#dc2626; font-size:.82rem; margin-bottom:8px; min-height:16px; }
+        .pg-acts { display:flex; gap:10px; justify-content:flex-end; }
+        .pg-btn { border:none; border-radius:9px; padding:10px 18px; font-weight:600; cursor:pointer; font-family:inherit; font-size:.9rem; }
+        .pg-btn.ok { background:#15803d; color:#fff; }
+        .pg-btn.cancel { background:#fff; color:var(--muted); border:1px solid var(--bd); }
+        @@media print { body { background:#fff; padding:0; } .acciones { display:none; } .recibo { border:none; box-shadow:none; } .btn-pago { display:none; } }
+    </style>
+</head>
+<body>
+    <div class="recibo">
+        <div class="rec-head">
+            <div class="brand">PetsHome <small>Clínica Veterinaria</small></div>
+            <div class="rec-num">Comprobante<br /><b>@(string.IsNullOrWhiteSpace(h.fact_Numero) ? ("F-" + h.fact_Id) : h.fact_Numero)</b></div>
+        </div>
+
+        <div class="rec-meta">
+            <div><div class="lbl">Cliente</div>@(h.Cliente ?? "—")</div>
+            @if (!string.IsNullOrWhiteSpace(h.cli_Identidad)) { <div><div class="lbl">Identidad</div>@h.cli_Identidad</div> }
+            <div><div class="lbl">Fecha</div>@h.fact_Fecha.ToString("dd/MM/yyyy HH:mm")</div>
+            @if (h.fact_Vencimiento.HasValue) { <div><div class="lbl">Vence</div>@h.fact_Vencimiento.Value.ToString("dd/MM/yyyy")</div> }
+            <div><div class="lbl">Estado</div><span class="estado">@(h.fact_Estado == "PorCobrar" ? "Por cobrar" : h.fact_Estado)</span></div>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>Descripción</th><th class="r">Cant.</th><th class="r">Precio</th><th class="r">Subtotal</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var l in Model.Lineas)
+                {
+                    <tr>
+                        <td>@l.fdet_Descripcion</td>
+                        <td class="r">@l.fdet_Cantidad.ToString("0.##")</td>
+                        <td class="r">@Money(l.fdet_PrecioUnit)</td>
+                        <td class="r">@Money(l.fdet_Subtotal)</td>
+                    </tr>
+                }
+                @if (Model.Lineas.Count == 0)
+                {
+                    <tr><td colspan="4" style="text-align:center;color:#b5aed6">Sin líneas</td></tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="tot">
+            <div class="tot-row"><span>Subtotal</span><span>@Money(h.fact_Subtotal)</span></div>
+            <div class="tot-row"><span>ISV (15%)</span><span>@Money(h.fact_Impuesto)</span></div>
+            <div class="tot-row total"><span>Total</span><span>@Money(h.fact_Total)</span></div>
+            <div class="tot-row pagado"><span>Pagado</span><span>@Money(Model.MontoPagado)</span></div>
+            <div class="tot-row saldo @(Model.Saldo > 0 ? "pend" : "")"><span>Saldo</span><span id="saldoValor">@Money(Model.Saldo)</span></div>
+        </div>
+
+        <div class="pagos-sec">
+            <h4>Pagos recibidos</h4>
+            <table>
+                <tbody id="pagosBody">
+                    @foreach (var p in Model.Pagos)
+                    {
+                        <tr>
+                            <td>@Money(p.Monto)</td>
+                            <td>@MetodoLabel(p.Metodo)</td>
+                            <td>@p.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@(string.IsNullOrWhiteSpace(p.RecibidoPor) ? "—" : p.RecibidoPor)</td>
+                            <td>@(string.IsNullOrWhiteSpace(p.Referencia) ? "" : p.Referencia)</td>
+                        </tr>
+                    }
+                    @if (Model.Pagos.Count == 0)
+                    {
+                        <tr id="pagosVacio"><td colspan="5" class="pagos-empty">Aún no se registran pagos.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="acciones">
+        <button class="btn btn-close" onclick="window.close()">Cerrar</button>
+        @if (Model.Saldo > 0)
+        {
+            <button class="btn btn-pago" id="btnAbrirPago"><span>Registrar pago</span></button>
+        }
+        <button class="btn btn-print" onclick="window.print()">🖨 Imprimir</button>
+    </div>
+
+    <!-- Modal pequeño para registrar un pago/abono -->
+    <div class="pg-modal-bg" id="pgModal">
+        <div class="pg-modal">
+            <h3>Registrar pago</h3>
+            <div class="sub">Comprobante @(string.IsNullOrWhiteSpace(h.fact_Numero) ? ("F-" + h.fact_Id) : h.fact_Numero)</div>
+            <div class="pg-err" id="pgErr"></div>
+            <div class="pg-field">
+                <label>Monto</label>
+                <input type="number" id="pgMonto" min="0.01" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="pg-field">
+                <label>Método de pago</label>
+                <select id="pgMetodo">
+                    <option value="Efectivo" selected>Efectivo</option>
+                    <option value="TarjetaCredito">Tarjeta de crédito</option>
+                    <option value="TarjetaDebito">Tarjeta de débito</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="Transferencia">Transferencia</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            <div class="pg-field">
+                <label>Referencia (opcional)</label>
+                <input type="text" id="pgReferencia" placeholder="N° de recibo, autorización…" />
+            </div>
+            <div class="pg-field">
+                <label>Notas (opcional)</label>
+                <textarea id="pgNotas" rows="2"></textarea>
+            </div>
+            <div class="pg-acts">
+                <button class="pg-btn cancel" id="pgCancel">Cancelar</button>
+                <button class="pg-btn ok" id="pgConfirm">Guardar pago</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window._urls = {
+            registrarPago: '@Url.Action("RegistrarPago", "Cobros")'
+        };
+        window._factId = @h.fact_Id;
+    </script>
+    <script src="~/js/components/http.js" asp-append-version="true"></script>
+    <script>
+        (function () {
+            var factId = window._factId;
+            var urls = window._urls;
+            var modal = document.getElementById("pgModal");
+            if (!modal) return;
+            var btnAbrir = document.getElementById("btnAbrirPago");
+            var errEl = document.getElementById("pgErr");
+            var montoEl = document.getElementById("pgMonto");
+            var metodoEl = document.getElementById("pgMetodo");
+            var refEl = document.getElementById("pgReferencia");
+            var notasEl = document.getElementById("pgNotas");
+            var btnConfirm = document.getElementById("pgConfirm");
+            var btnCancel = document.getElementById("pgCancel");
+
+            function abrir() {
+                errEl.textContent = "";
+                montoEl.value = ""; metodoEl.value = "Efectivo"; refEl.value = ""; notasEl.value = "";
+                modal.classList.add("open");
+            }
+            function cerrar() { modal.classList.remove("open"); }
+            if (btnAbrir) btnAbrir.addEventListener("click", abrir);
+            btnCancel.addEventListener("click", cerrar);
+            modal.addEventListener("click", function (e) { if (e.target === modal) cerrar(); });
+
+            btnConfirm.addEventListener("click", function () {
+                errEl.textContent = "";
+                var monto = parseFloat(montoEl.value);
+                if (isNaN(monto) || monto <= 0) { errEl.textContent = "Indica un monto mayor a 0."; return; }
+                // Enteros/decimales nunca null; textos vacios "".
+                var data = {
+                    factId: factId,
+                    monto: monto,
+                    metodo: metodoEl.value || "Efectivo",
+                    referencia: refEl.value.trim() || "",
+                    notas: notasEl.value.trim() || ""
+                };
+                btnConfirm.disabled = true;
+                window.postForm(urls.registrarPago, data).then(function (res) {
+                    btnConfirm.disabled = false;
+                    if (res && res.ok) {
+                        // La respuesta trae saldo/estado actualizados: recargamos para ver el pago en la lista.
+                        window.location.reload();
+                    } else {
+                        errEl.textContent = (res && res.mensaje) || "No se pudo registrar el pago.";
+                    }
+                }).catch(function () {
+                    btnConfirm.disabled = false;
+                    errEl.textContent = "Error de red.";
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

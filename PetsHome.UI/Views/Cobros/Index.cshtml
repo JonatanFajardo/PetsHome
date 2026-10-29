@@ -11,18 +11,52 @@
         .cobros-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
         .cobros-head h2 { margin:0; color:#1e1657; }
         .cobros-sum { margin-left:auto; font-weight:600; color:#4a38b8; }
-        .cobros-table { width:100%; border-collapse:separate; border-spacing:0 6px; }
-        .cobros-table th { text-align:left; font-size:.8rem; text-transform:uppercase; letter-spacing:.3px; color:#8b80b8; padding:4px 10px; }
-        .cobros-table td { background:#fff; padding:10px; border-top:1px solid #ece9fb; border-bottom:1px solid #ece9fb; }
-        .cobros-table td:first-child { border-left:1px solid #ece9fb; border-radius:10px 0 0 10px; }
-        .cobros-table td:last-child { border-right:1px solid #ece9fb; border-radius:0 10px 10px 0; }
-        .cli-badge { display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:24px; padding:0 8px; background:#5b4fcf; color:#fff; border-radius:12px; font-weight:700; font-size:.8rem; }
-        .btn-cobrar { background:#5b4fcf; color:#fff; border:none; border-radius:8px; padding:6px 12px; font-weight:600; cursor:pointer; font-size:.85rem; }
-        .btn-cobrar:hover { background:#4a38b8; }
-        .btn-condonar { background:#fff; color:#d97706; border:1px solid #fde68a; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:.85rem; }
-        .btn-condonar:hover { background:#fffbeb; }
-        .cobros-empty { text-align:center; color:#8b80b8; padding:40px; font-style:italic; }
+
+        /* Tarjeta por VISITA */
+        .visita-card { background:#fff; border:1px solid #ece9fb; border-radius:14px; margin-bottom:16px; overflow:hidden; box-shadow:0 4px 14px rgba(30,22,87,.05); }
+        .visita-top { display:flex; align-items:center; gap:14px; padding:14px 18px; background:#f6f4ff; border-bottom:1px solid #ece9fb; flex-wrap:wrap; }
+        .visita-top .masc { font-weight:700; font-size:1.05rem; }
+        .visita-top .cli { color:#6b5fcf; font-weight:600; }
+        .visita-top .meta { color:#8b80b8; font-size:.85rem; }
+        .visita-top .cita-badge { display:inline-flex; align-items:center; gap:6px; background:#5b4fcf; color:#fff; padding:4px 10px; border-radius:999px; font-size:.78rem; font-weight:600; }
+        .visita-top .cita-badge.sin { background:#fde68a; color:#92650a; }
+        .visita-top .visita-sum { margin-left:auto; text-align:right; }
+        .visita-top .visita-sum b { font-size:1.15rem; color:#4a38b8; }
+        .visita-top .visita-sum small { display:block; color:#8b80b8; }
+
+        .cobros-table { width:100%; border-collapse:collapse; }
+        .cobros-table th { text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.3px; color:#8b80b8; padding:10px 18px; }
+        .cobros-table td { padding:10px 18px; border-top:1px solid #f4f2fe; font-size:.92rem; }
         .txt-right { text-align:right; }
+
+        .visita-acts { display:flex; gap:10px; justify-content:flex-end; padding:12px 18px; border-top:1px solid #ece9fb; background:#fcfbff; }
+        .btn-visita { background:#5b4fcf; color:#fff; border:none; border-radius:9px; padding:9px 16px; font-weight:600; cursor:pointer; font-size:.9rem; }
+        .btn-visita:hover { background:#4a38b8; }
+        .btn-visita:disabled { opacity:.5; cursor:default; }
+
+        .cobros-empty { text-align:center; color:#8b80b8; padding:40px; font-style:italic; }
+
+        /* Modal disposición */
+        .cob-modal-bg { position:fixed; inset:0; background:rgba(30,22,87,.45); display:none; align-items:center; justify-content:center; z-index:1050; }
+        .cob-modal-bg.open { display:flex; }
+        .cob-modal { background:#fff; border-radius:16px; width:min(440px,92vw); padding:22px 24px; box-shadow:0 20px 60px rgba(30,22,87,.3); }
+        .cob-modal h3 { margin:0 0 4px; color:#1e1657; font-size:1.2rem; }
+        .cob-modal .sub { color:#8b80b8; font-size:.88rem; margin-bottom:16px; }
+        .cob-opts { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+        .cob-opt { display:flex; align-items:flex-start; gap:10px; border:1px solid #ece9fb; border-radius:10px; padding:12px; cursor:pointer; }
+        .cob-opt:hover { border-color:#b9afef; }
+        .cob-opt.sel { border-color:#5b4fcf; background:#f6f4ff; }
+        .cob-opt input { margin-top:3px; }
+        .cob-opt .t { font-weight:600; }
+        .cob-opt .d { color:#8b80b8; font-size:.82rem; }
+        .cob-extra { margin:0 0 14px; }
+        .cob-extra label { display:block; font-size:.8rem; color:#6b5fcf; font-weight:600; margin-bottom:4px; }
+        .cob-extra input, .cob-extra textarea, .cob-extra select { width:100%; border:1px solid #d9d2f5; border-radius:8px; padding:9px; font-family:inherit; font-size:.9rem; background:#fff; }
+        .cob-modal-acts { display:flex; gap:10px; justify-content:flex-end; }
+        .cob-btn { border:none; border-radius:9px; padding:10px 18px; font-weight:600; cursor:pointer; font-size:.9rem; }
+        .cob-btn.ok { background:#5b4fcf; color:#fff; }
+        .cob-btn.cancel { background:#fff; color:#8b80b8; border:1px solid #ece9fb; }
+        .cob-err { color:#dc2626; font-size:.82rem; margin-bottom:8px; min-height:16px; }
     </style>
 }
 
@@ -31,7 +65,7 @@
     <div class="pets-header-full">
       <div class="pets-header-content">
         <div class="pets-title-section">
-          <h2 class="text-white"><i class="bi bi-cash-coin mr-2 text-white"></i>Cobros pendientes</h2>
+          <h2 class="text-white"><i class="bi bi-cash-coin mr-2 text-white"></i>Cobros pendientes por visita</h2>
         </div>
       </div>
     </div>
@@ -39,7 +73,7 @@
     <div class="cobros-wrap">
       <div class="cobros-head">
         <i class="bi bi-receipt" style="font-size:1.2rem;color:#5b4fcf"></i>
-        <span>Medicamentos dispensados en consulta pendientes de cobro</span>
+        <span>Medicamentos dispensados en consulta, agrupados por visita (cita)</span>
         <span class="cobros-sum" id="cobrosTotal"></span>
       </div>
       <div id="cobrosBody"><div class="cobros-empty">Cargando…</div></div>
@@ -47,12 +81,71 @@
   </div>
 </div>
 
+<!-- Modal de disposición de cobro de la visita -->
+<div class="cob-modal-bg" id="cobModal">
+  <div class="cob-modal">
+    <h3>Cobrar visita</h3>
+    <div class="sub" id="cobModalSub"></div>
+    <div class="cob-err" id="cobErr"></div>
+    <div class="cob-opts">
+      <label class="cob-opt sel">
+        <input type="radio" name="disp" value="Pagado" checked />
+        <span><span class="t">Pagado</span><span class="d">Factura de la visita, saldada al instante.</span></span>
+      </label>
+      <label class="cob-opt">
+        <input type="radio" name="disp" value="PorCobrar" />
+        <span><span class="t">Por cobrar</span><span class="d">Factura con fecha de vencimiento (cuenta por cobrar).</span></span>
+      </label>
+      <label class="cob-opt">
+        <input type="radio" name="disp" value="SinCargo" />
+        <span><span class="t">Sin cargo</span><span class="d">Condonar los cargos de la visita con un motivo.</span></span>
+      </label>
+    </div>
+    <div class="cob-extra" id="cobMetodo" style="display:none;">
+      <label>Método de pago</label>
+      <select id="cobMetodoInput">
+        <option value="Efectivo" selected>Efectivo</option>
+        <option value="TarjetaCredito">Tarjeta de crédito</option>
+        <option value="TarjetaDebito">Tarjeta de débito</option>
+        <option value="Cheque">Cheque</option>
+        <option value="Transferencia">Transferencia</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+    <div class="cob-extra" id="cobVenc" style="display:none;">
+      <label>Fecha de vencimiento</label>
+      <input type="date" id="cobVencInput" />
+    </div>
+    <div class="cob-extra" id="cobAbono" style="display:none;">
+      <label>Abono inicial (opcional)</label>
+      <input type="number" id="cobAbonoInput" min="0" step="0.01" placeholder="0.00" />
+      <label style="margin-top:10px;">Método del abono</label>
+      <select id="cobAbonoMetodoInput">
+        <option value="Efectivo" selected>Efectivo</option>
+        <option value="TarjetaCredito">Tarjeta de crédito</option>
+        <option value="TarjetaDebito">Tarjeta de débito</option>
+        <option value="Cheque">Cheque</option>
+        <option value="Transferencia">Transferencia</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+    <div class="cob-extra" id="cobMotivo" style="display:none;">
+      <label>Motivo de la condonación (mínimo 5 caracteres)</label>
+      <textarea id="cobMotivoInput" rows="2" placeholder="Ej: Cortesía de la clínica"></textarea>
+    </div>
+    <div class="cob-modal-acts">
+      <button class="cob-btn cancel" id="cobCancel">Cancelar</button>
+      <button class="cob-btn ok" id="cobConfirm">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 @section Scripts {
 <script>
     window._urlsCobros = {
-        list: '@Url.Action("ListPendientes", "Cobros")',
-        facturar: '@Url.Action("FacturarCliente", "Cobros")',
-        condonar: '@Url.Action("Condonar", "Cobros")'
+        list: '@Url.Action("ListPorVisita", "Cobros")',
+        facturarVisita: '@Url.Action("FacturarVisita", "Cobros")',
+        comprobante: '@Url.Action("Comprobante", "Cobros")'
     };
 </script>
 <script src="~/js/pages/cobros.js" asp-append-version="true"></script>

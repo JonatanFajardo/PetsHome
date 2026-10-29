@@ -9,7 +9,11 @@
   'use strict';
 
   var urls = window._urls || {};
+  // mascId robusto: window._mascId y, si falta, el ?mascId= de la URL.
   var mascId = window._mascId || 0;
+  if (!mascId) {
+    try { var _mq = new URLSearchParams(window.location.search).get('mascId'); if (_mq) mascId = parseInt(_mq, 10) || 0; } catch (e) {}
+  }
   var citaId = window._citaId || 0;   // viene de sala de espera (opcional)
 
   // Estado en memoria de las lineas agregadas
@@ -17,6 +21,11 @@
   //  cantidad, entregar, enStock, stock, stockMin}
   var medsSeleccionados = [];
   var vacunaAplicada = null;    // {id, nombre}
+
+  // Servicios facturables de la visita (vacunas / laboratorios / procedimientos)
+  // {servId, nombre, precio, categoria, cantidad}
+  var serviciosSeleccionados = [];
+  var servCatalogCache = {};    // categoria -> [{id, nombre, precio, categoria}]
 
   // Frecuencias comunes para el select de la receta
   var FRECUENCIAS = ['c/8h', 'c/12h', 'c/24h', 'c/48h'];
@@ -51,6 +60,22 @@
     if (v == null || v === '') return NaN;
     var n = parseInt(v, 10);
     return isNaN(n) ? NaN : n;
+  }
+
+  // Formatea un importe en moneda (tolera null/string).
+  function money(v) {
+    var n = parseFloat(v);
+    if (isNaN(n)) n = 0;
+    return '$' + n.toFixed(2);
+  }
+
+  // Ícono por categoría de servicio.
+  function servIcon(cat) {
+    var c = String(cat || '').toLowerCase();
+    if (c.indexOf('vacuna') > -1) return '<i class="bi bi-shield-plus"></i>';
+    if (c.indexOf('laborat') > -1) return '<i class="bi bi-droplet-half"></i>';
+    if (c.indexOf('proced') > -1) return '<i class="bi bi-scissors"></i>';
+    return '<i class="bi bi-receipt"></i>';
   }
 
   // Badge de estado de inventario para la LÍNEA de receta.
@@ -153,22 +178,12 @@
         var original = btn.innerHTML;
         btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Atendiendo...';
 
-        var tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
         if (!urls.atender) {
           // Sin endpoint de atender → fallback directo.
           window.location.href = consultaUrl + '?mascId=' + masc + '&citaId=' + cita;
           return;
         }
-        fetch(urls.atender, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': tokenEl ? tokenEl.value : ''
-          },
-          body: JSON.stringify({ citaId: cita })
-        })
-          .then(function (r) { return r.json(); })
+        window.postForm(urls.atender, { citaId: cita })
           .then(function (res) {
             if (res && res.ok) {
               window.location.href = consultaUrl + '?mascId=' + (res.mascId || masc) + '&citaId=' + cita;
@@ -397,7 +412,8 @@
   document.addEventListener('click', function (e) {
     var del = e.target.closest('.ec-line-del');
     if (!del) return;
-    if (del.dataset.vac) { vacunaAplicada = null; renderVacuna(); }
+    if (del.dataset.serv != null) { serviciosSeleccionados.splice(parseInt(del.dataset.serv, 10), 1); renderServicios(); }
+    else if (del.dataset.vac) { vacunaAplicada = null; renderVacuna(); }
     else { medsSeleccionados.splice(parseInt(del.dataset.i, 10), 1); renderMeds(); }
   });
 
@@ -434,6 +450,153 @@
       });
     }
   }
+
+  // ───────────────────────── Servicios de la visita ─────────────────────────
+  // Catálogo por categoría (contrato fijo): GET /Consulta/Servicios?categoria=...
+  //   -> [{ id, nombre, precio, categoria }]. Se pobla con window.getJson (sin fetch manual).
+  function addServicio(it) {
+    if (!it) return;
+    var servId = toInt(it.id); if (isNaN(servId)) servId = 0;
+    var nombre = it.nombre || it.text || '';
+    if (!nombre) return;
+    var precio = parseFloat(it.precio); if (isNaN(precio)) precio = 0;
+    var categoria = it.categoria || '';
+
+    // Mismo servicio del catálogo (servId > 0) -> suma cantidad en vez de duplicar.
+    if (servId > 0) {
+      var exist = serviciosSeleccionados.find(function (s) { return s.servId === servId; });
+      if (exist) { exist.cantidad = (exist.cantidad || 1) + 1; renderServicios(); return; }
+    }
+    serviciosSeleccionados.push({
+      servId: servId,
+      nombre: nombre,
+      precio: precio,
+      categoria: categoria,
+      cantidad: 1
+    });
+    renderServicios();
+  }
+
+  function servSubtotal() {
+    return serviciosSeleccionados.reduce(function (acc, s) {
+      var c = (s.cantidad && s.cantidad > 0) ? s.cantidad : 1;
+      return acc + (parseFloat(s.precio) || 0) * c;
+    }, 0);
+  }
+
+  function updateServSubtotal() {
+    var sub = document.getElementById('ecServSubtotal');
+    if (!sub) return;
+    if (!serviciosSeleccionados.length) { sub.style.display = 'none'; sub.innerHTML = ''; return; }
+    sub.style.display = 'flex';
+    sub.innerHTML = '<span>Subtotal servicios</span><b>' + money(servSubtotal()) + '</b>';
+  }
+
+  function renderServicios() {
+    var box = document.getElementById('ecServLines');
+    if (!box) return;
+    if (!serviciosSeleccionados.length) {
+      box.innerHTML = '<div class="ec-empty-line">Aún no has agregado servicios.</div>';
+      updateServSubtotal();
+      return;
+    }
+    box.innerHTML = serviciosSeleccionados.map(function (s, i) {
+      var cant = (s.cantidad && s.cantidad > 0) ? s.cantidad : 1;
+      var importe = (parseFloat(s.precio) || 0) * cant;
+      var catBadge = s.categoria ? '<span class="ec-serv-cat">' + escapeHtml(s.categoria) + '</span>' : '';
+      return '<div class="ec-line ec-line-serv">' +
+        '<div class="ec-serv-head">' +
+          '<span class="ec-line-ico">' + servIcon(s.categoria) + '</span>' +
+          '<span class="ec-line-name">' + escapeHtml(s.nombre) + '</span>' +
+          catBadge +
+          '<span class="ec-serv-precio">' + money(s.precio) + '</span>' +
+          '<button type="button" class="ec-line-del" data-serv="' + i + '">&times;</button>' +
+        '</div>' +
+        '<div class="ec-serv-foot">' +
+          '<span class="ec-med-qty">Cant.' +
+            '<input type="number" class="ec-serv-field" data-i="' + i + '" min="1" value="' + escapeHtml(cant) + '">' +
+          '</span>' +
+          '<span class="ec-serv-importe">' + money(importe) + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    updateServSubtotal();
+  }
+
+  (function initServicios() {
+    var catSel = document.getElementById('ecServCategoria');
+    var catalogSel = document.getElementById('ecServCatalogo');
+    var addBtn = document.getElementById('ecServAdd');
+    var box = document.getElementById('ecServLines');
+    if (!catSel || !catalogSel || !addBtn) return;
+
+    function fillCatalog(items) {
+      if (!items || !items.length) {
+        catalogSel.innerHTML = '<option value="">Sin servicios en esta categoría</option>';
+        catalogSel.disabled = true; addBtn.disabled = true; return;
+      }
+      var opts = ['<option value="">Elige un servicio...</option>'];
+      items.forEach(function (it, idx) {
+        var precioTxt = (it.precio != null && it.precio !== '') ? ' · ' + money(it.precio) : '';
+        opts.push('<option value="' + idx + '">' + escapeHtml(it.nombre) + precioTxt + '</option>');
+      });
+      catalogSel.innerHTML = opts.join('');
+      catalogSel.disabled = false; addBtn.disabled = true;
+    }
+
+    catSel.addEventListener('change', function () {
+      var cat = catSel.value;
+      addBtn.disabled = true;
+      if (!cat) {
+        catalogSel.innerHTML = '<option value="">Elige una categoría primero...</option>';
+        catalogSel.disabled = true; return;
+      }
+      if (servCatalogCache[cat]) { fillCatalog(servCatalogCache[cat]); return; }
+      catalogSel.disabled = true;
+      catalogSel.innerHTML = '<option value="">Cargando...</option>';
+      window.getJson(urls.servicios + '?categoria=' + encodeURIComponent(cat))
+        .then(function (data) {
+          var items = Array.isArray(data) ? data : [];
+          servCatalogCache[cat] = items;
+          if (catSel.value === cat) fillCatalog(items);
+        })
+        .catch(function () {
+          if (catSel.value === cat) catalogSel.innerHTML = '<option value="">No se pudo cargar el catálogo</option>';
+        });
+    });
+
+    catalogSel.addEventListener('change', function () {
+      addBtn.disabled = !catalogSel.value;
+    });
+
+    addBtn.addEventListener('click', function () {
+      var cat = catSel.value;
+      var idx = catalogSel.value;
+      if (!cat || idx === '') return;
+      var items = servCatalogCache[cat] || [];
+      var it = items[parseInt(idx, 10)];
+      if (!it) return;
+      addServicio(it);
+      catalogSel.value = '';   // deja el selector listo para agregar otro
+      addBtn.disabled = true;
+    });
+
+    // Editar cantidad in-place (sin re-render completo para no perder foco).
+    if (box) {
+      box.addEventListener('input', function (e) {
+        var f = e.target.closest('.ec-serv-field');
+        if (!f) return;
+        var s = serviciosSeleccionados[parseInt(f.dataset.i, 10)];
+        if (!s) return;
+        var v = parseInt(f.value, 10);
+        s.cantidad = (isNaN(v) || v < 1) ? 1 : v;
+        var line = f.closest('.ec-line-serv');
+        var imp = line ? line.querySelector('.ec-serv-importe') : null;
+        if (imp) imp.textContent = money((parseFloat(s.precio) || 0) * s.cantidad);
+        updateServSubtotal();
+      });
+    }
+  })();
 
   // ───────────────────────── Sugerencias por diagnóstico ─────────────────────────
   (function initSugerencias() {
@@ -594,7 +757,8 @@
     btn.addEventListener('click', function () {
       var payload = {
         mascId: mascId,
-        citaId: citaId || null,   // finaliza esta visita (sala de espera) en vez de crear otra
+        citaId: citaId || 0,   // 0 = crear cita nueva; >0 = finaliza esa visita de sala de espera
+                               // (CitaId en el DTO es int NO nuleable: nunca mandar null)
         tipoConsultaId: val('ecTipoConsulta') ? parseInt(val('ecTipoConsulta'), 10) : null,
         motivo: val('ecMotivo'),
         diagnostico: val('ecDiagnostico'),
@@ -619,6 +783,14 @@
             cantidad: (m.cantidad && m.cantidad > 0) ? m.cantidad : 1
           };
         }),
+        servicios: serviciosSeleccionados.map(function (s) {
+          return {
+            servId: (s.servId && s.servId > 0) ? s.servId : 0,   // entero, nunca null
+            nombre: s.nombre,
+            precio: (s.precio != null && !isNaN(parseFloat(s.precio))) ? parseFloat(s.precio) : 0,
+            cantidad: (s.cantidad && s.cantidad > 0) ? s.cantidad : 1
+          };
+        }),
         proximaCita: val('ecProximaCita') || null,
         motivoProximaCita: val('ecMotivoProxima')
       };
@@ -627,25 +799,18 @@
       var original = btn.innerHTML;
       btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
 
-      var tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
-      fetch(urls.guardar, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          'RequestVerificationToken': tokenEl ? tokenEl.value : ''
-        },
-        body: JSON.stringify(payload)
-      })
-        .then(function (r) { return r.json(); })
+      window.postJson(urls.guardar, payload)
         .then(function (res) {
           if (res && res.ok) {
+            // Checkout contextual: si se dispensó a un cliente, pasar al cobro de la visita.
+            var destino = res.requiereCobro ? '/Cobros' : (urls.consultaIndex + '?mascId=' + mascId);
+            var titulo = res.requiereCobro ? 'Consulta finalizada — pasa a cobrar la visita' : 'Consulta finalizada';
             if (window.Swal) {
-              Swal.fire({ icon: 'success', title: 'Consulta finalizada', text: res.mensaje || '', timer: 1800, showConfirmButton: false })
-                .then(function () { window.location.href = urls.consultaIndex + '?mascId=' + mascId; });
+              Swal.fire({ icon: 'success', title: titulo, text: res.mensaje || '', timer: 1800, showConfirmButton: false })
+                .then(function () { window.location.href = destino; });
             } else {
               alert(res.mensaje || 'Consulta finalizada');
-              window.location.href = urls.consultaIndex + '?mascId=' + mascId;
+              window.location.href = destino;
             }
           } else {
             btn.disabled = false; btn.innerHTML = original;

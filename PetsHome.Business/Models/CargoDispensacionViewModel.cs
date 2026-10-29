@@ -20,5 +20,9 @@ namespace PetsHome.Business.Models
         public string cargo_Estado { get; set; }
         public DateTime cargo_FechaCrea { get; set; }
         public string MascotaNombre { get; set; }
+        // Agrupación POR VISITA
+        public string ClienteNombre { get; set; }
+        public DateTime? CitaFecha { get; set; }
+        public string CitaMotivo { get; set; }
     }
 }

@@ -16,7 +16,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/perfil-medico-mascota.css" />
     <link rel="stylesheet" href="~/css/search-select.css" />
-    <link rel="stylesheet" href="~/css/en-consulta.css" />
+    <link rel="stylesheet" href="~/css/en-consulta.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <style>
         .app-wrapper { min-height: auto; }
@@ -268,6 +268,31 @@
                     </div>
                 </div>
 
+                <div class="ec-field">
+                    <label class="ec-label">
+                        Servicios de la visita
+                        <small style="font-weight:500;color:var(--text-muted,#8E87B3)">· vacunas, laboratorios y procedimientos facturables</small>
+                    </label>
+                    <div class="ec-serv-picker">
+                        <select id="ecServCategoria" class="ec-select no-select2">
+                            <option value="">Categoría...</option>
+                            <option value="Vacuna">Vacuna</option>
+                            <option value="Laboratorio">Laboratorio</option>
+                            <option value="Procedimiento">Procedimiento</option>
+                        </select>
+                        <select id="ecServCatalogo" class="ec-select no-select2" disabled>
+                            <option value="">Elige una categoría primero...</option>
+                        </select>
+                        <button type="button" id="ecServAdd" class="ec-serv-add" disabled>
+                            <i class="bi bi-plus-lg"></i> Agregar
+                        </button>
+                    </div>
+                    <div class="ec-lines" id="ecServLines">
+                        <div class="ec-empty-line">Aún no has agregado servicios.</div>
+                    </div>
+                    <div class="ec-serv-subtotal" id="ecServSubtotal" style="display:none"></div>
+                </div>
+
                 <div class="ec-divider"></div>
                 <div class="ec-grid-2">
                     <div class="ec-field" style="margin-bottom:0">
@@ -444,10 +469,11 @@ else
             crearMascota: '@Url.Action("Create", "Mascota")',
             atender: '@Url.Action("Atender", "Consulta")',
             crearCita: '@Url.Action("Create", "CitaMedica")',
-            sugerencias: '@Url.Action("Sugerencias", "Lookup")'
+            sugerencias: '@Url.Action("Sugerencias", "Lookup")',
+            servicios: '@Url.Action("Servicios", "Consulta")'
         };
         window._mascId = @Model.MascId;
         window._citaId = @(Context.Request.Query["citaId"].ToString() is var q && int.TryParse(q, out var _ci) ? _ci : 0);
     </script>
-    <script src="~/js/pages/en-consulta.js"></script>
+    <script src="~/js/pages/en-consulta.js" asp-append-version="true"></script>
 }
