@@ -25,5 +25,8 @@ public int VacunasAlDia { get; set; }
 public string ResponsableTipo { get; set; }
 public string ResponsableNombre { get; set; }
 public string ResponsableContacto { get; set; }
+
+// ── Especie (script 87): catalogo de razas (raza_TipoAnimal) ──
+public string Especie { get; set; }
     }
 }
