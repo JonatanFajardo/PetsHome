@@ -32,6 +32,31 @@
         <!-- ===================== VISTA LISTA (pestañas por estado) ===================== -->
         <div id="view-lista">
 
+            <!-- Tarjetas de totales (cuentas por cobrar) -->
+            <div class="ar-cards">
+                <div class="ar-card porcobrar">
+                    <div class="ar-card-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <div class="ar-card-body">
+                        <div class="ar-card-label">Por cobrar</div>
+                        <div class="ar-card-amount" id="ar-porcobrar">L. 0.00</div>
+                    </div>
+                </div>
+                <div class="ar-card vencido">
+                    <div class="ar-card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="ar-card-body">
+                        <div class="ar-card-label">Vencido</div>
+                        <div class="ar-card-amount" id="ar-vencido">L. 0.00</div>
+                    </div>
+                </div>
+                <div class="ar-card cobradomes">
+                    <div class="ar-card-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="ar-card-body">
+                        <div class="ar-card-label">Cobrado este mes</div>
+                        <div class="ar-card-amount" id="ar-cobradomes">L. 0.00</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Pestañas por estado -->
             <div class="pos-tabs" id="fact-tabs">
                 <button type="button" class="pos-tab active" data-tab="todas">
@@ -316,7 +341,9 @@
             list:              '@Url.Action("List", "Facturacion")',
             listPorVisita:     '@Url.Action("ListPorVisita", "Cobros")',
             facturarVisita:    '@Url.Action("FacturarVisita", "Cobros")',
-            comprobante:       '@Url.Action("Comprobante", "Cobros")'
+            comprobante:       '@Url.Action("Comprobante", "Cobros")',
+            // Totales de cuentas por cobrar (tarjetas superiores)
+            resumenAR:         '@Url.Action("ResumenAR", "Facturacion")'
         };
     </script>
     <script src="~/js/pages/pos.js" asp-append-version="true"></script>

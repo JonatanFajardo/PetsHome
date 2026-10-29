@@ -37,6 +37,70 @@
     border-color: #fff;
 }
 
+/* ---------- Tarjetas de totales A/R (encima de las pestañas) ---------- */
+.ar-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px 16px 8px;
+}
+
+.ar-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid #ece9fb;
+    border-left: 4px solid #c4b5fd;
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 4px 14px rgba(30, 22, 87, .05);
+}
+
+.ar-card-icon {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.ar-card-body { min-width: 0; }
+
+.ar-card-label {
+    font-size: .76rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.ar-card-amount {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #1f2937;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Variantes por tipo */
+.ar-card.porcobrar { border-left-color: #f59e0b; }
+.ar-card.porcobrar .ar-card-icon { background: #fef3c7; color: #b45309; }
+
+.ar-card.vencido { border-left-color: #ef4444; }
+.ar-card.vencido .ar-card-icon { background: #fee2e2; color: #b91c1c; }
+
+.ar-card.cobradomes { border-left-color: #22c55e; }
+.ar-card.cobradomes .ar-card-icon { background: #dcfce7; color: #15803d; }
+
+@media (max-width: 760px) {
+    .ar-cards { grid-template-columns: 1fr; }
+}
+
 /* ---------- Contador en las pestañas ---------- */
 .fact-count {
     display: none;

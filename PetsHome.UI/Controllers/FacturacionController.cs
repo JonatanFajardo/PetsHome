@@ -71,6 +71,14 @@ namespace PetsHome.UI.Controllers
             return Json(new { data = facturas });
         }
 
+        /// <summary>Totales de cuentas por cobrar para las tarjetas de arriba (Por cobrar / Vencido / Cobrado este mes).</summary>
+        [HttpGet]
+        public async Task<IActionResult> ResumenAR()
+        {
+            var r = await _facturacionService.ResumenARAsync();
+            return Json(new { porCobrar = r.PorCobrar, vencido = r.Vencido, cobradoMes = r.CobradoMes });
+        }
+
         public async Task<IActionResult> Detalle(int id)
         {
             var detalle = await _facturacionService.DetalleAsync(id);

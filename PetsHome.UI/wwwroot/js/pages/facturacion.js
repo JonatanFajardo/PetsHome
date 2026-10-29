@@ -350,11 +350,27 @@ var Facturacion = (function () {
         btnConfirm.addEventListener("click", confirmar);
     }
 
+    // -------------------- Tarjetas de totales (cuentas por cobrar) --------------------
+    function setMonto(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = money(val);
+    }
+    function cargarResumenAR() {
+        if (!urls.resumenAR) return Promise.resolve();
+        return window.getJson(urls.resumenAR).then(function (r) {
+            r = r || {};
+            setMonto("ar-porcobrar", r.porCobrar);
+            setMonto("ar-vencido", r.vencido);
+            setMonto("ar-cobradomes", r.cobradoMes);
+        }).catch(function () { /* deja L. 0.00 */ });
+    }
+
     // -------------------- Carga de datos --------------------
     function recargar() {
         return Promise.all([
             window.getJson(urls.list).then(function (r) { facturas = (r && r.data) || []; }).catch(function () { facturas = []; }),
-            window.getJson(urls.listPorVisita).then(function (r) { porVisita = (r && r.data) || []; }).catch(function () { porVisita = []; })
+            window.getJson(urls.listPorVisita).then(function (r) { porVisita = (r && r.data) || []; }).catch(function () { porVisita = []; }),
+            cargarResumenAR()
         ]).then(function () {
             pintarContadores();
             setTab(activeTab);
