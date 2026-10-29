@@ -1,0 +1,123 @@
+@model PetsHome.Business.Models.CertificadoVacunacionViewModel
+@{
+    Layout = null;
+
+    string Val(string s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
+
+    // Clase de badge según el estado de la vacuna.
+    string BadgeCss(string estado)
+    {
+        var e = (estado ?? "").ToLower();
+        if (e.Contains("venc"))                      return "cert-badge-venc";
+        if (e.Contains("próx") || e.Contains("prox")) return "cert-badge-prox";
+        return "cert-badge-ok";
+    }
+    string EstadoLabel(string estado) => string.IsNullOrWhiteSpace(estado) ? "Al día" : estado;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Certificado de Vacunación — @Val(Model?.MascotaNombre)</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/certificado.css" asp-append-version="true" />
+</head>
+<body class="cert-body">
+
+    <div class="cert-actions">
+        <button type="button" class="cert-print-btn" onclick="window.print()">🖨️ Imprimir</button>
+    </div>
+
+    <div class="cert-sheet">
+
+        <!-- ── Encabezado ── -->
+        <div class="cert-header">
+            <div class="cert-logo">🐾</div>
+            <div>
+                <div class="cert-brand">PetsHome</div>
+                <h1 class="cert-title">Certificado de Vacunación</h1>
+            </div>
+        </div>
+
+        <div class="cert-body-content">
+
+            <!-- ── Datos de la mascota y dueño ── -->
+            <div class="cert-section-title">Datos del paciente</div>
+            <div class="cert-meta">
+                <div class="cert-field">
+                    <div class="cert-field-label">Mascota</div>
+                    <div class="cert-field-value">@Val(Model?.MascotaNombre)</div>
+                </div>
+                <div class="cert-field">
+                    <div class="cert-field-label">Dueño / Responsable</div>
+                    <div class="cert-field-value">@Val(Model?.DuenoNombre)</div>
+                </div>
+                <div class="cert-field">
+                    <div class="cert-field-label">Especie</div>
+                    <div class="cert-field-value">@Val(Model?.Especie)</div>
+                </div>
+                <div class="cert-field">
+                    <div class="cert-field-label">Raza</div>
+                    <div class="cert-field-value">@Val(Model?.Raza)</div>
+                </div>
+                <div class="cert-field">
+                    <div class="cert-field-label">Sexo</div>
+                    <div class="cert-field-value">@Val(Model?.Sexo)</div>
+                </div>
+                <div class="cert-field">
+                    <div class="cert-field-label">Fecha de emisión</div>
+                    <div class="cert-field-value">@((Model?.FechaEmision ?? DateTime.Now).ToString("dd MMM yyyy"))</div>
+                </div>
+            </div>
+
+            <!-- ── Historial de vacunas ── -->
+            <div class="cert-section-title">Historial de vacunación</div>
+            <table class="cert-table">
+                <thead>
+                    <tr>
+                        <th>Vacuna</th>
+                        <th>Fecha de aplicación</th>
+                        <th>Próximo refuerzo</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.Vacunas != null && Model.Vacunas.Count > 0)
+                    {
+                        foreach (var v in Model.Vacunas)
+                        {
+                            <tr>
+                                <td class="cert-vac-name">@Val(v.VacunaNombre)</td>
+                                <td>@(v.FechaAplicada?.ToString("dd MMM yyyy") ?? "—")</td>
+                                <td>@(v.ProximoRefuerzo?.ToString("dd MMM yyyy") ?? "—")</td>
+                                <td><span class="cert-badge @BadgeCss(v.Estado)">@EstadoLabel(v.Estado)</span></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="cert-empty">Sin vacunas registradas para esta mascota.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- ── Pie ── -->
+            <div class="cert-footer">
+                <div>
+                    Este certificado refleja el historial de vacunación registrado en PetsHome
+                    a la fecha de emisión.
+                </div>
+                <div class="cert-sign">
+                    <div class="cert-sign-line"></div>
+                    Firma y sello del veterinario
+                </div>
+            </div>
+
+        </div><!-- /cert-body-content -->
+    </div><!-- /cert-sheet -->
+
+</body>
+</html>

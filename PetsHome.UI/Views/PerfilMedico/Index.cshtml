@@ -3,6 +3,7 @@
     ViewData["Title"] = "Perfil Médico";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["CurrentPantalla"] = "Perfil medico de mascota";
+    ViewData["UseApexCharts"] = true; // carga ApexCharts para la gráfica de peso
 
     var ficha = Model.FichaMascota.FirstOrDefault();
     var nombreMascota = ficha?.masc_Nombre ?? "Mascota";
@@ -56,6 +57,23 @@
         _          => "dot-ok"
     };
 
+    // Badge de estado de factura (color según el estado de cobro)
+    string FacturaBadgeCss(string estado) {
+        var e = (estado ?? "").ToLower();
+        if (e.Contains("pag"))                                 return "fbadge-pagada";   // Pagada
+        if (e.Contains("anul") || e.Contains("cancel"))        return "fbadge-anulada";  // Anulada / Cancelada
+        if (e.Contains("pend") || e.Contains("parcial"))       return "fbadge-pendiente";// Pendiente / Parcial
+        return "fbadge-pendiente";
+    }
+    // Badge de estado de examen de laboratorio
+    string LabBadgeCss(string estado) {
+        var e = (estado ?? "").ToLower();
+        if (e.Contains("list") || e.Contains("complet") || e.Contains("resultado")) return "lbadge-listo";
+        if (e.Contains("proces") || e.Contains("curso"))                            return "lbadge-proceso";
+        if (e.Contains("cancel") || e.Contains("anul"))                             return "lbadge-cancel";
+        return "lbadge-pendiente"; // Solicitado / Pendiente
+    }
+
     string statusBadgeCss   = ficha?.EstadoSalud == "En Tratamiento" ? "status-treatment"
                             : ficha?.EstadoSalud == "Crítico"        ? "status-critical"
                                                                       : "status-healthy";
@@ -71,6 +89,95 @@
     /* Ajustes de integración con el layout de la app */
     .app-wrapper { min-height: auto; }
     .pets-container { margin-bottom: 0; }
+
+    /* ── Cabecera de la pestaña Vacunas ── */
+    .vac-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+    .btn-certificado {
+      display:inline-flex; align-items:center; gap:8px;
+      border:none; border-radius:10px; padding:10px 18px;
+      font-size:13px; font-weight:600; font-family:inherit; color:#fff; cursor:pointer;
+      background:linear-gradient(135deg, var(--purple-1,#6C5CE7), var(--purple-2,#A29BFE));
+      box-shadow:0 4px 16px rgba(108,92,231,.35);
+    }
+    .btn-certificado:hover { filter:brightness(1.05); }
+
+    /* ── Aviso "Próximos refuerzos" ── */
+    .refuerzos-box {
+      background:#fff; border:1px solid var(--border,#e5e7eb); border-radius:14px;
+      padding:16px 18px; margin-bottom:22px;
+    }
+    .refuerzos-title { font-size:13px; font-weight:700; color:var(--text-dark,#1E1B3A); display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+    .refuerzos-title i { color:#D97706; }
+    .refuerzos-list { display:flex; flex-direction:column; gap:8px; }
+    .refuerzo-item {
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      padding:10px 12px; border-radius:10px; font-size:13px;
+      border:1px solid transparent;
+    }
+    .refuerzo-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+    .refuerzo-nombre { font-weight:600; color:var(--text-dark,#1E1B3A); }
+    .refuerzo-estado { font-weight:600; }
+    .refuerzo-fecha { color:var(--text-muted,#6B7280); margin-left:auto; display:inline-flex; align-items:center; gap:5px; }
+    .refuerzo-prox { background:#FFF7ED; border-color:#FED7AA; }
+    .refuerzo-prox .refuerzo-dot    { background:#D97706; }
+    .refuerzo-prox .refuerzo-estado { color:#D97706; }
+    .refuerzo-venc { background:#FEF2F2; border-color:#FECACA; }
+    .refuerzo-venc .refuerzo-dot    { background:#DC2626; }
+    .refuerzo-venc .refuerzo-estado { color:#DC2626; }
+    .refuerzos-ok { display:flex; align-items:center; gap:8px; font-size:13px; color:#059669; font-weight:500; }
+    .refuerzos-ok i { font-size:16px; }
+
+    /* ── Tabla genérica de ficha (Facturas · Signos vitales · Laboratorio) ── */
+    .ficha-table-wrap {
+      background:#fff; border:1.5px solid var(--border,#E8E4FF); border-radius:14px;
+      overflow-x:auto; box-shadow:0 2px 10px rgba(108,92,231,.05);
+    }
+    .ficha-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .ficha-table th {
+      text-align:left; font-size:11px; font-weight:700; letter-spacing:.3px; text-transform:uppercase;
+      color:var(--text-muted,#8E87B3); padding:14px 16px; background:#FAFAFF;
+      border-bottom:1.5px solid var(--border,#E8E4FF); white-space:nowrap;
+    }
+    .ficha-table td {
+      padding:13px 16px; color:var(--text-dark,#1E1B3A);
+      border-bottom:1px solid var(--border,#E8E4FF); vertical-align:top;
+    }
+    .ficha-table tbody tr:last-child td { border-bottom:none; }
+    .ficha-table tbody tr { transition:background .15s; }
+    .ficha-table tbody tr:hover td { background:#FAFAFF; }
+    .ft-strong { font-weight:600; }
+    .ft-obs { color:var(--text-muted,#8E87B3); max-width:280px; }
+    .ft-saldo-pend { color:#D97706; font-weight:700; }
+    .vitales-table { font-size:12.5px; }
+    .vitales-table th, .vitales-table td { padding:12px 12px; }
+
+    /* Badges de estado — Facturas */
+    .fstat-badge, .lstat-badge {
+      display:inline-block; padding:4px 11px; border-radius:999px;
+      font-size:11px; font-weight:700; white-space:nowrap;
+    }
+    .fbadge-pagada    { background:#ECFDF5; color:#059669; }
+    .fbadge-pendiente { background:#FFF7ED; color:#D97706; }
+    .fbadge-anulada   { background:#F3F4F6; color:#6B7280; }
+    /* Badges de estado — Laboratorio */
+    .lbadge-listo     { background:#ECFDF5; color:#059669; }
+    .lbadge-proceso   { background:#EFF6FF; color:#2563EB; }
+    .lbadge-pendiente { background:#FFF7ED; color:#D97706; }
+    .lbadge-cancel    { background:#F3F4F6; color:#6B7280; }
+
+    /* ── Panel de Peso ── */
+    .peso-card {
+      background:#fff; border:1.5px solid var(--border,#E8E4FF); border-radius:16px;
+      padding:18px 16px; box-shadow:0 2px 10px rgba(108,92,231,.05);
+    }
+    .peso-list { display:flex; flex-direction:column; gap:8px; }
+    .peso-item {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:#fff; border:1.5px solid var(--border,#E8E4FF); border-radius:10px;
+      padding:11px 15px; font-size:13px;
+    }
+    .peso-item-date { color:var(--text-muted,#8E87B3); display:inline-flex; align-items:center; gap:7px; }
+    .peso-item-val  { font-weight:700; color:var(--purple-1,#6C5CE7); }
   </style>
 }
 
@@ -174,6 +281,7 @@
 
     <!-- Tab Bar -->
     <nav class="tab-bar">
+      @* Orden: general (Resumen/Citas/Historial) -> clinico (vitales, peso, vacunas, recetas, tratamientos, lab) -> Facturas (dinero) al final *@
       <button class="tab-btn active" onclick="switchTab('resumen', this)">
         <i class="bi bi-grid-1x2"></i> Resumen
       </button>
@@ -184,6 +292,18 @@
       <button class="tab-btn" onclick="switchTab('historial', this)">
         <i class="bi bi-clock-history"></i> Historial
       </button>
+      <button class="tab-btn" onclick="switchTab('vitales', this)">
+        <i class="bi bi-heart-pulse"></i> Signos vitales
+        <span class="tab-count">@Model.SignosVitales.Count</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('peso', this)">
+        <i class="bi bi-graph-up"></i> Peso
+        <span class="tab-count">@Model.HistorialPeso.Count</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('vacunas', this)">
+        <i class="bi bi-shield-check"></i> Vacunas
+        <span class="tab-count">@Model.TotalVacunas</span>
+      </button>
       <button class="tab-btn" onclick="switchTab('recetas', this)">
         <i class="bi bi-file-earmark-medical"></i> Recetas
       </button>
@@ -191,9 +311,13 @@
         <i class="bi bi-activity"></i> Tratamientos
         <span class="tab-count">@Model.TotalTratamientos</span>
       </button>
-      <button class="tab-btn" onclick="switchTab('vacunas', this)">
-        <i class="bi bi-shield-check"></i> Vacunas
-        <span class="tab-count">@Model.TotalVacunas</span>
+      <button class="tab-btn" onclick="switchTab('laboratorio', this)">
+        <i class="bi bi-eyedropper"></i> Laboratorio
+        <span class="tab-count">@Model.TotalLaboratorios</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('facturas', this)">
+        <i class="bi bi-receipt"></i> Facturas
+        <span class="tab-count">@Model.TotalFacturas</span>
       </button>
     </nav>
 
@@ -391,7 +515,45 @@
 
       <!-- ═══ VACUNAS ═══ -->
       <div class="tab-panel" id="tab-vacunas">
-        <div class="section-title">Cartilla de Vacunación</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div class="section-title" style="margin-bottom:0;">Cartilla de Vacunación</div>
+          @if ((ficha?.masc_Id ?? 0) > 0)
+          {
+            <button type="button" class="btn-certificado"
+                    onclick="window.open('@Url.Action("Certificado", "PerfilMedico")?mascId=@(ficha.masc_Id)', '_blank')">
+              <i class="bi bi-file-earmark-medical"></i> Certificado de vacunación
+            </button>
+          }
+        </div>
+
+        @{
+          var refuerzos = Model.Vacunas
+              .Where(v => v.EstadoVacuna == "Próxima" || v.EstadoVacuna == "Vencida")
+              .ToList();
+        }
+        <div class="refuerzos-box" style="margin-top:16px;">
+          <div class="refuerzos-title"><i class="bi bi-bell-fill"></i> Próximos refuerzos</div>
+          @if (refuerzos.Any())
+          {
+            <div class="refuerzos-list">
+              @foreach (var v in refuerzos)
+              {
+                var venc = v.EstadoVacuna == "Vencida";
+                <div class="refuerzo-item @(venc ? "refuerzo-venc" : "refuerzo-prox")">
+                  <span class="refuerzo-dot"></span>
+                  <span class="refuerzo-nombre">@v.VacunaNombre</span>
+                  <span class="refuerzo-estado">@(venc ? "Vencida — requiere refuerzo" : "Próxima a vencer")</span>
+                  <span class="refuerzo-fecha"><i class="bi bi-calendar-event"></i> @(v.FechaProxima?.ToString("dd MMM yyyy") ?? "—")</span>
+                </div>
+              }
+            </div>
+          }
+          else
+          {
+            <div class="refuerzos-ok"><i class="bi bi-check-circle-fill"></i> Todas las vacunas al día — sin refuerzos próximos.</div>
+          }
+        </div>
+
         <div class="vacunas-grid">
           @foreach (var v in Model.Vacunas)
           {
@@ -420,6 +582,169 @@
             </div>
           }
         </div>
+      </div>
+
+      <!-- ═══ FACTURAS ═══ -->
+      <div class="tab-panel" id="tab-facturas">
+        <div class="section-title">Facturas de la mascota</div>
+        @if (Model.Facturas.Any())
+        {
+          <div class="ficha-table-wrap">
+            <table class="ficha-table">
+              <thead>
+                <tr>
+                  <th>N° Factura</th>
+                  <th>Fecha</th>
+                  <th style="text-align:right">Total</th>
+                  <th style="text-align:right">Saldo</th>
+                  <th style="text-align:center">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var f in Model.Facturas)
+                {
+                  <tr>
+                    <td class="ft-strong">@f.Numero</td>
+                    <td>@f.Fecha.ToString("dd MMM yyyy")</td>
+                    <td style="text-align:right">@f.Total.ToString("C")</td>
+                    <td style="text-align:right" class="@(f.Saldo > 0 ? "ft-saldo-pend" : "")">@f.Saldo.ToString("C")</td>
+                    <td style="text-align:center"><span class="fstat-badge @FacturaBadgeCss(f.Estado)">@f.Estado</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+        else
+        {
+          <div class="empty-state">
+            <i class="bi bi-receipt"></i>
+            <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin facturas</div>
+            <p>Esta mascota todavía no tiene facturas registradas.</p>
+          </div>
+        }
+      </div>
+
+      <!-- ═══ SIGNOS VITALES ═══ -->
+      <div class="tab-panel" id="tab-vitales">
+        <div class="section-title">Signos vitales por consulta</div>
+        @if (Model.SignosVitales.Any())
+        {
+          <div class="ficha-table-wrap">
+            <table class="ficha-table vitales-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th style="text-align:center">Temp. (°C)</th>
+                  <th style="text-align:center">F. Cardíaca</th>
+                  <th style="text-align:center">F. Respiratoria</th>
+                  <th style="text-align:center">Peso (kg)</th>
+                  <th>Mucosas</th>
+                  <th style="text-align:center">Llenado capilar (s)</th>
+                  <th style="text-align:center">Escala dolor</th>
+                  <th style="text-align:center">Cond. corporal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var s in Model.SignosVitales)
+                {
+                  <tr>
+                    <td class="ft-strong">@s.Fecha.ToString("dd MMM yyyy")</td>
+                    <td style="text-align:center">@(s.Temperatura?.ToString("0.#") ?? "—")</td>
+                    <td style="text-align:center">@(s.FrecuenciaCardiaca?.ToString() ?? "—")</td>
+                    <td style="text-align:center">@(s.FrecuenciaRespiratoria?.ToString() ?? "—")</td>
+                    <td style="text-align:center">@(s.Peso?.ToString("0.##") ?? "—")</td>
+                    <td>@(string.IsNullOrWhiteSpace(s.Mucosas) ? "—" : s.Mucosas)</td>
+                    <td style="text-align:center">@(s.LlenadoCapilar?.ToString("0.#") ?? "—")</td>
+                    <td style="text-align:center">@(s.EscalaDolor?.ToString() ?? "—")</td>
+                    <td style="text-align:center">@(s.CondicionCorporal?.ToString() ?? "—")</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+        else
+        {
+          <div class="empty-state">
+            <i class="bi bi-heart-pulse"></i>
+            <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin signos vitales registrados</div>
+            <p>Aún no se han tomado signos vitales en una consulta.</p>
+          </div>
+        }
+      </div>
+
+      <!-- ═══ PESO ═══ -->
+      <div class="tab-panel" id="tab-peso">
+        <div class="section-title">Evolución del peso</div>
+        @if (Model.HistorialPeso.Any())
+        {
+          <div class="peso-card">
+            <div id="pesoChart" style="min-height:320px"></div>
+          </div>
+
+          <div class="section-title" style="margin-top:22px">Registros de peso</div>
+          <div class="peso-list">
+            @foreach (var p in Model.HistorialPeso.OrderByDescending(x => x.Fecha))
+            {
+              <div class="peso-item">
+                <span class="peso-item-date"><i class="bi bi-calendar-event"></i> @p.Fecha.ToString("dd MMM yyyy")</span>
+                <span class="peso-item-val">@p.Peso.ToString("0.##") kg</span>
+              </div>
+            }
+          </div>
+        }
+        else
+        {
+          <div class="empty-state">
+            <i class="bi bi-graph-up"></i>
+            <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin registros de peso</div>
+            <p>Todavía no hay mediciones de peso para graficar.</p>
+          </div>
+        }
+      </div>
+
+      <!-- ═══ LABORATORIO ═══ -->
+      <div class="tab-panel" id="tab-laboratorio">
+        <div class="section-title">Estudios de laboratorio</div>
+        @if (Model.Laboratorios.Any())
+        {
+          <div class="ficha-table-wrap">
+            <table class="ficha-table">
+              <thead>
+                <tr>
+                  <th>Examen</th>
+                  <th>Tipo</th>
+                  <th style="text-align:center">Estado</th>
+                  <th>Solicitud</th>
+                  <th>Resultado</th>
+                  <th>Observaciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var l in Model.Laboratorios)
+                {
+                  <tr>
+                    <td class="ft-strong">@l.Examen</td>
+                    <td>@(string.IsNullOrWhiteSpace(l.Tipo) ? "—" : l.Tipo)</td>
+                    <td style="text-align:center"><span class="lstat-badge @LabBadgeCss(l.Estado)">@l.Estado</span></td>
+                    <td>@(l.FechaSolicitud?.ToString("dd MMM yyyy") ?? "—")</td>
+                    <td>@(l.FechaResultado?.ToString("dd MMM yyyy") ?? "—")</td>
+                    <td class="ft-obs">@(string.IsNullOrWhiteSpace(l.Observaciones) ? "—" : l.Observaciones)</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+        else
+        {
+          <div class="empty-state">
+            <i class="bi bi-eyedropper"></i>
+            <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin estudios de laboratorio</div>
+            <p>No hay exámenes de laboratorio solicitados para esta mascota.</p>
+          </div>
+        }
       </div>
 
     </div><!-- /content-area -->
@@ -521,6 +846,52 @@
         if (!input.contains(e.target) && !results.contains(e.target))
           results.style.display = 'none';
       });
+    })();
+  </script>
+
+  <!-- Gráfica de evolución del peso (ApexCharts) -->
+  <script>
+    (function () {
+      var pesoLabels  = @Html.Raw(Json.Serialize(Model.HistorialPeso.Select(p => p.Fecha.ToString("dd MMM yyyy"))));
+      var pesoValores = @Html.Raw(Json.Serialize(Model.HistorialPeso.Select(p => p.Peso)));
+      var pesoChart = null;
+
+      function renderPesoChart() {
+        var el = document.getElementById('pesoChart');
+        if (!el || typeof ApexCharts === 'undefined' || !pesoValores.length) return;
+        if (pesoChart) { pesoChart.render(); return; } // ya creada
+        pesoChart = new ApexCharts(el, {
+          chart:   { type: 'area', height: 320, fontFamily: 'DM Sans, sans-serif', toolbar: { show: false }, zoom: { enabled: false } },
+          series:  [{ name: 'Peso', data: pesoValores }],
+          colors:  ['#6C5CE7'],
+          stroke:  { curve: 'smooth', width: 3 },
+          markers: { size: 5, colors: ['#fff'], strokeColors: '#6C5CE7', strokeWidth: 2, hover: { size: 7 } },
+          fill:    { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.28, opacityTo: 0, stops: [0, 100] } },
+          dataLabels: { enabled: false },
+          grid:    { borderColor: '#E8E4FF', strokeDashArray: 4, padding: { left: 6, right: 12 } },
+          xaxis: {
+            categories: pesoLabels,
+            labels: { style: { colors: '#8E87B3', fontSize: '11px' }, rotate: -30, rotateAlways: false },
+            axisBorder: { color: '#E8E4FF' }, axisTicks: { color: '#E8E4FF' }, tooltip: { enabled: false }
+          },
+          yaxis: {
+            labels: { style: { colors: '#8E87B3', fontSize: '11px' }, formatter: function (v) { return v.toFixed(1); } },
+            title:  { text: 'kg', style: { color: '#8E87B3', fontSize: '11px', fontWeight: 600 } }
+          },
+          tooltip: { y: { formatter: function (v) { return v + ' kg'; } } }
+        });
+        pesoChart.render();
+      }
+
+      // Render perezoso: ApexCharts no mide bien dentro de un panel oculto,
+      // así que la gráfica se crea la primera vez que se abre la pestaña "Peso".
+      if (typeof window.switchTab === 'function') {
+        var _origSwitchTab = window.switchTab;
+        window.switchTab = function (id, btn) {
+          _origSwitchTab(id, btn);
+          if (id === 'peso') renderPesoChart();
+        };
+      }
     })();
   </script>
 }
