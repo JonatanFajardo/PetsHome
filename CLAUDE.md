@@ -1,5 +1,15 @@
 # PetsHome — Guía para Claude Code
 
+## Nombres de rama / commits (REGLA)
+**NUNCA poner "openvpm" (ni el nombre de NINGÚN otro proyecto de referencia) en el nombre de una RAMA, commit o cualquier artefacto del repo.** PetsHome es el proyecto real; OpenVPM es solo la referencia interna que se consulta, NO parte de este producto. Nombrar las ramas por FUNCIONALIDAD: `feature/ficha-paciente`, `feature/facturacion`, `feature/pagos` — jamás `feature/...-openvpm` ni similar.
+
+## El ORDEN importa SIEMPRE (pensarlo proactivamente)
+En TODO lo que se construye o presenta, el orden/agrupación NO es trivial: pensarlo desde el inicio, sin que el usuario lo tenga que pedir.
+- Aplica a: pestañas, items de menú/sidebar, columnas de tabla, opciones de una lista, campos de un formulario, pasos de un flujo, botones, secciones de pantalla.
+- **Nunca "appendear" al final sin pensar.** Al agregar algo nuevo, ubicarlo en su lugar lógico dentro del grupo correcto, no al final por comodidad.
+- Agrupar por afinidad y ordenar por lógica de uso: general → específico, clínico junto, y lo de DINERO (facturas/pagos) al final. Ej. ficha: Resumen → bloque clínico → Facturas al final.
+- **Guiarse por el orden de OpenVPM** cuando exista el equivalente (p.ej. su ficha pone Invoices al final).
+
 ## Estilo de respuesta
 Responder corto, en una sola frase cuando se pueda. Ampliar solo si el usuario lo pide.
 
@@ -9,6 +19,8 @@ Responder corto, en una sola frase cuando se pueda. Ampliar solo si el usuario l
 - **Opciones en lista de 1 línea** con etiqueta de esfuerzo `[poco]/[medio]/[mucho]` y marcar la recomendada con `★`.
 - **Tablas compactas** en vez de párrafos cuando se comparan cosas.
 - Mínimo texto alrededor: una frase antes del visual, una pregunta concreta al final. Nada de explicaciones largas salvo que las pida.
+- **NO usar símbolos pequeños decorativos** (①②③ círculos, ★, emoji): se ven diminutos. Escribir el número directo (1, 2, 3). Para recomendar, poner "(recomendado)" en texto.
+- **Ser BREVE de verdad.** El usuario tarda si hay mucha info. Menos bloques, palabras simples, al grano. Si dudas entre más o menos, menos.
 
 ## Mínima interferencia (aplica a TODO, no solo dropdowns)
 Interferir lo menos posible en lo que ya está estructurado. Antes de construir algo nuevo, reutilizar lo que ya existe y funciona.
