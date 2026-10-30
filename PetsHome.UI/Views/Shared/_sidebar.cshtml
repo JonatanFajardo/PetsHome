@@ -314,7 +314,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de clientes") || tiene("Listado de servicios") || tiene("Facturacion"))
+            @if (tiene("Listado de clientes") || tiene("Listado de servicios") || tiene("Facturacion") || tiene("Reportes"))
             {
                 <li class="menu">
                     <a href="#Veterinaria" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -338,6 +338,10 @@
                         @if (tiene("Facturacion"))
                         {
                             <li>@Html.ActionLink("Facturación", "Index", "Facturacion")</li>
+                        }
+                        @if (tiene("Reportes"))
+                        {
+                            <li>@Html.ActionLink("📊 Reportes", "Index", "Reportes")</li>
                         }
                     </ul>
                 </li>

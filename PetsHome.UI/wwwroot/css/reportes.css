@@ -1,0 +1,203 @@
+/* ==========================================================
+   Reportes — pantalla de reportes (Ingresos · Citas · Servicios · Inventario)
+   Paleta morada de PetsHome. Todo con prefijo .rep- para no colisionar.
+   ========================================================== */
+.rep-root {
+    --purple:    #6C5CE7;
+    --purple-dk: #5a4bd1;
+    --purple-lt: #ede9ff;
+    --green:     #00b894;
+    --green-lt:  #d4f5ee;
+    --amber:     #e17055;
+    --amber-lt:  #fff3d4;
+    --blue:      #0984e3;
+    --blue-lt:   #d6ecff;
+    --red:       #d63031;
+    --red-lt:    #ffe5e5;
+    --card:      #ffffff;
+    --border:    #e8eaf2;
+    --text:      #2d3436;
+    --muted:     #8a92a6;
+    --bg-soft:   #f4f5fb;
+    --shadow-sm: 0 2px 8px rgba(108,92,231,.07);
+    --shadow-md: 0 6px 24px rgba(108,92,231,.13);
+    --shadow-lg: 0 12px 40px rgba(108,92,231,.18);
+    --radius:    14px;
+    width: 100%;
+}
+
+.rep-root *, .rep-root *::before, .rep-root *::after { box-sizing: border-box; }
+
+/* ─── HEADER ─────────────────────────────────────────── */
+.rep-header {
+    background: linear-gradient(135deg, var(--purple) 0%, #8b7cf6 60%, #a78bfa 100%);
+    border-radius: 18px;
+    padding: 20px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 18px;
+}
+.rep-header-title { display: flex; align-items: center; gap: 14px; min-width: 200px; }
+.rep-header-icon {
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: #fff; flex-shrink: 0;
+}
+.rep-header-title h1 { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -.3px; margin: 0; }
+.rep-header-title span { font-size: 12px; color: rgba(255,255,255,.78); font-weight: 500; display: block; margin-top: 2px; }
+
+/* ─── CONTROLES DE FECHA ─────────────────────────────── */
+.rep-dates { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.rep-date-field { display: flex; flex-direction: column; gap: 4px; }
+.rep-date-field label {
+    font-size: 11px; font-weight: 700; color: rgba(255,255,255,.85);
+    text-transform: uppercase; letter-spacing: .5px;
+}
+.rep-date-field input {
+    background: #fff; border: none; border-radius: 10px;
+    padding: 8px 12px; font-size: 13px; font-weight: 600; color: var(--purple);
+    box-shadow: 0 2px 8px rgba(0,0,0,.08); outline: none; cursor: pointer;
+}
+
+/* ─── TABS ───────────────────────────────────────────── */
+.rep-tabs {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 6px; margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+}
+.rep-tab {
+    border: none; background: transparent; cursor: pointer;
+    font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--muted);
+    padding: 10px 18px; border-radius: 9px; transition: all .18s;
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.rep-tab:hover { color: var(--purple); background: var(--purple-lt); }
+.rep-tab.active { color: #fff; background: var(--purple); box-shadow: var(--shadow-sm); }
+.rep-tab i { font-size: 14px; }
+
+/* ─── PANELES ────────────────────────────────────────── */
+.rep-panel { display: none; }
+.rep-panel.active { display: block; animation: repFade .3s ease; }
+@keyframes repFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── TOOLBAR (Exportar / Imprimir) ──────────────────── */
+.rep-toolbar { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 16px; }
+.rep-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 10px; padding: 9px 16px; font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: all .18s;
+    box-shadow: var(--shadow-sm);
+}
+.rep-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.rep-btn i { font-size: 13px; }
+.rep-btn-primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+.rep-btn-primary:hover { background: var(--purple-dk); }
+
+/* ─── KPI CARDS ──────────────────────────────────────── */
+.rep-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+.rep-kpi-grid.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
+.rep-kpi {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+    transition: transform .25s, box-shadow .25s;
+}
+.rep-kpi:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.rep-kpi::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
+.rep-kpi.purple::after { background: var(--purple); }
+.rep-kpi.green::after  { background: var(--green); }
+.rep-kpi.amber::after  { background: var(--amber); }
+.rep-kpi.blue::after   { background: var(--blue); }
+.rep-kpi.red::after    { background: var(--red); }
+.rep-kpi-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.rep-kpi-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+.rep-kpi-icon {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.rep-kpi.purple .rep-kpi-icon { background: var(--purple-lt); color: var(--purple); }
+.rep-kpi.green  .rep-kpi-icon { background: var(--green-lt);  color: var(--green); }
+.rep-kpi.amber  .rep-kpi-icon { background: var(--amber-lt);  color: var(--amber); }
+.rep-kpi.blue   .rep-kpi-icon { background: var(--blue-lt);   color: var(--blue); }
+.rep-kpi.red    .rep-kpi-icon { background: var(--red-lt);    color: var(--red); }
+.rep-kpi-value {
+    font-size: 34px; font-weight: 800; line-height: 1; letter-spacing: -1px;
+    color: var(--text); margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+}
+.rep-kpi-sub { font-size: 12px; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.rep-trend { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.rep-trend.up   { background: var(--green-lt); color: var(--green); }
+.rep-trend.down { background: var(--red-lt);   color: var(--red); }
+.rep-trend.neu  { background: var(--amber-lt); color: var(--amber); }
+
+/* ─── CARD genérica (gráficas / tablas) ──────────────── */
+.rep-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 20px;
+}
+.rep-card-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -.2px; }
+.rep-card-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.rep-chart { min-height: 300px; }
+
+/* ─── TABLAS ─────────────────────────────────────────── */
+.rep-table-wrap { overflow-x: auto; }
+.rep-table { width: 100%; border-collapse: collapse; }
+.rep-table thead th {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    color: var(--muted); padding: 0 10px 11px; border-bottom: 1px solid var(--border); text-align: left;
+    white-space: nowrap;
+}
+.rep-table tbody td {
+    font-size: 13px; padding: 11px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text);
+}
+.rep-table tbody tr:last-child td { border-bottom: none; }
+.rep-table tbody tr:hover { background: #f8f7ff; }
+.rep-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.rep-table .strong { font-weight: 700; }
+
+/* chip de stock */
+.rep-stock-chip { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rep-stock-chip.low { background: var(--red-lt); color: var(--red); }
+.rep-stock-chip.ok  { background: var(--amber-lt); color: var(--amber); }
+
+/* ─── NOTA / ESTADOS ─────────────────────────────────── */
+.rep-note {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--amber-lt); color: #8a5a2b; border: 1px solid #f3dcae;
+    border-radius: 10px; padding: 12px 16px; font-size: 12.5px; font-weight: 500; margin-bottom: 18px;
+}
+.rep-note i { margin-top: 2px; }
+.rep-empty, .rep-loading { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; }
+.rep-empty i, .rep-loading i { display: block; font-size: 28px; margin-bottom: 10px; opacity: .6; }
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 992px) {
+    .rep-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .rep-header { flex-direction: column; align-items: stretch; }
+    .rep-dates { justify-content: flex-start; }
+}
+@media (max-width: 576px) {
+    .rep-kpi-grid, .rep-kpi-grid.cols-2 { grid-template-columns: 1fr; }
+}
+
+/* ─── IMPRESIÓN ──────────────────────────────────────── */
+@media print {
+    .sidebar-wrapper, #sidebar, .navbar, .header, .footer,
+    .rep-tabs, .rep-toolbar { display: none !important; }
+    /* El rango de fechas se mantiene visible en el impreso para dar contexto */
+    .rep-dates input { border: 1px solid rgba(255,255,255,.4); }
+    .main-content, #content { margin: 0 !important; width: 100% !important; }
+    .rep-panel { display: none !important; }
+    .rep-panel.active { display: block !important; }
+    .rep-header { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .rep-kpi, .rep-card { box-shadow: none; break-inside: avoid; }
+    body { background: #fff !important; }
+}
