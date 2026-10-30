@@ -1,0 +1,179 @@
+@{
+    ViewData["Title"]           = "Reportes";
+    Layout                      = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Reportes";
+    ViewData["UseApexCharts"]   = true;   // el layout carga ApexCharts cuando esto es true
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/reportes.css" asp-append-version="true" />
+}
+
+<div class="col-12 rep-root">
+
+    @* ═══════════════════ HEADER + RANGO DE FECHAS ═══════════════════ *@
+    <div class="rep-header">
+        <div class="rep-header-title">
+            <div class="rep-header-icon"><i class="fas fa-chart-line"></i></div>
+            <div>
+                <h1>Reportes</h1>
+                <span>Ingresos, citas, servicios e inventario</span>
+            </div>
+        </div>
+        <div class="rep-dates">
+            <div class="rep-date-field">
+                <label for="repDesde">Desde</label>
+                <input type="date" id="repDesde" />
+            </div>
+            <div class="rep-date-field">
+                <label for="repHasta">Hasta</label>
+                <input type="date" id="repHasta" />
+            </div>
+        </div>
+    </div>
+
+    @* ═══════════════════ PESTAÑAS ═══════════════════ *@
+    <div class="rep-tabs" role="tablist">
+        <button type="button" class="rep-tab active" data-tab="ingresos"><i class="fas fa-coins"></i> Ingresos</button>
+        <button type="button" class="rep-tab" data-tab="citas"><i class="fas fa-calendar-check"></i> Citas</button>
+        <button type="button" class="rep-tab" data-tab="servicios"><i class="fas fa-briefcase-medical"></i> Servicios</button>
+        <button type="button" class="rep-tab" data-tab="inventario"><i class="fas fa-boxes-stacked"></i> Inventario</button>
+    </div>
+
+    @* ─────────────── PANEL: INGRESOS ─────────────── *@
+    <div class="rep-panel active" id="panel-ingresos" role="tabpanel">
+        <div class="rep-toolbar">
+            <button type="button" class="rep-btn" data-export="ingresos"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+            <button type="button" class="rep-btn rep-btn-primary" data-print="1"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+
+        <div class="rep-kpi-grid cols-2">
+            <div class="rep-kpi purple">
+                <div class="rep-kpi-head">
+                    <div class="rep-kpi-label">Total del período</div>
+                    <div class="rep-kpi-icon"><i class="fas fa-coins"></i></div>
+                </div>
+                <div class="rep-kpi-value" id="ing-total">L. 0.00</div>
+                <div class="rep-kpi-sub" id="ing-compare"></div>
+            </div>
+            <div class="rep-kpi blue">
+                <div class="rep-kpi-head">
+                    <div class="rep-kpi-label">Período anterior</div>
+                    <div class="rep-kpi-icon"><i class="fas fa-clock-rotate-left"></i></div>
+                </div>
+                <div class="rep-kpi-value" id="ing-anterior">L. 0.00</div>
+                <div class="rep-kpi-sub">Mismo número de días previos</div>
+            </div>
+        </div>
+
+        <div class="rep-card">
+            <div class="rep-card-title">Ingresos por día</div>
+            <div class="rep-card-sub">Evolución del monto facturado en el período</div>
+            <div class="rep-chart" id="ing-chart"></div>
+        </div>
+    </div>
+
+    @* ─────────────── PANEL: CITAS ─────────────── *@
+    <div class="rep-panel" id="panel-citas" role="tabpanel">
+        <div class="rep-toolbar">
+            <button type="button" class="rep-btn" data-export="citas"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+            <button type="button" class="rep-btn rep-btn-primary" data-print="1"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+
+        <div class="rep-kpi-grid">
+            <div class="rep-kpi purple">
+                <div class="rep-kpi-head"><div class="rep-kpi-label">Total</div><div class="rep-kpi-icon"><i class="fas fa-calendar-days"></i></div></div>
+                <div class="rep-kpi-value" id="cit-total">0</div>
+                <div class="rep-kpi-sub">Citas del período</div>
+            </div>
+            <div class="rep-kpi green">
+                <div class="rep-kpi-head"><div class="rep-kpi-label">Atendidas</div><div class="rep-kpi-icon"><i class="fas fa-check"></i></div></div>
+                <div class="rep-kpi-value" id="cit-atendidas">0</div>
+                <div class="rep-kpi-sub">Consultas completadas</div>
+            </div>
+            <div class="rep-kpi amber">
+                <div class="rep-kpi-head"><div class="rep-kpi-label">No-show</div><div class="rep-kpi-icon"><i class="fas fa-user-slash"></i></div></div>
+                <div class="rep-kpi-value" id="cit-noshow">0</div>
+                <div class="rep-kpi-sub">No se presentaron</div>
+            </div>
+            <div class="rep-kpi red">
+                <div class="rep-kpi-head"><div class="rep-kpi-label">Canceladas</div><div class="rep-kpi-icon"><i class="fas fa-ban"></i></div></div>
+                <div class="rep-kpi-value" id="cit-canceladas">0</div>
+                <div class="rep-kpi-sub">Canceladas en el período</div>
+            </div>
+        </div>
+
+        <div class="rep-card">
+            <div class="rep-card-title">Citas por doctor</div>
+            <div class="rep-card-sub">Distribución de citas atendidas por veterinario</div>
+            <div class="rep-table-wrap">
+                <table class="rep-table">
+                    <thead><tr><th>Doctor</th><th class="num">Cantidad</th></tr></thead>
+                    <tbody id="cit-doctores"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @* ─────────────── PANEL: SERVICIOS ─────────────── *@
+    <div class="rep-panel" id="panel-servicios" role="tabpanel">
+        <div class="rep-toolbar">
+            <button type="button" class="rep-btn" data-export="servicios"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+            <button type="button" class="rep-btn rep-btn-primary" data-print="1"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+
+        <div class="rep-card">
+            <div class="rep-card-title">Servicios más solicitados</div>
+            <div class="rep-card-sub">Cantidad de veces que se prestó cada servicio</div>
+            <div class="rep-chart" id="serv-chart"></div>
+        </div>
+
+        <div class="rep-card">
+            <div class="rep-card-title">Detalle de servicios</div>
+            <div class="rep-card-sub">Cantidad e ingreso generado por servicio</div>
+            <div class="rep-table-wrap">
+                <table class="rep-table">
+                    <thead><tr><th>Servicio</th><th class="num">Cantidad</th><th class="num">Ingreso</th></tr></thead>
+                    <tbody id="serv-tabla"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @* ─────────────── PANEL: INVENTARIO ─────────────── *@
+    <div class="rep-panel" id="panel-inventario" role="tabpanel">
+        <div class="rep-toolbar">
+            <button type="button" class="rep-btn" data-export="inventario"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+            <button type="button" class="rep-btn rep-btn-primary" data-print="1"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+
+        <div class="rep-note">
+            <i class="fas fa-circle-info"></i>
+            <span>Los reportes de productos <strong>vencidos o por vencer</strong> no están disponibles todavía: PetsHome aún no guarda la fecha de caducidad de los productos.</span>
+        </div>
+
+        <div class="rep-card">
+            <div class="rep-card-title">Productos con stock bajo</div>
+            <div class="rep-card-sub">Artículos cuyo stock está en o por debajo del mínimo definido</div>
+            <div class="rep-table-wrap">
+                <table class="rep-table">
+                    <thead><tr><th>Producto</th><th class="num">Stock</th><th class="num">Mínimo</th></tr></thead>
+                    <tbody id="inv-tabla"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        window._urls = {
+            ingresos:   '@Url.Action("Ingresos", "Reportes")',
+            citas:      '@Url.Action("Citas", "Reportes")',
+            servicios:  '@Url.Action("Servicios", "Reportes")',
+            inventario: '@Url.Action("Inventario", "Reportes")'
+        };
+    </script>
+    <script src="~/js/pages/reportes.js" asp-append-version="true"></script>
+}
