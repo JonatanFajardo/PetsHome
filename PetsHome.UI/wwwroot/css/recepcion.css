@@ -70,14 +70,39 @@
 .rc-prio-normal { background: #eef2ff; color: #4f46e5; }
 .rc-prio-urgente { background: #fef2f2; color: #dc2626; }
 
-/* Badges estado */
-.rc-estado { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; }
-.rc-estado-espera { background: #fffbeb; color: #b45309; }
-.rc-estado-atendiendo { background: #ecfeff; color: #0e7490; }
+/* Badges estado — los 7 estados (paridad con OpenVPM) */
+.rc-estado { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.rc-estado-agendada   { background: #f3f4f6; color: #4b5563; }  /* gris  */
+.rc-estado-confirmada { background: #eff6ff; color: #1d4ed8; }  /* azul  */
+.rc-estado-espera     { background: #fffbeb; color: #b45309; }  /* ámbar */
+.rc-estado-atencion   { background: #f5f3ff; color: #6d28d9; }  /* morado */
+.rc-estado-finalizada { background: #f0fdf4; color: #15803d; }  /* verde */
+.rc-estado-noasistio  { background: #fef2f2; color: #b91c1c; }  /* rojo tenue */
+.rc-estado-cancelada  { background: #fef2f2; color: #991b1b; text-decoration: line-through; } /* rojo / tachado */
+/* compat con clases antiguas */
+.rc-estado-atendiendo { background: #f5f3ff; color: #6d28d9; }
 .rc-estado-completada { background: #f0fdf4; color: #15803d; }
-.rc-estado-cancelada { background: #f3f4f6; color: #6b7280; }
 
-.rc-acciones { text-align: center; }
+/* Acciones de transición por fila */
+.rc-acciones { text-align: right; white-space: nowrap; }
+.rc-acciones .rc-act + .rc-act { margin-left: 5px; }
+.rc-act {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border-radius: 8px; border: 1px solid transparent;
+  font-size: 12px; font-weight: 600; line-height: 1.2; cursor: pointer;
+  transition: filter .15s, background .15s;
+}
+.rc-act i { font-size: 12px; }
+.rc-act:hover { filter: brightness(.96); }
+.rc-act-confirmar { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.rc-act-llegada   { background: #ecfeff; color: #0e7490; border-color: #a5f3fc; }
+.rc-act-atender   { background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+.rc-act-finalizar { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+.rc-act-noasistio { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.rc-act-cancelar  { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+.rc-sin-acciones  { color: #d1d5db; }
+
+/* compat: botón de cancelar antiguo si quedara en el DOM */
 .rc-row-cancel {
   background: none; border: none; color: #d1d5db; cursor: pointer; font-size: 17px; line-height: 1;
   transition: color .15s;

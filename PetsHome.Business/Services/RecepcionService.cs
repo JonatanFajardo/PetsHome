@@ -130,22 +130,28 @@ namespace PetsHome.Business.Services
         }
 
         /// <summary>
-        /// Transiciona el estado de una visita. Devuelve true si el SP respondio exito.
+        /// Transiciona el estado de una visita a uno de los 7 estados. El SP valida la
+        /// transicion; aqui solo se pasa el estado destino y se propaga su resultado
+        /// (CodeStatus/MessageStatus) para que el front muestre el motivo si falla.
         /// </summary>
-        public async Task<bool> CambiarEstadoAsync(int citaId, string estado, int usuario)
+        public async Task<CambiarEstadoResultDto> CambiarEstadoAsync(int citaId, string estado, int usuario)
         {
             if (citaId <= 0 || string.IsNullOrWhiteSpace(estado))
-                return false;
+                return new CambiarEstadoResultDto { Ok = false, Mensaje = "Datos de la transicion invalidos." };
 
             try
             {
-                var res = await _repository.CambiarEstadoAsync(citaId, estado, usuario);
-                return res != null && res.Success;
+                var res = await _repository.CambiarEstadoAsync(citaId, estado.Trim(), usuario);
+                return new CambiarEstadoResultDto
+                {
+                    Ok = res != null && res.Success,
+                    Mensaje = res?.MessageStatus
+                };
             }
             catch (Exception error)
             {
                 _logger.LogError(error, error.Message);
-                return false;
+                return new CambiarEstadoResultDto { Ok = false, Mensaje = "Ocurrio un error al cambiar el estado." };
             }
         }
 

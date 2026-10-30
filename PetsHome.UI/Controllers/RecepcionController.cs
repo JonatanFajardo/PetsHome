@@ -129,8 +129,9 @@ namespace PetsHome.UI.Controllers
         }
 
         /// <summary>
-        /// POST /Recepcion/CambiarEstado -> transiciona una visita (cancelar, no asistio, etc.).
-        /// Devuelve { ok }.
+        /// POST /Recepcion/CambiarEstado -> transiciona una visita a cualquiera de los 7
+        /// estados. El SP valida la transicion; aqui solo se pasa el estado destino.
+        /// Devuelve { ok, mensaje }.
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> CambiarEstado([FromForm] int citaId, [FromForm] string estado)
@@ -141,8 +142,8 @@ namespace PetsHome.UI.Controllers
             if (!PantallaAuthorizeAttribute.TienePermiso(User, "Recepcion", "editar"))
                 return Json(new { ok = false, mensaje = "No tiene permiso para cambiar el estado." });
 
-            var ok = await _service.CambiarEstadoAsync(citaId, estado, CurrentUserId.Value);
-            return Json(new { ok });
+            var res = await _service.CambiarEstadoAsync(citaId, estado, CurrentUserId.Value);
+            return Json(new { ok = res.Ok, mensaje = res.Mensaje });
         }
     }
 }

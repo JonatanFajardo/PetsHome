@@ -2,7 +2,9 @@
    Recepción — tablero de sala de espera + check-in de visitas
    - Sala de espera: GET /Recepcion/SalaEspera (auto-refresh ~20s)
    - Nueva visita:   POST /Recepcion/CheckIn
-   - Cancelar:       POST /Recepcion/CambiarEstado  {estado:'Cancelada'}
+   - Transiciones:   POST /Recepcion/CambiarEstado {citaId, estado} donde estado
+                     es uno de los 7 (sin acento): Agendada, Confirmada, En espera,
+                     En atencion, Finalizada, No asistio, Cancelada.
    Rutas via window._urls. Degradación: si un endpoint falla, la
    pantalla no se rompe (muestra estado vacío / mensaje).
    ============================================================ */
@@ -48,13 +50,64 @@
     return '<span class="rc-prio rc-prio-normal">Normal</span>';
   }
 
+  // Normaliza un estado a minúsculas y sin acentos (para comparar).
+  function normEstado(e) {
+    return String(e == null ? '' : e).toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+  }
+
+  // Los 7 estados → etiqueta (CON acento, para mostrar) + clase CSS.
+  function estadoInfo(e) {
+    var n = normEstado(e);
+    if (n === 'agendada')                          return { label: 'Agendada',    cls: 'rc-estado-agendada' };
+    if (n === 'confirmada')                        return { label: 'Confirmada',  cls: 'rc-estado-confirmada' };
+    if (n === 'en espera' || n === 'espera')       return { label: 'En espera',   cls: 'rc-estado-espera' };
+    if (n === 'en atencion' || n === 'atencion' || n === 'atendiendo' || n.indexOf('consulta') >= 0)
+                                                   return { label: 'En atención', cls: 'rc-estado-atencion' };
+    if (n === 'finalizada' || n.indexOf('complet') >= 0)
+                                                   return { label: 'Finalizada',  cls: 'rc-estado-finalizada' };
+    if (n === 'no asistio' || n === 'noasistio')   return { label: 'No asistió',  cls: 'rc-estado-noasistio' };
+    if (n.indexOf('cancel') >= 0)                  return { label: 'Cancelada',   cls: 'rc-estado-cancelada' };
+    return { label: e || 'En espera', cls: 'rc-estado-espera' };
+  }
+
   function estadoBadge(e) {
-    var v = (e || '').toLowerCase();
-    var cls = 'rc-estado-espera';
-    if (v.indexOf('consulta') >= 0 || v.indexOf('atend') >= 0) cls = 'rc-estado-atendiendo';
-    else if (v.indexOf('complet') >= 0) cls = 'rc-estado-completada';
-    else if (v.indexOf('cancel') >= 0) cls = 'rc-estado-cancelada';
-    return '<span class="rc-estado ' + cls + '">' + escapeHtml(e || 'En espera') + '</span>';
+    var info = estadoInfo(e);
+    return '<span class="rc-estado ' + info.cls + '">' + escapeHtml(info.label) + '</span>';
+  }
+
+  // ───────── Acciones de transición (según el estado actual) ─────────
+  // destino = estado a ENVIAR (sin acento). El backend valida y puede rechazar.
+  var ACT = {
+    confirmar: { destino: 'Confirmada',  label: 'Confirmar',         icon: 'bi-check-circle',       cls: 'rc-act-confirmar' },
+    llegada:   { destino: 'En espera',   label: 'Registrar llegada', icon: 'bi-box-arrow-in-right', cls: 'rc-act-llegada' },
+    atender:   { destino: 'En atencion', label: 'Atender',           icon: 'bi-person-check',       cls: 'rc-act-atender' },
+    finalizar: { destino: 'Finalizada',  label: 'Finalizar',         icon: 'bi-check2-all',         cls: 'rc-act-finalizar' },
+    noAsistio: { destino: 'No asistio',  label: 'No asistió',        icon: 'bi-person-x',           cls: 'rc-act-noasistio', danger: true },
+    cancelar:  { destino: 'Cancelada',   label: 'Cancelar',          icon: 'bi-x-circle',           cls: 'rc-act-cancelar',  danger: true }
+  };
+  var ACCIONES = {
+    'agendada':    [ACT.confirmar, ACT.cancelar],
+    'confirmada':  [ACT.llegada, ACT.noAsistio, ACT.cancelar],
+    'en espera':   [ACT.atender, ACT.noAsistio, ACT.cancelar],
+    'espera':      [ACT.atender, ACT.noAsistio, ACT.cancelar],
+    'en atencion': [ACT.finalizar],
+    'atencion':    [ACT.finalizar],
+    'atendiendo':  [ACT.finalizar]
+    // finalizada / no asistio / cancelada → sin acciones (finales)
+  };
+
+  function accionesCita(c) {
+    var lista = ACCIONES[normEstado(c.estado)] || [];
+    if (!lista.length) return '<span class="rc-sin-acciones">—</span>';
+    return lista.map(function (a) {
+      return '<button type="button" class="rc-act ' + a.cls + '"' +
+        ' data-cita="' + (c.citaId || 0) + '"' +
+        ' data-destino="' + a.destino + '"' +
+        ' data-label="' + escapeHtml(a.label) + '"' +
+        (a.danger ? ' data-danger="1"' : '') + '>' +
+        '<i class="bi ' + a.icon + '"></i> ' + escapeHtml(a.label) + '</button>';
+    }).join('');
   }
 
   function renderQueue(list) {
@@ -78,10 +131,7 @@
         : '<span class="rc-sin-asignar">— sin asignar</span>';
       var min = (c.minutosEspera != null) ? c.minutosEspera : '';
       var esperaCls = (min !== '' && min >= 30) ? ' rc-espera-alta' : '';
-      var cancelable = !/complet|cancel/i.test(c.estado || '');
-      var accion = cancelable
-        ? '<button type="button" class="rc-row-cancel" data-cita="' + (c.citaId || 0) + '" title="Cancelar visita"><i class="bi bi-x-circle"></i></button>'
-        : '';
+      var accion = accionesCita(c);
       return '<tr>' +
         '<td class="rc-turno">#' + (i + 1) + '</td>' +
         '<td><b>' + escapeHtml(c.mascotaNombre || '—') + '</b></td>' +
@@ -110,24 +160,42 @@
       });
   }
 
-  // Cancelar una visita
+  // Acciones de transición de estado (Confirmar / Registrar llegada / Atender /
+  // Finalizar / No asistió / Cancelar). Cada botón postea a CambiarEstado con el
+  // estado destino (sin acento). El backend valida y rechaza transiciones inválidas.
   document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.rc-row-cancel');
+    var btn = e.target.closest('.rc-act');
     if (!btn) return;
     var citaId = parseInt(btn.dataset.cita, 10) || 0;
-    if (!citaId) return;
-    function doCancel() {
-      postJson(urls.cambiarEstado, { citaId: citaId, estado: 'Cancelada' })
+    var destino = btn.dataset.destino || '';
+    if (!citaId || !destino) return;
+    var label = btn.dataset.label || 'Cambiar estado';
+    var danger = btn.dataset.danger === '1';
+
+    function doCambiar() {
+      postJson(urls.cambiarEstado, { citaId: citaId, estado: destino })
         .then(function (res) {
-          if (res && res.ok) { loadQueue(); }
-          else { notify('error', 'No se pudo cancelar', (res && res.mensaje) || ''); }
+          if (res && res.ok) {
+            loadQueue();
+            notify('success', label, res.mensaje || '');
+          } else {
+            notify('error', 'No se pudo ' + label.toLowerCase(), (res && res.mensaje) || '');
+          }
         })
         .catch(function () { notify('error', 'Error de conexión'); });
     }
-    if (window.Swal) {
-      Swal.fire({ icon: 'warning', title: '¿Cancelar visita?', showCancelButton: true, confirmButtonText: 'Sí, cancelar', cancelButtonText: 'No' })
-        .then(function (r) { if (r.isConfirmed) doCancel(); });
-    } else if (confirm('¿Cancelar esta visita?')) { doCancel(); }
+
+    if (danger) {
+      if (window.Swal) {
+        Swal.fire({
+          icon: 'warning', title: '¿' + label + '?',
+          text: 'Esta acción saca al paciente de la sala de espera.',
+          showCancelButton: true, confirmButtonText: 'Sí, ' + label.toLowerCase(), cancelButtonText: 'No'
+        }).then(function (r) { if (r.isConfirmed) doCambiar(); });
+      } else if (confirm('¿' + label + '?')) { doCambiar(); }
+    } else {
+      doCambiar();
+    }
   });
 
   // ───────────────────────── Tipos de consulta ─────────────────────────

@@ -31,4 +31,11 @@
 .wb-tag.prio-Alta { background:#fff7ed; color:#f97316; }
 .wb-empty { color:#b5aed6; font-size:.82rem; text-align:center; padding:16px 6px; font-style:italic; }
 
+/* Acciones por tarjeta: sacar del tablero (No asistió / Cancelar) */
+.wb-card-actions { display:flex; gap:6px; margin-top:9px; padding-top:8px; border-top:1px dashed #ece9fb; }
+.wb-act { display:inline-flex; align-items:center; justify-content:center; gap:4px; flex:1; font-size:.72rem; font-weight:600; padding:4px 6px; border-radius:7px; border:1px solid transparent; cursor:pointer; line-height:1.2; transition:filter .15s; }
+.wb-act:hover { filter:brightness(.96); }
+.wb-act-noshow { background:#fff7ed; color:#c2410c; border-color:#fed7aa; }
+.wb-act-cancel { background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
+
 @media (max-width:900px){ .wb-board{ grid-template-columns:1fr; } }

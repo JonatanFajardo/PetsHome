@@ -162,7 +162,7 @@ namespace PetsHome.Business.Services
                     }
                 }
 
-                var res = await _recepcionRepository.CambiarEstadoAsync(citaId, "En atencion", usuario);
+                var res = await _recepcionRepository.CambiarEstadoAsync(citaId, EstadosCita.EnAtencion, usuario);
                 bool ok = res != null && res.Success;
                 return (ok, mascId);
             }
@@ -320,7 +320,7 @@ namespace PetsHome.Business.Services
                     }
 
                     // Cerrar la visita (transicion de estado). Esto es lo minimo garantizado.
-                    try { await _recepcionRepository.CambiarEstadoAsync(dto.CitaId, "Finalizada", usuarioCrea); }
+                    try { await _recepcionRepository.CambiarEstadoAsync(dto.CitaId, EstadosCita.Finalizada, usuarioCrea); }
                     catch (Exception estError) { _logger.LogWarning(estError, "No se pudo finalizar la visita {CitaId}", dto.CitaId); }
 
                     resultado.Ok = true;
