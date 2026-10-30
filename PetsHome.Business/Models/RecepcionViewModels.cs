@@ -70,4 +70,38 @@ namespace PetsHome.Business.Models
         public int CitaId { get; set; }
         public string Mensaje { get; set; }
     }
+
+    /// <summary>
+    /// Resultado de un cambio de estado de visita. Propaga el CodeStatus/MessageStatus
+    /// del SP, que es quien valida la transicion entre los 7 estados de la cita.
+    /// </summary>
+    public class CambiarEstadoResultDto
+    {
+        public bool Ok { get; set; }
+        public string Mensaje { get; set; }
+    }
+
+    /// <summary>
+    /// Los 7 estados de una cita/visita (mismos que OpenVPM), guardados SIN acento.
+    /// Fuente unica de verdad en el C#; la validacion de transiciones vive en el SP
+    /// [Medico].[PR_Medico_Visita_CambiarEstado].
+    /// Flujo: Agendada -> Confirmada -> En espera -> En atencion -> Finalizada.
+    /// Ramas: -> No asistio / -> Cancelada. Finalizada / No asistio / Cancelada = finales.
+    /// </summary>
+    public static class EstadosCita
+    {
+        public const string Agendada = "Agendada";
+        public const string Confirmada = "Confirmada";
+        public const string EnEspera = "En espera";
+        public const string EnAtencion = "En atencion";
+        public const string Finalizada = "Finalizada";
+        public const string NoAsistio = "No asistio";
+        public const string Cancelada = "Cancelada";
+
+        /// <summary>Los 7 estados en orden de flujo.</summary>
+        public static readonly string[] Todos =
+        {
+            Agendada, Confirmada, EnEspera, EnAtencion, Finalizada, NoAsistio, Cancelada
+        };
+    }
 }
