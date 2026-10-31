@@ -340,6 +340,79 @@
                     </div>
                 </div>
             </div>
+
+            @* ═══ FIRMA Y CORRECCIONES (ADDENDA) ═══
+               Solo para una visita ya cargada (viene de la sala de espera).
+               Firmar bloquea la nota; las correcciones se agregan como addenda. *@
+            @if (Model.CitaId > 0)
+            {
+                <div class="ec-card ec-firma" id="ecFirmaCard">
+                    <div class="ec-card-title"><i class="bi bi-pen"></i> Firma y correcciones</div>
+
+                    @if (Model.NotaFirmada)
+                    {
+                        <div class="ec-firma-lock">
+                            <i class="bi bi-lock-fill"></i>
+                            <div>
+                                <div class="ec-firma-lock-title">Nota firmada y bloqueada</div>
+                                <div class="ec-firma-lock-sub">
+                                    Firmada por @(string.IsNullOrWhiteSpace(Model.FirmaEstado?.FirmadaPorNombre) ? "—" : Model.FirmaEstado.FirmadaPorNombre)
+                                    @if (Model.FirmaEstado?.cita_FechaFirma != null)
+                                    {
+                                        <text> · @Model.FirmaEstado.cita_FechaFirma.Value.ToString("dd MMM yyyy HH:mm")</text>
+                                    }
+                                </div>
+                                <div class="ec-firma-lock-note">El texto original no se puede cambiar. Para corregir, agregue una addenda abajo.</div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="ec-firma-pending">
+                            <p class="ec-firma-hint">
+                                Al firmar, la nota clínica (SOAP y diagnóstico) queda <b>bloqueada</b> (no se puede editar su texto).
+                                Después solo se corrige agregando una addenda. Esto es distinto de finalizar la visita.
+                            </p>
+                            <button type="button" id="btnFirmarNota" class="ec-btn-firmar">
+                                <i class="bi bi-pen"></i> Firmar nota
+                            </button>
+                        </div>
+                    }
+
+                    <div class="ec-divider"></div>
+
+                    <div class="ec-addenda-head">
+                        <i class="bi bi-journal-plus"></i> Correcciones posteriores (addenda)
+                    </div>
+                    <div class="ec-addenda-list" id="ecAddendaList">
+                        @if (Model.Addendas != null && Model.Addendas.Any())
+                        {
+                            foreach (var a in Model.Addendas)
+                            {
+                                <div class="ec-addenda-item">
+                                    <div class="ec-addenda-meta">
+                                        <i class="bi bi-arrow-return-right"></i>
+                                        @a.add_Fecha.ToString("dd MMM yyyy HH:mm") · @(string.IsNullOrWhiteSpace(a.AutorNombre) ? "—" : a.AutorNombre)
+                                    </div>
+                                    <div class="ec-addenda-texto">@a.add_Texto</div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="ec-empty-line" id="ecAddendaEmpty">Sin correcciones registradas.</div>
+                        }
+                    </div>
+
+                    <div class="ec-addenda-add">
+                        <textarea id="ecAddendaTexto" class="ec-textarea" maxlength="2000"
+                                  placeholder="Escribe una corrección o aclaración a la nota..."></textarea>
+                        <button type="button" id="btnAgregarAddenda" class="ec-btn-addenda">
+                            <i class="bi bi-plus-lg"></i> Agregar corrección
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
 
         <!-- ════════════ DERECHA: BANDERAS ROJAS + ACCIONES ════════════ -->
@@ -506,8 +579,12 @@ else
             crearCita: '@Url.Action("Create", "CitaMedica")',
             sugerencias: '@Url.Action("Sugerencias", "Lookup")',
             servicios: '@Url.Action("Servicios", "Consulta")',
-            vademecum: '@Url.Action("Vademecum", "Receta")'
+            vademecum: '@Url.Action("Vademecum", "Receta")',
+            firmar: '@Url.Action("Firmar", "Consulta")',
+            agregarAddenda: '@Url.Action("AgregarAddenda", "Consulta")',
+            addenda: '@Url.Action("Addenda", "Consulta")'
         };
+        window._notaFirmada = @(Model.NotaFirmada ? "true" : "false");
         window._mascId = @Model.MascId;
         window._citaId = @(Context.Request.Query["citaId"].ToString() is var q && int.TryParse(q, out var _ci) ? _ci : 0);
         // Contexto para la calculadora de dosis (el peso se lee en vivo de #ecPeso).
@@ -516,4 +593,5 @@ else
     <script src="~/js/pages/en-consulta.js" asp-append-version="true"></script>
     <script src="~/js/pages/dosis-calculator.js"></script>
     <script src="~/js/pages/consulta-dosis.js" asp-append-version="true"></script>
+    <script src="~/js/pages/consulta-firma.js" asp-append-version="true"></script>
 }

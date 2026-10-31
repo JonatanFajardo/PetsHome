@@ -130,6 +130,22 @@ namespace PetsHome.Business.Services
                 model.SinPaciente = false;
                 model.Perfil = await _perfilService.GetDashboardAsync(mascId) ?? new PerfilMedicoViewModel();
                 model.TiposConsulta = await _tipoConsultaService.ListAsync() ?? new List<TipoConsultaViewModel>();
+
+                // Visita cargada (viene de la sala de espera): traer estado de firma
+                // de la nota clinica y sus correcciones (addenda) para la UI.
+                if (citaId > 0)
+                {
+                    try
+                    {
+                        model.FirmaEstado = await _consultaRepository.FirmaEstadoAsync(citaId);
+                        var addendas = await _consultaRepository.ListAddendaAsync(citaId);
+                        model.Addendas = addendas?.ToList() ?? new List<PR_Medico_Consulta_AddendaResult>();
+                    }
+                    catch (Exception firmaError)
+                    {
+                        _logger.LogWarning(firmaError, "No se pudo cargar la firma/addenda de la cita {CitaId}", citaId);
+                    }
+                }
             }
             catch (Exception error)
             {
@@ -308,15 +324,37 @@ namespace PetsHome.Business.Services
                     // (diagnostico/peso/etc.) y se cierra el estado a "Finalizada".
                     // Las recetas y salidas se ligan a ESTE cita_Id (que ya existe).
                     entity.cita_Id = dto.CitaId;
+
+                    // Inmutabilidad: si la nota ya esta firmada, NO se reescribe su
+                    // texto clinico (el SP tambien lo bloquea; aqui se evita el intento
+                    // y se deja log claro). Las correcciones van por addenda.
+                    bool notaFirmada = false;
                     try
                     {
-                        var updResult = await _citaRepository.EditAsync(entity);
-                        if (!updResult.Success)
-                            _logger.LogWarning("No se pudo actualizar los datos clinicos de la cita {CitaId}: {Msg}", dto.CitaId, updResult.MessageStatus);
+                        var firma = await _consultaRepository.FirmaEstadoAsync(dto.CitaId);
+                        notaFirmada = firma != null && firma.cita_Firmada;
                     }
-                    catch (Exception updError)
+                    catch (Exception firmaError)
                     {
-                        _logger.LogWarning(updError, "Error al actualizar los datos clinicos de la cita {CitaId}", dto.CitaId);
+                        _logger.LogWarning(firmaError, "No se pudo verificar la firma de la cita {CitaId}", dto.CitaId);
+                    }
+
+                    if (notaFirmada)
+                    {
+                        _logger.LogInformation("La nota de la cita {CitaId} esta firmada; no se modifica el texto clinico (solo addenda).", dto.CitaId);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var updResult = await _citaRepository.EditAsync(entity);
+                            if (!updResult.Success)
+                                _logger.LogWarning("No se pudo actualizar los datos clinicos de la cita {CitaId}: {Msg}", dto.CitaId, updResult.MessageStatus);
+                        }
+                        catch (Exception updError)
+                        {
+                            _logger.LogWarning(updError, "Error al actualizar los datos clinicos de la cita {CitaId}", dto.CitaId);
+                        }
                     }
 
                     // Cerrar la visita (transicion de estado). Esto es lo minimo garantizado.
@@ -507,6 +545,71 @@ namespace PetsHome.Business.Services
                 resultado.Ok = false;
                 resultado.Mensaje = "Ocurrio un error al guardar la consulta.";
                 return resultado;
+            }
+        }
+
+        // ── Firma de la nota clinica + addenda (correcciones append-only) ──
+
+        /// <summary>
+        /// Firma/bloquea la nota clinica de una visita. Tras firmar, su texto
+        /// (SOAP/diagnostico) ya no se edita; las correcciones van por addenda.
+        /// </summary>
+        public async Task<(bool ok, string mensaje)> FirmarNotaAsync(int citaId, int usuario)
+        {
+            if (citaId <= 0)
+                return (false, "Visita invalida.");
+
+            try
+            {
+                var res = await _consultaRepository.FirmarNotaAsync(citaId, usuario);
+                return (res != null && res.Success, res?.MessageStatus ?? "No se pudo firmar la nota.");
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return (false, "Ocurrio un error al firmar la nota.");
+            }
+        }
+
+        /// <summary>
+        /// Agrega una correccion (addenda) a la nota. Permitida incluso tras firmar.
+        /// </summary>
+        public async Task<(bool ok, string mensaje)> AgregarAddendaAsync(int citaId, string texto, int usuario)
+        {
+            if (citaId <= 0)
+                return (false, "Visita invalida.");
+            if (string.IsNullOrWhiteSpace(texto))
+                return (false, "El texto de la correccion no puede estar vacio.");
+
+            try
+            {
+                var res = await _consultaRepository.AgregarAddendaAsync(citaId, texto.Trim(), usuario);
+                return (res != null && res.Success, res?.MessageStatus ?? "No se pudo agregar la correccion.");
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return (false, "Ocurrio un error al agregar la correccion.");
+            }
+        }
+
+        /// <summary>
+        /// Lista las addenda (correcciones) de una visita, mas antiguas primero.
+        /// </summary>
+        public async Task<List<PR_Medico_Consulta_AddendaResult>> ListAddendaAsync(int citaId)
+        {
+            if (citaId <= 0)
+                return new List<PR_Medico_Consulta_AddendaResult>();
+
+            try
+            {
+                var addendas = await _consultaRepository.ListAddendaAsync(citaId);
+                return addendas?.ToList() ?? new List<PR_Medico_Consulta_AddendaResult>();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new List<PR_Medico_Consulta_AddendaResult>();
             }
         }
     }
