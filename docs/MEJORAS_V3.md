@@ -618,3 +618,22 @@ El objetivo de PetsHome es **quedar igual que OpenVPM**, no "inspirarse". Por ta
 ## Aparte (otro repo) — Dormus Hub: ejecutor de SQL en el agente de escritorio (2026-10-30)
 
 No es de PetsHome, pero se trabajó en la misma sesión. En `../Dormus_Hub/DomusHub.Agent` (app de bandeja WinForms .NET 10) se agregó la ventana **"🗄 Bases de datos..."**: registra proyectos (cada uno con su base en un servidor, cadena cifrada con DPAPI), guarda scripts .sql (arrastrar/soltar), y los ejecuta contra la base del proyecto con estado por script (pendiente/corrido/cambiado) + bitácora. Almacena local en SQLite (`%LocalAppData%\DomusHubAgent\dbtools.db`). Pensado para correr los seeds de PetsHome y de cualquier otro proyecto. (Nota: la base de PetsHome en Somee **ya no existe** — host no resuelve; por ahora solo sirve el proyecto "PetsHome (Local)" contra LocalDB.)
+
+---
+
+## Agenda por doctor + detección de conflictos — DIFERIDO por escala (2026-10-30)
+
+**OpenVPM SÍ lo tiene, completo** (verificado en su código): `server/routers/appointments.ts` + `lib/scheduling/appointment-policy.ts` + `lib/scheduling/conflicts.ts`. Incluye: duración de cita (5–480 min, paso 5), cita con inicio+fin, asignación a recurso/doctor, módulo `detectConflicts/conflictMessage` que al agendar busca citas que se encilman y lanza error CONFLICT, y hasta citas recurrentes.
+
+**No es solo visualizar — es un MOTOR de reglas** (la capa que vale): evitar doble-agendado, saber libre/ocupado por hueco real, respetar la duración, avisar al chocar. El calendario por columnas es solo la cara.
+
+**"Por franjas"** = cada cita ocupa un bloque de tiempo (inicio + duración), no un punto suelto. Ejemplo: Dr. Ana 09:00–09:30 (vacuna 30min) bloquea ese rango; si intentas meter otra cita de Dr. Ana a las 09:15 → CONFLICTO.
+
+**Por qué OpenVPM lo necesita:** es para clínicas GRANDES con varios doctores atendiendo a la vez (ahí el doble-agendado es un riesgo real y las columnas por doctor sirven).
+
+**Por qué se DIFIERE en PetsHome (decisión del dueño, oct 2026):**
+- `Medico.tbCitaMedica` agenda por `cita_FechaConsulta` (fecha+hora) + `cita_Veterinario` (int), pero NO tiene DURACIÓN ni inicio/fin → no hay sobre qué calcular solapamiento.
+- La práctica tiene ~1-2 veterinarios → columnas por doctor y choques casi no aplican.
+- Ya existe `CitaMedica/Calendario.cshtml` + tablero Kanban del día + sala de espera que cubren "quién se atiende hoy".
+
+**Cuando se retome (práctica creciendo / agendado por franjas):** PRIMERO el cimiento — agregar a la cita `duración` + `inicio/fin` (y opcional recurso/doctor como FK a empleados) — LUEGO el módulo de conflictos (replicar `conflicts.ts`), LUEGO el calendario por columnas. Esfuerzo ALTO. Es una brecha REAL de OpenVPM, solo pospuesta por escala, no descartada.
