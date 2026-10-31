@@ -18,6 +18,9 @@ namespace PetsHome.Business.Models
 
         /// <summary>Historial de pagos/abonos de la factura.</summary>
         public List<PagoComprobanteVM> Pagos { get; set; } = new List<PagoComprobanteVM>();
+
+        /// <summary>Historial de ajustes (nota de credito / reembolso) de la factura.</summary>
+        public List<PR_Veterinaria_FacturaAjustes_ListResult> Ajustes { get; set; } = new List<PR_Veterinaria_FacturaAjustes_ListResult>();
     }
 
     /// <summary>Un pago/abono mostrado en el comprobante.</summary>

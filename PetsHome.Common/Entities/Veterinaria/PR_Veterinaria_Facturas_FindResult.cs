@@ -13,11 +13,13 @@ namespace PetsHome.Common.Entities
         public string Mascota { get; set; }
         public DateTime fact_Fecha { get; set; }
         public decimal fact_Subtotal { get; set; }
+        public decimal fact_Descuento { get; set; }
         public decimal fact_Impuesto { get; set; }
         public decimal fact_Total { get; set; }
         public string fact_Estado { get; set; }
         public DateTime? fact_Vencimiento { get; set; }
         public decimal fact_MontoPagado { get; set; }
+        public decimal fact_Ajuste { get; set; }
         public decimal Saldo { get; set; }
     }
 }

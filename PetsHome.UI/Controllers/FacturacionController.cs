@@ -42,8 +42,9 @@ namespace PetsHome.UI.Controllers
 
         public async Task<IActionResult> ServiciosDropdown()
         {
-            var servicios = await _serviciosService.ListAsync() ?? new System.Collections.Generic.List<ServiciosListViewModel>();
-            var data = servicios.Select(s => new { id = s.serv_Id, nombre = s.serv_Nombre, precio = s.serv_Precio });
+            var servicios = await _facturacionService.ServiciosFacturaAsync();
+            var data = (servicios ?? Enumerable.Empty<Common.Entities.PR_Veterinaria_Servicio_DropdownFacturaResult>())
+                .Select(s => new { id = s.serv_Id, nombre = s.serv_Nombre, precio = s.serv_Precio, exento = s.serv_Exento });
             return Json(data);
         }
 
@@ -51,7 +52,7 @@ namespace PetsHome.UI.Controllers
         {
             var prods = await _facturacionService.ProductosVendiblesAsync();
             var data = (prods ?? Enumerable.Empty<Common.Entities.PR_Veterinaria_ProductosVendibles_DropdownResult>())
-                .Select(p => new { id = p.itm_Id, nombre = p.Descripcion, precio = p.itm_Precio });
+                .Select(p => new { id = p.itm_Id, nombre = p.Descripcion, precio = p.itm_Precio, exento = p.itm_Exento });
             return Json(data);
         }
 
@@ -83,6 +84,18 @@ namespace PetsHome.UI.Controllers
         {
             var detalle = await _facturacionService.DetalleAsync(id);
             return Json(detalle);
+        }
+
+        /// <summary>Aplica una nota de credito (condona saldo) o un reembolso sobre una factura.</summary>
+        [HttpPost]
+        [PantallaAuthorize("Facturacion", "editar")]
+        public async Task<IActionResult> Ajustar([FromBody] FacturaAjusteViewModel model)
+        {
+            if (!CurrentUserId.HasValue)
+                return Json(new { success = false, message = "Sesion expirada. Inicie sesion nuevamente." });
+
+            var r = await _facturacionService.AjustarAsync(model, CurrentUserId.Value);
+            return Json(new { success = r.ok, saldo = r.saldo, estado = r.estado, message = r.mensaje });
         }
     }
 }

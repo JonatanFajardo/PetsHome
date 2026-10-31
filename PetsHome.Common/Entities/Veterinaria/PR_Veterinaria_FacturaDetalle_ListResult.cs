@@ -10,6 +10,8 @@ namespace PetsHome.Common.Entities
         public string fdet_Descripcion { get; set; }
         public decimal fdet_Cantidad { get; set; }
         public decimal fdet_PrecioUnit { get; set; }
+        public decimal fdet_Descuento { get; set; }
+        public bool fdet_Exento { get; set; }
         public decimal fdet_Subtotal { get; set; }
     }
 }
