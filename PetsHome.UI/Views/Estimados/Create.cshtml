@@ -1,0 +1,143 @@
+@{
+    ViewData["Title"] = "Nuevo presupuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Presupuestos";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/estimados.css" asp-append-version="true" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="est-composer-bar">
+            <a href="@Url.Action("Index", "Estimados")" class="est-back-btn">
+                <i class="fas fa-arrow-left mr-1"></i>Volver a presupuestos
+            </a>
+            <span class="est-composer-title"><i class="fas fa-file-invoice mr-1"></i>Nuevo presupuesto</span>
+        </div>
+
+        <div class="est-layout">
+
+            <!-- Columna izquierda: datos + líneas -->
+            <div>
+                <div class="est-card">
+                    <div class="est-card-header"><i class="fas fa-user"></i><h3>Datos del presupuesto</h3></div>
+                    <div class="est-card-body">
+                        <div class="est-grid-2">
+                            <div class="est-field">
+                                <label for="est-cliente">Cliente</label>
+                                <select id="est-cliente" class="est-control"></select>
+                            </div>
+                            <div class="est-field">
+                                <label for="est-mascota">Mascota (ID opcional)</label>
+                                <input type="number" id="est-mascota" class="est-control" min="1" step="1" placeholder="Opcional" />
+                            </div>
+                            <div class="est-field">
+                                <label for="est-vigencia">Vigencia (hasta)</label>
+                                <input type="date" id="est-vigencia" class="est-control" />
+                            </div>
+                            <div class="est-field">
+                                <label for="est-notas">Notas</label>
+                                <input type="text" id="est-notas" class="est-control" maxlength="500" placeholder="Opcional" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="est-card">
+                    <div class="est-card-header"><i class="fas fa-plus-circle"></i><h3>Agregar línea</h3></div>
+                    <div class="est-card-body">
+                        <div class="est-add-grid">
+                            <div class="est-field">
+                                <label>Tipo</label>
+                                <div class="est-type-toggle" id="est-type-toggle">
+                                    <button type="button" data-tipo="Servicio" class="active"><i class="fas fa-stethoscope"></i>Servicio</button>
+                                    <button type="button" data-tipo="Producto"><i class="fas fa-box"></i>Producto</button>
+                                </div>
+                            </div>
+                            <div class="est-field">
+                                <label for="est-item">Ítem</label>
+                                <select id="est-item" class="est-control"></select>
+                            </div>
+                            <div class="est-field">
+                                <label for="est-desc">Descripción</label>
+                                <input type="text" id="est-desc" class="est-control" placeholder="Descripción" />
+                            </div>
+                            <div class="est-field">
+                                <label for="est-cant">Cantidad</label>
+                                <input type="number" id="est-cant" class="est-control" min="0.01" step="1" value="1" />
+                            </div>
+                            <div class="est-field">
+                                <label for="est-precio">Precio unit.</label>
+                                <input type="number" id="est-precio" class="est-control" min="0" step="0.01" value="0.00" />
+                            </div>
+                            <div class="est-field">
+                                <label>&nbsp;</label>
+                                <button type="button" id="est-add-btn" class="est-btn est-btn-primary"><i class="fas fa-plus"></i>Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="est-card">
+                    <div class="est-card-header"><i class="fas fa-list-ul"></i><h3>Detalle del presupuesto</h3></div>
+                    <div style="overflow-x:auto;">
+                        <table class="est-lines-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;">Tipo</th>
+                                    <th>Descripción</th>
+                                    <th style="width:90px;" class="text-center">Cant.</th>
+                                    <th style="width:120px;" class="text-right">Precio unit.</th>
+                                    <th style="width:130px;" class="text-right">Subtotal</th>
+                                    <th style="width:60px;" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="est-lines-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha: total -->
+            <div class="est-card">
+                <div class="est-card-header"><i class="fas fa-calculator"></i><h3>Total estimado</h3></div>
+                <div class="est-card-body">
+                    <div class="est-totals-row est-totals-total">
+                        <span>Total</span>
+                        <span class="est-dinero" id="est-total">L. 0.00</span>
+                    </div>
+                    <p class="est-nota-isv">El ISV (15%) se calcula al convertir en factura.</p>
+                    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+                        <button type="button" id="est-guardar-btn" class="est-btn est-btn-success" disabled>
+                            <i class="fas fa-save"></i>Guardar presupuesto
+                        </button>
+                        <button type="button" id="est-limpiar-btn" class="est-btn est-btn-ghost">
+                            <i class="fas fa-eraser"></i>Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window._urls = {
+            clientesDropdown:  '@Url.Action("ClientesDropdown", "Estimados")',
+            serviciosDropdown: '@Url.Action("ServiciosDropdown", "Estimados")',
+            productosDropdown: '@Url.Action("ProductosDropdown", "Estimados")',
+            guardar:           '@Url.Action("Guardar", "Estimados")',
+            detailUrl:         '@Url.Action("Detail", "Estimados")'
+        };
+    </script>
+    <script src="~/js/pages/estimados.js" asp-append-version="true"></script>
+    <script>
+        $(function () { Estimados.initCreate(window._urls); });
+    </script>
+}

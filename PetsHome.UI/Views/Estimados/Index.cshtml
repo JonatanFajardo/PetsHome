@@ -1,0 +1,74 @@
+@{
+    ViewData["Title"] = "Presupuestos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Presupuestos";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/estimados.css" asp-append-version="true" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-file-invoice mr-2 text-white"></i>Presupuestos
+                    </h2>
+                </div>
+                <div class="pets-header-actions">
+                    <a href="@Url.Action("Create", "Estimados")" class="est-new-btn">
+                        <i class="fas fa-plus mr-1"></i>Nuevo presupuesto
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestañas por estado -->
+        <div class="est-tabs" id="est-tabs">
+            <button type="button" class="est-tab active" data-estado="">Todos</button>
+            <button type="button" class="est-tab" data-estado="Borrador">Borrador</button>
+            <button type="button" class="est-tab" data-estado="Enviado">Enviado</button>
+            <button type="button" class="est-tab" data-estado="Aceptado">Aceptado</button>
+            <button type="button" class="est-tab" data-estado="Rechazado">Rechazado</button>
+            <button type="button" class="est-tab" data-estado="Convertido">Convertido</button>
+        </div>
+
+        <div class="pets-table-container">
+            <table class="pets-table" id="est-table">
+                <thead>
+                    <tr>
+                        <th width="80">#</th>
+                        <th>Cliente</th>
+                        <th>Mascota</th>
+                        <th width="110">Fecha</th>
+                        <th width="110">Vigencia</th>
+                        <th width="70" class="text-center">Líneas</th>
+                        <th width="130" class="text-right">Total</th>
+                        <th width="130" class="text-center">Estado</th>
+                        <th width="110" class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="est-tbody"></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window._urls = {
+            list:    '@Url.Action("List", "Estimados")',
+            detail:  '@Url.Action("Detail", "Estimados")'
+        };
+    </script>
+    <script src="~/js/pages/estimados.js" asp-append-version="true"></script>
+    <script>
+        $(function () { Estimados.initIndex(window._urls); });
+    </script>
+}
