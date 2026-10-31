@@ -188,16 +188,33 @@
     .rep-kpi-grid, .rep-kpi-grid.cols-2 { grid-template-columns: 1fr; }
 }
 
+/* ─── ENCABEZADO DE IMPRESIÓN (solo visible al imprimir) ─ */
+.rep-print-header { display: none; }
+.rep-print-header h2 {
+    font-size: 20px; font-weight: 800; color: var(--text); margin: 0 0 4px; letter-spacing: -.3px;
+}
+.rep-print-header .rep-print-meta { font-size: 12px; color: var(--muted); font-weight: 600; }
+
 /* ─── IMPRESIÓN ──────────────────────────────────────── */
 @media print {
+    /* Ocultar todo el "cromo" de la app y los controles que no van en papel */
     .sidebar-wrapper, #sidebar, .navbar, .header, .footer,
-    .rep-tabs, .rep-toolbar { display: none !important; }
-    /* El rango de fechas se mantiene visible en el impreso para dar contexto */
-    .rep-dates input { border: 1px solid rgba(255,255,255,.4); }
+    .rep-header, .rep-tabs, .rep-toolbar, .rep-note { display: none !important; }
     .main-content, #content { margin: 0 !important; width: 100% !important; }
+
+    /* Solo el reporte activo */
     .rep-panel { display: none !important; }
     .rep-panel.active { display: block !important; }
-    .rep-header { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .rep-kpi, .rep-card { box-shadow: none; break-inside: avoid; }
+
+    /* Encabezado limpio del impreso: título + rango + fecha de generación */
+    .rep-print-header {
+        display: block !important;
+        border-bottom: 2px solid var(--text);
+        padding-bottom: 10px; margin-bottom: 18px;
+    }
+
+    .rep-kpi, .rep-card { box-shadow: none !important; break-inside: avoid; border: 1px solid #ccc; }
+    .rep-kpi::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .rep-stock-chip, .rep-trend { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     body { background: #fff !important; }
 }
