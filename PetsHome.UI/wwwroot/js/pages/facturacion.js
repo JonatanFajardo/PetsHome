@@ -129,6 +129,16 @@ var Facturacion = (function () {
                 : '—';
             var accionTxt = saldo > 0 ? "Cobrar" : "Ver";
 
+            var estado = f.fact_Estado || "";
+            var puedeAjustar = estado !== "Anulada" && estado !== "SinCargo";
+            var ajustarBtn = puedeAjustar
+                ? ' <button type="button" class="fact-link fact-link-ghost" ' +
+                    'data-ajustar="' + f.fact_Id + '" ' +
+                    'data-num="' + esc(f.fact_Numero || ("F-" + f.fact_Id)) + '" ' +
+                    'data-saldo="' + (parseFloat(f.saldo) || 0) + '" ' +
+                    'data-pagado="' + (parseFloat(f.fact_MontoPagado) || 0) + '">N. crédito</button>'
+                : '';
+
             html += '<tr' + (venc ? ' class="fact-row-vencida"' : '') + '>' +
                 '<td><span style="font-family:monospace;font-weight:600;">' + esc(f.fact_Numero || "—") + '</span></td>' +
                 '<td>' + esc(f.cliente || "Consumidor Final") + '</td>' +
@@ -138,8 +148,9 @@ var Facturacion = (function () {
                 '<td class="text-right fact-money fact-saldo">' + saldoHtml + '</td>' +
                 '<td class="text-center fact-vence">' + vencHtml + '</td>' +
                 '<td class="text-center">' + badgeEstado(f) + '</td>' +
-                '<td class="text-center">' +
+                '<td class="text-center fact-acciones">' +
                     '<a class="fact-link" href="' + urls.comprobante + '/' + f.fact_Id + '">' + accionTxt + '</a>' +
+                    ajustarBtn +
                 '</td>' +
                 '</tr>';
         });
@@ -350,6 +361,92 @@ var Facturacion = (function () {
         btnConfirm.addEventListener("click", confirmar);
     }
 
+    // -------------------- Modal "Nota de crédito / Reembolso" --------------------
+    var ajModal, ajSub, ajErrEl, ajMonto, ajMotivo, ajConfirm, ajCancel,
+        ajFactId = null, ajSaldo = 0, ajPagado = 0;
+
+    function ajTipo() {
+        var r = ajModal.querySelector("input[name='ajtipo']:checked");
+        return r ? r.value : "NotaCredito";
+    }
+    function ajPintar() {
+        ajModal.querySelectorAll(".cob-opt").forEach(function (o) {
+            o.classList.toggle("sel", o.querySelector("input").checked);
+        });
+        // Sugerir el tope segun el tipo elegido.
+        var tope = (ajTipo() === "Reembolso") ? ajPagado : ajSaldo;
+        ajMonto.setAttribute("max", tope);
+        ajMonto.setAttribute("placeholder", "Máx. " + money(tope));
+    }
+    function abrirAjuste(factId, num, saldo, pagado) {
+        ajFactId = factId; ajSaldo = saldo; ajPagado = pagado;
+        ajErrEl.textContent = "";
+        ajMonto.value = ""; ajMotivo.value = "";
+        ajModal.querySelector("input[value='NotaCredito']").checked = true;
+        ajSub.textContent = "Factura " + num + " · Saldo " + money(saldo) + " · Pagado " + money(pagado);
+        ajPintar();
+        ajModal.classList.add("open");
+    }
+    function cerrarAjuste() { ajModal.classList.remove("open"); ajFactId = null; }
+
+    function confirmarAjuste() {
+        if (!ajFactId) return;
+        ajErrEl.textContent = "";
+        var monto = parseFloat(ajMonto.value);
+        if (isNaN(monto) || monto <= 0) { ajErrEl.textContent = "Indica un monto mayor a 0."; return; }
+        var motivo = (ajMotivo.value || "").trim();
+        var data = {
+            factId: ajFactId,
+            tipo: ajTipo(),
+            monto: monto,
+            motivo: motivo,
+            // clave de operacion para evitar duplicar si se reintenta el mismo gesto
+            claveOperacion: "aj:" + ajFactId + ":" + ajTipo() + ":" + monto + ":" + Date.now()
+        };
+        ajConfirm.disabled = true;
+        window.postJson(urls.ajustar, data).then(function (res) {
+            ajConfirm.disabled = false;
+            if (res && res.success) {
+                cerrarAjuste();
+                recargar();
+            } else {
+                ajErrEl.textContent = (res && res.message) || "No se pudo aplicar el ajuste.";
+            }
+        }).catch(function () {
+            ajConfirm.disabled = false;
+            ajErrEl.textContent = "Error de red.";
+        });
+    }
+
+    function wireAjuste() {
+        ajModal = document.getElementById("ajModal");
+        if (!ajModal) return;
+        ajSub = document.getElementById("ajModalSub");
+        ajErrEl = document.getElementById("ajErr");
+        ajMonto = document.getElementById("ajMonto");
+        ajMotivo = document.getElementById("ajMotivo");
+        ajConfirm = document.getElementById("ajConfirm");
+        ajCancel = document.getElementById("ajCancel");
+
+        ajModal.querySelectorAll("input[name='ajtipo']").forEach(function (i) {
+            i.addEventListener("change", ajPintar);
+        });
+        ajCancel.addEventListener("click", cerrarAjuste);
+        ajModal.addEventListener("click", function (e) { if (e.target === ajModal) cerrarAjuste(); });
+        ajConfirm.addEventListener("click", confirmarAjuste);
+
+        // Delegacion: boton "N. crédito" de cada fila
+        var tbody = document.getElementById("fact-tbody");
+        if (tbody) tbody.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-ajustar]");
+            if (!b) return;
+            abrirAjuste(parseInt(b.getAttribute("data-ajustar"), 10),
+                b.getAttribute("data-num"),
+                parseFloat(b.getAttribute("data-saldo")) || 0,
+                parseFloat(b.getAttribute("data-pagado")) || 0);
+        });
+    }
+
     // -------------------- Tarjetas de totales (cuentas por cobrar) --------------------
     function setMonto(id, val) {
         var el = document.getElementById(id);
@@ -391,6 +488,7 @@ var Facturacion = (function () {
     obj.init = function (cfg) {
         urls = cfg || {};
         wireModal();
+        wireAjuste();
 
         document.querySelectorAll("#fact-tabs .pos-tab").forEach(function (t) {
             t.addEventListener("click", function () { setTab(t.getAttribute("data-tab")); });

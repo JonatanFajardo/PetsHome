@@ -93,7 +93,7 @@
 /* ---------- Grid para agregar línea ---------- */
 .pos-add-grid {
     display: grid;
-    grid-template-columns: 130px 1fr 1fr 90px 120px auto;
+    grid-template-columns: 120px 1fr 1fr 80px 110px 110px auto auto;
     gap: 12px;
     align-items: end;
 }
@@ -327,3 +327,59 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
+
+/* ---------- Descuentos / exentos (agregado 99) ---------- */
+.pos-field-check {
+    display: flex;
+    align-items: center;
+}
+.pos-check-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #4b5563;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0;
+}
+.pos-check-label input { width: 16px; height: 16px; cursor: pointer; }
+
+/* Etiqueta "Exento" en una linea de la factura */
+.pos-exento-tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e0f2fe;
+    color: #0369a1;
+    vertical-align: middle;
+}
+
+/* Fila de descuento de factura en el panel de totales */
+.pos-totals-descfield span:last-child { font-weight: 600; }
+.pos-descinput {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 2px 8px;
+    background: #fff;
+}
+.pos-descinput-prefix { color: #9ca3af; font-size: 13px; }
+.pos-descinput input {
+    width: 90px;
+    border: none;
+    outline: none;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    background: transparent;
+}
+.pos-totals-muted { color: #9ca3af; font-size: 13px; }
+.pos-totals-muted span:last-child { color: #6b7280; font-weight: 600; }

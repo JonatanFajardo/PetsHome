@@ -199,6 +199,18 @@
                                 </div>
 
                                 <div class="pos-field">
+                                    <label for="pos-desc-monto">Descuento (L.)</label>
+                                    <input type="number" id="pos-desc-monto" class="pos-control"
+                                           min="0" step="0.01" value="0.00" title="Descuento en Lempiras para esta linea" />
+                                </div>
+
+                                <div class="pos-field pos-field-check">
+                                    <label class="pos-check-label" title="Si esta marcado, la linea no causa ISV">
+                                        <input type="checkbox" id="pos-exento" /> Exento de ISV
+                                    </label>
+                                </div>
+
+                                <div class="pos-field">
                                     <label>&nbsp;</label>
                                     <button type="button" id="pos-add-btn" class="pos-btn pos-btn-primary">
                                         <i class="fas fa-plus"></i>Agregar
@@ -220,10 +232,11 @@
                                     <tr>
                                         <th style="width:110px;">Tipo</th>
                                         <th>Descripción</th>
-                                        <th style="width:90px;" class="text-center">Cant.</th>
-                                        <th style="width:120px;" class="text-right">Precio unit.</th>
-                                        <th style="width:130px;" class="text-right">Subtotal</th>
-                                        <th style="width:60px;" class="text-center"></th>
+                                        <th style="width:80px;" class="text-center">Cant.</th>
+                                        <th style="width:110px;" class="text-right">Precio unit.</th>
+                                        <th style="width:100px;" class="text-right">Descuento</th>
+                                        <th style="width:120px;" class="text-right">Subtotal</th>
+                                        <th style="width:50px;" class="text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="pos-lines-body"></tbody>
@@ -242,6 +255,17 @@
                         <div class="pos-totals-row">
                             <span>Subtotal</span>
                             <span class="pos-dinero" id="pos-subtotal">L. 0.00</span>
+                        </div>
+                        <div class="pos-totals-row pos-totals-descfield">
+                            <span>Descuento factura</span>
+                            <span class="pos-descinput">
+                                <span class="pos-descinput-prefix">L.</span>
+                                <input type="number" id="pos-fact-descuento" min="0" step="0.01" value="0.00" />
+                            </span>
+                        </div>
+                        <div class="pos-totals-row pos-totals-muted">
+                            <span>Base gravable</span>
+                            <span class="pos-dinero" id="pos-base">L. 0.00</span>
                         </div>
                         <div class="pos-totals-row">
                             <span>ISV (15%)</span>
@@ -329,6 +353,37 @@
     </div>
 </div>
 
+<!-- ===================== Modal: Nota de crédito / Reembolso ===================== -->
+<div class="cob-modal-bg" id="ajModal">
+    <div class="cob-modal">
+        <h3>Ajustar factura</h3>
+        <div class="sub" id="ajModalSub"></div>
+        <div class="cob-err" id="ajErr"></div>
+        <div class="cob-opts">
+            <label class="cob-opt sel">
+                <input type="radio" name="ajtipo" value="NotaCredito" checked />
+                <span><span class="t">Nota de crédito</span><span class="d">Condona (perdona) parte o todo el saldo pendiente.</span></span>
+            </label>
+            <label class="cob-opt">
+                <input type="radio" name="ajtipo" value="Reembolso" />
+                <span><span class="t">Reembolso</span><span class="d">Devuelve dinero ya pagado; reabre el saldo.</span></span>
+            </label>
+        </div>
+        <div class="cob-extra" style="display:block;">
+            <label>Monto (L.)</label>
+            <input type="number" id="ajMonto" min="0.01" step="0.01" placeholder="0.00" />
+        </div>
+        <div class="cob-extra" style="display:block;">
+            <label>Motivo</label>
+            <textarea id="ajMotivo" rows="2" placeholder="Ej: Cortesía / cobro duplicado"></textarea>
+        </div>
+        <div class="cob-modal-acts">
+            <button class="cob-btn cancel" id="ajCancel">Cancelar</button>
+            <button class="cob-btn ok" id="ajConfirm">Aplicar</button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         window._urls = {
@@ -343,7 +398,9 @@
             facturarVisita:    '@Url.Action("FacturarVisita", "Cobros")',
             comprobante:       '@Url.Action("Comprobante", "Cobros")',
             // Totales de cuentas por cobrar (tarjetas superiores)
-            resumenAR:         '@Url.Action("ResumenAR", "Facturacion")'
+            resumenAR:         '@Url.Action("ResumenAR", "Facturacion")',
+            // Nota de credito / reembolso
+            ajustar:           '@Url.Action("Ajustar", "Facturacion")'
         };
     </script>
     <script src="~/js/pages/pos.js" asp-append-version="true"></script>

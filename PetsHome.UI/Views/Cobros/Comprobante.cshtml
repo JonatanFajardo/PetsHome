@@ -109,9 +109,17 @@
 
         <div class="tot">
             <div class="tot-row"><span>Subtotal</span><span>@Money(h.fact_Subtotal)</span></div>
+            @if (h.fact_Descuento > 0)
+            {
+                <div class="tot-row"><span>Descuento</span><span>- @Money(h.fact_Descuento)</span></div>
+            }
             <div class="tot-row"><span>ISV (15%)</span><span>@Money(h.fact_Impuesto)</span></div>
             <div class="tot-row total"><span>Total</span><span>@Money(h.fact_Total)</span></div>
             <div class="tot-row pagado"><span>Pagado</span><span>@Money(Model.MontoPagado)</span></div>
+            @if (h.fact_Ajuste > 0)
+            {
+                <div class="tot-row"><span>Nota de crédito</span><span>- @Money(h.fact_Ajuste)</span></div>
+            }
             <div class="tot-row saldo @(Model.Saldo > 0 ? "pend" : "")"><span>Saldo</span><span id="saldoValor">@Money(Model.Saldo)</span></div>
         </div>
 
@@ -136,6 +144,27 @@
                 </tbody>
             </table>
         </div>
+
+        @if (Model.Ajustes.Count > 0)
+        {
+            <div class="pagos-sec">
+                <h4>Notas de crédito / reembolsos</h4>
+                <table>
+                    <tbody>
+                        @foreach (var a in Model.Ajustes)
+                        {
+                            <tr>
+                                <td>@(a.faj_Tipo == "Reembolso" ? "Reembolso" : "Nota de crédito")</td>
+                                <td>@Money(a.faj_Monto)</td>
+                                <td>@a.faj_FechaCrea.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@(string.IsNullOrWhiteSpace(a.RegistradoPor) ? "—" : a.RegistradoPor)</td>
+                                <td>@(string.IsNullOrWhiteSpace(a.faj_Motivo) ? "" : a.faj_Motivo)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
     </div>
 
     <div class="acciones">

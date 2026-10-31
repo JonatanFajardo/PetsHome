@@ -85,11 +85,13 @@ var POS = (function () {
 
     function onItemSeleccionado() {
         var id = $('#pos-item').val();
-        if (!id) { $('#pos-desc').val(''); $('#pos-precio').val('0.00'); return; }
+        if (!id) { $('#pos-desc').val(''); $('#pos-precio').val('0.00'); $('#pos-exento').prop('checked', false); return; }
         var item = catalogoActual().find(function (x) { return String(x.id) === String(id); });
         if (item) {
             $('#pos-desc').val(item.nombre);
             $('#pos-precio').val(parseFloat(item.precio || 0).toFixed(2));
+            // El exento lo decide el catalogo; el usuario aun puede ajustarlo.
+            $('#pos-exento').prop('checked', !!item.exento);
         }
     }
 
@@ -107,11 +109,16 @@ var POS = (function () {
         var desc = ($('#pos-desc').val() || '').trim();
         var cant = parseFloat($('#pos-cant').val());
         var precio = parseFloat($('#pos-precio').val());
+        var descuento = parseFloat($('#pos-desc-monto').val());
+        var exento = $('#pos-exento').is(':checked');
 
         if (!id) { toast('Seleccione un ' + tipoActual.toLowerCase() + '.', 'warning'); return; }
         if (!desc) { toast('Ingrese una descripción.', 'warning'); return; }
         if (isNaN(cant) || cant <= 0) { toast('La cantidad debe ser mayor a cero.', 'warning'); return; }
         if (isNaN(precio) || precio < 0) { toast('El precio no es válido.', 'warning'); return; }
+        if (isNaN(descuento) || descuento < 0) descuento = 0;
+        var bruto = cant * precio;
+        if (descuento > bruto) { toast('El descuento no puede ser mayor al importe de la línea.', 'warning'); return; }
 
         lineas.push({
             tipo: tipoActual,
@@ -119,7 +126,9 @@ var POS = (function () {
             itmId: tipoActual === 'Producto' ? parseInt(id, 10) : null,
             descripcion: desc,
             cantidad: cant,
-            precioUnit: precio
+            precioUnit: precio,
+            descuento: descuento,
+            exento: exento
         });
 
         renderLineas();
@@ -130,6 +139,8 @@ var POS = (function () {
         $('#pos-desc').val('');
         $('#pos-cant').val('1');
         $('#pos-precio').val('0.00');
+        $('#pos-desc-monto').val('0.00');
+        $('#pos-exento').prop('checked', false);
         $('#pos-item').focus();
     }
 
@@ -144,21 +155,25 @@ var POS = (function () {
 
         if (!lineas.length) {
             $body.append(
-                '<tr class="pos-lines-empty"><td colspan="6">' +
+                '<tr class="pos-lines-empty"><td colspan="7">' +
                 '<i class="fas fa-inbox mr-2"></i>Aún no hay ítems en la factura.</td></tr>'
             );
             return;
         }
 
         lineas.forEach(function (l, i) {
-            var subtotal = l.cantidad * l.precioUnit;
+            var descuento = parseFloat(l.descuento) || 0;
+            var subtotal = (l.cantidad * l.precioUnit) - descuento;
+            if (subtotal < 0) subtotal = 0;
             var badgeClass = l.tipo === 'Servicio' ? 'pos-tipo-servicio' : 'pos-tipo-producto';
+            var exentoTag = l.exento ? ' <span class="pos-exento-tag" title="No causa ISV">Exento</span>' : '';
             var $tr = $(
                 '<tr>' +
                     '<td><span class="pos-tipo-badge ' + badgeClass + '">' + l.tipo + '</span></td>' +
-                    '<td>' + escapeHtml(l.descripcion) + '</td>' +
+                    '<td>' + escapeHtml(l.descripcion) + exentoTag + '</td>' +
                     '<td class="text-center">' + l.cantidad + '</td>' +
                     '<td class="text-right pos-dinero">' + money(l.precioUnit) + '</td>' +
+                    '<td class="text-right pos-dinero">' + (descuento > 0 ? '-' + money(descuento) : '—') + '</td>' +
                     '<td class="text-right pos-dinero">' + money(subtotal) + '</td>' +
                     '<td class="text-center">' +
                         '<button type="button" class="pos-remove-btn" data-idx="' + i + '" title="Quitar">' +
@@ -170,16 +185,32 @@ var POS = (function () {
         });
     }
 
+    // Subtotal de una linea ya con su descuento aplicado (nunca negativo).
+    function subtotalLinea(l) {
+        var s = (l.cantidad * l.precioUnit) - (parseFloat(l.descuento) || 0);
+        return s < 0 ? 0 : s;
+    }
+
     function calcularSubtotal() {
-        return lineas.reduce(function (acc, l) { return acc + (l.cantidad * l.precioUnit); }, 0);
+        return lineas.reduce(function (acc, l) { return acc + subtotalLinea(l); }, 0);
     }
 
     function recalcular() {
         var subtotal = calcularSubtotal();
-        var isv = subtotal * ISV_RATE;
-        var total = subtotal + isv;
+        // Base gravable = subtotales de las lineas NO exentas.
+        var base = lineas.reduce(function (acc, l) { return acc + (l.exento ? 0 : subtotalLinea(l)); }, 0);
+        var isv = Math.round(base * ISV_RATE * 100) / 100;
+
+        // Descuento a nivel factura, acotado a [0, subtotal].
+        var factDesc = parseFloat($('#pos-fact-descuento').val());
+        if (isNaN(factDesc) || factDesc < 0) factDesc = 0;
+        if (factDesc > subtotal) factDesc = subtotal;
+
+        var total = subtotal - factDesc + isv;
+        if (total < 0) total = 0;
 
         $('#pos-subtotal').text(money(subtotal));
+        $('#pos-base').text(money(base));
         $('#pos-isv').text(money(isv));
         $('#pos-total').text(money(total));
 
@@ -193,9 +224,13 @@ var POS = (function () {
         var cliVal = $('#pos-cliente').val();
         var mascVal = $('#pos-mascota').val();
 
+        var factDesc = parseFloat($('#pos-fact-descuento').val());
+        if (isNaN(factDesc) || factDesc < 0) factDesc = 0;
+
         var payload = {
             cliId: cliVal ? parseInt(cliVal, 10) : null,
             mascId: mascVal ? parseInt(mascVal, 10) : null,
+            descuento: factDesc,
             lineas: lineas.map(function (l) {
                 return {
                     tipo: l.tipo,
@@ -203,7 +238,9 @@ var POS = (function () {
                     itmId: l.itmId,
                     descripcion: l.descripcion,
                     cantidad: l.cantidad,
-                    precioUnit: l.precioUnit
+                    precioUnit: l.precioUnit,
+                    descuento: parseFloat(l.descuento) || 0,
+                    exento: !!l.exento
                 };
             })
         };
@@ -247,6 +284,9 @@ var POS = (function () {
         $('#pos-desc').val('');
         $('#pos-cant').val('1');
         $('#pos-precio').val('0.00');
+        $('#pos-desc-monto').val('0.00');
+        $('#pos-exento').prop('checked', false);
+        $('#pos-fact-descuento').val('0.00');
         // Reset cliente a Consumidor Final
         var $cf = $('#pos-cliente option').filter(function () {
             return /consumidor\s*final/i.test($(this).text());
@@ -385,8 +425,11 @@ var POS = (function () {
         $('#pos-facturar-btn').on('click', facturar);
         $('#pos-limpiar-btn').on('click', limpiar);
 
-        // Enter en cantidad agrega la línea
-        $('#pos-cant, #pos-precio').on('keydown', function (e) {
+        // Recalcular totales cuando cambia el descuento de factura
+        $('#pos-fact-descuento').on('input', recalcular);
+
+        // Enter en cantidad/precio/descuento agrega la línea
+        $('#pos-cant, #pos-precio, #pos-desc-monto').on('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); agregarLinea(); }
         });
     };

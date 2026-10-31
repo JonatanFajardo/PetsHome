@@ -440,3 +440,19 @@
 .cob-btn.ok { background: #7c3aed; color: #fff; }
 .cob-btn.cancel { background: #fff; color: #9ca3af; border: 1px solid #ece9fb; }
 .cob-err { color: #dc2626; font-size: .82rem; margin-bottom: 8px; min-height: 16px; }
+
+/* ---------- Acciones por fila: ver/cobrar + nota de credito (agregado 99) ---------- */
+.fact-acciones {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.fact-link-ghost {
+    background: #fff;
+    color: #6d28d9;
+    border: 1px solid #ddd6fe;
+    cursor: pointer;
+}
+.fact-link-ghost:hover { background: #f5f3ff; color: #6d28d9; filter: none; }

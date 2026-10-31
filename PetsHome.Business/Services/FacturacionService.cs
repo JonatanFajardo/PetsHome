@@ -64,7 +64,7 @@ namespace PetsHome.Business.Services
                 if (model?.lineas == null || !model.lineas.Any())
                     return new FacturaResultViewModel { success = false, message = "La factura no tiene lineas." };
 
-                // Mapear al shape que espera OPENJSON del SP (serv_Id / itm_Id)
+                // Mapear al shape que espera OPENJSON del SP (serv_Id / itm_Id / descuento / exento)
                 var lineasSp = model.lineas.Select(l => new
                 {
                     tipo = l.tipo,
@@ -72,11 +72,13 @@ namespace PetsHome.Business.Services
                     itm_Id = l.itmId,
                     descripcion = l.descripcion,
                     cantidad = l.cantidad,
-                    precioUnit = l.precioUnit
+                    precioUnit = l.precioUnit,
+                    descuento = l.descuento,
+                    exento = l.exento
                 });
                 string detalleJson = JsonSerializer.Serialize(lineasSp);
 
-                var r = await _repo.CrearAsync(model.cliId, model.mascId, null, null, ISV, userId, detalleJson);
+                var r = await _repo.CrearAsync(model.cliId, model.mascId, null, null, ISV, userId, model.descuento, detalleJson);
 
                 if (r == null)
                     return new FacturaResultViewModel { success = false, message = "No se obtuvo respuesta del servidor." };
@@ -127,6 +129,7 @@ namespace PetsHome.Business.Services
                 if (header == null) return null;
                 var lineas = (await _repo.DetalleAsync(id))?.ToList() ?? new List<PR_Veterinaria_FacturaDetalle_ListResult>();
                 var pagos = (await _pagoRepo.ListPorFacturaAsync(id))?.ToList() ?? new List<PR_Veterinaria_Pago_ListPorFacturaResult>();
+                var ajustes = (await _repo.AjustesListAsync(id))?.ToList() ?? new List<PR_Veterinaria_FacturaAjustes_ListResult>();
                 return new ComprobanteViewModel
                 {
                     Header = header,
@@ -140,7 +143,8 @@ namespace PetsHome.Business.Services
                         Fecha = p.pago_Fecha,
                         RecibidoPor = p.RecibidoPorNombre,
                         Referencia = p.pago_Referencia
-                    }).ToList()
+                    }).ToList(),
+                    Ajustes = ajustes
                 };
             }
             catch (Exception ex) { _logger.LogError(ex, ex.Message); return null; }
@@ -150,6 +154,38 @@ namespace PetsHome.Business.Services
         {
             try { return await _repo.ProductosVendiblesAsync(); }
             catch (Exception ex) { _logger.LogError(ex, ex.Message); return null; }
+        }
+
+        /// <summary>Servicios (con flag de exento) para el POS de facturacion.</summary>
+        public async Task<IEnumerable<PR_Veterinaria_Servicio_DropdownFacturaResult>> ServiciosFacturaAsync()
+        {
+            try { return await _repo.ServiciosDropdownAsync(); }
+            catch (Exception ex) { _logger.LogError(ex, ex.Message); return null; }
+        }
+
+        /// <summary>
+        /// Aplica una nota de credito (condona saldo) o un reembolso (devuelve pagado)
+        /// sobre una factura. Devuelve (ok, saldo, estado, mensaje).
+        /// </summary>
+        public async Task<(bool ok, decimal saldo, string estado, string mensaje)> AjustarAsync(FacturaAjusteViewModel model, int usuario)
+        {
+            try
+            {
+                if (model == null || model.factId <= 0)
+                    return (false, 0m, null, "Factura invalida.");
+                var tipo = model.tipo == "Reembolso" ? "Reembolso" : "NotaCredito";
+                var r = await _repo.AjustarAsync(model.factId, tipo, model.monto,
+                    string.IsNullOrWhiteSpace(model.motivo) ? null : model.motivo.Trim(),
+                    string.IsNullOrWhiteSpace(model.claveOperacion) ? null : model.claveOperacion.Trim(),
+                    usuario);
+                if (r == null) return (false, 0m, null, "No se obtuvo respuesta del servidor.");
+                return (r.CodeStatus == 1, r.nuevo_saldo, r.fact_Estado, r.MessageStatus);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return (false, 0m, null, "Error al aplicar el ajuste.");
+            }
         }
     }
 }
