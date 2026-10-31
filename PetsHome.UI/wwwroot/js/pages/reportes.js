@@ -3,7 +3,8 @@
    - Rango de fechas (por defecto últimos 30 días); al cambiar recarga la pestaña activa.
    - Consumo de datos vía window.getJson (http.js, token y headers automáticos).
    - Gráficas ApexCharts con render perezoso (se dibujan al abrir la pestaña, ya visible).
-   - Exportar CSV (desde los datos ya cargados, descarga por Blob) e Imprimir (window.print).
+   - Exportar CSV (archivo generado en el servidor, descarga por enlace a /Reportes/*Csv).
+   - Imprimir / PDF (encabezado de impresión + window.print; el usuario guarda como PDF).
    ========================================================== */
 (function () {
     "use strict";
@@ -235,49 +236,45 @@
     }
 
     /* ══════════════════════ EXPORTAR CSV ══════════════════════ */
-    function cell(v) {
-        var s = (v == null ? "" : String(v));
-        return '"' + s.replace(/"/g, '""') + '"';
-    }
-    function csvRows(tab) {
-        var d = cache[tab] || {};
-        var out = [];
-        if (tab === "ingresos") {
-            out.push(["Fecha", "Monto"]);
-            (d.serie || []).forEach(function (x) { out.push([x.fecha, (Number(x.monto) || 0).toFixed(2)]); });
-            out.push([]);
-            out.push(["Total período", (Number(d.total) || 0).toFixed(2)]);
-            out.push(["Período anterior", (Number(d.totalAnterior) || 0).toFixed(2)]);
-        } else if (tab === "citas") {
-            out.push(["Total", d.total || 0]);
-            out.push(["Atendidas", d.atendidas || 0]);
-            out.push(["No-show", d.noShow || 0]);
-            out.push(["Canceladas", d.canceladas || 0]);
-            out.push([]);
-            out.push(["Doctor", "Cantidad"]);
-            (d.porDoctor || []).forEach(function (r) { out.push([r.doctor, r.cantidad]); });
-        } else if (tab === "servicios") {
-            out.push(["Servicio", "Cantidad", "Ingreso"]);
-            (d.items || []).forEach(function (r) { out.push([r.servicio, r.cantidad, (Number(r.ingreso) || 0).toFixed(2)]); });
-        } else if (tab === "inventario") {
-            out.push(["Producto", "Stock", "Minimo"]);
-            (d.stockBajo || []).forEach(function (r) { out.push([r.item, r.stock, r.minimo]); });
-        }
-        return out;
-    }
+    /* El archivo lo genera el servidor (con BOM UTF-8); aquí solo armamos la
+       URL con el rango de fechas y disparamos la descarga con un enlace. */
     function exportCsv(tab) {
-        var rows = csvRows(tab);
-        var text = rows.map(function (r) { return r.map(cell).join(","); }).join("\r\n");
-        var r = rango();
-        var nombre = "reporte-" + tab + "_" + r.desde + "_a_" + r.hasta + ".csv";
-        if (tab === "inventario") nombre = "reporte-inventario.csv";
-        // BOM para que Excel respete los acentos
-        var blob = new Blob([String.fromCharCode(0xFEFF) + text], { type: "text/csv;charset=utf-8;" });
-        var url = URL.createObjectURL(blob);
+        var base = urls[tab + "Csv"];
+        if (!base) return;
+        var url = base;
+        if (tab !== "inventario") {   // inventario no filtra por fecha
+            var r = rango();
+            url += "?desde=" + encodeURIComponent(r.desde) + "&hasta=" + encodeURIComponent(r.hasta);
+        }
         var a = document.createElement("a");
-        a.href = url; a.download = nombre;
+        a.href = url;
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+    }
+
+    /* ══════════════════════ IMPRIMIR / PDF ══════════════════════ */
+    /* Rellena el encabezado de impresión (título del reporte, rango y fecha de
+       generación) según la pestaña activa y lanza el diálogo del navegador
+       (el usuario elige "Guardar como PDF"). */
+    var TITULOS = {
+        ingresos:   "Reporte de Ingresos",
+        citas:      "Reporte de Citas",
+        servicios:  "Reporte de Servicios",
+        inventario: "Reporte de Inventario — Stock bajo"
+    };
+    function printTab() {
+        var titleEl = document.getElementById("repPrintTitle");
+        var metaEl  = document.getElementById("repPrintMeta");
+        if (titleEl) titleEl.textContent = TITULOS[activeTab] || "Reporte";
+        if (metaEl) {
+            var partes = [];
+            if (activeTab !== "inventario") {
+                var r = rango();
+                partes.push("Período: " + (r.desde || "—") + " a " + (r.hasta || "—"));
+            }
+            partes.push("Generado: " + new Date().toLocaleString("es-HN"));
+            metaEl.textContent = partes.join("   ·   ");
+        }
+        window.print();
     }
 
     /* ══════════════════════ EVENTOS ══════════════════════ */
@@ -293,7 +290,7 @@
         b.addEventListener("click", function () { exportCsv(b.getAttribute("data-export")); });
     });
     document.querySelectorAll("[data-print]").forEach(function (b) {
-        b.addEventListener("click", function () { window.print(); });
+        b.addEventListener("click", function () { printTab(); });
     });
 
     function onFechaChange() {

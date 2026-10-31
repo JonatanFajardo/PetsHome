@@ -32,6 +32,12 @@
         </div>
     </div>
 
+    @* ─── Encabezado SOLO para impresión / PDF (oculto en pantalla) ─── *@
+    <div class="rep-print-header" id="repPrintHeader">
+        <h2 id="repPrintTitle">Reporte</h2>
+        <div class="rep-print-meta" id="repPrintMeta"></div>
+    </div>
+
     @* ═══════════════════ PESTAÑAS ═══════════════════ *@
     <div class="rep-tabs" role="tablist">
         <button type="button" class="rep-tab active" data-tab="ingresos"><i class="fas fa-coins"></i> Ingresos</button>
@@ -172,7 +178,12 @@
             ingresos:   '@Url.Action("Ingresos", "Reportes")',
             citas:      '@Url.Action("Citas", "Reportes")',
             servicios:  '@Url.Action("Servicios", "Reportes")',
-            inventario: '@Url.Action("Inventario", "Reportes")'
+            inventario: '@Url.Action("Inventario", "Reportes")',
+            // Descargas CSV (archivo generado en el servidor con BOM UTF-8)
+            ingresosCsv:   '@Url.Action("IngresosCsv", "Reportes")',
+            citasCsv:      '@Url.Action("CitasCsv", "Reportes")',
+            serviciosCsv:  '@Url.Action("ServiciosCsv", "Reportes")',
+            inventarioCsv: '@Url.Action("InventarioCsv", "Reportes")'
         };
     </script>
     <script src="~/js/pages/reportes.js" asp-append-version="true"></script>
