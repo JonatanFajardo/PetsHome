@@ -41,6 +41,12 @@ namespace PetsHome.Business.Models
 
         public string receta_Estado { get; set; }
 
+        [Display(Name = "Resurtidos autorizados")]
+        public int ResurtidosAutorizados { get; set; }
+
+        [Display(Name = "Resurtidos usados")]
+        public int ResurtidosUsados { get; set; }
+
         public string receta_NombreUsuarioCrea { get; set; }
 
         public DateTime receta_FechaCrea { get; set; }

@@ -68,6 +68,18 @@ namespace PetsHome.Business.Models
         /// <summary>Item de inventario vinculado (NULL = medicamento de texto libre).</summary>
         public int? itm_Id { get; set; }
 
+        /// <summary>Especie normalizada de la mascota ('Canino' | 'Felino') para la calculadora de dosis.</summary>
+        public string MascEspecie { get; set; }
+
+        /// <summary>Peso de la mascota en kg (base para la calculadora de dosis).</summary>
+        public decimal? MascPeso { get; set; }
+
+        [Display(Name = "Resurtidos autorizados")]
+        public int ResurtidosAutorizados { get; set; }
+
+        [Display(Name = "Resurtidos usados")]
+        public int ResurtidosUsados { get; set; }
+
         public int receta_UsuarioCrea { get; set; }
 
         public DateTime receta_FechaCrea { get; set; }
@@ -78,6 +90,24 @@ namespace PetsHome.Business.Models
         public DateTime? receta_FechaModifica { get; set; }
 
         public bool isEdit => receta_Id != 0;
+
+        /// <summary>
+        /// Normaliza el tipo de animal de la mascota (raza_TipoAnimal) a la especie
+        /// que usa el vademecum: perro -> 'Canino', gato -> 'Felino'. Cualquier otro
+        /// valor se devuelve tal cual (no se extrapola entre especies).
+        /// </summary>
+        public static string NormalizarEspecie(string tipoAnimal)
+        {
+            if (string.IsNullOrWhiteSpace(tipoAnimal))
+                return null;
+
+            var t = tipoAnimal.Trim().ToLowerInvariant();
+            if (t.StartsWith("perr") || t.StartsWith("can"))
+                return "Canino";
+            if (t.StartsWith("gat") || t.StartsWith("fel"))
+                return "Felino";
+            return tipoAnimal;
+        }
 
         #region Dropdown
 

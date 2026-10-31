@@ -176,6 +176,14 @@
 .ec-med-head .ec-med-badge { align-self: center; }
 .ec-med-head .ec-line-del { margin-left: 2px; align-self: center; }
 
+/* Botón calculadora de dosis por línea de medicamento */
+.ec-med-calc {
+  border: none; background: none; cursor: pointer;
+  color: #6d28d9; font-size: 15px; line-height: 1;
+  align-self: center; margin-left: auto; padding: 2px 4px;
+}
+.ec-med-calc:hover { color: #4c1d95; }
+
 .ec-med-inputs {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr;

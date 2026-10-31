@@ -582,3 +582,39 @@ El objetivo de PetsHome es **quedar igual que OpenVPM**, no "inspirarse". Por ta
 - Señalar brechas proactivamente (docs/BRECHAS_OPENVPM.md), sin que el usuario las tenga que descubrir.
 
 **Caso concreto — Facturación:** OpenVPM tiene **UNA** pantalla `/billing` con pestañas por estado (All/Draft/Sent/Paid/Overdue/Void/Estimates) + `/billing/new`. NO tiene una "cola de cobros" separada: las visitas generan facturas y todo se ve/cobra por estado en esa única pantalla. PetsHome debe replicar esto: **unificar /Cobros + /Facturacion en una sola pantalla con pestañas por estado** (Por cobrar / Pagadas / Vencidas / Anuladas / Todas), reemplazando el split actual.
+
+---
+
+## Recetas: calculadora de dosis por peso + resurtidos (2026-10-30)
+
+**Rama:** `feature/recetas-dosis-resurtidos` (creada desde master; **sin commitear** aún — se espera "cm").
+**Scripts:** `Database/95_RECETAS_VADEMECUM_RESURTIDOS.sql` y `Database/96_RESURTIDO_COBRA_INVENTARIO.sql` (ambos idempotentes, ya ejecutados en LocalDB).
+
+**Validado contra OpenVPM** (`../openvpm/apps/web/lib/dosing/`): su calculadora es un vademécum (8 fármacos) + función pura `calculateDose`. Replicado tal cual.
+
+### A) Calculadora de dosis — HECHO (igual que OpenVPM)
+- BD: `Medico.tbVademecum` + `Medico.tbVademecumDosis`, sembrados con los **mismos 8 fármacos** del formulary de OpenVPM traducidos sin acentos (Maropitant, Carprofeno, Meloxicam, Gabapentina, Metronidazol, Amoxicilina/Clavulanato, Famotidina, Oclacitinib) → 14 filas de dosis por especie. Respeta "no extrapolar entre especies".
+- SP `PR_Medico_Vademecum_List` (@especie, @categoria). Endpoint `GET /Receta/Vademecum`.
+- JS reutilizable `wwwroot/js/pages/dosis-calculator.js` (`window.DosisCalculator.calcular({farmacoDosis,pesoKg,concentracionMgMl})`): rango mg (peso×mg/kg), tope por dosis máxima, tabletas a ¼ (fracciones prácticas 0.25–4), volumen mL, vía/frecuencia, advertencias + descargo, valida peso 0–200kg. (Lógica portada de `calculator.ts`.)
+- UI en pantalla **Recetas** (Create/Edit): sección "Calculadora de dosis" junto al campo Dosis; lee especie/peso del paciente (o peso manual); botón "Usar esta dosis" rellena `receta_Dosis`.
+
+### B) Resurtidos (refills) — HECHO (incluye cobro + inventario)
+- BD: `tbRecetas` + `receta_ResurtidosAutorizados`/`receta_ResurtidosUsados`; bitácora `Medico.tbRecetaResurtido` (+`rsrt_SalidaId`/`rsrt_CargoId` de trazabilidad).
+- SP `PR_Medico_Recetas_Resurtir` (@receta_Id, @usuario). Endpoint `POST /Receta/Resurtir` → {ok,mensaje,usados,autorizados}.
+- UI: campo "Resurtidos autorizados" en Create/Edit; "X de Y usados" + botón Resurtir en Details; columna "2/3" en Index.
+- **Resurtir replica la ENTREGA ORIGINAL** (como OpenVPM refill_dispensed): valida stock → crea salida de inventario (baja stock) → si la mascota es de cliente externo, encola el cargo (se cobra) → incrementa usados + bitácora. Todo en transacción (rollback ante fallo).
+- **Candados respetados:** la receta tiene UNIQUE filtrado por receta_Id en cargo (`UQ_CargoDispensacion_Receta`) y en salida (`UQ_saldet_Receta`) para evitar doble-entrega. El resurtido NO reusa receta_Id: la salida va con `saldet_RecetaId=NULL` y el cargo con `receta_Id=NULL`, `cargo_TipoOrigen='Resurtido'`, `cargo_OrigenId=rsrt_Id`.
+- Probado (4 casos): cliente+stock (cobra+baja), sin stock (frena), texto libre sin item (solo cuenta), sin resurtidos (-1).
+
+### Calculadora en la Consulta — HECHO (2026-10-30)
+- La calculadora quedó también en la pantalla **Consulta**: cada línea de medicamento tiene un botón de calculadora; usa el **peso en vivo** de `#ecPeso` + la especie del paciente (la ficha ya exponía `Especie` vía SP `PR_Medico_PerfilMedico_FichaMascota` del script 87, no hubo que tocar backend). "Usar esta dosis" rellena el campo `dosis` de esa línea. Archivos: `Views/Consulta/Index.cshtml`, nuevo `wwwroot/js/pages/consulta-dosis.js`, 1 línea en `en-consulta.js` (botón por línea), CSS en `en-consulta.css`.
+
+### PENDIENTE
+- **PENDIENTE (menor, diferido):** ciclo de vida de la receta estilo OpenVPM `prescription_events` (estados created/refill_authorized/completed/cancelled/expired). Es formalidad de bitácora, no afecta cobro/inventario.
+- **PENDIENTE:** commit de la rama (con "cm") — aún sin commitear.
+
+---
+
+## Aparte (otro repo) — Dormus Hub: ejecutor de SQL en el agente de escritorio (2026-10-30)
+
+No es de PetsHome, pero se trabajó en la misma sesión. En `../Dormus_Hub/DomusHub.Agent` (app de bandeja WinForms .NET 10) se agregó la ventana **"🗄 Bases de datos..."**: registra proyectos (cada uno con su base en un servidor, cadena cifrada con DPAPI), guarda scripts .sql (arrastrar/soltar), y los ejecuta contra la base del proyecto con estado por script (pendiente/corrido/cambiado) + bitácora. Almacena local en SQLite (`%LocalAppData%\DomusHubAgent\dbtools.db`). Pensado para correr los seeds de PetsHome y de cualquier otro proyecto. (Nota: la base de PetsHome en Somee **ya no existe** — host no resuelve; por ahora solo sirve el proyecto "PetsHome (Local)" contra LocalDB.)

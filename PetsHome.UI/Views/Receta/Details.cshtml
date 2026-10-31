@@ -24,6 +24,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
     <link rel="stylesheet" href="~/css/detail-styles.css" />
+    <link rel="stylesheet" href="~/css/receta-dosis.css" />
 }
 
 <div class="col-12">
@@ -184,6 +185,25 @@
                                     <div class="detail-value">@Model.receta_Duracion</div>
                                 </div>
                             }
+
+                            <div class="detail-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Resurtidos</span>
+                                </div>
+                                <div class="detail-value">
+                                    <div class="resurtidos-box">
+                                        <span class="resurtidos-badge @(Model.ResurtidosUsados < Model.ResurtidosAutorizados ? "" : "agotado")" id="resurtidosBadge">
+                                            <i class="fas fa-sync-alt"></i>
+                                            <span id="resurtidosTexto">@Model.ResurtidosUsados de @Model.ResurtidosAutorizados usados</span>
+                                        </span>
+                                        <button type="button" class="btn btn-primary btn-sm" id="btnResurtir"
+                                                style="@(Model.ResurtidosUsados < Model.ResurtidosAutorizados ? "" : "display:none;")">
+                                            <i class="fas fa-redo mr-1"></i> Resurtir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="detail-item">
                                 <div class="detail-label">
@@ -349,9 +369,67 @@
 
 @section Scripts {
     <script>
+        window._urls = { resurtir: '@Url.Action("Resurtir", "Receta")' };
+        var _recetaId = @Model.receta_Id;
+
         function confirmDelete(id) {
             $('#delete-receta-id').val(id);
             $('#delete-confirm-modal').modal('show');
         }
+
+        (function () {
+            var btn = document.getElementById('btnResurtir');
+            if (!btn) return;
+
+            function hacerResurtido() {
+                btn.disabled = true;
+                var original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Resurtiendo...';
+
+                window.postForm(window._urls.resurtir, { recetaId: _recetaId })
+                    .then(function (res) {
+                        if (res && res.ok) {
+                            // Actualizar el conteo en pantalla con lo que devuelve el backend.
+                            var txt = document.getElementById('resurtidosTexto');
+                            if (txt) txt.textContent = res.usados + ' de ' + res.autorizados + ' usados';
+                            var badge = document.getElementById('resurtidosBadge');
+                            if (res.usados >= res.autorizados) {
+                                if (badge) badge.classList.add('agotado');
+                                btn.style.display = 'none';
+                            }
+                            if (window.Swal) {
+                                Swal.fire({ icon: 'success', title: 'Resurtido registrado', text: res.mensaje || '', timer: 1800, showConfirmButton: false });
+                            } else {
+                                alert(res.mensaje || 'Resurtido registrado');
+                            }
+                        } else {
+                            btn.disabled = false; btn.innerHTML = original;
+                            var msg = (res && res.mensaje) ? res.mensaje : 'No se pudo resurtir la receta.';
+                            if (window.Swal) { Swal.fire({ icon: 'error', title: 'Error', text: msg }); }
+                            else { alert(msg); }
+                        }
+                    })
+                    .catch(function () {
+                        btn.disabled = false; btn.innerHTML = original;
+                        if (window.Swal) { Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexion.' }); }
+                        else { alert('Error de conexion.'); }
+                    });
+            }
+
+            btn.addEventListener('click', function () {
+                if (window.Swal) {
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'Resurtir receta',
+                        text: 'Se registrara una nueva entrega de esta receta. Continuar?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Si, resurtir',
+                        cancelButtonText: 'Cancelar'
+                    }).then(function (r) { if (r.isConfirmed) hacerResurtido(); });
+                } else if (confirm('Se registrara una nueva entrega de esta receta. Continuar?')) {
+                    hacerResurtido();
+                }
+            });
+        })();
     </script>
 }

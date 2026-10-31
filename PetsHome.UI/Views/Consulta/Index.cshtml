@@ -11,12 +11,16 @@
                      : ficha?.EstadoSalud == "Crítico"        ? "critical"
                                                               : "healthy";
     string statusLabel = ficha?.EstadoSalud ?? "Saludable";
+
+    // Especie normalizada ('Canino'/'Felino') para el vademecum de la calculadora de dosis.
+    var especieVademecum = PetsHome.Business.Models.RecetaFormViewModel.NormalizarEspecie(ficha?.Especie);
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/perfil-medico-mascota.css" />
     <link rel="stylesheet" href="~/css/search-select.css" />
     <link rel="stylesheet" href="~/css/en-consulta.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/receta-dosis.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <style>
         .app-wrapper { min-height: auto; }
@@ -258,6 +262,37 @@
                     <div class="ec-lines" id="ecMedLines">
                         <div class="ec-empty-line">Aún no has agregado medicamentos.</div>
                     </div>
+
+                    @* Calculadora de dosis por peso: apoyo a la receta, junto a la lista de medicamentos. *@
+                    <details class="dosis-calc" id="ecDosisCalc">
+                        <summary><i class="bi bi-calculator"></i> Calculadora de dosis</summary>
+                        <div class="dosis-calc-body">
+                            <div class="dc-paciente">
+                                <span class="dc-chip"><i class="bi bi-clipboard-pulse"></i> @(string.IsNullOrEmpty(especieVademecum) ? "Especie no definida" : especieVademecum)</span>
+                                <span class="dc-chip"><i class="bi bi-speedometer2"></i> <span id="dcPesoVal">—</span> kg</span>
+                                <span class="dc-aviso dc-aviso-info" id="dcTarget" style="display:none"></span>
+                            </div>
+
+                            <div class="dc-controls">
+                                <div>
+                                    <label for="dcFarmaco">Fármaco (vademécum)</label>
+                                    <select class="ec-select no-select2" id="dcFarmaco"><option value="">Cargando...</option></select>
+                                </div>
+                                <div>
+                                    <label for="dcConcentracion">Concentración (mg/mL)</label>
+                                    <select class="ec-select no-select2" id="dcConcentracion" disabled><option value="">(sin concentración)</option></select>
+                                </div>
+                            </div>
+
+                            <div id="dcResultado"></div>
+
+                            <div class="dc-acciones">
+                                <button type="button" class="ec-action" id="dcUsarDosis" disabled>
+                                    <i class="bi bi-arrow-down"></i> Usar esta dosis
+                                </button>
+                            </div>
+                        </div>
+                    </details>
                 </div>
 
                 <div class="ec-field">
@@ -470,10 +505,15 @@ else
             atender: '@Url.Action("Atender", "Consulta")',
             crearCita: '@Url.Action("Create", "CitaMedica")',
             sugerencias: '@Url.Action("Sugerencias", "Lookup")',
-            servicios: '@Url.Action("Servicios", "Consulta")'
+            servicios: '@Url.Action("Servicios", "Consulta")',
+            vademecum: '@Url.Action("Vademecum", "Receta")'
         };
         window._mascId = @Model.MascId;
         window._citaId = @(Context.Request.Query["citaId"].ToString() is var q && int.TryParse(q, out var _ci) ? _ci : 0);
+        // Contexto para la calculadora de dosis (el peso se lee en vivo de #ecPeso).
+        window._dosisCtx = { especie: '@especieVademecum' };
     </script>
     <script src="~/js/pages/en-consulta.js" asp-append-version="true"></script>
+    <script src="~/js/pages/dosis-calculator.js"></script>
+    <script src="~/js/pages/consulta-dosis.js" asp-append-version="true"></script>
 }

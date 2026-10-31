@@ -14,7 +14,7 @@ Leyenda estado: **✅ Tiene** · **◐ Parcial** · **❌ No** · Esfuerzo [poco
 
 | Feature OpenVPM | PetsHome | Hueco | Recomendación | Esf. | Prio |
 |---|---|---|---|---|---|
-| **Qué es facturable**: medicamentos, **vacunas, laboratorio, procedimientos**, servicios, productos | ◐ Solo **medicamentos dispensados** (cola) + productos/servicios manuales en /Facturacion | Vacunas, labs y procedimientos se registran pero **NO se cobran** | Que cada acto facturable genere cargo (como `visit_work_items`) | mucho | **ALTA** |
+| **Qué es facturable**: medicamentos, **vacunas, laboratorio, procedimientos**, servicios, productos | ✅ Medicamentos + **vacunas/laboratorio/procedimientos** vía servicios facturables (script 82: `tbServicios` por categoría + `PR_..._EncolarServicio`; ConsultaService encola el cargo al guardar) | — (cerrado) | — | — | — |
 | **Cobro por visita / checkout** (al cerrar, elegir Pagado/Por cobrar/Sin cargo) | ◐ **En rediseño** (rama `feature/cobro-por-visita`, sin terminar el checkout contextual) | Falta mover el cobro al cierre de consulta y quitar /Cobros | Terminar el checkout contextual | medio | **ALTA** |
 | **Registrar PAGOS** (pagos, método, recibo) | ❌ La factura queda 'Emitida/Pagada' pero no hay tabla de pagos | No se registran pagos ni métodos | Tabla de pagos + registrar pago | medio | **ALTA** |
 | **Pagos parciales / saldo** | ❌ | No hay abonos ni saldo pendiente real | Saldo = total − pagos | medio | MEDIA |
@@ -77,20 +77,23 @@ Planes de bienestar/membresías · Seguros (baja prioridad).
 ## 5. Recomendación — orden sugerido (por impacto/esfuerzo)
 
 ```
-AHORA (alta prioridad, alineado a lo que ya estamos tocando):
-  1. Terminar el cobro POR VISITA / checkout contextual (en curso)
-  2. Hacer facturables vacunas / labs / procedimientos (no solo meds)
-  3. Registrar PAGOS (+ saldo) y estado de cuenta del cliente
+YA CERRADO (sesiones oct 2026):
+  ✓ Cobro POR VISITA / checkout contextual
+  ✓ Facturables vacunas / labs / procedimientos (script 82 + ConsultaService)
+  ✓ PAGOS (+ saldo) y cuentas por cobrar / estado de cuenta
+  ✓ Certificados de vacuna + recordatorios
+  ✓ Pestañas de la ficha (Facturas/Vitales/Peso/Lab)
+  ✓ Reportes financieros (feature/reportes) · 7 estados de cita
 
-SIGUIENTE OLA (alto valor clínico/operativo):
-  4. Agenda por doctor (columnas) + detección de conflictos
-  5. Certificados de vacuna + recordatorios/recalls
-  6. Pestañas faltantes en la ficha (Facturas/Vitales/Lab) + gráficas de tendencia
-  7. Reportes financieros/gerenciales
+AHORA (lo de más impacto que sigue abierto):
+  1. Agenda por doctor (columnas) + detección de conflictos de horario
+  2. Recetas: resurtidos (refills) + calculadora de dosis por peso
+  3. Motor de recordatorios/recalls automáticos
 
 CUANDO HAGA FALTA:
-  8. Inventario con lotes/caducidad · recetas refills/dosing · procedimientos estructurados
-  9. Estimados · descuentos/ajustes · firma de consentimientos
+  4. Inventario con lotes/caducidad · procedimientos estructurados
+  5. Agenda arrastrar-para-reagendar · descuentos/ajustes/reembolsos
+  6. SOAP firma/addenda · export de reportes (CSV/PDF) · estimados · firma de consentimientos
 ```
 
 ---

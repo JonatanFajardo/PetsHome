@@ -169,6 +169,35 @@ namespace PetsHome.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Devuelve el vademecum (catalogo de farmacos de referencia) como JSON
+        /// para la calculadora de dosis por peso del frontend.
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Vademecum(string especie = null, string categoria = null)
+        {
+            var vademecum = await _recetaService.VademecumListAsync(especie, categoria);
+            return Json(vademecum);
+        }
+
+        /// <summary>
+        /// Registra un resurtido de la receta. Devuelve ok/mensaje y los conteos.
+        /// </summary>
+        [HttpPost]
+        [PantallaAuthorize("Listado de recetas", "editar")]
+        public async Task<IActionResult> Resurtir(int recetaId)
+        {
+            var usuario = CurrentUserId ?? 1;
+            var result = await _recetaService.ResurtirAsync(recetaId, usuario);
+            return Json(new
+            {
+                ok = result.CodeStatus > 0,
+                mensaje = result.MessageStatus,
+                usados = result.receta_ResurtidosUsados,
+                autorizados = result.receta_ResurtidosAutorizados
+            });
+        }
+
         public RecetaFormViewModel Dropdown(RecetaFormViewModel model)
         {
             var mascotas = _citaMedicaService.MascotaDropdown();
