@@ -24,6 +24,11 @@ namespace PetsHome.Business.Extensions
             // Mejoras v3 - Fase 3: cola dispensar→cobrar
             CreateMap<PR_Veterinaria_CargoDispensacion_ListPendientesResult, CargoDispensacionViewModel>().ReverseMap();
 
+            // Estimados / Presupuestos
+            CreateMap<PR_Veterinaria_Estimados_ListResult, EstimadoListViewModel>().ReverseMap();
+            CreateMap<PR_Veterinaria_Estimados_FindResult, EstimadoFindViewModel>().ReverseMap();
+            CreateMap<PR_Veterinaria_EstimadoDetalle_ListResult, EstimadoDetalleViewModel>().ReverseMap();
+
             // Mapeos para Departamento - ViewModels separados
             CreateMap<PR_General_Departamentos_ListResult, DepartamentoListViewModel>().ReverseMap();
             CreateMap<PR_General_Departamentos_FindResult, DepartamentoFormViewModel>().ReverseMap();

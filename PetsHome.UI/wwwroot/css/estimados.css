@@ -1,0 +1,120 @@
+/* Presupuestos / Estimados */
+
+/* Botón nuevo + volver */
+.est-new-btn, .est-back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff; color: #4361ee; border: 1px solid #4361ee;
+    border-radius: 8px; padding: 8px 16px; font-weight: 600; cursor: pointer;
+    text-decoration: none; transition: all .15s;
+}
+.est-new-btn:hover, .est-back-btn:hover { background: #4361ee; color: #fff; }
+
+.est-composer-bar {
+    display: flex; align-items: center; gap: 18px;
+    margin: 6px 0 18px; flex-wrap: wrap;
+}
+.est-composer-title { font-size: 1.15rem; font-weight: 700; color: #1b2559; display: inline-flex; align-items: center; gap: 8px; }
+
+/* Pestañas por estado */
+.est-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 18px; }
+.est-tab {
+    background: #f1f3f9; border: none; border-radius: 20px;
+    padding: 7px 18px; font-weight: 600; color: #5a607f; cursor: pointer; transition: all .15s;
+}
+.est-tab:hover { background: #e3e8f7; }
+.est-tab.active { background: #4361ee; color: #fff; }
+
+/* Layout composer / detalle */
+.est-layout, .est-detail-grid {
+    display: grid; grid-template-columns: 1fr 320px; gap: 18px; align-items: start;
+}
+@media (max-width: 991px) {
+    .est-layout, .est-detail-grid { grid-template-columns: 1fr; }
+}
+
+/* Tarjetas */
+.est-card {
+    background: #fff; border: 1px solid #e8ebf3; border-radius: 12px;
+    margin-bottom: 18px; overflow: hidden;
+}
+.est-card-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-bottom: 1px solid #eef0f6; background: #fafbfe;
+}
+.est-card-header i { color: #4361ee; }
+.est-card-header h3 { margin: 0; font-size: .98rem; font-weight: 700; color: #1b2559; }
+.est-card-body { padding: 16px; }
+
+/* Campos */
+.est-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 575px) { .est-grid-2 { grid-template-columns: 1fr; } }
+.est-field { display: flex; flex-direction: column; gap: 5px; }
+.est-field label { font-size: .82rem; font-weight: 600; color: #5a607f; margin: 0; }
+.est-control {
+    border: 1px solid #d7dcea; border-radius: 8px; padding: 8px 10px; font-size: .9rem; width: 100%;
+}
+.est-control:focus { outline: none; border-color: #4361ee; }
+
+.est-add-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: 150px 1fr 1fr 90px 120px 110px;
+    align-items: end;
+}
+@media (max-width: 991px) { .est-add-grid { grid-template-columns: 1fr 1fr; } }
+
+/* Toggle tipo */
+.est-type-toggle { display: flex; border: 1px solid #d7dcea; border-radius: 8px; overflow: hidden; }
+.est-type-toggle button {
+    flex: 1; border: none; background: #fff; padding: 8px 6px; font-size: .82rem;
+    font-weight: 600; color: #5a607f; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; justify-content: center;
+}
+.est-type-toggle button.active { background: #4361ee; color: #fff; }
+
+/* Botones */
+.est-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600; font-size: .9rem; cursor: pointer; transition: opacity .15s;
+}
+.est-btn:disabled { opacity: .5; cursor: not-allowed; }
+.est-btn-primary { background: #4361ee; color: #fff; }
+.est-btn-success { background: #28a745; color: #fff; }
+.est-btn-danger  { background: #dc3545; color: #fff; }
+.est-btn-info    { background: #17a2b8; color: #fff; }
+.est-btn-ghost   { background: #f1f3f9; color: #5a607f; }
+.est-btn:not(:disabled):hover { opacity: .88; }
+
+/* Tabla de líneas */
+.est-lines-table { width: 100%; border-collapse: collapse; }
+.est-lines-table th { background: #fafbfe; padding: 10px 12px; font-size: .8rem; color: #5a607f; text-align: left; border-bottom: 1px solid #eef0f6; }
+.est-lines-table td { padding: 10px 12px; border-bottom: 1px solid #f3f5fa; font-size: .9rem; }
+.est-del { background: transparent; border: none; color: #dc3545; cursor: pointer; }
+
+/* Totales */
+.est-totals-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+.est-totals-total { font-size: 1.15rem; font-weight: 700; color: #1b2559; }
+.est-dinero { font-variant-numeric: tabular-nums; }
+.est-nota-isv { font-size: .78rem; color: #8a90a8; margin: 8px 0 0; }
+
+/* Clave/valor en detalle */
+.est-kv { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px dashed #eef0f6; }
+.est-kv:last-child { border-bottom: none; }
+.est-kv .k { color: #8a90a8; font-size: .85rem; }
+.est-kv .v { color: #1b2559; font-weight: 600; font-size: .9rem; text-align: right; }
+
+.est-empty { color: #8a90a8; padding: 10px 0; }
+.est-link-btn { color: #4361ee; text-decoration: none; font-weight: 600; }
+.est-link-btn:hover { text-decoration: underline; }
+
+.est-conv-note {
+    background: #e9f9ee; border: 1px solid #b7e7c5; color: #1e7e34;
+    border-radius: 8px; padding: 10px 12px; font-size: .86rem;
+}
+.est-conv-note a { color: #1e7e34; font-weight: 700; }
+
+/* Badges de estado */
+.est-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .78rem; font-weight: 700; }
+.est-borrador   { background: #eceef4; color: #5a607f; }
+.est-enviado    { background: #dcebff; color: #1366d6; }
+.est-aceptado   { background: #e0f6e6; color: #1e7e34; }
+.est-rechazado  { background: #fde2e4; color: #c82333; }
+.est-convertido { background: #e8e2fb; color: #5b2bd6; }
