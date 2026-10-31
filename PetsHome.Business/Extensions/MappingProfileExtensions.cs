@@ -539,6 +539,10 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Medico_SustanciaMovimiento_DetailResult, SustanciaMovimientoDetailViewModel>();
             CreateMap<PR_Medico_SustanciaSaldo_ListResult, SustanciaSaldoViewModel>();
 
+            // Mapeos para modulo medico - Recordatorios / recalls (care-reminders)
+            CreateMap<PR_Medico_Recordatorios_ListResult, RecordatorioListViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Recordatorios_DetailResult, RecordatorioDetailViewModel>().ReverseMap();
+
             // Mapeos para Veterinaria - Servicios
             CreateMap<PR_Veterinaria_Servicios_ListResult, ServiciosListViewModel>().ReverseMap();
             CreateMap<PR_Veterinaria_Servicios_FindResult, ServiciosFindViewModel>().ReverseMap();
