@@ -1,3 +1,4 @@
+@using PetsHome.Common.Entities
 @model RecetaDetailsViewModel
 @{
     ViewData["Title"] = "Detalles de Receta";
@@ -5,11 +6,13 @@
 
     // Determinar estado de la receta
     var estado = Model.receta_Estado ?? "Activa";
+    var esActiva = estado == "Activa";
     var estadoColor = estado switch
     {
         "Activa" => "status-activo",
         "Completada" => "status-adoptado",
         "Cancelada" => "status-inactivo",
+        "Vencida" => "status-inactivo",
         _ => "status-activo"
     };
     var estadoIcono = estado switch
@@ -17,7 +20,44 @@
         "Activa" => "fa-check-circle",
         "Completada" => "fa-calendar-check",
         "Cancelada" => "fa-times-circle",
+        "Vencida" => "fa-calendar-times",
         _ => "fa-check-circle"
+    };
+
+    // Bitacora del ciclo de vida (la carga el controller en ViewData).
+    var eventos = ViewData["Eventos"] as List<PR_Medico_Receta_ListEventosResult>
+                  ?? new List<PR_Medico_Receta_ListEventosResult>();
+
+    // Mapa de presentacion por tipo de evento (icono + color).
+    string EventoIcono(string tipo) => tipo switch
+    {
+        "Creada" => "fa-file-medical",
+        "ResurtidoAutorizado" => "fa-stamp",
+        "ResurtidoEntregado" => "fa-redo",
+        "Completada" => "fa-calendar-check",
+        "Cancelada" => "fa-times-circle",
+        "Vencida" => "fa-calendar-times",
+        _ => "fa-circle"
+    };
+    string EventoColor(string tipo) => tipo switch
+    {
+        "Creada" => "#1976D2",
+        "ResurtidoAutorizado" => "#7B1FA2",
+        "ResurtidoEntregado" => "#00838F",
+        "Completada" => "#2E7D32",
+        "Cancelada" => "#C62828",
+        "Vencida" => "#EF6C00",
+        _ => "#607D8B"
+    };
+    string EventoTexto(string tipo) => tipo switch
+    {
+        "Creada" => "Receta creada",
+        "ResurtidoAutorizado" => "Resurtido autorizado",
+        "ResurtidoEntregado" => "Resurtido entregado",
+        "Completada" => "Receta completada",
+        "Cancelada" => "Receta cancelada",
+        "Vencida" => "Receta vencida",
+        _ => tipo
     };
 }
 
@@ -78,6 +118,17 @@
                         <i class="fas fa-edit"></i>
                         <span>Editar</span>
                     </a>
+                    @if (esActiva)
+                    {
+                        <button type="button" id="btnCompletar" class="btn-detail btn-detail-white" style="background:#E8F5E9;color:#2E7D32;border-color:#2E7D32">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Completar</span>
+                        </button>
+                        <button type="button" id="btnCancelar" class="btn-detail btn-detail-white" style="background:#FDECEA;color:#C62828;border-color:#C62828">
+                            <i class="fas fa-ban"></i>
+                            <span>Cancelar receta</span>
+                        </button>
+                    }
                     <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
                         <i class="fas fa-arrow-left"></i>
                         <span>Volver</span>
@@ -275,6 +326,47 @@
                     </div>
                 }
 
+                <!-- Línea de tiempo: ciclo de vida de la receta -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-history"></i>
+                        <h3>Historial de la receta</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        @if (eventos.Count == 0)
+                        {
+                            <p class="text-muted mb-0">Aún no hay eventos registrados para esta receta.</p>
+                        }
+                        else
+                        {
+                            <ul class="receta-timeline">
+                                @foreach (var ev in eventos)
+                                {
+                                    <li class="receta-timeline-item">
+                                        <span class="receta-timeline-dot" style="background:@EventoColor(ev.evento_Tipo)">
+                                            <i class="fas @EventoIcono(ev.evento_Tipo)"></i>
+                                        </span>
+                                        <div class="receta-timeline-body">
+                                            <div class="receta-timeline-top">
+                                                <span class="receta-timeline-title" style="color:@EventoColor(ev.evento_Tipo)">@EventoTexto(ev.evento_Tipo)</span>
+                                                <span class="receta-timeline-date">@ev.evento_Fecha.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(ev.evento_Nota))
+                                            {
+                                                <div class="receta-timeline-note">@ev.evento_Nota</div>
+                                            }
+                                            <div class="receta-timeline-user">
+                                                <i class="fas fa-user"></i>
+                                                <span>@(!string.IsNullOrEmpty(ev.UsuarioNombre) ? ev.UsuarioNombre : $"Usuario ID: {ev.evento_Usuario}")</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+
                 <!-- Información de Auditoría -->
                 <div class="detail-card detail-card-full">
                     <div class="detail-card-header">
@@ -369,7 +461,11 @@
 
 @section Scripts {
     <script>
-        window._urls = { resurtir: '@Url.Action("Resurtir", "Receta")' };
+        window._urls = {
+            resurtir: '@Url.Action("Resurtir", "Receta")',
+            completar: '@Url.Action("Completar", "Receta")',
+            cancelar: '@Url.Action("Cancelar", "Receta")'
+        };
         var _recetaId = @Model.receta_Id;
 
         function confirmDelete(id) {
@@ -430,6 +526,82 @@
                     hacerResurtido();
                 }
             });
+        })();
+
+        // --- Transiciones de ciclo de vida: Completar / Cancelar ---
+        (function () {
+            function recargar() { window.location.reload(); }
+
+            function postTransicion(url, datos, textoExito) {
+                window.postForm(url, datos)
+                    .then(function (res) {
+                        if (res && res.ok) {
+                            if (window.Swal) {
+                                Swal.fire({ icon: 'success', title: textoExito, text: res.mensaje || '', timer: 1600, showConfirmButton: false })
+                                    .then(recargar);
+                            } else { alert(res.mensaje || textoExito); recargar(); }
+                        } else {
+                            var msg = (res && res.mensaje) ? res.mensaje : 'No se pudo completar la accion.';
+                            if (window.Swal) { Swal.fire({ icon: 'error', title: 'Error', text: msg }); }
+                            else { alert(msg); }
+                        }
+                    })
+                    .catch(function () {
+                        if (window.Swal) { Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexion.' }); }
+                        else { alert('Error de conexion.'); }
+                    });
+            }
+
+            var btnCompletar = document.getElementById('btnCompletar');
+            if (btnCompletar) {
+                btnCompletar.addEventListener('click', function () {
+                    if (window.Swal) {
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Completar receta',
+                            text: 'La receta quedara marcada como completada. Continuar?',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, completar',
+                            cancelButtonText: 'Cancelar'
+                        }).then(function (r) {
+                            if (r.isConfirmed) postTransicion(window._urls.completar, { recetaId: _recetaId }, 'Receta completada');
+                        });
+                    } else if (confirm('La receta quedara marcada como completada. Continuar?')) {
+                        postTransicion(window._urls.completar, { recetaId: _recetaId }, 'Receta completada');
+                    }
+                });
+            }
+
+            var btnCancelar = document.getElementById('btnCancelar');
+            if (btnCancelar) {
+                btnCancelar.addEventListener('click', function () {
+                    if (window.Swal) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Cancelar receta',
+                            input: 'textarea',
+                            inputLabel: 'Motivo de la cancelacion (minimo 5 caracteres)',
+                            inputPlaceholder: 'Escriba el motivo...',
+                            showCancelButton: true,
+                            confirmButtonText: 'Cancelar receta',
+                            cancelButtonText: 'Volver',
+                            inputValidator: function (value) {
+                                if (!value || value.trim().length < 5) {
+                                    return 'El motivo debe tener al menos 5 caracteres.';
+                                }
+                            }
+                        }).then(function (r) {
+                            if (r.isConfirmed) postTransicion(window._urls.cancelar, { recetaId: _recetaId, motivo: r.value }, 'Receta cancelada');
+                        });
+                    } else {
+                        var motivo = prompt('Motivo de la cancelacion (minimo 5 caracteres):');
+                        if (motivo !== null) {
+                            if (motivo.trim().length < 5) { alert('El motivo debe tener al menos 5 caracteres.'); return; }
+                            postTransicion(window._urls.cancelar, { recetaId: _recetaId, motivo: motivo }, 'Receta cancelada');
+                        }
+                    }
+                });
+            }
         })();
     </script>
 }

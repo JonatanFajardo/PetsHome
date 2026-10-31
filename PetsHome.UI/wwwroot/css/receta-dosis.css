@@ -149,3 +149,77 @@
     color: #6d28d9;
 }
 .resurtido-tag.agotado { background: #fee2e2; color: #b91c1c; }
+
+/* ===== Linea de tiempo del ciclo de vida de la receta ===== */
+.receta-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.receta-timeline::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #e5e7eb;
+}
+.receta-timeline-item {
+    position: relative;
+    padding: 0 0 18px 48px;
+    min-height: 32px;
+}
+.receta-timeline-item:last-child {
+    padding-bottom: 0;
+}
+.receta-timeline-dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    box-shadow: 0 0 0 3px #fff;
+    z-index: 1;
+}
+.receta-timeline-body {
+    padding-top: 2px;
+}
+.receta-timeline-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+.receta-timeline-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+.receta-timeline-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+.receta-timeline-note {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #374151;
+    background: #f9fafb;
+    border-left: 3px solid #e5e7eb;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+.receta-timeline-user {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

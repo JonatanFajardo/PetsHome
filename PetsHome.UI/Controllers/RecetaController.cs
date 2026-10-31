@@ -89,6 +89,8 @@ namespace PetsHome.UI.Controllers
                     ShowAlert("Receta no encontrada", AlertMessageType.Error);
                     return RedirectToAction("Index");
                 }
+                // Bitacora del ciclo de vida (creada, resurtidos, completada, cancelada, vencida).
+                ViewData["Eventos"] = await _recetaService.ListEventosAsync(id);
                 return View("Details", itemDetail);
             }
             else
@@ -196,6 +198,32 @@ namespace PetsHome.UI.Controllers
                 usados = result.receta_ResurtidosUsados,
                 autorizados = result.receta_ResurtidosAutorizados
             });
+        }
+
+        /// <summary>
+        /// Marca la receta como completada (solo si esta activa) y registra el
+        /// evento en la bitacora. Devuelve ok/mensaje.
+        /// </summary>
+        [HttpPost]
+        [PantallaAuthorize("Listado de recetas", "editar")]
+        public async Task<IActionResult> Completar(int recetaId)
+        {
+            var usuario = CurrentUserId ?? 1;
+            var result = await _recetaService.CompletarAsync(recetaId, usuario);
+            return Json(new { ok = result.Success, mensaje = result.MessageStatus });
+        }
+
+        /// <summary>
+        /// Cancela la receta con un motivo (solo si esta activa) y registra el
+        /// evento en la bitacora. Devuelve ok/mensaje.
+        /// </summary>
+        [HttpPost]
+        [PantallaAuthorize("Listado de recetas", "editar")]
+        public async Task<IActionResult> Cancelar(int recetaId, string motivo)
+        {
+            var usuario = CurrentUserId ?? 1;
+            var result = await _recetaService.CancelarAsync(recetaId, usuario, motivo);
+            return Json(new { ok = result.Success, mensaje = result.MessageStatus });
         }
 
         public RecetaFormViewModel Dropdown(RecetaFormViewModel model)

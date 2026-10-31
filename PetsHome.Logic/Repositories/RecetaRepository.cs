@@ -142,6 +142,56 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Find<PR_Medico_Recetas_ResurtirResult>(sqlQuery, parameter);
         }
 
+        /// <summary>
+        /// Marca la receta como 'Completada' (solo si esta 'Activa') y registra
+        /// el evento en la bitacora. Devuelve CodeStatus/MessageStatus.
+        /// </summary>
+        public async Task<RequestResult> CompletarAsync(int recetaId, int usuario)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Receta_Completar]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@receta_Id", recetaId, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
+
+        /// <summary>
+        /// Cancela la receta (valida motivo &gt;= 5, solo si esta 'Activa') y
+        /// registra el evento con la nota = motivo. Devuelve CodeStatus/MessageStatus.
+        /// </summary>
+        public async Task<RequestResult> CancelarAsync(int recetaId, int usuario, string motivo)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Receta_Cancelar]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@receta_Id", recetaId, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@motivo", motivo, DbType.String, ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
+
+        /// <summary>
+        /// Marca 'Vencida' todas las recetas 'Activa' cuya fecha de fin ya paso
+        /// y registra un evento por cada una. Pensado para correr periodicamente.
+        /// </summary>
+        public async Task<RequestResult> VencerAutomaticoAsync(int usuario = 1)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Receta_VencerAutomatico]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
+
+        /// <summary>
+        /// Devuelve la bitacora de eventos de la receta ordenada por fecha.
+        /// </summary>
+        public async Task<IEnumerable<PR_Medico_Receta_ListEventosResult>> ListEventosAsync(int recetaId)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Receta_ListEventos]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@receta_Id", recetaId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Medico_Receta_ListEventosResult>(sqlQuery, parameter);
+        }
+
         public IEnumerable<PR_Medico_Recetas_DropdownResult> Dropdown(int? masc_Id = null)
         {
             const string query = "[Medico].[PR_Medico_Recetas_Dropdown]";

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PetsHome.Business.Models;
+using PetsHome.Common;
 using PetsHome.Common.Entities;
 using PetsHome.Logic.Repositories;
 using System;
@@ -151,6 +152,63 @@ namespace PetsHome.Business.Services
                     CodeStatus = -5,
                     MessageStatus = "Ocurrio un error al registrar el resurtido."
                 };
+            }
+        }
+
+        /// <summary>Marca la receta como completada. Devuelve CodeStatus/MessageStatus.</summary>
+        public async Task<RequestResult> CompletarAsync(int recetaId, int usuario)
+        {
+            try
+            {
+                return await _recetaRepository.CompletarAsync(recetaId, usuario);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return RequestResult.Error("Ocurrio un error al completar la receta.");
+            }
+        }
+
+        /// <summary>Cancela la receta con un motivo. Devuelve CodeStatus/MessageStatus.</summary>
+        public async Task<RequestResult> CancelarAsync(int recetaId, int usuario, string motivo)
+        {
+            try
+            {
+                return await _recetaRepository.CancelarAsync(recetaId, usuario, motivo);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return RequestResult.Error("Ocurrio un error al cancelar la receta.");
+            }
+        }
+
+        /// <summary>Marca como vencidas las recetas activas con fecha de fin pasada.</summary>
+        public async Task<RequestResult> VencerAutomaticoAsync(int usuario = 1)
+        {
+            try
+            {
+                return await _recetaRepository.VencerAutomaticoAsync(usuario);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return RequestResult.Error("Ocurrio un error al vencer las recetas.");
+            }
+        }
+
+        /// <summary>Devuelve la bitacora de eventos del ciclo de vida de la receta.</summary>
+        public async Task<List<PR_Medico_Receta_ListEventosResult>> ListEventosAsync(int recetaId)
+        {
+            try
+            {
+                var result = await _recetaRepository.ListEventosAsync(recetaId);
+                return result?.ToList() ?? new List<PR_Medico_Receta_ListEventosResult>();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new List<PR_Medico_Receta_ListEventosResult>();
             }
         }
 
