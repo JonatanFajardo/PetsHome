@@ -1,0 +1,53 @@
+@model PetsHome.Business.Models.RecordatorioDetailViewModel
+@{
+    ViewData["Title"] = "Detalle de recordatorio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Recordatorios";
+    string TipoHumano(string t) => t == "VacunaRefuerzo" ? "Refuerzo de vacuna"
+        : t == "Seguimiento" ? "Seguimiento"
+        : t == "Control" ? "Control" : t;
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <h2 class="text-white"><i class="fas fa-bell mr-2 text-white"></i>Recordatorio de @Model.Mascota</h2>
+                <p class="text-white mb-0 mt-2" style="opacity:.9;">@TipoHumano(Model.rec_Tipo) · Estado: @Model.rec_Estado</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-3">Mascota</dt><dd class="col-sm-9">@Model.Mascota</dd>
+                    <dt class="col-sm-3">Responsable</dt><dd class="col-sm-9">@Model.Responsable</dd>
+                    @if (!string.IsNullOrWhiteSpace(Model.ResponsableContacto))
+                    {
+                        <dt class="col-sm-3">Contacto</dt><dd class="col-sm-9">@Model.ResponsableContacto</dd>
+                    }
+                    <dt class="col-sm-3">Tipo</dt><dd class="col-sm-9">@TipoHumano(Model.rec_Tipo)</dd>
+                    <dt class="col-sm-3">Fecha objetivo</dt><dd class="col-sm-9">@Model.rec_FechaObjetivo.ToString("dd/MM/yyyy")</dd>
+                    <dt class="col-sm-3">Estado</dt><dd class="col-sm-9">@Model.rec_Estado</dd>
+                    @if (!string.IsNullOrWhiteSpace(Model.rec_Nota))
+                    {
+                        <dt class="col-sm-3">Nota</dt><dd class="col-sm-9">@Model.rec_Nota</dd>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.rec_Origen))
+                    {
+                        <dt class="col-sm-3">Origen</dt><dd class="col-sm-9">@Model.rec_Origen</dd>
+                    }
+                    @if (Model.rec_FechaCompletado.HasValue)
+                    {
+                        <dt class="col-sm-3">Completado</dt><dd class="col-sm-9">@Model.rec_FechaCompletado.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                    }
+                    <dt class="col-sm-3">Creado por</dt><dd class="col-sm-9">@Model.UsuarioCreacion · @Model.rec_FechaCrea.ToString("dd/MM/yyyy HH:mm")</dd>
+                </dl>
+                <div style="margin-top:16px;">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left mr-2"></i>Volver a recordatorios</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
