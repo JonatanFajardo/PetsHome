@@ -57,6 +57,16 @@ namespace PetsHome.Business.Models
                 .ToList();
 
         public int TotalBanderasRojas => MedicamentosActivos.Count + VacunasVencidas.Count;
+
+        // ── Firma de la nota clinica + addenda (solo cuando hay visita cargada) ──
+        /// <summary>Estado de firma de la nota de la visita en curso (null si no aplica).</summary>
+        public PR_Medico_Consulta_FirmaEstadoResult FirmaEstado { get; set; }
+
+        /// <summary>Correcciones posteriores (addenda) de la visita en curso.</summary>
+        public List<PR_Medico_Consulta_AddendaResult> Addendas { get; set; } = new List<PR_Medico_Consulta_AddendaResult>();
+
+        /// <summary>True si la nota clinica de la visita ya esta firmada (bloqueada).</summary>
+        public bool NotaFirmada => FirmaEstado != null && FirmaEstado.cita_Firmada;
     }
 
     /// <summary>

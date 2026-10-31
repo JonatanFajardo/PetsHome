@@ -86,5 +86,56 @@ namespace PetsHome.UI.Controllers
                     .Select(f => new { nombre = f.Nombre, disponible = f.Disponible, pedido = f.Pedido })
             });
         }
+
+        /// <summary>
+        /// Firma/bloquea la nota clinica de una visita. Despues de firmar, el texto
+        /// (SOAP/diagnostico) queda inmutable y solo se corrige con addenda.
+        /// POST /Consulta/Firmar → JSON { ok, mensaje }.
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> Firmar([FromForm] int citaId)
+        {
+            if (!CurrentUserId.HasValue)
+                return Json(new { ok = false, mensaje = "Sesion expirada, inicie sesion nuevamente." });
+
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "En consulta", "editar"))
+                return Json(new { ok = false, mensaje = "No tiene permiso para firmar notas." });
+
+            var (ok, mensaje) = await _service.FirmarNotaAsync(citaId, CurrentUserId.Value);
+            return Json(new { ok, mensaje });
+        }
+
+        /// <summary>
+        /// Agrega una correccion (addenda) a la nota. Permitida incluso tras firmar.
+        /// POST /Consulta/AgregarAddenda → JSON { ok, mensaje }.
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> AgregarAddenda([FromForm] int citaId, [FromForm] string texto)
+        {
+            if (!CurrentUserId.HasValue)
+                return Json(new { ok = false, mensaje = "Sesion expirada, inicie sesion nuevamente." });
+
+            if (!PantallaAuthorizeAttribute.TienePermiso(User, "En consulta", "editar"))
+                return Json(new { ok = false, mensaje = "No tiene permiso para agregar correcciones." });
+
+            var (ok, mensaje) = await _service.AgregarAddendaAsync(citaId, texto, CurrentUserId.Value);
+            return Json(new { ok, mensaje });
+        }
+
+        /// <summary>
+        /// Lista las addenda (correcciones) de una visita, mas antiguas primero.
+        /// GET /Consulta/Addenda?citaId= → JSON [{ texto, fecha, autor }].
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Addenda(int citaId)
+        {
+            var lista = await _service.ListAddendaAsync(citaId);
+            return Json(lista.Select(a => new
+            {
+                texto = a.add_Texto,
+                fecha = a.add_Fecha.ToString("dd MMM yyyy HH:mm"),
+                autor = string.IsNullOrWhiteSpace(a.AutorNombre) ? "—" : a.AutorNombre
+            }));
+        }
     }
 }
