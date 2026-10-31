@@ -8,6 +8,8 @@ namespace PetsHome.Common.Entities
         public int cita_Id { get; set; }
         public int masc_Id { get; set; }
         public string masc_Nombre { get; set; }
+        public decimal? masc_Peso { get; set; }
+        public string raza_TipoAnimal { get; set; }
         public string receta_Medicamento { get; set; }
         public int? tipoMed_Id { get; set; }
         public int? viaAdmin_Id { get; set; }
@@ -18,6 +20,8 @@ namespace PetsHome.Common.Entities
         public DateTime? receta_FechaInicio { get; set; }
         public DateTime? receta_FechaFin { get; set; }
         public string receta_Estado { get; set; }
+        public int receta_ResurtidosAutorizados { get; set; }
+        public int receta_ResurtidosUsados { get; set; }
         public int receta_UsuarioCrea { get; set; }
         public string usuarioCrea { get; set; }
         public DateTime receta_FechaCrea { get; set; }

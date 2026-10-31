@@ -418,9 +418,21 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Medico_Recetas_ListResult, RecetaListViewModel>().ReverseMap();
             CreateMap<PR_Medico_Recetas_DetailResult, RecetaDetailsViewModel>()
                 .ForMember(dest => dest.receta_NombreUsuarioCrea, opt => opt.MapFrom(src => src.UsuarioCreacion))
-                .ForMember(dest => dest.receta_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion));
-            CreateMap<PR_Medico_Recetas_FindResult, RecetaFormViewModel>().ReverseMap();
-            CreateMap<tbRecetas, RecetaFormViewModel>().ReverseMap();
+                .ForMember(dest => dest.receta_NombreUsuarioModifica, opt => opt.MapFrom(src => src.UsuarioModificacion))
+                .ForMember(dest => dest.ResurtidosAutorizados, opt => opt.MapFrom(src => src.receta_ResurtidosAutorizados))
+                .ForMember(dest => dest.ResurtidosUsados, opt => opt.MapFrom(src => src.receta_ResurtidosUsados));
+            CreateMap<PR_Medico_Recetas_FindResult, RecetaFormViewModel>()
+                .ForMember(dest => dest.MascEspecie, opt => opt.MapFrom(src => RecetaFormViewModel.NormalizarEspecie(src.raza_TipoAnimal)))
+                .ForMember(dest => dest.MascPeso, opt => opt.MapFrom(src => src.masc_Peso))
+                .ForMember(dest => dest.ResurtidosAutorizados, opt => opt.MapFrom(src => src.receta_ResurtidosAutorizados))
+                .ForMember(dest => dest.ResurtidosUsados, opt => opt.MapFrom(src => src.receta_ResurtidosUsados))
+                .ReverseMap();
+            CreateMap<tbRecetas, RecetaFormViewModel>()
+                .ForMember(dest => dest.ResurtidosAutorizados, opt => opt.MapFrom(src => src.receta_ResurtidosAutorizados))
+                .ForMember(dest => dest.ResurtidosUsados, opt => opt.MapFrom(src => src.receta_ResurtidosUsados))
+                .ReverseMap()
+                .ForMember(dest => dest.receta_ResurtidosAutorizados, opt => opt.MapFrom(src => src.ResurtidosAutorizados))
+                .ForMember(dest => dest.receta_ResurtidosUsados, opt => opt.MapFrom(src => src.ResurtidosUsados));
 
             // Mapeos para módulo médico - Tratamientos (ViewModels separados)
             CreateMap<PR_Medico_Tratamientos_ListResult, TratamientoListViewModel>().ReverseMap();

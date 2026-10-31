@@ -8,6 +8,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/modern-form-styles.css" />
     <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/receta-dosis.css" />
 }
 
 <div class="col-12">
@@ -129,6 +130,47 @@
                 <p class="card-description">Detalles de administración del medicamento</p>
             </div>
             <div class="card-content">
+                <!-- Calculadora de dosis (apoyo, junto al campo Dosis) -->
+                <details class="dosis-calc" id="dosisCalc">
+                    <summary><i class="fas fa-calculator"></i> Calculadora de dosis</summary>
+                    <div class="dosis-calc-body">
+                        <div class="dc-paciente">
+                            <span class="dc-chip"><i class="fas fa-paw"></i> @(string.IsNullOrEmpty(Model.MascEspecie) ? "Especie no definida" : Model.MascEspecie)</span>
+                            @if (Model.MascPeso.HasValue && Model.MascPeso.Value > 0)
+                            {
+                                <span class="dc-chip"><i class="fas fa-weight"></i> @Model.MascPeso.Value kg</span>
+                            }
+                            else
+                            {
+                                <span class="dc-aviso dc-aviso-warn">Registra el peso de la mascota para calcular dosis.</span>
+                                <div class="form-group dc-peso-manual">
+                                    <label for="dcPesoManual">Peso para el calculo (kg)</label>
+                                    <input class="form-control" id="dcPesoManual" type="number" min="0" step="0.1" placeholder="Ej: 12.5" />
+                                </div>
+                            }
+                        </div>
+
+                        <div class="dc-controls">
+                            <div>
+                                <label for="dcFarmaco">Farmaco (vademecum)</label>
+                                <select class="form-control" id="dcFarmaco"><option value="">Cargando...</option></select>
+                            </div>
+                            <div>
+                                <label for="dcConcentracion">Concentracion (mg/mL)</label>
+                                <select class="form-control" id="dcConcentracion" disabled><option value="">(sin concentracion)</option></select>
+                            </div>
+                        </div>
+
+                        <div id="dcResultado"></div>
+
+                        <div class="dc-acciones">
+                            <button type="button" class="btn btn-primary" id="dcUsarDosis" disabled>
+                                <i class="fas fa-arrow-down mr-1"></i> Usar esta dosis
+                            </button>
+                        </div>
+                    </div>
+                </details>
+
                 <div class="form-grid">
                     <!-- Campo Dosis -->
                     <div class="form-group">
@@ -149,6 +191,16 @@
                         <label asp-for="receta_Duracion">Duración</label>
                         <input class="form-control" asp-for="receta_Duracion" type="text" placeholder="Ej: 7 días" />
                         <span class="text-danger" asp-validation-for="receta_Duracion"></span>
+                    </div>
+                </div>
+
+                <!-- Resurtidos: parte de la posologia (cuantas veces se puede volver a surtir) -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="receta_ResurtidosAutorizados">Resurtidos autorizados</label>
+                        <input class="form-control" id="receta_ResurtidosAutorizados" name="receta_ResurtidosAutorizados"
+                               type="number" min="0" step="1" value="@Model.ResurtidosAutorizados" placeholder="Ej: 2" />
+                        <small class="text-muted">Cuantas veces se puede volver a surtir esta receta sin una nueva consulta.</small>
                     </div>
                 </div>
 
@@ -192,4 +244,13 @@
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/load-dropdownlist.js"></script>
+    <script>
+        window._urls = { vademecum: '@Url.Action("Vademecum", "Receta")' };
+        window._dosisCtx = {
+            especie: '@Model.MascEspecie',
+            peso: @(Model.MascPeso.HasValue ? Model.MascPeso.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : "null")
+        };
+    </script>
+    <script src="~/js/pages/dosis-calculator.js"></script>
+    <script src="~/js/pages/receta-form.js"></script>
 }

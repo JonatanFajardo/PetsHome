@@ -87,6 +87,21 @@ var Receta = (function () {
                     }
                 },
                 {
+                    // Etiqueta compacta de resurtidos (ej. "2/3"), junto a los datos de la receta.
+                    FieldName: null,
+                    Size: 90,
+                    render: function (data, type, row) {
+                        var aut = (row && row.receta_ResurtidosAutorizados != null) ? row.receta_ResurtidosAutorizados : 0;
+                        var usa = (row && row.receta_ResurtidosUsados != null) ? row.receta_ResurtidosUsados : 0;
+                        if (type === 'display') {
+                            if (!aut) return '<span style="color:#9ca3af;">—</span>';
+                            var cls = (usa < aut) ? 'resurtido-tag' : 'resurtido-tag agotado';
+                            return '<span class="' + cls + '">' + usa + '/' + aut + '</span>';
+                        }
+                        return usa + '/' + aut;
+                    }
+                },
+                {
                     FieldName: 'receta_Estado',
                     Size: 110,
                     render: function (data, type) {

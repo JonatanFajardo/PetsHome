@@ -122,6 +122,38 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>Lista plana del vademecum para la calculadora de dosis por peso.</summary>
+        public async Task<IEnumerable<PR_Medico_Vademecum_ListResult>> VademecumListAsync(string especie = null, string categoria = null)
+        {
+            try
+            {
+                return await _recetaRepository.VademecumListAsync(especie, categoria);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new List<PR_Medico_Vademecum_ListResult>();
+            }
+        }
+
+        /// <summary>Registra un resurtido de la receta. Devuelve estado y conteos.</summary>
+        public async Task<PR_Medico_Recetas_ResurtirResult> ResurtirAsync(int recetaId, int usuario)
+        {
+            try
+            {
+                return await _recetaRepository.ResurtirAsync(recetaId, usuario);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return new PR_Medico_Recetas_ResurtirResult
+                {
+                    CodeStatus = -5,
+                    MessageStatus = "Ocurrio un error al registrar el resurtido."
+                };
+            }
+        }
+
         public IEnumerable<object> RecetaDropdown(int? masc_Id = null)
         {
             try

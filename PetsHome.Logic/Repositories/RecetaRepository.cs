@@ -53,6 +53,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@receta_FechaFin", entity.receta_FechaFin, DbType.Date, ParameterDirection.Input);
             parameter.Add("@receta_Estado", entity.receta_Estado, DbType.String, ParameterDirection.Input);
             parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@receta_ResurtidosAutorizados", entity.receta_ResurtidosAutorizados, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@receta_UsuarioCrea", entity.receta_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
@@ -78,6 +79,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@receta_FechaFin", entity.receta_FechaFin, DbType.Date, ParameterDirection.Input);
             parameter.Add("@receta_Estado", entity.receta_Estado, DbType.String, ParameterDirection.Input);
             parameter.Add("@itm_Id", entity.itm_Id, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@receta_ResurtidosAutorizados", entity.receta_ResurtidosAutorizados, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@receta_UsuarioCrea", entity.receta_UsuarioCrea, DbType.Int32, ParameterDirection.Input);
             return await DbApp.Select<int>(sqlQuery, parameter);
         }
@@ -100,6 +102,7 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@receta_FechaInicio", entity.receta_FechaInicio, DbType.Date, ParameterDirection.Input);
             parameter.Add("@receta_FechaFin", entity.receta_FechaFin, DbType.Date, ParameterDirection.Input);
             parameter.Add("@receta_Estado", entity.receta_Estado, DbType.String, ParameterDirection.Input);
+            parameter.Add("@receta_ResurtidosAutorizados", entity.receta_ResurtidosAutorizados, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@receta_UsuarioModifica", entity.receta_UsuarioModifica, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
         }
@@ -111,6 +114,32 @@ namespace PetsHome.Logic.Repositories
             parameter.Add("@receta_Id", id, DbType.Int32, ParameterDirection.Input);
             parameter.Add("@receta_UsuarioModifica", 1, DbType.Int32, ParameterDirection.Input);
             return await DbApp.ExecuteWithResult(sqlQuery, parameter);
+        }
+
+        /// <summary>
+        /// Lista plana del vademecum (farmaco + dosis por especie) para la
+        /// calculadora de dosis. Filtrable por especie y categoria.
+        /// </summary>
+        public async Task<IEnumerable<PR_Medico_Vademecum_ListResult>> VademecumListAsync(string especie, string categoria)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Vademecum_List]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@especie", especie, DbType.String, ParameterDirection.Input);
+            parameter.Add("@categoria", categoria, DbType.String, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Medico_Vademecum_ListResult>(sqlQuery, parameter);
+        }
+
+        /// <summary>
+        /// Registra un resurtido de la receta (incrementa el contador y agrega
+        /// una fila a la bitacora). Devuelve estado + conteos.
+        /// </summary>
+        public async Task<PR_Medico_Recetas_ResurtirResult> ResurtirAsync(int recetaId, int usuario)
+        {
+            const string sqlQuery = "[Medico].[PR_Medico_Recetas_Resurtir]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@receta_Id", recetaId, DbType.Int32, ParameterDirection.Input);
+            parameter.Add("@usuario", usuario, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.Find<PR_Medico_Recetas_ResurtirResult>(sqlQuery, parameter);
         }
 
         public IEnumerable<PR_Medico_Recetas_DropdownResult> Dropdown(int? masc_Id = null)

@@ -309,6 +309,7 @@
           '<span class="ec-line-ico"><i class="bi bi-capsule"></i></span>' +
           '<span class="ec-line-name"' + titleAttr + '>' + nameEsc + '</span>' +
           badge +
+          '<button type="button" class="ec-med-calc" data-i="' + i + '" title="Calcular dosis por peso"><i class="bi bi-calculator"></i></button>' +
           '<button type="button" class="ec-line-del" data-i="' + i + '">&times;</button>' +
         '</div>' +
         '<div class="ec-med-inputs">' +

@@ -20,5 +20,7 @@ namespace PetsHome.Common.Entities
         public DateTime? receta_FechaInicio { get; set; }
         public DateTime? receta_FechaFin { get; set; }
         public string receta_Estado { get; set; }
+        public int receta_ResurtidosAutorizados { get; set; }
+        public int receta_ResurtidosUsados { get; set; }
     }
 }

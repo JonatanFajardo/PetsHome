@@ -21,6 +21,12 @@ namespace PetsHome.Common.Entities
         /// <summary>Item de inventario del que proviene el medicamento (NULL = texto libre).</summary>
         public int? itm_Id { get; set; }
 
+        /// <summary>Resurtidos autorizados por el veterinario (0 = sin resurtidos).</summary>
+        public int receta_ResurtidosAutorizados { get; set; }
+
+        /// <summary>Resurtidos ya consumidos.</summary>
+        public int receta_ResurtidosUsados { get; set; }
+
         public bool receta_EsEliminado { get; set; }
         public int receta_UsuarioCrea { get; set; }
         public DateTime receta_FechaCrea { get; set; }

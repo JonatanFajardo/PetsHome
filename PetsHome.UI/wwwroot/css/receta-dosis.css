@@ -1,0 +1,151 @@
+/* receta-dosis.css — Calculadora de dosis y controles de resurtidos */
+
+/* ---- Calculadora de dosis (bloque colapsable) ---- */
+.dosis-calc {
+    border: 1px solid #ddd6fe;
+    border-radius: 10px;
+    background: #faf9ff;
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.dosis-calc > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: #6d28d9;
+    background: #f3effe;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.dosis-calc > summary::-webkit-details-marker { display: none; }
+.dosis-calc > summary::after { content: "\25BC"; margin-left: auto; font-size: 11px; transition: transform .2s; }
+.dosis-calc[open] > summary::after { transform: rotate(180deg); }
+
+.dosis-calc-body { padding: 16px; }
+
+.dc-paciente {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.dc-paciente .dc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: #ede9fe;
+    color: #6d28d9;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.dc-peso-manual { max-width: 220px; }
+
+.dc-controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+@media (max-width: 640px) {
+    .dc-controls { grid-template-columns: 1fr; }
+}
+
+.dc-controls label {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #4b5563;
+}
+
+/* Resultado */
+.dc-linea {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e5e7eb;
+    align-items: flex-start;
+}
+
+.dc-linea .dc-k { flex: 0 0 150px; color: #6b7280; font-weight: 600; font-size: 13px; }
+.dc-linea .dc-v { flex: 1; color: #111827; }
+.dc-linea.dc-dosis .dc-v { font-size: 18px; font-weight: 700; color: #6d28d9; }
+.dc-cap { font-size: 12px; font-weight: 600; color: #b45309; }
+
+.dc-tabs { margin: 0; padding-left: 18px; }
+.dc-tabs li { margin: 2px 0; }
+
+.dc-advertencias {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 13px;
+}
+.dc-advertencias ul { margin: 6px 0 0; padding-left: 18px; }
+
+.dc-descargo {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #6b7280;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.dc-aviso {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+.dc-aviso-info  { background: #eff6ff; color: #1d4ed8; }
+.dc-aviso-warn  { background: #fef3c7; color: #92400e; }
+.dc-aviso-error { background: #fee2e2; color: #b91c1c; }
+
+.dc-acciones { margin-top: 14px; }
+
+/* ---- Resurtidos ---- */
+.resurtidos-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.resurtidos-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 14px;
+    background: #ede9fe;
+    color: #6d28d9;
+}
+.resurtidos-badge.agotado { background: #fee2e2; color: #b91c1c; }
+
+/* Etiqueta compacta de resurtidos en la tabla (Index) */
+.resurtido-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #ede9fe;
+    color: #6d28d9;
+}
+.resurtido-tag.agotado { background: #fee2e2; color: #b91c1c; }
