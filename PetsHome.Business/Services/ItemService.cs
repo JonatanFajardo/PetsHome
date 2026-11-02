@@ -157,6 +157,40 @@ namespace PetsHome.Business.Services
             }
         }
 
+        /// <summary>
+        /// Existencias desglosadas por lote de un item (con vencimiento y dias restantes).
+        /// </summary>
+        public async Task<List<LotePorItemViewModel>> ListLotesPorItemAsync(int itmId)
+        {
+            try
+            {
+                var result = await _itemRepository.ListLotesPorItemAsync(itmId);
+                return _mapper.Map<List<LotePorItemViewModel>>(result.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Lotes vencidos o por vencer en los proximos @dias dias (alertas de caducidad).
+        /// </summary>
+        public async Task<List<LotePorVencerViewModel>> ListLotesPorVencerAsync(int dias = 30)
+        {
+            try
+            {
+                var result = await _itemRepository.ListLotesPorVencerAsync(dias);
+                return _mapper.Map<List<LotePorVencerViewModel>>(result.ToList());
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, error.Message);
+                return null;
+            }
+        }
+
         public virtual async Task<bool> CodigoExistsAsync(string codigo, int id)
         {
             try

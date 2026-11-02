@@ -71,6 +71,22 @@ namespace PetsHome.Logic.Repositories
             return await DbApp.Select<PR_Inventario_Items_PorVencerResult>(sqlQuery);
         }
 
+        public async Task<IEnumerable<PR_Inventario_Lotes_PorItemResult>> ListLotesPorItemAsync(int itmId)
+        {
+            const string sqlQuery = "[Inventario].[PR_Inventario_Lotes_PorItem]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@itm_Id", itmId, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Inventario_Lotes_PorItemResult>(sqlQuery, parameter);
+        }
+
+        public async Task<IEnumerable<PR_Inventario_Lotes_PorVencerResult>> ListLotesPorVencerAsync(int dias)
+        {
+            const string sqlQuery = "[Inventario].[PR_Inventario_Lotes_PorVencer]";
+            var parameter = new DynamicParameters();
+            parameter.Add("@dias", dias, DbType.Int32, ParameterDirection.Input);
+            return await DbApp.SelectById<PR_Inventario_Lotes_PorVencerResult>(sqlQuery, parameter);
+        }
+
         public virtual async Task<bool> CodigoExistsAsync(string codigo, int id)
         {
             const string sqlQuery = "[Inventario].[PR_Inventario_Items_Existe]";

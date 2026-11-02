@@ -162,6 +162,32 @@
                     </div>
                 </div>
 
+                <!-- Existencias por lote -->
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>Existencias por lote</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="tabla-lotes" style="margin-bottom:0;">
+                                <thead>
+                                    <tr>
+                                        <th>Refugio</th>
+                                        <th>Lote</th>
+                                        <th class="text-center">Vence</th>
+                                        <th class="text-center">Dias</th>
+                                        <th class="text-center">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lotes-body">
+                                    <tr><td colspan="5" class="text-center text-muted py-3">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Información de Auditoría -->
                 <div class="detail-card detail-card-full">
                     <div class="detail-card-header">
@@ -256,9 +282,45 @@
 
 @section Scripts {
     <script>
+        window._urls = {
+            lotesPorItem: '@Url.Action("LotesPorItem", "Item", new { id = Model.itm_Id })'
+        };
+
         function confirmDelete(id) {
             $('#delete-itm-id').val(id);
             $('#delete-confirm-modal').modal('show');
         }
+
+        (function cargarLotes() {
+            $.getJSON(window._urls.lotesPorItem, function (resp) {
+                var rows = (resp && resp.data) || [];
+                var $body = $('#lotes-body');
+                $body.empty();
+                if (!rows.length) {
+                    $body.append('<tr><td colspan="5" class="text-center text-muted py-3">Sin lotes registrados.</td></tr>');
+                    return;
+                }
+                rows.forEach(function (l) {
+                    var lote = l.lot_Numero
+                        ? '<span style="font-family:monospace;background:#f3f4f6;padding:2px 7px;border-radius:4px;border:1px solid #e5e7eb;">' + l.lot_Numero + '</span>'
+                        : '<span style="color:#9ca3af;">Sin lote</span>';
+                    var vence = l.lot_Vencimiento ? new Date(l.lot_Vencimiento).toLocaleDateString('es-HN') : '<span style="color:#9ca3af;">—</span>';
+                    var dias = '<span style="color:#9ca3af;">—</span>';
+                    if (l.diasRestantes !== null && l.diasRestantes !== undefined) {
+                        var d = l.diasRestantes;
+                        var bg = d < 0 ? '#fee2e2' : (d < 7 ? '#fee2e2' : (d <= 30 ? '#fef3c7' : '#dbeafe'));
+                        var co = d < 0 ? '#b91c1c' : (d < 7 ? '#b91c1c' : (d <= 30 ? '#b45309' : '#1d4ed8'));
+                        var txt = d < 0 ? ('Vencido ' + Math.abs(d) + 'd') : (d + ' dias');
+                        dias = '<span style="display:inline-block;padding:2px 8px;border-radius:9999px;font-size:12px;font-weight:600;background:' + bg + ';color:' + co + ';">' + txt + '</span>';
+                    }
+                    $body.append('<tr><td>' + (l.refg_Nombre || '—') + '</td><td>' + lote + '</td>'
+                        + '<td class="text-center">' + vence + '</td>'
+                        + '<td class="text-center">' + dias + '</td>'
+                        + '<td class="text-center" style="font-weight:600;">' + l.lot_CantidadActual + '</td></tr>');
+                });
+            }).fail(function () {
+                $('#lotes-body').html('<tr><td colspan="5" class="text-center text-danger py-3">No se pudieron cargar los lotes.</td></tr>');
+            });
+        })();
     </script>
 }
