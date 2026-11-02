@@ -970,7 +970,7 @@
         labPoints.forEach(function (p) {
           var val = parseNum(p.valor);
           if (!p.parametro || val === null || !p.fecha) return;       // no numerico -> no grafica
-          var key = (p.parametro || '').toLowerCase() + ' ' + (p.unidad || '').toLowerCase();
+          var key = (p.parametro || '').toLowerCase() + '|' + (p.unidad || '').toLowerCase();
           if (!map[key]) map[key] = { key: key, parametro: p.parametro, unidad: p.unidad || '', points: [] };
           var min = parseNum(p.rangoMin), max = parseNum(p.rangoMax);
           var fuera = (min !== null && val < min) || (max !== null && val > max);
