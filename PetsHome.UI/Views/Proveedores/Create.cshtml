@@ -1,0 +1,106 @@
+@model ProveedoresFormViewModel
+@{
+    bool esEdicion = Model.isEdit;
+    ViewData["Title"] = esEdicion ? "Editar Proveedor" : "Nuevo Proveedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de proveedores";
+    ViewData["UseFormValidation"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-form-styles.css" />
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+}
+
+<div class="col-12">
+    <div class="pets-container">
+        <div class="pets-header-full">
+            <breadcrumb></breadcrumb>
+            <div class="pets-header-content">
+                <div class="pets-title-section">
+                    <h2 class="text-white">
+                        <i class="fas fa-truck mr-2 text-white"></i>@(esEdicion ? "Editar Proveedor" : "Registro de Proveedor")
+                    </h2>
+                    <button class="btn-nueva-mascota" onclick="window.location.href='@Url.Action("Index")'">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver al Listado
+                    </button>
+                </div>
+                <p class="text-white mb-0 mt-2" style="opacity: 0.9;">
+                    @(esEdicion ? "Modifique la informacion del proveedor" : "Complete la informacion del nuevo proveedor")
+                </p>
+            </div>
+        </div>
+
+        <div class="pets-body-full">
+            <div class="container-fluid">
+
+                <form asp-action="Add" method="post" autocomplete="ON">
+                    <input class="form-control" asp-for="prov_Id" type="hidden" />
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Informacion del proveedor</h2>
+                            <p class="card-description">Datos de contacto de quien vende la mercancia</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label asp-for="prov_Nombre">Nombre <span class="required">*</span></label>
+                                    <input class="form-control" asp-for="prov_Nombre" type="text" placeholder="Nombre del proveedor" required />
+                                    <span class="text-danger" asp-validation-for="prov_Nombre"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="prov_Email">Correo</label>
+                                    <input class="form-control" asp-for="prov_Email" type="email" placeholder="correo@ejemplo.com" />
+                                    <span class="text-danger" asp-validation-for="prov_Email"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="prov_Telefono">Telefono</label>
+                                    <input class="form-control" asp-for="prov_Telefono" type="text" placeholder="Numero de contacto" />
+                                    <span class="text-danger" asp-validation-for="prov_Telefono"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="prov_EsActivo">Estado</label>
+                                    <select class="form-control" asp-for="prov_EsActivo">
+                                        <option value="true">Activo</option>
+                                        <option value="false">Inactivo</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="prov_EsActivo"></span>
+                                </div>
+
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label asp-for="prov_Direccion">Direccion</label>
+                                    <input class="form-control" asp-for="prov_Direccion" type="text" placeholder="Direccion del proveedor" />
+                                    <span class="text-danger" asp-validation-for="prov_Direccion"></span>
+                                </div>
+
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label asp-for="prov_Notas">Notas</label>
+                                    <textarea class="form-control" asp-for="prov_Notas" rows="3" placeholder="Notas adicionales"></textarea>
+                                    <span class="text-danger" asp-validation-for="prov_Notas"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a class="btn btn-outline" asp-action="Index">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-content-save"></i> @(esEdicion ? "Actualizar" : "Guardar")
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

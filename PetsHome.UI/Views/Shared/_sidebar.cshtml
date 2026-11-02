@@ -106,7 +106,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de recepciones") || tiene("Listado de items"))
+            @if (tiene("Listado de recepciones") || tiene("Listado de items") || tiene("Listado de proveedores"))
             {
                 <li class="menu">
                     <a href="#Inventario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -126,6 +126,10 @@
                         @if (tiene("Listado de items"))
                         {
                             <li>@Html.ActionLink("Item", "Index", "Item")</li>
+                        }
+                        @if (tiene("Listado de proveedores"))
+                        {
+                            <li>@Html.ActionLink("Proveedores", "Index", "Proveedores")</li>
                         }
                     </ul>
                 </li>
