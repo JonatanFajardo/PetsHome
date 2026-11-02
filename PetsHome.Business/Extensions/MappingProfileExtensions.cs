@@ -69,6 +69,14 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Inventario_Items_PorVencerResult, ItemPorVencerViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Lotes_PorItemResult, LotePorItemViewModel>().ReverseMap();
             CreateMap<PR_Inventario_Lotes_PorVencerResult, LotePorVencerViewModel>().ReverseMap();
+            // Mapeos para Inventario - Proveedores
+            CreateMap<PR_Inventario_Proveedores_ListResult, ProveedoresListViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_Proveedores_FindResult, ProveedoresFormViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_Proveedores_FindResult, ProveedoresFindViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_Proveedores_DetailResult, ProveedoresDetailViewModel>().ReverseMap();
+            CreateMap<PR_Inventario_Proveedores_DropdownResult, ProveedoresDropdownViewModel>().ReverseMap();
+            CreateMap<tbProveedores, ProveedoresFormViewModel>().ReverseMap();
+            CreateMap<ProveedoresFindViewModel, ProveedoresFormViewModel>().ReverseMap();
             CreateMap<PR_Refugio_EventoVoluntarios_ListResult, EventoVoluntarioViewModel>().ReverseMap();
             CreateMap<PR_Refugio_Voluntarios_DisponiblesResult, VoluntarioDisponibleViewModel>().ReverseMap();
             //CreateMap<PR_Refugio_Adopciones_DetailResult, AdopcionViewModel>().ReverseMap();

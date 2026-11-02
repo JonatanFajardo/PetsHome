@@ -1,0 +1,195 @@
+@model ProveedoresDetailViewModel
+@{
+    ViewData["Title"] = "Detalle de Proveedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["CurrentPantalla"] = "Listado de proveedores";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/modern-table-styles.css" />
+    <link rel="stylesheet" href="~/css/detail-styles.css" />
+}
+
+<div class="col-12">
+    <div class="detail-container">
+        <div class="detail-header">
+            <breadcrumb></breadcrumb>
+            <div class="detail-header-content">
+                <div class="profile-section">
+                    <div class="profile-photo-container">
+                        <div class="profile-photo-placeholder">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="profile-badge">#@Model.prov_Id.ToString().PadLeft(3, '0')</div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1>@Model.prov_Nombre</h1>
+                        <div class="profile-subtitle">
+                            <i class="fas fa-envelope"></i>
+                            <span>@(string.IsNullOrEmpty(Model.prov_Email) ? "Sin correo" : Model.prov_Email)</span>
+                        </div>
+                        <div class="profile-meta">
+                            <div class="profile-meta-item">
+                                <i class="fas fa-phone"></i>
+                                <span>@(string.IsNullOrEmpty(Model.prov_Telefono) ? "Sin telefono" : Model.prov_Telefono)</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-circle"></i>
+                                <span>@Model.prov_EsActivo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="@Url.Action("Find", new { id = Model.prov_Id })" class="btn-detail btn-detail-white">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn-detail btn-detail-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </a>
+                    <button type="button" class="btn-detail btn-detail-danger" onclick="confirmDelete(@Model.prov_Id)">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-grid">
+
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Datos de contacto</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-tag"></i><span>Nombre</span></div>
+                                <div class="detail-value detail-value-large">@Model.prov_Nombre</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-envelope"></i><span>Correo</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.prov_Email) ? "—" : Model.prov_Email)</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-phone"></i><span>Telefono</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.prov_Telefono) ? "—" : Model.prov_Telefono)</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-map-marker-alt"></i><span>Direccion</span></div>
+                                <div class="detail-value">@(string.IsNullOrEmpty(Model.prov_Direccion) ? "—" : Model.prov_Direccion)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-card detail-card-half">
+                    <div class="detail-card-header">
+                        <i class="fas fa-align-left"></i>
+                        <h3>Notas</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        @if (!string.IsNullOrEmpty(Model.prov_Notas))
+                        {
+                            <div class="detail-value">@Model.prov_Notas</div>
+                        }
+                        else
+                        {
+                            <div class="empty-state-detail" style="padding: 2rem;">
+                                <i class="fas fa-align-left"></i>
+                                <p>No hay notas registradas</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="detail-card detail-card-full">
+                    <div class="detail-card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Informacion de Registro</h3>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-list">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label"><i class="fas fa-user-plus"></i><span>Creado por</span></div>
+                                        <div class="detail-value">@(Model.UsuarioCreacion ?? "Sistema")</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <div class="detail-label"><i class="fas fa-calendar-plus"></i><span>Fecha de creacion</span></div>
+                                        <div class="detail-value">@Model.prov_FechaCrea.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                                @if (Model.prov_FechaModifica.HasValue)
+                                {
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-user-edit"></i><span>Modificado por</span></div>
+                                            <div class="detail-value">@(Model.UsuarioModificacion ?? "Sistema")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-calendar-check"></i><span>Ultima modificacion</span></div>
+                                            <div class="detail-value">@Model.prov_FechaModifica.Value.ToString("dd/MM/yyyy hh:mm tt")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Remove" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="prov_Id" id="delete-prov-id">
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3"><i class="fas fa-trash-alt text-danger" style="font-size: 48px;"></i></div>
+                    <h5>¿Está seguro de eliminar el proveedor "@Model.prov_Nombre"?</h5>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="fas fa-trash mr-2"></i>Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            $('#delete-prov-id').val(id);
+            $('#delete-confirm-modal').modal('show');
+        }
+    </script>
+}

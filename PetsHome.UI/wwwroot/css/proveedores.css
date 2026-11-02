@@ -1,0 +1,20 @@
+/* Estilos propios del catalogo de proveedores de inventario.
+   El grueso del diseno se reutiliza de modern-table-styles.css,
+   modern-form-styles.css y detail-styles.css. Aqui solo van ajustes puntuales. */
+
+.proveedor-estado-badge {
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.proveedor-estado-badge.activo {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.proveedor-estado-badge.inactivo {
+    background: #fee2e2;
+    color: #991b1b;
+}
