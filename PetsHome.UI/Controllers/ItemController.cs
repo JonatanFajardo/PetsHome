@@ -153,6 +153,24 @@ namespace PetsHome.UI.Controllers
                 : Json(new { data = Array.Empty<object>() });
         }
 
+        [Breadcrumb("Lotes por item", FromAction = "Index", FromController = typeof(ItemController))]
+        public async Task<IActionResult> LotesPorItem(int id)
+        {
+            var result = await _ItemService.ListLotesPorItemAsync(id);
+            return result != null
+                ? Json(new { data = result })
+                : Json(new { data = Array.Empty<object>() });
+        }
+
+        [Breadcrumb("Lotes por vencer", FromAction = "Index", FromController = typeof(ItemController))]
+        public async Task<IActionResult> LotesPorVencer(int dias = 30)
+        {
+            var result = await _ItemService.ListLotesPorVencerAsync(dias);
+            return result != null
+                ? Json(new { data = result })
+                : Json(new { data = Array.Empty<object>() });
+        }
+
         [Breadcrumb("Validar Codigo", FromAction = "Index", FromController = typeof(ItemController))]
         [HttpGet]
         public async Task<IActionResult> ValidarCodigo(string itm_Codigo, int? itm_Id)
