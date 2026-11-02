@@ -116,6 +116,7 @@ namespace PetsHome.Business.Services
         var vitales = await _repository.VitalesPorMascotaAsync(mascId);
         var historialPeso = await _repository.PesoPorMascotaAsync(mascId);
         var laboratorios = await _repository.LaboratorioPorMascotaAsync(mascId);
+        var labTendencia = await _repository.LaboratorioTendenciaAsync(mascId);
 
                 return new PerfilMedicoViewModel
                 {
@@ -166,6 +167,17 @@ namespace PetsHome.Business.Services
                     FechaSolicitud = l.FechaSolicitud,
                     FechaResultado = l.FechaResultado,
                     Observaciones  = l.Observaciones
+                }).ToList(),
+
+            LaboratorioTendencia = (labTendencia ?? Enumerable.Empty<PR_Medico_Laboratorio_TendenciaResult>())
+                .Select(t => new FichaLabTendenciaVM
+                {
+                    Parametro = t.Parametro,
+                    Valor     = t.Valor,
+                    Unidad    = t.Unidad,
+                    RangoMin  = t.RangoMin,
+                    RangoMax  = t.RangoMax,
+                    Fecha     = t.FechaResultado
                 }).ToList(),
                 };
             }

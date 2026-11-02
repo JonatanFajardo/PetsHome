@@ -107,6 +107,14 @@ p.Add("@masc_Id", mascId, DbType.Int32, ParameterDirection.Input);
         return await DbApp.SelectById<PR_Medico_Laboratorio_PorMascotaResult>(sql, p);
     }
 
+    public async Task<IEnumerable<PR_Medico_Laboratorio_TendenciaResult>> LaboratorioTendenciaAsync(int mascId)
+    {
+        const string sql = "[Medico].[PR_Medico_Laboratorio_Tendencia]";
+        var p = new DynamicParameters();
+        p.Add("@masc_Id", mascId, DbType.Int32, ParameterDirection.Input);
+        return await DbApp.SelectById<PR_Medico_Laboratorio_TendenciaResult>(sql, p);
+    }
+
     public async Task<int> RandomMascIdAsync()
     {
         const string sql = "SELECT TOP 1 masc_Id FROM [Refugio].[tbMascotas] WHERE masc_EsEliminado = 0 ORDER BY NEWID()";
