@@ -33,6 +33,10 @@ using System.Linq;
         public List<FichaPesoVM> HistorialPeso { get; set; } = new List<FichaPesoVM>();
         public List<FichaLabVM> Laboratorios { get; set; } = new List<FichaLabVM>();
 
+        // Puntos para la grafica de tendencia de laboratorio (un punto por
+        // parametro y fecha). La vista los agrupa por parametro.
+        public List<FichaLabTendenciaVM> LaboratorioTendencia { get; set; } = new List<FichaLabTendenciaVM>();
+
                 // ── Conteos calculados ────────────────────────────
                 public int TotalFichaMascota => FichaMascota?.Count ?? 0;
         public int TotalUltimasCitas => UltimasCitas?.Count ?? 0;
@@ -85,5 +89,17 @@ using System.Linq;
                 public DateTime? FechaSolicitud { get; set; }
                 public DateTime? FechaResultado { get; set; }
                 public string Observaciones { get; set; }
+            }
+
+            // Un punto de la grafica de tendencia: el valor de un parametro
+            // (ej. Glucosa) en una fecha, con su rango de referencia.
+            public class FichaLabTendenciaVM
+            {
+                public string Parametro { get; set; }
+                public string Valor { get; set; }     // texto; la vista intenta parsear a numero
+                public string Unidad { get; set; }
+                public decimal? RangoMin { get; set; }
+                public decimal? RangoMax { get; set; }
+                public DateTime Fecha { get; set; }
             }
         }
