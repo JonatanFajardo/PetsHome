@@ -107,6 +107,15 @@ p.Add("@masc_Id", mascId, DbType.Int32, ParameterDirection.Input);
         return await DbApp.SelectById<PR_Medico_Laboratorio_PorMascotaResult>(sql, p);
     }
 
+    /// <summary>Historial de procedimientos estructurados de la mascota (pestana de la ficha).</summary>
+    public async Task<IEnumerable<PR_Medico_Procedimiento_ListResult>> ProcedimientosPorMascotaAsync(int mascId)
+    {
+        const string sql = "[Medico].[PR_Medico_Procedimiento_List]";
+        var p = new DynamicParameters();
+        p.Add("@masc_Id", mascId, DbType.Int32, ParameterDirection.Input);
+        return await DbApp.SelectById<PR_Medico_Procedimiento_ListResult>(sql, p);
+    }
+
     public async Task<int> RandomMascIdAsync()
     {
         const string sql = "SELECT TOP 1 masc_Id FROM [Refugio].[tbMascotas] WHERE masc_EsEliminado = 0 ORDER BY NEWID()";

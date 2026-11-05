@@ -545,6 +545,11 @@ namespace PetsHome.Business.Extensions
             CreateMap<PR_Veterinaria_Servicios_DetailResult, ServiciosDetailViewModel>().ReverseMap();
             CreateMap<PR_Veterinaria_Servicios_DropdownResult, ServiciosDropdownViewModel>().ReverseMap();
             CreateMap<tbServicios, ServiciosFormViewModel>().ReverseMap();
+
+            // Mapeos para modulo medico - Procedimientos estructurados (adaptado de OpenVPM)
+            CreateMap<PR_Medico_Procedimiento_ListResult, ProcedimientoListViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Procedimiento_FindResult, ProcedimientoFindViewModel>().ReverseMap();
+            CreateMap<PR_Medico_Procedimiento_DetailResult, ProcedimientoDetailViewModel>().ReverseMap();
         }
     }
 }
