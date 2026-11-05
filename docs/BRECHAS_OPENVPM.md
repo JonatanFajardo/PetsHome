@@ -10,6 +10,30 @@ Leyenda estado: **✅ Tiene** · **◐ Parcial** · **❌ No** · Esfuerzo [poco
 
 ---
 
+## ESTADO ACTUAL — 2026-11-03 (leer esto primero)
+
+PetsHome quedó **a la par de OpenVPM** en todo lo relevante. Las tablas detalladas de abajo son el historial del análisis; este resumen manda.
+
+**CERRADO (ya en master):**
+- Facturación completa: cobro por visita/checkout · pagos + abonos · cuentas por cobrar (A/R) · estado de cuenta.
+- **Descuentos/ajustes por línea y factura · impuesto por ítem (exentos) · notas de crédito/reembolso** (scripts 99).
+- Facturables: medicamentos **+ vacunas/laboratorio/procedimientos** (vía servicios, script 82).
+- **Estimados/presupuestos** con conversión a factura (script 101).
+- Ficha del paciente: Resumen/Historial/Citas/Peso(gráfica)/Vacunas(+certificado)/Recetas/**Facturas/Vitales/Laboratorio(+gráfica de tendencia)/Procedimientos**.
+- Recetas: **calculadora de dosis por peso (vademécum)** · **resurtidos con cobro+inventario** · **ciclo de vida (eventos/estados)** (scripts 95/96/97).
+- Clínico: SOAP (S/O/A/P) + vitales · alergias · padecimientos · **firma/bloqueo de nota + addenda** (script 100) · laboratorio (rangos + **tendencia**) · **procedimientos estructurados** (script 105) · consentimientos (quién firmó/cuándo) · sustancias controladas · lista de espera.
+- Operativo: whiteboard/Kanban · **7 estados de cita** · recepción/sala de espera · **recordatorios/recalls** (script 98) · **inventario con lotes+caducidad+FEFO** (script 102) · stock mínimo/alertas · **catálogo de proveedores** (script 104) · **reportes financieros + export CSV/PDF** (scripts 89/90) · roles/permisos granulares.
+
+**DIFERIDO POR DECISIÓN DEL DUEÑO (no por falta de trabajo):**
+- **Agenda por doctor** (franjas horarias + detección de conflictos): es brecha real de OpenVPM pero no aplica a la escala actual (1-2 veterinarios). Requiere agregar duración + inicio/fin a la cita. Ver sección dedicada más abajo.
+- **Documentos en la ficha** y **firma DIBUJADA de consentimientos + plantillas**: requieren subir/guardar archivos (infraestructura de archivos).
+- **Multi-sede / ubicaciones**.
+- **Microchip**: descartado por el dueño.
+
+**PENDIENTE MENOR:** enganchar el dropdown de proveedor en el formulario de recepción de mercancía (la tabla, la relación y el catálogo CRUD ya están).
+
+---
+
 ## 1. FACTURACIÓN y COBRO
 
 | Feature OpenVPM | PetsHome | Hueco | Recomendación | Esf. | Prio |
