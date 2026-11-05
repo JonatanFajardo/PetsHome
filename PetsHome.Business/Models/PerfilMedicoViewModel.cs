@@ -32,6 +32,7 @@ using System.Linq;
         public List<FichaVitalVM> SignosVitales { get; set; } = new List<FichaVitalVM>();
         public List<FichaPesoVM> HistorialPeso { get; set; } = new List<FichaPesoVM>();
         public List<FichaLabVM> Laboratorios { get; set; } = new List<FichaLabVM>();
+        public List<FichaProcedimientoVM> Procedimientos { get; set; } = new List<FichaProcedimientoVM>();
 
         // Puntos para la grafica de tendencia de laboratorio (un punto por
         // parametro y fecha). La vista los agrupa por parametro.
@@ -46,6 +47,7 @@ using System.Linq;
         public int TotalVacunas => Vacunas?.Count ?? 0;
         public int TotalFacturas => Facturas?.Count ?? 0;
         public int TotalLaboratorios => Laboratorios?.Count ?? 0;
+        public int TotalProcedimientos => Procedimientos?.Count ?? 0;
         // Saldo pendiente total del paciente (suma de saldos de sus facturas).
         public decimal SaldoPendiente => Facturas?.Sum(f => f.Saldo) ?? 0m;
                 public int TotalAlertas => TotalFichaMascota + TotalUltimasCitas + TotalMedicamentosActivos + TotalTodasCitas + TotalTratamientos + TotalVacunas;
@@ -101,5 +103,17 @@ using System.Linq;
                 public decimal? RangoMin { get; set; }
                 public decimal? RangoMax { get; set; }
                 public DateTime Fecha { get; set; }
+            }
+
+            public class FichaProcedimientoVM
+            {
+                public string Nombre { get; set; }
+                public string Descripcion { get; set; }
+                public string RealizadoPor { get; set; }
+                public string Anestesia { get; set; }
+                public int? DuracionMinutos { get; set; }
+                public string Notas { get; set; }
+                public DateTime Fecha { get; set; }
+                public string ServicioNombre { get; set; }
             }
         }

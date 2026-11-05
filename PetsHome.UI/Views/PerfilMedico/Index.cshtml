@@ -331,6 +331,10 @@
         <i class="bi bi-eyedropper"></i> Laboratorio
         <span class="tab-count">@Model.TotalLaboratorios</span>
       </button>
+      <button class="tab-btn" onclick="switchTab('procedimientos', this)">
+        <i class="bi bi-scissors"></i> Procedimientos
+        <span class="tab-count">@Model.TotalProcedimientos</span>
+      </button>
       <button class="tab-btn" onclick="switchTab('facturas', this)">
         <i class="bi bi-receipt"></i> Facturas
         <span class="tab-count">@Model.TotalFacturas</span>
@@ -787,6 +791,57 @@
             <i class="bi bi-eyedropper"></i>
             <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin estudios de laboratorio</div>
             <p>No hay exámenes de laboratorio solicitados para esta mascota.</p>
+          </div>
+        }
+      </div>
+
+      <!-- ═══ PROCEDIMIENTOS ═══ -->
+      <div class="tab-panel" id="tab-procedimientos">
+        <div class="section-title">Procedimientos realizados</div>
+        @if (Model.Procedimientos.Any())
+        {
+          <div class="ficha-table-wrap">
+            <table class="ficha-table">
+              <thead>
+                <tr>
+                  <th>Procedimiento</th>
+                  <th>Realizado por</th>
+                  <th style="text-align:center">Duración</th>
+                  <th>Anestesia</th>
+                  <th>Fecha</th>
+                  <th>Facturable</th>
+                  <th>Notas</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var pr in Model.Procedimientos)
+                {
+                  <tr>
+                    <td class="ft-strong">
+                      @pr.Nombre
+                      @if (!string.IsNullOrWhiteSpace(pr.Descripcion))
+                      {
+                        <div style="font-weight:400;color:var(--text-muted);font-size:12px">@pr.Descripcion</div>
+                      }
+                    </td>
+                    <td>@(string.IsNullOrWhiteSpace(pr.RealizadoPor) ? "—" : pr.RealizadoPor)</td>
+                    <td style="text-align:center">@(pr.DuracionMinutos.HasValue ? pr.DuracionMinutos + " min" : "—")</td>
+                    <td>@(string.IsNullOrWhiteSpace(pr.Anestesia) ? "—" : pr.Anestesia)</td>
+                    <td>@pr.Fecha.ToString("dd MMM yyyy")</td>
+                    <td>@(string.IsNullOrWhiteSpace(pr.ServicioNombre) ? "—" : pr.ServicioNombre)</td>
+                    <td class="ft-obs">@(string.IsNullOrWhiteSpace(pr.Notas) ? "—" : pr.Notas)</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+        else
+        {
+          <div class="empty-state">
+            <i class="bi bi-scissors"></i>
+            <div style="font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:6px">Sin procedimientos</div>
+            <p>No hay procedimientos registrados para esta mascota.</p>
           </div>
         }
       </div>

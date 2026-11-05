@@ -328,6 +328,36 @@
                     <div class="ec-serv-subtotal" id="ecServSubtotal" style="display:none"></div>
                 </div>
 
+                @* Procedimientos estructurados (adaptado de OpenVPM): nombre, descripcion, *@
+                @* anestesia, duracion, notas y, opcional, el servicio facturable. Aditivo: *@
+                @* se guarda aparte por AJAX (no bloquea el Finalizar de la consulta). *@
+                <div class="ec-field">
+                    <label class="ec-label">
+                        Procedimientos realizados
+                        <small style="font-weight:500;color:var(--text-muted,#8E87B3)">· cirugías, curaciones y otros (estructurado)</small>
+                    </label>
+                    <div class="ec-proc-form" style="display:grid;gap:8px;border:1.5px solid var(--border,#E7E3F5);border-radius:12px;padding:12px;margin-bottom:10px">
+                        <input type="text" id="ecProcNombre" class="ec-input" maxlength="255" placeholder="Nombre del procedimiento (ej. Curación de herida)" />
+                        <textarea id="ecProcDescripcion" class="ec-input" rows="2" maxlength="5000" placeholder="Descripción (qué se hizo)"></textarea>
+                        <div class="ec-grid-2">
+                            <input type="number" id="ecProcDuracion" class="ec-input" min="1" max="1440" placeholder="Duración (min)" />
+                            <input type="text" id="ecProcAnestesia" class="ec-input" maxlength="2000" placeholder="Anestesia usada" />
+                        </div>
+                        <textarea id="ecProcNotas" class="ec-input" rows="2" maxlength="5000" placeholder="Notas / seguimiento"></textarea>
+                        <div class="ec-serv-picker">
+                            <select id="ecProcServicio" class="ec-select no-select2" disabled>
+                                <option value="">Servicio facturable (opcional)...</option>
+                            </select>
+                            <button type="button" id="ecProcAdd" class="ec-serv-add">
+                                <i class="bi bi-plus-lg"></i> Agregar procedimiento
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ec-lines" id="ecProcLines">
+                        <div class="ec-empty-line">Aún no has agregado procedimientos.</div>
+                    </div>
+                </div>
+
                 <div class="ec-divider"></div>
                 <div class="ec-grid-2">
                     <div class="ec-field" style="margin-bottom:0">
@@ -582,7 +612,10 @@ else
             vademecum: '@Url.Action("Vademecum", "Receta")',
             firmar: '@Url.Action("Firmar", "Consulta")',
             agregarAddenda: '@Url.Action("AgregarAddenda", "Consulta")',
-            addenda: '@Url.Action("Addenda", "Consulta")'
+            addenda: '@Url.Action("Addenda", "Consulta")',
+            procGuardar: '@Url.Action("Guardar", "Procedimientos")',
+            procPorCita: '@Url.Action("PorCita", "Procedimientos")',
+            procEliminar: '@Url.Action("Eliminar", "Procedimientos")'
         };
         window._notaFirmada = @(Model.NotaFirmada ? "true" : "false");
         window._mascId = @Model.MascId;
@@ -594,4 +627,5 @@ else
     <script src="~/js/pages/dosis-calculator.js"></script>
     <script src="~/js/pages/consulta-dosis.js" asp-append-version="true"></script>
     <script src="~/js/pages/consulta-firma.js" asp-append-version="true"></script>
+    <script src="~/js/pages/procedimientos-consulta.js" asp-append-version="true"></script>
 }
